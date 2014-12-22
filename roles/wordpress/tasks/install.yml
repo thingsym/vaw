@@ -1,0 +1,121 @@
+---
+- name: database drop
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db drop --yes
+  ignore_errors: yes
+  # when: DB_RESET == true
+
+- stat: path={{ WP_PATH }}
+  register: wordpress_path
+- name: mkdir wordpress_path
+  file: path={{ WP_PATH }} state=directory recurse=yes
+  when: not wordpress_path.stat.exists
+
+- stat: path={{ DOCUMENT_ROOT }}{{ wp_site_path }}
+  register: site_path
+- name: mkdir site_path
+  file: path={{ DOCUMENT_ROOT }}{{ wp_site_path }} state=directory recurse=yes
+  when: not site_path.stat.exists
+
+- name: Setup MySQL user for WordPress
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    host: "localhost"
+    priv: "{{ db_name }}.*:ALL"
+    state: "present"
+    login_user: "root"
+    login_password: "{{ db_root_password }}"
+
+- name: WordPress latest installed
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --force
+  when: version == "latest"
+- name: WordPress version installed
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --version={{ version }} --force
+  when: version != "latest"
+
+- stat: path={{ WP_PATH }}/wp-config.php
+  register: old_wp_config
+- name: delete WordPress config
+  file: path={{ WP_PATH }}/wp-config.php state=absent
+  when: old_wp_config.stat.exists
+
+- name: WordPress config
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }}
+  # shell: |
+  # sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --extra-php <<-PHP
+  # define( 'WP_DEBUG', {{ WP_DEBUG }} );
+  # define( 'SAVEQUERIES', {{ WP_SAVEQUERIES }} );
+  # PHP
+
+- name: WordPress db create
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db create
+
+- name: WordPress core install
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  when: multisite == false
+
+- name: WordPress multisite core install
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core multisite-install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  when: multisite == true
+
+- name: .htaccess changed
+  template: src=wordpress.multisite.htaccess.j2 dest={{ WP_PATH }}/.htaccess
+  when: multisite == true and server == "apache"
+
+- name: set WP_DEBUG in wp-config.php
+  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'WP_DEBUG', {{ WP_DEBUG }} );\n\n/* That"
+- name: set SAVEQUERIES in wp-config.php
+  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'SAVEQUERIES', {{ SAVEQUERIES }} );\n\n/* That"
+
+- name: set SSL in wp-config.php
+  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="#define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
+  when: ssl_admin == true
+
+- name: set using a Reverse Proxy in wp-config.php
+  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')\n       $_SERVER['HTTPS']='on';\n\n/* That"
+  when: server_tuning == true and ssl_admin == true
+
+
+- name: change wp option for subdirectory install
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
+  when: wp_site_path != wp_dir
+
+- name: copy index.php for subdirectory install
+  copy: src={{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php
+  when: wp_site_path != wp_dir
+
+- name: change load path in index.php for subdirectory install
+  replace: dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php regexp="'/wp-blog-header.php'" replace="'{{ wp_dir }}/wp-blog-header.php'"
+  when: wp_site_path != wp_dir
+
+- name: copy .htaccess for subdirectory install
+  copy: src={{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess
+  when: wp_site_path != wp_dir and multisite == true and server == "apache"
+
+
+- name: themes install
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ item }}
+  when: item != ''
+  with_items:
+    - "{{ themes }}"
+
+- name: theme install and activate
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
+  ignore_errors: yes
+  when: activate_theme != ''
+
+- name: plugin activate wp-multibyte-patch
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin activate wp-multibyte-patch
+  when: lang == "ja"
+
+- name: plugins install and activate
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }} --activate
+  when: item != ''
+  with_items:
+    - "{{ activate_plugins }}"
+
+- name: plugins install
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }}
+  when: item != ''
+  with_items:
+    - "{{ plugins }}"

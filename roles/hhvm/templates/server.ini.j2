@@ -1,0 +1,14 @@
+; php options
+
+pid = /var/run/hhvm/hhvm.pid
+
+; hhvm specific
+
+hhvm.server.port = 9000
+hhvm.server.type = fastcgi
+hhvm.server.source_root = /var/www
+hhvm.server.default_document = index.php
+hhvm.log.level = Error
+hhvm.log.use_log_file = true
+hhvm.log.file = /var/log/hhvm/error.log
+hhvm.repo.central.path = /var/run/hhvm/hhvm.hhbc

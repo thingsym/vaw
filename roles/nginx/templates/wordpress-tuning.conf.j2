@@ -1,0 +1,118 @@
+#
+# The default server
+#
+server {
+    listen       80 default_server;
+    root         {{ DOCUMENT_ROOT }};
+    server_name  {{ HOSTNAME }};
+    index index.php index.html index.htm;
+    client_max_body_size   100M;
+
+{% if ssl_admin %}
+    listen 443 ssl;
+    ssl_certificate       /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert;
+    ssl_certificate_key   /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key;
+{% endif %}
+
+    # add_header X-Frame-Options "SAMEORIGIN";
+
+    access_log /var/log/nginx/{{ HOSTNAME }}.access.log main;
+    error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;
+
+    location ~* \.(html?|css|js|xml|jpe?g|gif|png|ico|txt)$ {
+        expires 365d;
+    }
+
+    location {{ wp_dir }}/wp-admin { proxy_pass http://backend; }
+    location ~ .*\.php { proxy_pass http://backend; }
+
+    location / {
+        set $no_cache 0;
+        set $device "";
+
+        if ($request_method = POST) {
+           set $no_cache 1;
+        }
+        proxy_no_cache     $no_cache;
+        proxy_cache_bypass $no_cache;
+        proxy_redirect     off;
+        proxy_cache        czone;
+        proxy_cache_key    "$scheme://$host$request_uri$is_args$args$device";
+        proxy_cache_valid  200 1m;
+        proxy_cache_valid  302 2h;
+        proxy_cache_valid  301 4h;
+        proxy_cache_valid  any 1m;
+        proxy_cache_valid  404 5m;
+        proxy_pass         http://backend;
+    }
+}
+
+server {
+    listen       unix:/var/run/nginx-backend.pid;
+    root         {{ DOCUMENT_ROOT }};
+    server_name  _;
+    index        index.php index.html index.htm;
+    charset      utf-8;
+
+    #access_log  logs/host.access.log main;
+
+    gzip              off;
+    gzip_vary         off;
+
+    location / {
+        try_files $uri $uri/ {{ wp_site_path }}/index.php?$args;
+    }
+
+    error_page  404              /404.html;
+    location = /404.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504    /50x.html;
+    location = /50x.html {
+        root    /usr/share/nginx/html;
+    }
+
+{% if ssl_admin %}
+    location ~ /wp-(admin.*\.php|login\.php)$ {
+{% if fastcgi == "php-fpm" %}
+        fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
+{% elif fastcgi == "hhvm" %}
+        #fastcgi_pass   unix:/var/run/hhvm/hhvm.pid;
+        fastcgi_pass    127.0.0.1:9000;
+{% endif %}
+        fastcgi_index   index.php;
+        fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include         fastcgi_params;
+        fastcgi_param HTTPS on;
+        fastcgi_pass_header "X-Accel-Redirect";
+        fastcgi_pass_header "X-Accel-Buffering";
+        fastcgi_pass_header "X-Accel-Charset";
+        fastcgi_pass_header "X-Accel-Expires";
+        fastcgi_pass_header "X-Accel-Limit-Rate";
+    }
+{% endif %}
+
+    location ~ \.php$ {
+{% if fastcgi == "php-fpm" %}
+        fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
+{% elif fastcgi == "hhvm" %}
+        #fastcgi_pass   unix:/var/run/hhvm/hhvm.pid;
+        fastcgi_pass    127.0.0.1:9000;
+{% endif %}
+        fastcgi_index   index.php;
+        fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include         fastcgi_params;
+        fastcgi_pass_header "X-Accel-Redirect";
+        fastcgi_pass_header "X-Accel-Buffering";
+        fastcgi_pass_header "X-Accel-Charset";
+        fastcgi_pass_header "X-Accel-Expires";
+        fastcgi_pass_header "X-Accel-Limit-Rate";
+    }
+
+    location = /robots.txt { access_log off; log_not_found off; }
+    location ~ /\. { deny  all; access_log off; log_not_found off; }
+}
+

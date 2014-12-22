@@ -1,0 +1,3 @@
+---
+- name: PHPUnit installed
+  command: sudo -u vagrant -i -- {{ composer }} global require 'phpunit/phpunit=4.4.*'

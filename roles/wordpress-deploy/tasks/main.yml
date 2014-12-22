@@ -1,0 +1,20 @@
+---
+- name: deploy tools installed
+  yum: name={{ item }}
+  with_items:
+    - sshpass
+    - lftp
+
+- name: gem libraries installed
+  command: sudo -u vagrant -i -- gem install {{ item }}
+  # gem: name={{ item }} state=latest
+  with_items:
+    - bundler
+    - capistrano
+    - capistrano_colors
+    - capistrano-ext
+    - railsless-deploy
+    - net-sftp
+    - double-bag-ftps
+    - dandelion
+    - wordmove

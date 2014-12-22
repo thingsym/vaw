@@ -1,0 +1,5 @@
+wp_cli_phar_url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+WP_CLI         : '/usr/local/bin/wp'
+
+composer: /usr/local/bin/composer
+wp_cli_dir: /home/vagrant/.wp-cli

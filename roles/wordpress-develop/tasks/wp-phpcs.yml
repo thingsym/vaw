@@ -1,0 +1,12 @@
+---
+- name: PHP_CodeSniffer installed
+  command: sudo -u vagrant -i -- {{ composer }} global require 'squizlabs/php_codesniffer=*'
+
+- name: git checkout WordPress-Coding-Standards
+  git: repo={{ WordPress_Coding_Standards_repository }} dest={{ share_path }}/wp-phpcs
+
+- name: phpcs config-set wp-phpcs
+  command: /home/vagrant/.composer/vendor/bin/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs
+
+- name: ruleset.xml fixed
+  lineinfile: dest=/usr/local/share/wp-phpcs/WordPress-Core/ruleset.xml regexp="<property name=\"indent\" value=\"4\"/>" line="<property name=\"indent\" value=\"1\"/>"

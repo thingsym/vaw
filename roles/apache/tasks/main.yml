@@ -1,0 +1,38 @@
+---
+- name: httpd installed
+  yum: name=httpd state=latest
+
+- name: httpd.conf changed
+  template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
+  when: server_tuning == false
+
+- name: httpd.conf changed (server_tuning)
+  template: src=httpd-tuning.conf.j2 dest=/etc/httpd/conf/httpd.conf
+  when: server_tuning == true
+
+- name: mkdir cache
+  file: path=/var/tmp/cache mode=0777 state=directory
+  when: server_tuning == true
+
+# - name: suphp installed
+#   yum: name=suphp enablerepo=rpmforge
+#   when: server_tuning == true
+
+# - name: mod_fastcgi installed
+#   yum: name=mod_fastcgi
+#   when: server_tuning == true
+
+# - name: mod_fcgid installed
+#   yum: name=mod_fcgid
+#   when: server_tuning == true
+
+- name: mod-pagespeed installed
+  yum: name=https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_x86_64.rpm
+  when: server_tuning == true
+
+# - name: mod_spdy installed
+#   yum: name=https://dl-ssl.google.com/dl/linux/direct/mod-spdy-beta_current_x86_64.rpm
+#   when: server_tuning == true and ssl_admin == true
+
+- name: httpd started and enabled
+  service: name=httpd state=restarted enabled=yes

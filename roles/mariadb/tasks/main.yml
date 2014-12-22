@@ -1,0 +1,60 @@
+---
+- name: PGP key installed
+  rpm_key: state=present key=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+- name: MariaDB.repo changed
+  template: src=centos6-MariaDB.repo.j2 dest=/etc/yum.repos.d/MariaDB.repo
+
+- name: MariaDB repository installed
+  yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+- name: MariaDB installed
+  yum: name={{ item }} state=latest
+  with_items:
+    - MariaDB-common
+    - MariaDB-compat
+    - MariaDB-server
+    - MariaDB-client
+    - MariaDB-devel
+    - MariaDB-shared
+    - MySQL-python
+- name: my.cnf changed
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+- name: mysqld started and enabled
+  service: name=mysql state=restarted enabled=yes
+
+- name: set MariaDB root password
+  mysql_user:
+    name: "root"
+    password: "{{ db_root_password }}"
+    host: "localhost"
+    state: present
+  ignore_errors: yes
+
+- name: set MariaDB root password
+  mysql_user:
+    name: "root"
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+    login_user: "root"
+    login_password: "{{ db_root_password }}"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+
+- name: Delete blank MariaDB users
+  mysql_user:
+    name: ""
+    host: "{{ item }}"
+    state: absent
+    login_user: "root"
+    login_password: "{{ db_root_password }}"
+  with_items:
+    - localhost
+
+- name: Drop MariaDB test database
+  mysql_db:
+     name: test
+     state: absent
+     login_user: "root"
+     login_password: "{{ db_root_password }}"

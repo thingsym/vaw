@@ -1,0 +1,22 @@
+---
+- name: hop5.repo changed
+  template: src=hop5.repo.j2 dest=/etc/yum.repos.d/hop5.repo
+
+- name: hhvm 3.2.0 installed
+  yum: name={{ item }}
+  with_items:
+    - hhvm
+    - hiphop-php
+    - supervisor
+
+- name: server.ini changed
+  template: src=server.ini.j2 dest=/etc/hhvm/server.ini
+
+- name: src=supervisord.conf changed
+  template: src=supervisord.conf.j2 dest=/etc/supervisord.conf
+
+- name: mkdir /var/run/hhvm
+  file: path=/var/run/hhvm state=directory owner=vagrant group=vagrant
+
+- name: supervisord started and enabled
+  service: name=supervisord state=restarted enabled=yes

@@ -1,0 +1,63 @@
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
+user              nginx;
+worker_processes  1;
+
+error_log   /var/log/nginx/error.log;
+#error_log  /var/log/nginx/error.log  notice;
+#error_log  /var/log/nginx/error.log  info;
+
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  10;
+
+    gzip              on;
+    gzip_http_version 1.0;
+    gzip_vary         on;
+    gzip_comp_level   6;
+    gzip_types        text/html text/plain text/css text/javascript application/x-javascript text/xml application/xhtml+xml application/xmlapplication/rss+xml application/atom_xml application/rdf+xml application/x-httpd-php;
+    gzip_disable      "MSIE [1-6]\.";
+
+    proxy_cache_path  /var/cache/nginx levels=1:2 keys_zone=czone:32m max_size=256m inactive=1440m;
+    proxy_temp_path   /var/tmp/nginx;
+    proxy_cache_key   "$scheme://$host$request_uri";
+    proxy_set_header  Host               $host;
+    proxy_set_header  X-Real-IP          $remote_addr;
+    proxy_set_header  X-Forwarded-Host   $host;
+    proxy_set_header  X-Forwarded-Server $host;
+    proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
+    proxy_set_header  X-Forwarded-Proto  $scheme;
+    proxy_connect_timeout 5s;
+    proxy_send_timeout 10s;
+    proxy_read_timeout 120s;
+    proxy_cache_lock on;
+    proxy_cache_lock_timeout 5s;
+
+    upstream backend {
+        server unix:/var/run/nginx-backend.pid;
+    }
+
+    include /etc/nginx/conf.d/wordpress-tuning.conf;
+    #include /etc/nginx/conf.d/wordpress-multisite-tuning.conf;
+}

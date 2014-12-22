@@ -1,0 +1,31 @@
+---
+- name: PHP 5.5.x installed
+  yum: name={{ item }} enablerepo=ius
+  with_items:
+    - php55u
+    - php55u-mbstring
+    - php55u-cli
+    - php55u-mcrypt
+    - php55u-devel
+    - php55u-common
+    - php55u-pear
+    - php55u-gd
+    - php55u-pdo
+    - php55u-mysql
+    - php55u-xmlrpc
+    - php55u-pecl-jsonc
+    - php55u-curl
+    - php55u-opcache
+    - php55u-pecl-apcu
+
+- name: xdebug installed
+  yum: name={{ item }} enablerepo=ius
+  with_items:
+    - php55u-xml
+    - php55u-pecl-xdebug
+  when: develop_tools == true
+
+- name: php.ini changed
+  template: src=php.ini.j2 dest=/etc/php.ini
+- name: touch php.log
+  file: path=/var/log/php.log state=touch mode=0666

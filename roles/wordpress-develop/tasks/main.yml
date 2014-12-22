@@ -1,0 +1,22 @@
+---
+- name: develop tools installed
+  yum: name={{ item }} state=latest
+  with_items:
+    - subversion
+    - gettext
+    - nodejs
+    - npm
+
+- name: node.js package globally installed
+  npm: name={{ item }} global=yes
+  with_items:
+    - grunt-cli
+    - grunt-init
+    - gulp
+    - bower
+
+- include: wp-i18n.yml
+- include: phpunit.yml
+- include: wp-phpcs.yml
+- include: opcache.yml
+

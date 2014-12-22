@@ -1,0 +1,53 @@
+---
+- name: mysql repository installed
+  yum: name=https://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+- name: mysql 6.5 installed
+  yum: name={{ item }} state=latest
+  with_items:
+    - mysql
+    - mysql-devel
+    - mysql-server
+    - mysql-utilities
+    - MySQL-python
+- name: my.cnf changed
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+- name: mysqld started and enabled
+  service: name=mysqld state=restarted enabled=yes
+
+- name: set mysql root password
+  mysql_user:
+    name: "root"
+    password: "{{ db_root_password }}"
+    host: "localhost"
+    state: present
+  ignore_errors: yes
+
+- name: set mysql root password
+  mysql_user:
+    name: "root"
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+    login_user: "root"
+    login_password: "{{ db_root_password }}"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+
+- name: Delete blank MySQL users
+  mysql_user:
+    name: ""
+    host: "{{ item }}"
+    state: absent
+    login_user: "root"
+    login_password: "{{ db_root_password }}"
+  with_items:
+    - localhost
+
+- name: Drop MySQL test database
+  mysql_db:
+     name: test
+     state: absent
+     login_user: "root"
+     login_password: "{{ db_root_password }}"
