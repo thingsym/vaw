@@ -425,6 +425,11 @@ You can build the environment in a short period of time compared with provisioni
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
+### Other
+
+* [rbenv](https://github.com/sstephenson/rbenv)
+* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+
 ## Server Tuning Specification
 
 As follows server tuning. It is in any time tuning. 

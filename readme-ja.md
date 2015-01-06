@@ -410,6 +410,11 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
+### Other
+
+* [rbenv](https://github.com/sstephenson/rbenv)
+* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+
 ## Server Tuning Specification
 
 サーバのチューニング内容は以下の通り。随時チューニング中です。
