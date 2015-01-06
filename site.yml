@@ -20,7 +20,7 @@
     - { role: hhvm, tags: [hhvm], when: "server == 'nginx' and fastcgi == 'hhvm'" }
     - { role: wp-cli, tags: [wp-cli] }
     - { role: wordpress, tags: [wordpress] }
+    - { role: rbenv, tags: [rbenv], when: "develop_tools == true or deploy_tools == true" }
     - { role: wordpress-develop, tags: [wordpress-develop], when: "develop_tools == true" }
-    - { role: rbenv, tags: [rbenv], when: "deploy_tools == true" }
     - { role: wordpress-deploy, tags: [wordpress-deploy], when: "deploy_tools == true" }
     - { role: after-command, tags: [after-command] }
