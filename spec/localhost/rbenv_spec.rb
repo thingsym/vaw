@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if property["develop_tools"] || property["deploy_tools"] || then
+if property["develop_tools"] || property["deploy_tools"] then
 
   ['2.1.4'].each do |ruby_version|
     describe command("rbenv versions | grep #{ruby_version}") do
