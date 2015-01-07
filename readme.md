@@ -37,6 +37,8 @@ You can verify the test/real data on WordPress. VAW will realize building of Wor
 	* Automatic activate
 	* Batch install multiple plugins
 	* Install the plugin in the local path (developing plugin and official directory unregistered plugin support)
+* Setting theme_mod (theme modification value) and Options
+* Setting permalink structure
 * Importing data from any one of three ways
 	* WordPress export (WXR) file
 	* SQL file (database dump data)
@@ -206,6 +208,18 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
+	theme_mod          : ''
+	
+	# see Option Reference - http://codex.wordpress.org/Option_Reference
+	options            : ''
+	
+	# e.g. /%year%/%monthnum%/%postname%
+	# see http://codex.wordpress.org/Using_Permalinks
+	permalink_structure  :
+	                      structure   : ''
+	                      category    : ''
+	                      tag         : ''
+	
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
@@ -303,6 +317,33 @@ change the hash format
  	* set in YAML array format `plagin slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/plagins/~.zip` by local zip file path
 	* If you want to set to empty, change the hash format from the array format.
+
+* `theme_mod` setting theme_mod (theme modification value)
+	* See [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod)
+	* set in YAML nested hash format
+
+Configuration example
+
+	theme_mod          :
+	                       background_color: '993366'
+
+* `options` setting options
+	* See [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
+	* set in YAML nested hash format
+
+Configuration example
+
+	options            :
+	                       blogname: 'blog title'
+	                       blogdescription: 'blog description'
+
+* `permalink_structure` setting permalink structure
+	* set the following three permalink structures
+	* See [Using Permalinks](http://codex.wordpress.org/Using_Permalinks)
+	* `structure` set the permalink structure using the structure tags
+	* `category` set the prefix of the category archive
+	* `tag` set the prefix of the tag archive
+
 * `import_xml_data` local WordPress export (WXR) file path `/vagrant/import/~.xml`
 	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import 
 * `import_db_data` local sql dump file path `/vagrant/import/~.sql`

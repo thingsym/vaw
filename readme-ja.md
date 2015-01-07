@@ -35,6 +35,8 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 	* プラグインの自動有効化
 	* 複数のプラグインを一括インストール
 	* ローカルにあるプラグインをインストール (開発中プラグインや公式ディレクトリ未登録プラグインに対応)
+* theme_mod (theme modification value) と Options の設定
+* パーマリンク構造の設定
 * データのインポートは 3 つのいずれかからインポートできます
 	* XML (WXR) 形式
 	* SQLデータ (データベースダンプデータ)
@@ -198,6 +200,18 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
+	theme_mod          : ''
+	
+	# see Option Reference - http://codex.wordpress.org/Option_Reference
+	options            : ''
+	
+	# e.g. /%year%/%monthnum%/%postname%
+	# see http://codex.wordpress.org/Using_Permalinks
+	permalink_structure  :
+	                      structure   : ''
+	                      category    : ''
+	                      tag         : ''
+	
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
@@ -297,6 +311,32 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
  	* YAML 形式の配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
 	* 空白にする場合は、YAML 形式の書式を配列からハッシュに変えてください。
+* `theme_mod` theme_mod (theme modification value) の設定
+	* [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod) を参照
+	* YAML 形式のハッシュのネスト書式で設定
+
+設定例
+
+	theme_mod          :
+	                       background_color: '993366'
+
+* `options` オプションの設定
+	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
+	* YAML 形式のハッシュのネスト書式で設定
+
+設定例
+
+	options            :
+	                       blogname: 'blog title'
+	                       blogdescription: 'blog description'
+
+* `permalink_structure` パーマリンク構造の設定
+	* 以下の3つのパーマリンク構造の設定できます
+	* [Using Permalinks](http://codex.wordpress.org/Using_Permalinks) を参照
+	* `structure` Structure Tags で投稿のパーマリンク構造を設定
+	* `category` カテゴリーアーカイブのカテゴリープレフィックスを設定
+	* `tag` タグアーカイブのタグプレフィックスを設定
+
 * `import_xml_data` WXR 形式のファイルパス `/vagrant/import/~.xml`
 	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)  
 * `import_db_data` SQL ダンプファイルパス `/vagrant/import/~.sql`
