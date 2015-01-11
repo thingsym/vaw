@@ -18,8 +18,8 @@
 
 - name: set theme mod
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
-  with_dict: theme_mod
+  with_dict: "{{ theme_mod | default({}) }}"
 
 - name: update options
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
-  with_dict: options
+  with_dict: "{{ options | default({}) }}"

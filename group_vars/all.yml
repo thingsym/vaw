@@ -57,10 +57,13 @@ plugins            :
                         - monster-widget
                         - wordpress-beta-tester
 
-theme_mod          : ''
+# theme_mod          :
+#                        background_color: 'cccccc'
 
 # see Option Reference - http://codex.wordpress.org/Option_Reference
-options            : ''
+# options            :
+#                        blogname: 'blog title'
+#                        blogdescription: 'blog description'
 
 # e.g. /%year%/%monthnum%/%postname%
 # see http://codex.wordpress.org/Using_Permalinks

@@ -208,10 +208,13 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
-	theme_mod          : ''
+	# theme_mod          :
+	#                        background_color: 'cccccc'
 	
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	options            : ''
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
 	
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -321,21 +324,34 @@ change the hash format
 * `theme_mod` setting theme_mod (theme modification value)
 	* See [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod)
 	* set in YAML nested hash format
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
 Configuration example
 
 	theme_mod          :
 	                       background_color: '993366'
 
+Disable the setting case
+
+	# theme_mod          :
+	#                        background_color: '993366'
+
 * `options` setting options
 	* See [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
 	* set in YAML nested hash format
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
 Configuration example
 
 	options            :
 	                       blogname: 'blog title'
 	                       blogdescription: 'blog description'
+
+Disable the setting case
+
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
 
 * `permalink_structure` setting permalink structure
 	* set the following three permalink structures

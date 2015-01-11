@@ -200,10 +200,13 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
-	theme_mod          : ''
+	# theme_mod          :
+	#                        background_color: 'cccccc'
 	
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	options            : ''
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
 	
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -314,21 +317,34 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `theme_mod` theme_mod (theme modification value) の設定
 	* [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod) を参照
 	* YAML 形式のハッシュのネスト書式で設定
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトしてください。
 
 設定例
 
 	theme_mod          :
 	                       background_color: '993366'
 
+設定を無効にする場合
+
+	# theme_mod          :
+	#                        background_color: '993366'
+
 * `options` オプションの設定
 	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
 	* YAML 形式のハッシュのネスト書式で設定
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトしてください。
 
 設定例
 
 	options            :
 	                       blogname: 'blog title'
 	                       blogdescription: 'blog description'
+
+設定を無効にする場合
+
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
 
 * `permalink_structure` パーマリンク構造の設定
 	* 以下の3つのパーマリンク構造の設定できます
