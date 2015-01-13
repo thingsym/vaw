@@ -42,7 +42,9 @@ ssl_admin          : false   # true|false
 
 # default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 activate_theme     : ''
-themes             : ''
+# themes             :
+#                         - yoko
+#                         - Responsive
 
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :

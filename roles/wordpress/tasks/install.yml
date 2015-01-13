@@ -97,7 +97,7 @@
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ item }}
   when: item != ''
   with_items:
-    - "{{ themes }}"
+    - "{{ themes | default([]) }}"
 
 - name: theme install and activate
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
@@ -112,10 +112,10 @@
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }} --activate
   when: item != ''
   with_items:
-    - "{{ activate_plugins }}"
+    - "{{ activate_plugins | default([]) }}"
 
 - name: plugins install
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }}
   when: item != ''
   with_items:
-    - "{{ plugins }}"
+    - "{{ plugins | default([]) }}"
