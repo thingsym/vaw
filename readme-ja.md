@@ -35,6 +35,8 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 	* プラグインの自動有効化
 	* 複数のプラグインを一括インストール
 	* ローカルにあるプラグインをインストール (開発中プラグインや公式ディレクトリ未登録プラグインに対応)
+* theme_mod (theme modification value) と Options の設定
+* パーマリンク構造の設定
 * データのインポートは 3 つのいずれかからインポートできます
 	* XML (WXR) 形式
 	* SQLデータ (データベースダンプデータ)
@@ -183,7 +185,9 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	
 	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
 	activate_theme     : ''
-	themes             : ''
+	# themes             :
+	#                         - yoko
+	#                         - Responsive
 	
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
@@ -198,6 +202,21 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
+	# theme_mod          :
+	#                        background_color: 'cccccc'
+	
+	# see Option Reference - http://codex.wordpress.org/Option_Reference
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
+	
+	# e.g. /%year%/%monthnum%/%postname%
+	# see http://codex.wordpress.org/Using_Permalinks
+	permalink_structure  :
+	                      structure   : ''
+	                      category    : ''
+	                      tag         : ''
+	
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
@@ -211,8 +230,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
 	
-	develop_tools   : false   # true|false
-	deploy_tools    : false   # true|false
+	develop_tools      : false   # true|false
+	deploy_tools       : false   # true|false
 	
 	## That's all, stop setting. Let's vagrant up!! ##
 	
@@ -245,7 +264,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `version` (required) WordPress 本体のバージョン (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
 	* [Release Archive](https://wordpress.org/download/release-archive/) を参照
- 
+
 * `lang` (required) WordPress 本体の言語 (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
 	* [wordpress-i18n list](http://svn.automattic.com/wordpress-i18n/) を参照
@@ -255,7 +274,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	*  `wp_dir` と `wp_site_path` が同じパスの場合、ディレクトリにインストールされます。
 	* `wp_dir` と `wp_site_path` のパスが違う場合、サブディレクトリインストールになります。必ず `wp_site_path` は `wp_dir` より一つ上のディレクトリに置いてください。
 	*  [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory) を参照
- 
+
 * `multisite` マルチサイトの有効化 (default: `false` / value: `true` | `false`)
 * `ssl_admin` 管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
 * `activate_theme` テーマをインストール・有効化 (default: default theme)
@@ -263,46 +282,89 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
 	* 自動的に有効化します
 * `themes` テーマをインストール (複数可)
- 	* YAML 形式の配列書式で設定 `theme slug`, `zip file URL`, `local zip file path`
+ 	* YAML 形式のハッシュの配列書式で設定 `theme slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
-	* 空白にする場合は、YAML 形式の書式を配列からハッシュに変えてください。
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
-配列書式から
+設定例
 
 	themes             :
 	                     - yoko
 	                     - Responsive
-                     
-ハッシュ書式に変える
 
-	themes             : ''
+設定を無効にする場合
+
+	# themes             :
+	#                      - yoko
+	#                      - Responsive
 
 * `activate_plugins` プラグインのインストール・有効化 (複数可)
- 	* YAML 形式の配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
+ 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
 	* 自動的に有効化します
-	* 空白にする場合は、YAML 形式の書式を配列からハッシュに変えてください。
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
-配列書式から
+設定例
 
 	activate_plugins   :
 	                        - theme-check
 	                        - plugin-check
-                     
-ハッシュ書式に変える
 
-	activate_plugins   : ''
+設定を無効にする場合
+
+	# activate_plugins   :
+	#                         - theme-check
+	#                         - plugin-check
 
 * `plugins` プラグインのインストール
- 	* YAML 形式の配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
+ 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
-	* 空白にする場合は、YAML 形式の書式を配列からハッシュに変えてください。
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
+* `theme_mod` theme_mod (theme modification value) の設定
+	* [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod) を参照
+	* YAML 形式のハッシュのネスト書式で設定
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
+
+設定例
+
+	theme_mod          :
+	                       background_color: 'cccccc'
+
+設定を無効にする場合
+
+	# theme_mod          :
+	#                        background_color: 'cccccc'
+
+* `options` オプションの設定
+	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
+	* YAML 形式のハッシュのネスト書式で設定
+	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
+
+設定例
+
+	options            :
+	                       blogname: 'blog title'
+	                       blogdescription: 'blog description'
+
+設定を無効にする場合
+
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
+
+* `permalink_structure` パーマリンク構造の設定
+	* 以下の3つのパーマリンク構造の設定できます
+	* [Using Permalinks](http://codex.wordpress.org/Using_Permalinks) を参照
+	* `structure` Structure Tags で投稿のパーマリンク構造を設定
+	* `category` カテゴリーアーカイブのカテゴリープレフィックスを設定
+	* `tag` タグアーカイブのタグプレフィックスを設定
+
 * `import_xml_data` WXR 形式のファイルパス `/vagrant/import/~.xml`
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)  
+	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
 * `import_db_data` SQL ダンプファイルパス `/vagrant/import/~.sql`
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`) 
+	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
 * `theme_unit_test` テーマユニットテストデータのインポート有効化 (default: `false` / value: `true` | `false`)
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`) 
+	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
 * `replace_old_url` `old url` から `vm_hostname` に置換
 * `regenerate_thumbnails` サムネイル画像の再生成を有効化 (default: `false` / value: `true` | `false`)
 
@@ -410,6 +472,11 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
+### Other
+
+* [rbenv](https://github.com/sstephenson/rbenv)
+* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+
 ## Server Tuning Specification
 
 サーバのチューニング内容は以下の通り。随時チューニング中です。
@@ -447,12 +514,9 @@ Vagrantプラグイン **vagrant-cachier** をインストールするとプロ�
 
 	rm -rf $HOME/.vagrant.d/cache/vaw/full
 
-	
-
 ほかの Box を使っている場合の記法は、
 
 	rm -rf $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
-
 
 詳しくは、[vagrant-cachier Usage](http://fgrehm.viewdocs.io/vagrant-cachier/usage) を参考に。
 
@@ -461,7 +525,6 @@ Vagrantプラグイン **vagrant-cachier** をインストールするとプロ�
 デザイナーやウェブサイト運営者など普段ターミナルに馴染みがない方や黒い画面が苦手だなぁと思っている方は Vagrant Maneger の導入をお薦めします。インストールすると、メニューバーにアイコンのメニューが追加されます。後はダウンロードした VAW をブックマークに登録して、メニューから `UP` を選ぶだけで環境が立ち上ります。Vagrant で操作する基本コマンドもほとんど用意されていて、コマンドを打つことから解放されたい方はどうぞ。
 
 [Vagrant Maneger のインストールはこちらから](http://vagrantmanager.com)
-
 
 ## How to contribute
 

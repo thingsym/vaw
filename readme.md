@@ -2,7 +2,7 @@
 
 **VAW (Vagrant Ansible WordPress)** is Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.
 
-Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins. 
+Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
 **VAW** is also a collaboration tool. you can take advantage of collaboration tool that share the environment with development partners, designers and client.
 
@@ -37,6 +37,8 @@ You can verify the test/real data on WordPress. VAW will realize building of Wor
 	* Automatic activate
 	* Batch install multiple plugins
 	* Install the plugin in the local path (developing plugin and official directory unregistered plugin support)
+* Setting theme_mod (theme modification value) and Options
+* Setting permalink structure
 * Importing data from any one of three ways
 	* WordPress export (WXR) file
 	* SQL file (database dump data)
@@ -191,7 +193,9 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	
 	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
 	activate_theme     : ''
-	themes             : ''
+	# themes             :
+	#                         - yoko
+	#                         - Responsive
 	
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
@@ -206,6 +210,21 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - monster-widget
 	                        - wordpress-beta-tester
 	
+	# theme_mod          :
+	#                        background_color: 'cccccc'
+	
+	# see Option Reference - http://codex.wordpress.org/Option_Reference
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
+	
+	# e.g. /%year%/%monthnum%/%postname%
+	# see http://codex.wordpress.org/Using_Permalinks
+	permalink_structure  :
+	                      structure   : ''
+	                      category    : ''
+	                      tag         : ''
+	
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
@@ -219,8 +238,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
 	
-	develop_tools   : false   # true|false
-	deploy_tools    : false   # true|false
+	develop_tools      : false   # true|false
+	deploy_tools       : false   # true|false
 	
 	## That's all, stop setting. Let's vagrant up!! ##
 	
@@ -235,7 +254,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `server` (required) name of web server (default: `apache` / value: `apache` | `nginx`)
 * `server_tuning` server tuning mode (default: `false` / value: `true` | `false`)
 * `fastcgi` name of fastCGI (default: `php-fpm` / value: `php-fpm` | `hhvm`)
-	* `fastcgi` is possible only `server 'nginx'` 
+	* `fastcgi` is possible only `server 'nginx'`
 * `database` (required) name of databese (default: `mysql` / value: `mysql` | `mariadb` | `percona`)
 * `db_root_password` (required) database root password (default: `admin`)
 * `db_host` (required) database host (default: `localhost`)
@@ -252,8 +271,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `admin_email` (required) WordPress admin email address (default: `hoge@example.com`)
 * `version` (required) version of WordPress (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
-	* see [Release Archive](https://wordpress.org/download/release-archive/) 
- 
+	* see [Release Archive](https://wordpress.org/download/release-archive/)
+
 * `lang` (required) WordPress in your language (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
 	* see [wordpress-i18n list](http://svn.automattic.com/wordpress-i18n/)
@@ -263,52 +282,96 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	* If `wp_dir` and `wp_site_path` are the same path, in own directory install.
 	* If `wp_dir` and `wp_site_path` are different path, install to subdirectory. Note that `wp_site_path` be placed on one above the directory than `wp_dir`.
 	* see [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory)
- 
+
 * `multisite` Multisite enabled flag (default: `false` / value: `true` | `false`)
 * `ssl_admin` administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `activate_theme` install a theme and activated (default: default theme)
  	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
 * `themes` install themes
- 	* set in YAML array format `theme slug`, `zip file URL` or `local zip file path`
+ 	* set in YAML arrays of hashes format `theme slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
-	* If you want to set to empty, change the hash format from the array format.
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
-from the array format
+Configuration example
 
 	themes             :
 	                     - yoko
 	                     - Responsive
-                     
-change the hash format
 
-	themes             : ''
+Disable the setting case
+
+	# themes             :
+	#                      - yoko
+	#                      - Responsive
 
 * `activate_plugins` install plagins and activated
- 	* set in YAML array format `plagin slug`, `zip file URL` or `local zip file path`
+ 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/plagins/~.zip` by local zip file path
-	* If you want to set to empty, change the hash format from the array format.
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
-from the array format
+Configuration example
 
 	activate_plugins   :
 	                        - theme-check
 	                        - plugin-check
 
-change the hash format
+Disable the setting case
 
-	activate_plugins   : ''
+	# activate_plugins   :
+	#                         - theme-check
+	#                         - plugin-check
 
 * `plugins` install plagins
- 	* set in YAML array format `plagin slug`, `zip file URL` or `local zip file path`
+ 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/plagins/~.zip` by local zip file path
-	* If you want to set to empty, change the hash format from the array format.
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+
+* `theme_mod` setting theme_mod (theme modification value)
+	* see [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod)
+	* set in YAML nested hash format
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+
+Configuration example
+
+	theme_mod          :
+	                       background_color: 'cccccc'
+
+Disable the setting case
+
+	# theme_mod          :
+	#                        background_color: 'cccccc'
+
+* `options` setting options
+	* see [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
+	* set in YAML nested hash format
+	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+
+Configuration example
+
+	options            :
+	                       blogname: 'blog title'
+	                       blogdescription: 'blog description'
+
+Disable the setting case
+
+	# options            :
+	#                        blogname: 'blog title'
+	#                        blogdescription: 'blog description'
+
+* `permalink_structure` setting permalink structure
+	* set the following three permalink structures
+	* see [Using Permalinks](http://codex.wordpress.org/Using_Permalinks)
+	* `structure` set the permalink structure using the structure tags
+	* `category` set the prefix of the category archive
+	* `tag` set the prefix of the tag archive
+
 * `import_xml_data` local WordPress export (WXR) file path `/vagrant/import/~.xml`
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import 
+	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
 * `import_db_data` local sql dump file path `/vagrant/import/~.sql`
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import 
+	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
 * `theme_unit_test` import Theme Unit Test data enabled flag (default: `false` / value: `true` | `false`)
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import 
+	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
 * `replace_old_url` replace to `vm_hostname` from `old url`
 * `regenerate_thumbnails` regenerate thumbnails enabled flag (default: `false` / value: `true` | `false`)
 
@@ -368,9 +431,9 @@ VAW will be built in the directory structure of the following minimum unit.
 
 Vagrant Box is probably compatible with centos-6.x x86_64.
 
-By default, the Vagrantfile uses the `vaw/default` Box which has already provisioned default settings. 
+By default, the Vagrantfile uses the `vaw/default` Box which has already provisioned default settings.
 
-In addition, can use the `vaw/full` Box which has already provisioned default settings and activate develop and deploy tools. 
+In addition, can use the `vaw/full` Box which has already provisioned default settings and activate develop and deploy tools.
 
 You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
 
@@ -425,9 +488,14 @@ You can build the environment in a short period of time compared with provisioni
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
+### Other
+
+* [rbenv](https://github.com/sstephenson/rbenv)
+* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+
 ## Server Tuning Specification
 
-As follows server tuning. It is in any time tuning. 
+As follows server tuning. It is in any time tuning.
 
 ### Apache
 

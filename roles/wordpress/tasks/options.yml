@@ -1,0 +1,25 @@
+---
+- name: set permalink structure
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
+  when: permalink_structure.structure != '' and permalink_structure.category == '' and permalink_structure.tag == ''
+- name: set permalink structure
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
+  when: permalink_structure.structure != '' and permalink_structure.category != '' and permalink_structure.tag == ''
+- name: set permalink structure
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
+  when: permalink_structure.structure != '' and permalink_structure.category == '' and permalink_structure.tag != ''
+- name: set permalink structure
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
+  when: permalink_structure.structure != '' and permalink_structure.category != '' and permalink_structure.tag != ''
+
+- name: rewrite flush
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite flush --hard
+  when: permalink_structure.structure != '' or permalink_structure.category != '' or permalink_structure.tag != ''
+
+- name: set theme mod
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
+  with_dict: "{{ theme_mod | default({}) }}"
+
+- name: update options
+  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
+  with_dict: "{{ options | default({}) }}"

@@ -42,7 +42,9 @@ ssl_admin          : false   # true|false
 
 # default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 activate_theme     : ''
-themes             : ''
+# themes             :
+#                         - yoko
+#                         - Responsive
 
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :
@@ -56,6 +58,21 @@ plugins            :
                         - developer
                         - monster-widget
                         - wordpress-beta-tester
+
+# theme_mod          :
+#                        background_color: 'cccccc'
+
+# see Option Reference - http://codex.wordpress.org/Option_Reference
+# options            :
+#                        blogname: 'blog title'
+#                        blogdescription: 'blog description'
+
+# e.g. /%year%/%monthnum%/%postname%
+# see http://codex.wordpress.org/Using_Permalinks
+permalink_structure  :
+                      structure   : ''
+                      category    : ''
+                      tag         : ''
 
 # Any one of three ways to import
 import_xml_data    : ''   # local path, /vagrant/import/~.xml

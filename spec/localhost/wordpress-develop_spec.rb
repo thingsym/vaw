@@ -18,6 +18,16 @@ if property["develop_tools"] then
     it { should be_installed }
   end
 
+  describe package('sass') do
+    let(:path) { '~/.rbenv/shims' }
+    it { should be_installed.by('gem') }
+  end
+
+  describe package('compass') do
+    let(:path) { '~/.rbenv/shims' }
+    it { should be_installed.by('gem') }
+  end
+
   describe command('grunt --version') do
    its(:exit_status) { should eq 0 }
   end
