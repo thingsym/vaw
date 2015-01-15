@@ -549,6 +549,12 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.1 - 2015.01.14
+	* change setting format
+	* fix yum repository metadata
+	* add WordPress options
+ 	* add sass and compass gems
+ 	* fix wp-cli role
 * version 0.1.0 - 2014.12.22
  	* initial release
 
