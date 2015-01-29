@@ -475,6 +475,7 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 ### Other
 
 * [rbenv](https://github.com/sstephenson/rbenv)
+* [ruby-build](https://github.com/sstephenson/ruby-build)
 * [Ruby](https://www.ruby-lang.org/) ver.2.1.4
 
 ## Server Tuning Specification

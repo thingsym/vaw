@@ -491,6 +491,7 @@ You can build the environment in a short period of time compared with provisioni
 ### Other
 
 * [rbenv](https://github.com/sstephenson/rbenv)
+* [ruby-build](https://github.com/sstephenson/ruby-build)
 * [Ruby](https://www.ruby-lang.org/) ver.2.1.4
 
 ## Server Tuning Specification
