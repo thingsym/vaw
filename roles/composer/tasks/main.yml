@@ -2,8 +2,5 @@
 - name: composer globally installed
   shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar {{ install_dir }}/composer creates={{ install_dir }}/composer
 
-- name: remove PATH composer on .bash_profile
-  lineinfile: dest={{ bash_profile }} state=absent regexp="^export PATH=\$HOME/\.composer/vendor"
-
-- name: set PATH composer on .bash_profile
-  shell: echo 'export PATH=$HOME/.composer/vendor/bin:$PATH' >> {{ bash_profile }}
+- name: edit PATH composer on .bash_profile
+  lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"
