@@ -48,6 +48,10 @@ if property["develop_tools"] then
     it { should be_file }
   end
 
+  describe file('/home/vagrant/.bash_profile') do
+    its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
+  end
+
   describe command('phpunit --version') do
     let(:path) { '~/.composer/vendor/bin' }
     its(:exit_status) { should eq 0 }
