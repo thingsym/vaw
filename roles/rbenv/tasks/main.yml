@@ -6,17 +6,11 @@
   file: dest=/home/vagrant/.rbenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
   sudo: yes
 
-- name: remove PATH rbenv on .bash_profile
-  lineinfile: dest={{ bash_profile }} state=absent regexp="^export PATH=\$HOME/\.rbenv"
+- name: edit PATH rbenv on .bash_profile
+  lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.rbenv/bin:$PATH"
 
-- name: set PATH rbenv on .bash_profile
-  shell: echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> {{ bash_profile }}
-
-- name: remove rbenv init on .bash_profile
-  lineinfile: dest={{ bash_profile }} state=absent regexp="eval \"\$\(rbenv init \-\)\""
-
-- name: set rbenv init on .bash_profile
-  shell: echo 'eval "$(rbenv init -)"' >> {{ bash_profile }}
+- name: edit rbenv init on .bash_profile
+  lineinfile: dest={{ bash_profile }} line="eval \"$(rbenv init -)\""
 
 - name: git checkout ruby-build
   git: repo=https://github.com/sstephenson/ruby-build.git dest=/home/vagrant/.rbenv/plugins/ruby-build

@@ -16,6 +16,11 @@ if property["develop_tools"] || property["deploy_tools"] then
     its(:stdout) { should match '2.1.4' }
   end
 
+  describe file('/home/vagrant/.bash_profile') do
+    its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
+    its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
+  end
+
   describe file('/home/vagrant/.rbenv/plugins/ruby-build') do
     it { should be_directory }
   end
