@@ -15,8 +15,8 @@ if property["server"] == 'nginx' then
 
   elsif property["fastcgi"] == 'hhvm' then
 
-    describe yumrepo('supervisor') do
-      it { should exist }
+    describe package('supervisor') do
+      it { should be_installed }
     end
 
     describe service('supervisord') do
