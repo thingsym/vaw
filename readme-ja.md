@@ -540,6 +540,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.4 - 2015.04.29
+* version 0.1.3 - 2015.02.17
+* version 0.1.2 - 2015.01.31
 * version 0.1.1 - 2015.01.14
 	* change setting format
 	* fix yum repository metadata
@@ -553,4 +556,4 @@ If you would like to contribute, here are some notes and guidlines.
 
 VAW is distributed under GPLv3.
 
-Copyright (c) 2014 thingsym
+Copyright (c) 2014-2015 thingsym
