@@ -1,6 +1,6 @@
 ---
 - name: WordPress i18n tools installed
-  subversion: repo={{ wordpress_i18n_repository }} dest={{ share_path }}/wp-i18n
+  subversion: repo={{ wordpress_i18n_repository }} dest={{ share_path }}/wp-i18n force=yes
 
 - name: edit alias wp-i18n on .bash_profile
   lineinfile: dest={{ bash_profile }} line="alias makepot.php=\"/usr/bin/php {{ share_path }}/wp-i18n/makepot.php\""

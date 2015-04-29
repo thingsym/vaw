@@ -3,7 +3,7 @@
   command: sudo -u vagrant -i -- {{ composer }} global require 'squizlabs/php_codesniffer=*'
 
 - name: git checkout WordPress-Coding-Standards
-  git: repo={{ WordPress_Coding_Standards_repository }} dest={{ share_path }}/wp-phpcs
+  git: repo={{ WordPress_Coding_Standards_repository }} dest={{ share_path }}/wp-phpcs force=yes
 
 - name: phpcs config-set wp-phpcs
   command: /home/vagrant/.composer/vendor/bin/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs
