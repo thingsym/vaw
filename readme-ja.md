@@ -144,51 +144,51 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 YAML 形式でサーバ、データベース、WordPress 環境の設定や Develop & Deploy ツールの有効化ができます。
 
 	## Server & Database Settings ##
-	
+
 	server             : 'apache'   # apache|nginx
 	server_tuning      : false      # true|false
-	
+
 	# fastcgi is possible only server 'nginx'
 	fastcgi            : 'php-fpm'  # php-fpm|hhvm
-	
+
 	database           : 'mysql'    # mysql|mariadb|percona
 	db_root_password   : 'admin'
-	
+
 	db_host            : 'localhost'
 	db_name            : 'wordpress'
 	db_user            : 'admin'
 	db_password        : 'admin'
 	db_prefix          : 'wp_'
-	
+
 	## WordPress Settings ##
-	
+
 	title              : 'VAW (Vagrant Ansible WordPress)'
 	admin_user         : 'admin'
 	admin_password     : 'admin'
 	admin_email        : 'hoge@example.com'
-	
+
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	version            : 'latest'
-	
+
 	# e.g. en_US, ja
 	# see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
 	lang               : 'en_US'
-	
+
 	# in own directory or subdirectory install.
 	# see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
 	wp_dir             : ''   #e.g. /wordpress
 	wp_site_path       : ''   #e.g. /wordpress
-	
+
 	multisite          : false   # true|false
 	ssl_admin          : false   # true|false
-	
+
 	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
 	activate_theme     : ''
 	# themes             :
 	#                         - yoko
 	#                         - Responsive
-	
+
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
 	                        - theme-check
@@ -201,43 +201,43 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
-	
+
 	# theme_mod          :
 	#                        background_color: 'cccccc'
-	
+
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
 	# options            :
 	#                        blogname: 'blog title'
 	#                        blogdescription: 'blog description'
-	
+
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
 	permalink_structure  :
 	                      structure   : ''
 	                      category    : ''
 	                      tag         : ''
-	
+
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
 	theme_unit_test    : false   # true|false
-	
+
 	replace_old_url         : ''   # to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
-	
+
 	## Develop & Deploy Settings ##
-	
+
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
-	
+
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
-	
+
 	## That's all, stop setting. Let's vagrant up!! ##
-	
+
 	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
-	
+
 	WP_CLI             : '/usr/local/bin/wp'
 
 
@@ -465,6 +465,7 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [PHPUnit](https://phpunit.de)
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
+* [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 
 ### Deploy Tools (Activatable)
 

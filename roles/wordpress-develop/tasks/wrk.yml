@@ -1,0 +1,12 @@
+---
+- name: git checkout wrk
+  git: repo=https://github.com/wg/wrk.git dest=/home/vagrant/wrk force=yes
+  sudo: yes
+- name: make wrk
+  command: make chdir=/home/vagrant/wrk
+  sudo: yes
+- name: make wrk
+  copy: src=/home/vagrant/wrk/wrk dest=/usr/local/bin mode=755
+  sudo: yes
+- name: delete wrk dir
+  file: path=/home/vagrant/wrk state=absent
