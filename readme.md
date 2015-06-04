@@ -552,17 +552,26 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.5 - 2015.06.04
+	* add Fabric
+	* add wrk
+	* add command db_backup.sh
+	* nginx tuning
 * version 0.1.4 - 2015.04.29
+	* fix Ansible 1.9.x
 * version 0.1.3 - 2015.02.17
+	* fix fastcgi_spec.rb
 * version 0.1.2 - 2015.01.31
+	* change how to set the environment variables to .bash_profile
+	* fix Vagrantfile
 * version 0.1.1 - 2015.01.14
 	* change setting format
 	* fix yum repository metadata
 	* add WordPress options
- 	* add sass and compass gems
- 	* fix wp-cli role
+	* add sass and compass gems
+	* fix wp-cli role
 * version 0.1.0 - 2014.12.22
- 	* initial release
+	* initial release
 
 ## License
 
