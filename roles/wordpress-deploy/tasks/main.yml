@@ -4,6 +4,8 @@
   with_items:
     - sshpass
     - lftp
+    - python-setuptools
+    - python-pip
 
 - name: gem libraries installed
   command: sudo -u vagrant -i -- gem install {{ item }}
@@ -18,3 +20,10 @@
     - double-bag-ftps
     - dandelion
     - wordmove
+
+- name: pycrypto ininstalled
+  pip: name=pycrypto state=absent
+  ignore_errors: yes
+
+- name: fabric installed
+  pip: name=fabric state=latest
