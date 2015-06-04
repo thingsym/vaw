@@ -152,51 +152,51 @@ Provisioning configuration file is **group_vars/all.yml**.
 In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.
 
 	## Server & Database Settings ##
-	
+
 	server             : 'apache'   # apache|nginx
 	server_tuning      : false      # true|false
-	
+
 	# fastcgi is possible only server 'nginx'
 	fastcgi            : 'php-fpm'  # php-fpm|hhvm
-	
+
 	database           : 'mysql'    # mysql|mariadb|percona
 	db_root_password   : 'admin'
-	
+
 	db_host            : 'localhost'
 	db_name            : 'wordpress'
 	db_user            : 'admin'
 	db_password        : 'admin'
 	db_prefix          : 'wp_'
-	
+
 	## WordPress Settings ##
-	
+
 	title              : 'VAW (Vagrant Ansible WordPress)'
 	admin_user         : 'admin'
 	admin_password     : 'admin'
 	admin_email        : 'hoge@example.com'
-	
+
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	version            : 'latest'
-	
+
 	# e.g. en_US, ja
 	# see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
 	lang               : 'en_US'
-	
+
 	# in own directory or subdirectory install.
 	# see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
 	wp_dir             : ''   #e.g. /wordpress
 	wp_site_path       : ''   #e.g. /wordpress
-	
+
 	multisite          : false   # true|false
 	ssl_admin          : false   # true|false
-	
+
 	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
 	activate_theme     : ''
 	# themes             :
 	#                         - yoko
 	#                         - Responsive
-	
+
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
 	                        - theme-check
@@ -209,43 +209,43 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
-	
+
 	# theme_mod          :
 	#                        background_color: 'cccccc'
-	
+
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
 	# options            :
 	#                        blogname: 'blog title'
 	#                        blogdescription: 'blog description'
-	
+
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
 	permalink_structure  :
 	                      structure   : ''
 	                      category    : ''
 	                      tag         : ''
-	
+
 	# Any one of three ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
 	theme_unit_test    : false   # true|false
-	
+
 	replace_old_url         : ''   # to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
-	
+
 	## Develop & Deploy Settings ##
-	
+
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
-	
+
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
-	
+
 	## That's all, stop setting. Let's vagrant up!! ##
-	
+
 	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
-	
+
 	WP_CLI             : '/usr/local/bin/wp'
 
 
@@ -485,6 +485,7 @@ You can build the environment in a short period of time compared with provisioni
 ### Deploy Tools (Activatable)
 
 * [Capistrano](http://capistranorb.com)
+* [Fabric](http://www.fabfile.org)
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
