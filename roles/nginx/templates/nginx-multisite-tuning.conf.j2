@@ -14,12 +14,14 @@ pid        /var/run/nginx.pid;
 
 events {
     worker_connections  1024;
+    accept_mutex_delay 100ms;
 }
 
 
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
+    charset UTF-8;
 
     log_format main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -28,9 +30,14 @@ http {
     access_log  /var/log/nginx/access.log main;
 
     sendfile        on;
-    #tcp_nopush     on;
+    tcp_nopush      on;
+    tcp_nodelay     on;
 
     keepalive_timeout  10;
+    client_header_timeout 10;
+    client_body_timeout 10;
+    reset_timedout_connection on;
+    send_timeout 10;
 
     gzip              on;
     gzip_http_version 1.0;
@@ -39,7 +46,12 @@ http {
     gzip_types        text/html text/plain text/css text/javascript application/x-javascript text/xml application/xhtml+xml application/xmlapplication/rss+xml application/atom_xml application/rdf+xml application/x-httpd-php;
     gzip_disable      "MSIE [1-6]\.";
 
-    proxy_cache_path  /var/cache/nginx levels=1:2 keys_zone=czone:32m max_size=256m inactive=1440m;
+    #open_file_cache max=100 inactive=20s;
+    #open_file_cache_valid 30s;
+    #open_file_cache_min_uses 2;
+    #open_file_cache_errors on;
+
+    proxy_cache_path  /var/cache/nginx levels=1:2 keys_zone=czone:32m max_size=32m inactive=7d;
     proxy_temp_path   /var/tmp/nginx;
     proxy_cache_key   "$scheme://$host$request_uri";
     proxy_set_header  Host               $host;

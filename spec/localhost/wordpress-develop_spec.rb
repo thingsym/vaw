@@ -76,4 +76,9 @@ if property["develop_tools"] then
     it { should be_file }
   end
 
+  describe file('/usr/local/bin/wrk') do
+    it { should be_file }
+    it { should be_executable }
+  end
+
 end
