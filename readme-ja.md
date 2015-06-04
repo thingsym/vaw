@@ -470,6 +470,7 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 ### Deploy Tools (Activatable)
 
 * [Capistrano](http://capistranorb.com)
+* [Fabric](http://www.fabfile.org)
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 

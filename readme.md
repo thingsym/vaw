@@ -486,6 +486,7 @@ You can build the environment in a short period of time compared with provisioni
 ### Deploy Tools (Activatable)
 
 * [Capistrano](http://capistranorb.com)
+* [Fabric](http://www.fabfile.org)
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
