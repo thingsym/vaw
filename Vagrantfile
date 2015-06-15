@@ -4,7 +4,8 @@
 ## Vagrant Settings ##
 
 vm_box                = 'vaw/default'
-#vm_box                = 'vaw/full'
+# vm_box                = 'vaw/full'
+vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
 vm_document_root      = '/var/www/html'
@@ -26,6 +27,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = vm_box
+  config.vm.box_version = vm_box_version
 
   config.vm.network :private_network, ip: vm_ip
   config.vm.hostname = vm_hostname
