@@ -544,6 +544,8 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.6 - 2015.06.15
+	* add vm_box_version
 * version 0.1.5 - 2015.06.04
 	* add Fabric
 	* add wrk
