@@ -127,12 +127,14 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	## Vagrant Settings ##
 	vm_box                = 'vaw/default'
+	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
 	vm_document_root      = '/var/www/html'
 
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/default`)
+* `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
