@@ -134,12 +134,14 @@ If you launch multiple environments, change the name of the directory. Should re
 
 	## Vagrant Settings ##
 	vm_box                = 'vaw/default'
+	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
 	vm_document_root      = '/var/www/html'
 
 
 * `vm_box` (required) name of Vagrant Box (default: `vaw/default`)
+* `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
@@ -552,6 +554,8 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.6 - 2015.06.15
+	* add vm_box_version
 * version 0.1.5 - 2015.06.04
 	* add Fabric
 	* add wrk

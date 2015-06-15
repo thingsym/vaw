@@ -21,7 +21,7 @@
     - dandelion
     - wordmove
 
-- name: pycrypto ininstalled
+- name: pycrypto uninstalled
   pip: name=pycrypto state=absent
   ignore_errors: yes
 
