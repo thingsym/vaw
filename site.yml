@@ -1,5 +1,5 @@
 ---
-- name: "VAW (Vagrant Ansible WordPress) v0.1.6"
+- name: "VAW (Vagrant Ansible WordPress) v0.1.7"
   hosts: localhost
   user: vagrant
   sudo: yes

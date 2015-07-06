@@ -132,12 +132,16 @@ Vagrantfile will set the vagrant Box, private IP address, hostname and the docum
 
 If you launch multiple environments, change the name of the directory. Should rewrite `vm_ip` and` vm_hostname`. Note not to overlap with other environments.
 
+You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
+
 	## Vagrant Settings ##
 	vm_box                = 'vaw/default'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
 	vm_document_root      = '/var/www/html'
+
+	public_ip             = ''
 
 
 * `vm_box` (required) name of Vagrant Box (default: `vaw/default`)
@@ -146,6 +150,7 @@ If you launch multiple environments, change the name of the directory. Should re
 * `vm_hostname` (required) hostname (default: `vaw.local`)
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
 	* auto create `wordpress` directory and synchronized
+* `public_ip` IP address of bridged connection (default: ``)
 
 ### Provisioning configuration file (YAML)
 
@@ -554,6 +559,8 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.7 - 2015.07.06
+	* add public_network
 * version 0.1.6 - 2015.06.15
 	* add vm_box_version
 * version 0.1.5 - 2015.06.04
