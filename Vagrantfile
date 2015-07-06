@@ -10,6 +10,8 @@ vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
 vm_document_root      = '/var/www/html'
 
+public_ip             = ''
+
 ## That's all, stop setting. ##
 
 provision = <<-EOT
@@ -31,6 +33,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network :private_network, ip: vm_ip
   config.vm.hostname = vm_hostname
+
+  if public_ip != ''
+    config.vm.network :public_network, ip: public_ip
+  end
 
   config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true'
 
