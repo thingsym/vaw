@@ -550,6 +550,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.8 - 2015.08.04
+	* fix WordPress plugins
+	* add PHPUnit Selenium
 * version 0.1.7 - 2015.07.06
 	* add public_network
 * version 0.1.6 - 2015.06.15
