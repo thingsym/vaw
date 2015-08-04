@@ -200,12 +200,12 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	activate_plugins   :
 	                        - theme-check
 	                        - plugin-check
-	                        - debogger
 	                        - log-deprecated-notices
 	                        - debug-bar
+	                        - query-monitor
+	                        - developer
 	                        - broken-link-checker
 	plugins            :
-	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
 
