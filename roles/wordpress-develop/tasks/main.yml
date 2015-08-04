@@ -27,3 +27,4 @@
 - include: wp-phpcs.yml
 - include: opcache.yml
 - include: wrk.yml
+- include: selenium.yml

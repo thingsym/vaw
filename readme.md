@@ -208,12 +208,12 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	activate_plugins   :
 	                        - theme-check
 	                        - plugin-check
-	                        - debogger
 	                        - log-deprecated-notices
 	                        - debug-bar
+	                        - query-monitor
+	                        - developer
 	                        - broken-link-checker
 	plugins            :
-	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
 
@@ -486,6 +486,7 @@ You can build the environment in a short period of time compared with provisioni
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
+* [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
@@ -559,6 +560,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.1.8 - 2015.08.04
+	* fix WordPress plugins
+	* add PHPUnit Selenium
 * version 0.1.7 - 2015.07.06
 	* add public_network
 * version 0.1.6 - 2015.06.15
