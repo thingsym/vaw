@@ -470,6 +470,7 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
+* [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
