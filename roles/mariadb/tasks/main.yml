@@ -58,3 +58,5 @@
      state: absent
      login_user: "root"
      login_password: "{{ db_root_password }}"
+
+- file: src=/var/lib/mysql/mysql.sock dest=/tmp/mysql.sock state=link
