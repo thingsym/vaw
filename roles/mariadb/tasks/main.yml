@@ -4,8 +4,6 @@
 - name: MariaDB.repo changed
   template: src=centos6-MariaDB.repo.j2 dest=/etc/yum.repos.d/MariaDB.repo
 
-- name: MariaDB repository installed
-  yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
 - name: MariaDB installed
   yum: name={{ item }} state=latest
   with_items:
