@@ -1,0 +1,152 @@
+require 'spec_helper'
+
+describe file('/home/vagrant/.phpenv/') do
+  it { should be_directory }
+  it { should be_mode 755 }
+  it { should be_owned_by 'vagrant' }
+  it { should be_grouped_into 'vagrant' }
+end
+
+describe command('phpenv global') do
+  let(:disable_sudo) { true }
+  let(:path) { '~/.phpenv/bin' }
+  its(:stdout) { should match /#{property["php_version"]}/ }
+end
+
+describe file('/home/vagrant/.bash_profile') do
+  its(:content) { should match /export PATH=\$HOME\/\.phpenv\/bin:\$PATH/ }
+  its(:content) { should match /eval "\$\(phpenv init \-\)"/ }
+end
+
+describe file('/home/vagrant/.phpenv/plugins/php-build') do
+  it { should be_directory }
+end
+
+if property["server"] == 'apache' then
+
+  describe file('/home/vagrant/.phpenv/plugins/phpenv-apache-version') do
+    it { should be_directory }
+  end
+
+  describe file('/etc/httpd/conf.d/php.conf') do
+    it { should be_file }
+  end
+
+end
+
+describe file('/home/vagrant/.phpenv/plugins/php-build/share/php-build/default_configure_options') do
+  it { should be_file }
+end
+
+describe file('/var/log/php.log') do
+  it { should be_file }
+  it { should be_mode 666 }
+end
+
+describe command('php -v | grep PHP') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match /#{property["php_version"]}/ }
+end
+
+describe 'PHP config parameters' do
+  context php_config('memory_limit') do
+    its(:value) { should eq '128M' }
+  end
+
+  context php_config('error_reporting') do
+    its(:value) { should eq 32767 }
+  end
+
+  context php_config('display_errors') do
+    its(:value) { should eq 1 }
+  end
+
+  context php_config('post_max_size') do
+    its(:value) { should eq '36M' }
+  end
+
+  context php_config('upload_max_filesize') do
+    its(:value) { should eq '36M' }
+  end
+
+  context  php_config('default_charset') do
+    its(:value) { should eq 'UTF-8' }
+  end
+
+  context  php_config('mbstring.language') do
+    its(:value) { should eq 'neutral' }
+  end
+
+  context  php_config('mbstring.internal_encoding') do
+    its(:value) { should eq 'UTF-8' }
+  end
+
+  context php_config('date.timezone') do
+    its(:value) { should eq 'UTC' }
+  end
+
+  context php_config('session.save_path') do
+    its(:value) { should eq '/tmp' }
+  end
+
+  context php_config('default_mimetype') do
+    its(:value) { should match /text\/html/ }
+  end
+
+end
+
+describe package('patch') do
+  it { should be_installed }
+end
+
+describe package('libxml2-devel') do
+  it { should be_installed }
+end
+
+describe package('bison') do
+  it { should be_installed }
+end
+
+describe package('bison-devel') do
+  it { should be_installed }
+end
+
+describe package('re2c') do
+  it { should be_installed }
+end
+
+describe package('openssl-devel') do
+  it { should be_installed }
+end
+
+describe package('curl') do
+  it { should be_installed }
+end
+
+# describe package('curl-devel') do
+#   it { should be_installed }
+# end
+
+# describe package('libjpeg-devel') do
+#   it { should be_installed }
+# end
+
+describe package('libpng-devel') do
+  it { should be_installed }
+end
+
+describe package('libmcrypt-devel') do
+  it { should be_installed }
+end
+
+describe package('readline-devel') do
+  it { should be_installed }
+end
+
+describe package('libtidy-devel') do
+  it { should be_installed }
+end
+
+describe package('libxslt-devel') do
+  it { should be_installed }
+end
