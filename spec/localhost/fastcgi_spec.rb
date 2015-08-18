@@ -4,8 +4,32 @@ if property["server"] == 'nginx' then
 
   if property["fastcgi"] == 'php-fpm' then
 
-    describe package('php55u-fpm') do
-      it { should be_installed }
+    describe file('/var/run/php-fpm') do
+      it { should be_directory }
+      it { should be_owned_by 'nginx' }
+      it { should be_grouped_into 'nginx' }
+    end
+
+    describe file('/var/log/php-fpm') do
+      it { should be_directory }
+      it { should be_owned_by 'nobody' }
+      it { should be_grouped_into 'nobody' }
+    end
+
+    describe file('/usr/sbin/php-fpm') do
+      it { should be_file }
+      it { should be_mode 755 }
+    end
+
+    describe file('/etc/init.d/php-fpm') do
+      it { should be_file }
+      it { should be_mode 755 }
+    end
+
+    describe command('php-fpm -v') do
+      let(:disable_sudo) { true }
+      let(:path) { '/usr/sbin' }
+      its(:exit_status) { should eq 0 }
     end
 
     describe service('php-fpm') do
