@@ -6,7 +6,7 @@
   yum: name={{ item }}
   with_items:
     - hhvm
-    - hiphop-php
+    # - hiphop-php
     - supervisor
 
 - name: server.ini changed
