@@ -53,9 +53,9 @@ activate_plugins   :
                         - log-deprecated-notices
                         - debug-bar
                         - query-monitor
-                        - developer
                         - broken-link-checker
 plugins            :
+                        - developer
                         - monster-widget
                         - wordpress-beta-tester
 
