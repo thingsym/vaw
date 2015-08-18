@@ -11,13 +11,12 @@
     - { role: mysql, tags: [mysql], when: "database == 'mysql'" }
     - { role: mariadb, tags: [mariadb], when: "database == 'mariadb'" }
     - { role: percona, tags: [percona], when: "database == 'percona'" }
-    - { role: php55, tags: [php55] }
-    - { role: composer, tags: [composer] }
     - { role: openssl, tags: [openssl], when: "ssl_admin == true or (server == 'apache' and server_tuning == true)" }
     - { role: apache, tags: [apache], when: "server == 'apache'" }
     - { role: nginx, tags: [nginx], when: "server == 'nginx'" }
-    - { role: php-fpm, tags: [php-fpm], when: "server == 'nginx' and fastcgi == 'php-fpm'" }
+    - { role: phpenv, tags: [phpenv] }
     - { role: hhvm, tags: [hhvm], when: "server == 'nginx' and fastcgi == 'hhvm'" }
+    - { role: composer, tags: [composer] }
     - { role: wp-cli, tags: [wp-cli] }
     - { role: wordpress, tags: [wordpress] }
     - { role: rbenv, tags: [rbenv], when: "develop_tools == true or deploy_tools == true" }
