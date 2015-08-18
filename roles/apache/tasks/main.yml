@@ -1,6 +1,9 @@
 ---
 - name: httpd installed
-  yum: name=httpd state=latest
+  yum: name={{ item }} state=latest
+  with_items:
+      - httpd
+      - httpd-devel
 
 - name: httpd.conf changed
   template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf

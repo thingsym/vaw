@@ -6,6 +6,10 @@ if property["server"] == 'apache' then
     it { should be_installed }
   end
 
+  describe package('httpd-devel') do
+    it { should be_installed }
+  end
+
   describe service('httpd') do
     it { should be_enabled }
     it { should be_running }
