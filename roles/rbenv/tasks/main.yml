@@ -34,10 +34,9 @@
     - readline-devel
     - zlib-devel
 
-- name: ruby 2.1.4 installed by rbenv
-  command: sudo -u vagrant -i -- rbenv install 2.1.4
+- name: ruby installed by rbenv
+  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.1.4) }}
   ignore_errors: yes
 
 - command: sudo -u vagrant -i -- rbenv rehash
-- command: sudo -u vagrant -i -- rbenv global 2.1.4
-
+- command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.1.4) }}
