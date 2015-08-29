@@ -12,7 +12,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 サーバは、**Apache**、**nginx** から、データベースは、**MySQL**、**MariaDB**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
 
-サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM**（FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
+サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM**(FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
 
 サーバは基本、素の設定でインストールされますが、キャッシュの有効化や mod-pagespeed など別途チューニング済みの設定でのインストールも可能。(随時チューニング中...)
 
@@ -176,6 +176,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
+	# 3.5.2 or later to work properly
 	version            : 'latest'
 
 	# e.g. en_US, ja
@@ -203,9 +204,9 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - log-deprecated-notices
 	                        - debug-bar
 	                        - query-monitor
-	                        - developer
 	                        - broken-link-checker
 	plugins            :
+	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
 
@@ -236,6 +237,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
+
+	php_version        : 5.6.12
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -271,6 +274,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `version` (required) WordPress 本体のバージョン (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
 	* [Release Archive](https://wordpress.org/download/release-archive/) を参照
+	* バージョン 3.5.2 以降で正常に動作します
 
 * `lang` (required) WordPress 本体の言語 (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
@@ -285,11 +289,11 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `multisite` マルチサイトの有効化 (default: `false` / value: `true` | `false`)
 * `ssl_admin` 管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
 * `activate_theme` テーマをインストール・有効化 (default: default theme)
- 	* デフォルトテーマ `''`, `theme slug`, `zip file URL`,  `local zip file path` から設定
+	* デフォルトテーマ `''`, `theme slug`, `zip file URL`,  `local zip file path` から設定
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
 	* 自動的に有効化します
 * `themes` テーマをインストール (複数可)
- 	* YAML 形式のハッシュの配列書式で設定 `theme slug`, `zip file URL`, `local zip file path`
+	* YAML 形式のハッシュの配列書式で設定 `theme slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
 	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
@@ -306,7 +310,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	#                      - Responsive
 
 * `activate_plugins` プラグインのインストール・有効化 (複数可)
- 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
+	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
 	* 自動的に有効化します
 	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
@@ -324,7 +328,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	#                         - plugin-check
 
 * `plugins` プラグインのインストール
- 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
+	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
 	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
 	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 * `theme_mod` theme_mod (theme modification value) の設定
@@ -379,6 +383,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
+* `php_version` PHPバージョン (default: 5.6.12)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
 
@@ -390,6 +395,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 
 ### Full Layout
 
+* backup (バックアップファイルを格納。無い場合、バックアップスクリプト起動時に自動作成)
 * command (シェルスクリプトを格納)
 * group_vars (Ansible のプロビジョニング設定ファイルを格納)
 	* all.yml (プロビジョニング設定ファイル)
@@ -440,7 +446,7 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 
 ### FastCGI (Selectable, Only nginx)
 
-* [PHP-FPM](http://php-fpm.org)（FastCGI Process Manager)
+* [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
 * [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
@@ -452,7 +458,9 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 ### Pre-installing
 
 * [WordPress](https://wordpress.org)
-* [PHP](http://php.net) ver.5.5 (Zend OPcache, APCu)
+* [phpenv](https://github.com/CHH/phpenv)
+* [php-build](https://php-build.github.io)
+* [PHP](https://secure.php.net) ver.5.6.12 (Zend OPcache, APCu)
 * [OpenSSL](https://www.openssl.org) (Selectable)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org)
@@ -488,6 +496,11 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [ruby-build](https://github.com/sstephenson/ruby-build)
 * [Ruby](https://www.ruby-lang.org/) ver.2.1.4
 
+### Helper command
+
+* db_backup.sh
+* phpenv.sh
+
 ## Server Tuning Specification
 
 サーバのチューニング内容は以下の通り。随時チューニング中です。
@@ -504,6 +517,23 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [gzip](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
 * [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
 * [expires](http://nginx.org/en/docs/http/ngx_http_headers_module.html)
+
+## Helper command
+
+VAW には、便利なスクリプトを用意しています。ターミナル上でスクリプトを走らせるだけ。データベースのデータバックアップや PHP の複数バージョンインストール、実行環境の切り替えができます。
+
+### db_backup.sh
+
+データベースのデータをバックアップします。`backup` フォルダに `backup-%Y%m%d%H%M%S.sql` 形式で保存します。
+
+	cd /var/www/html
+	/vagrant/command/db_backup.sh
+
+### phpenv.sh
+
+指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
+
+	/vagrant/command/phpenv.sh 5.6.12
 
 ## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
 
