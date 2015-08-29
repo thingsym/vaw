@@ -44,29 +44,23 @@
 - name: build environment
   yum: name={{ item }} state=latest
   with_items:
-      - patch
-      - libxml2-devel
-      - bison
-      - bison-devel
-      - re2c
-      - openssl-devel
-      - curl
-      - curl-devel
-      - libjpeg-devel
-      - libpng-devel
-      - libmcrypt-devel
-      - readline-devel
-      - libtidy-devel
-      - libxslt-devel
+    - patch
+    - libxml2-devel
+    - bison
+    - bison-devel
+    - re2c
+    - openssl-devel
+    - curl
+    - curl-devel
+    - libjpeg-devel
+    - libpng-devel
+    - libmcrypt-devel
+    - readline-devel
+    - libtidy-devel
+    - libxslt-devel
 
 - name: set default_configure_options
   template: src=default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
-
-# - stat: path=/usr/lib64/httpd/modules
-#   register: modules_path
-
-# - file: path=/usr/lib64/httpd/modules owner=vagrant group=vagrant
-#   when: modules_path.stat.exists
 
 - stat: path=/usr/lib64/httpd/modules/libphp5.so
   register: libphp5_path
@@ -79,6 +73,9 @@
 
 - file: path=/usr/lib64/httpd/modules/libphp7.so owner=vagrant group=vagrant
   when: libphp7_path.stat.exists
+
+- name: touch php.log
+  file: path=/var/log/php.log state=touch mode=0666
 
 - name: mkdir /var/run/php-fpm
   file: path=/var/run/php-fpm state=directory owner=nginx group=nginx
@@ -95,42 +92,15 @@
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(5.6.12) }}
   when: not php_path.stat.exists
 
-- name: php.ini changed
-  template: src=php.ini.j2 dest={{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}/etc/php.ini
-
-- name: touch php.log
-  file: path=/var/log/php.log state=touch mode=0666
-
-- name: phpenv global by phpenv.sh
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(5.6.12) }}
-  when: not php_path.stat.exists
-
-- name: php-fpm added to /usr/sbin/
-  command: cp {{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}/sbin/php-fpm /usr/sbin/php-fpm
-  when: server == "nginx" and fastcgi == "php-fpm"
-
-- name: change mode php-fpm
-  file: dest=/usr/sbin/php-fpm mode=0755
-  when: server == "nginx" and fastcgi == "php-fpm"
-
-- name: php-fpm.conf added
-  command: cp /vagrant/roles/phpenv/templates/php-fpm.conf {{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}/etc/php-fpm.conf
-  when: server == "nginx" and fastcgi == "php-fpm"
-
-- name: init.d.php-fpm added to /etc/init.d/
-  command: cp /tmp/php-build/source/{{ php_version | default(5.6.12) }}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-  when: server == "nginx" and fastcgi == "php-fpm"
-
-- name: change mode php-fpm
-  file: dest=/etc/init.d/php-fpm mode=0755
-  when: server == "nginx" and fastcgi == "php-fpm"
+- stat: path=/etc/init.d/php-fpm
+  register: php_fpm
 
 - name: chkconfig php-fpm added
   command: chkconfig --add php-fpm
-  when: server == "nginx" and fastcgi == "php-fpm"
+  when: server == "nginx" and fastcgi == "php-fpm" and php_fpm.stat.exists
 
 - name: php-fpm start and enabled
   service: name=php-fpm state=restarted enabled=yes
-  when: server == "nginx" and fastcgi == "php-fpm"
+  when: server == "nginx" and fastcgi == "php-fpm" and php_fpm.stat.exists
 
 - file: src={{ phpenv_dir }}/shims/php dest=/usr/bin/php state=link force=yes
