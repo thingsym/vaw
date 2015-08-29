@@ -4,7 +4,7 @@
 
 Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
-**VAW** is also a collaboration tool. you can take advantage of collaboration tool that share the environment with development partners, designers and client.
+**VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and client.
 
 ## Features
 
@@ -12,7 +12,7 @@ Launch the development environment in Vagrant, you can build the website and ver
 
 **VAW** will build server from **Apache** or **nginx**, and build database from **MySQL**, **MariaDB** or **Percona MySQL**.
 
-Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM**（FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
+Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM**  (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
 
 By default, the server is installed in the default settings. Also can be installed in the tuned configuration.
 
@@ -22,7 +22,7 @@ You can validate on the server and database of various combinations.
 
 **VAW** will build a WordPress which has been processed in a variety of settings and data.
 
-You can verify the test/real data on WordPress. VAW will realize building of WordPress synchronized with the data and files in the production environment.
+You can verify the test data or real data on WordPress. VAW will realize building of WordPress synchronized with the data and files in the production environment.
 
 * Install specified version WordPress Core
 * Install WordPress Core in Your Language
@@ -184,6 +184,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
+	# 3.5.2 or later to work properly
 	version            : 'latest'
 
 	# e.g. en_US, ja
@@ -211,9 +212,9 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - log-deprecated-notices
 	                        - debug-bar
 	                        - query-monitor
-	                        - developer
 	                        - broken-link-checker
 	plugins            :
+	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
 
@@ -244,6 +245,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
+
+	php_version        : 5.6.12
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -279,7 +282,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `version` (required) version of WordPress (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
 	* see [Release Archive](https://wordpress.org/download/release-archive/)
-
+	* version 3.5.2 or later to work properly
 * `lang` (required) WordPress in your language (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
 	* see [wordpress-i18n list](http://svn.automattic.com/wordpress-i18n/)
@@ -293,10 +296,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `multisite` Multisite enabled flag (default: `false` / value: `true` | `false`)
 * `ssl_admin` administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `activate_theme` install a theme and activated (default: default theme)
- 	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
+	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
 * `themes` install themes
- 	* set in YAML arrays of hashes format `theme slug`, `zip file URL` or `local zip file path`
+	* set in YAML arrays of hashes format `theme slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
 	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
@@ -313,7 +316,7 @@ Disable the setting case
 	#                      - Responsive
 
 * `activate_plugins` install plagins and activated
- 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
+	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/plagins/~.zip` by local zip file path
 	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
@@ -330,7 +333,7 @@ Disable the setting case
 	#                         - plugin-check
 
 * `plugins` install plagins
- 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
+	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
 	* set `/vagrant/plagins/~.zip` by local zip file path
 	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
@@ -386,6 +389,7 @@ Disable the setting case
 
 * `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
+* `php_version` version of PHP (default: 5.6.12)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
 
@@ -402,6 +406,7 @@ You can create the same environment as the production environment, when you buil
 
 ### Full Layout
 
+* backup (stores backup file. create automatically at running script, if it does not exist.)
 * command (stores shell script)
 * group_vars (stores the provisioning configuration file of Ansible)
 	* all.yml (provisioning configuration file)
@@ -456,7 +461,7 @@ You can build the environment in a short period of time compared with provisioni
 
 ### FastCGI (Selectable, Only nginx)
 
-* [PHP-FPM](http://php-fpm.org)（FastCGI Process Manager)
+* [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
 * [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
@@ -468,7 +473,9 @@ You can build the environment in a short period of time compared with provisioni
 ### Pre-installing
 
 * [WordPress](https://wordpress.org)
-* [PHP](http://php.net) ver.5.5 (Zend OPcache, APCu)
+* [phpenv](https://github.com/CHH/phpenv)
+* [php-build](https://php-build.github.io)
+* [PHP](https://secure.php.net) ver.5.6.12 (Zend OPcache, APCu)
 * [OpenSSL](https://www.openssl.org) (Selectable)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org)
@@ -504,6 +511,11 @@ You can build the environment in a short period of time compared with provisioni
 * [ruby-build](https://github.com/sstephenson/ruby-build)
 * [Ruby](https://www.ruby-lang.org/) ver.2.1.4
 
+### Helper command
+
+* db_backup.sh
+* phpenv.sh
+
 ## Server Tuning Specification
 
 As follows server tuning. It is in any time tuning.
@@ -520,6 +532,24 @@ As follows server tuning. It is in any time tuning.
 * [gzip](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
 * [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
 * [expires](http://nginx.org/en/docs/http/ngx_http_headers_module.html)
+
+
+## Helper command
+
+**VAW** offers a useful scripts. Just run the script on a terminal. Database data backup, multiple versions installation of PHP, you can switch the execution environment.
+
+### db_backup.sh
+
+`db_backup.sh` will back up the database. Save at `backup-% Y% m% d% H% M% S.sql` format in the `backup` folder.
+
+	cd /var/www/html
+	/vagrant/command/db_backup.sh
+
+### phpenv.sh
+
+`phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
+
+	/vagrant/command/phpenv.sh 5.6.12
 
 ## Shortening of provisioning time by Vagrant plugin vagrant-cachier
 
