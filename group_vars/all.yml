@@ -26,6 +26,7 @@ admin_email        : 'hoge@example.com'
 
 # e.g. latest, 4.1, 4.1-beta1
 # see Release Archive - https://wordpress.org/download/release-archive/
+# 3.5.2 or later to work properly
 version            : 'latest'
 
 # e.g. en_US, ja, ...
@@ -53,9 +54,9 @@ activate_plugins   :
                         - log-deprecated-notices
                         - debug-bar
                         - query-monitor
-                        - developer
                         - broken-link-checker
 plugins            :
+                        - developer
                         - monster-widget
                         - wordpress-beta-tester
 
@@ -86,6 +87,8 @@ regenerate_thumbnails   : false   # true|false
 
 WP_DEBUG           : true   # true|false
 SAVEQUERIES        : true   # true|false
+
+php_version        : 5.6.12
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
