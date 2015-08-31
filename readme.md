@@ -590,6 +590,14 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.2.0 - 2015.08.31
+	* fix Fabric
+	* fix WordPress plugins
+	* fix rbenv and hhvm, MariaDB
+	* fix memory 1.5GB
+	* remove php55 and php-fpm roles
+	* add command phpenv.sh
+	* add phpenv, replaced from php
 * version 0.1.8 - 2015.08.04
 	* fix WordPress plugins
 	* add PHPUnit Selenium
