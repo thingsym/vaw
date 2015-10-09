@@ -22,6 +22,8 @@
     - grunt-init
     - gulp
     - bower
+    - stylestats
+    - plato
 
 - include: wp-i18n.yml
 - include: phpunit.yml
