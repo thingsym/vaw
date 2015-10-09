@@ -81,4 +81,12 @@ if property["develop_tools"] then
     it { should be_executable }
   end
 
+  describe command('plato --version') do
+   its(:exit_status) { should eq 0 }
+  end
+
+  describe command('stylestats --version') do
+   its(:exit_status) { should eq 0 }
+  end
+
 end
