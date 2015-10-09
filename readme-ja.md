@@ -582,6 +582,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.2.1 - 2015.10.09
+	* add stylestats
+	* add plato
 * version 0.2.0 - 2015.08.31
 	* fix Fabric
 	* fix WordPress plugins
