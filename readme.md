@@ -12,7 +12,7 @@ Launch the development environment in Vagrant, you can build the website and ver
 
 **VAW** will build server from **Apache** or **nginx**, and build database from **MySQL**, **MariaDB** or **Percona MySQL**.
 
-Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM**  (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
+Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
 
 By default, the server is installed in the default settings. Also can be installed in the tuned configuration.
 
@@ -497,6 +497,8 @@ You can build the environment in a short period of time compared with provisioni
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
+* [plato](https://github.com/es-analysis/plato)
+* [stylestats](https://github.com/t32k/stylestats)
 
 ### Deploy Tools (Activatable)
 
@@ -590,6 +592,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.2.1 - 2015.10.09
+	* add stylestats
+	* add plato
 * version 0.2.0 - 2015.08.31
 	* fix Fabric
 	* fix WordPress plugins

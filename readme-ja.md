@@ -12,7 +12,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 サーバは、**Apache**、**nginx** から、データベースは、**MySQL**、**MariaDB**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
 
-サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM**(FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
+サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM** (FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
 
 サーバは基本、素の設定でインストールされますが、キャッシュの有効化や mod-pagespeed など別途チューニング済みの設定でのインストールも可能。(随時チューニング中...)
 
@@ -482,6 +482,8 @@ VAW では、2つの Box を用意しています。デフォルト設定のプ�
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
+* [plato](https://github.com/es-analysis/plato)
+* [stylestats](https://github.com/t32k/stylestats)
 
 ### Deploy Tools (Activatable)
 
@@ -580,6 +582,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.2.1 - 2015.10.09
+	* add stylestats
+	* add plato
 * version 0.2.0 - 2015.08.31
 	* fix Fabric
 	* fix WordPress plugins
