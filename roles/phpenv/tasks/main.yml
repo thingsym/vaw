@@ -21,8 +21,14 @@
 - name: edit PATH phpenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.phpenv/bin:$PATH"
 
+- name: edit PATH phpenv init on .bashrc
+  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.phpenv/bin:$PATH"
+
 - name: edit phpenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="eval \"$(phpenv init -)\""
+
+- name: edit phpenv init on .bashrc
+  lineinfile: dest={{ bashrc }} line="eval \"$(phpenv init -)\""
 
 - name: git checkout php-build
   git: repo=https://github.com/CHH/php-build.git dest={{ phpenv_dir }}/plugins/php-build force=yes
