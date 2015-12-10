@@ -19,6 +19,10 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
+  describe file('/etc/httpd/conf.d/www.conf'), :if => os[:release] == '7' do
+    it { should be_file }
+  end
+
   if property["server_tuning"] then
 
     describe file('/var/tmp/cache') do

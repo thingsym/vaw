@@ -9,8 +9,12 @@ end
 
 describe command('phpenv global') do
   let(:disable_sudo) { true }
-  let(:path) { '~/.phpenv/bin' }
   its(:stdout) { should match /#{property["php_version"]}/ }
+end
+
+describe file('/home/vagrant/.bashrc') do
+  its(:content) { should match /export PATH=\$HOME\/\.phpenv\/bin:\$PATH/ }
+  its(:content) { should match /eval "\$\(phpenv init \-\)"/ }
 end
 
 describe file('/home/vagrant/.bash_profile') do

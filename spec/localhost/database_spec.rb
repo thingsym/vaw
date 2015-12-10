@@ -14,7 +14,11 @@ if property["database"] == 'mysql' then
     it { should be_enabled }
   end
 
-  describe service('mysql') do
+  describe service('mysql'), :if => os[:release] == '6' do
+    it { should be_running }
+  end
+
+  describe service('mysqld'), :if => os[:release] == '7' do
     it { should be_running }
   end
 
@@ -43,7 +47,12 @@ elsif property["database"] == 'percona' then
     it { should be_installed }
   end
 
-  describe service('mysql') do
+  describe service('mysql'), :if => os[:release] == '6' do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe service('mysqld'), :if => os[:release] == '7' do
     it { should be_enabled }
     it { should be_running }
   end
@@ -57,4 +66,3 @@ end
 describe port(3306) do
   it { should be_listening }
 end
-
