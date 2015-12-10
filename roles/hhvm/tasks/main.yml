@@ -1,22 +1,39 @@
 ---
-- name: hop5.repo changed
+- name: hop5.repo changed (CentOS/RHEL 6)
   template: src=hop5.repo.j2 dest=/etc/yum.repos.d/hop5.repo
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
-- name: hhvm 3.2.0 installed
-  yum: name={{ item }}
-  with_items:
-    - hhvm
-    # - hiphop-php
-    - supervisor
+- name: gleez repository installed (CentOS/RHEL 7)
+  yum: name=http://yum.gleez.com/6/x86_64/gleez-repo-6-0.el6.noarch.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: gleez.repo edited (CentOS/RHEL 7)
+  replace: dest=/etc/yum.repos.d/gleez.repo regexp="6" replace="7"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: hhvm installed
+  yum: name=hhvm disable_gpg_check=yes
 
 - name: server.ini changed
   template: src=server.ini.j2 dest=/etc/hhvm/server.ini
 
-- name: src=supervisord.conf changed
-  template: src=supervisord.conf.j2 dest=/etc/supervisord.conf
+- name: hhvm.service added
+  template: src=hhvm.service.j2 dest=/usr/lib/systemd/system/hhvm.service
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: init.d added
+  template: src=init.d.hhvm.j2 dest=/etc/init.d/hhvm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: systemd daemon reloaded
+  command: systemctl daemon-reload
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: mkdir /var/run/hhvm
   file: path=/var/run/hhvm state=directory owner=vagrant group=vagrant
 
-- name: supervisord started and enabled
-  service: name=supervisord state=restarted enabled=yes
+- name: mkdir /var/log/hhvm/
+  file: path=/var/log/hhvm/ state=directory
+
+- name: hhvm started and enabled
+  service: name=hhvm state=restarted enabled=yes
