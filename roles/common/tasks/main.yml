@@ -10,7 +10,6 @@
 - fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
   when: getenforce.stdout == 'Enforcing' or getenforce.stdout == 'Permissive'
 
-
 - name: iptables stoped and disabled
   service: name=iptables state=stopped enabled=no
 
@@ -31,13 +30,18 @@
   command: swapon /swapfile
   ignore_errors: yes
 
-- name: IUS repository installed
-  yum: name=http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/x86_64/ius-release-1.0-11.ius.centos6.noarch.rpm
-
 - name: edit PATH on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
 - name: edit PATH on .bashrc
   lineinfile: dest={{ bashrc }} line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+
+- name: include task (CentOS/RHEL 6)
+  include: centos6.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: include task (CentOS/RHEL 7)
+  include: centos7.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - include: reset.yml

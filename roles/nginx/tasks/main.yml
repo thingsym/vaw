@@ -1,12 +1,19 @@
 ---
-- name: nginx repository installed
+- name: nginx repository installed (CentOS/RHEL 6)
   yum: name=http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: nginx repository installed (CentOS/RHEL 7)
+  yum: name=http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
 - name: nginx installed
   yum: name=nginx
 
 - name: nginx.conf changed
   template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
   when: server_tuning == false and multisite == false
+
 - name: nginx.conf changed (multisite)
   template: src=nginx-multisite.conf.j2 dest=/etc/nginx/nginx.conf
   when: server_tuning == false and multisite == true
@@ -14,6 +21,7 @@
 - name: wordpress.conf changed
   template: src=wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
   when: server_tuning == false
+
 - name: wordpress-multisite.conf changed
   template: src=wordpress-multisite.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite.conf
   when: server_tuning == false
@@ -21,6 +29,7 @@
 - name: nginx.conf changed (server_tuning)
   template: src=nginx-tuning.conf.j2 dest=/etc/nginx/nginx.conf
   when: server_tuning == true and multisite == false
+
 - name: nginx.conf changed (server_tuning and multisite)
   template: src=nginx-multisite-tuning.conf.j2 dest=/etc/nginx/nginx.conf
   when: server_tuning == true and multisite == true
@@ -28,6 +37,7 @@
 - name: wordpress-tuning.conf changed (server_tuning)
   template: src=wordpress-tuning.conf.j2 dest=/etc/nginx/conf.d/wordpress-tuning.conf
   when: server_tuning == true
+
 - name: wordpress-multisite-tuning.conf changed (server_tuning)
   template: src=wordpress-multisite-tuning.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite-tuning.conf
   when: server_tuning == true

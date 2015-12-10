@@ -1,0 +1,16 @@
+---
+- name: httpd.conf changed
+  template: src=httpd.conf.centos7.j2 dest=/etc/httpd/conf/httpd.conf
+  when: server_tuning == false
+
+- name: httpd.conf changed (server_tuning)
+  template: src=httpd-tuning.conf.centos7.j2 dest=/etc/httpd/conf/httpd.conf
+  when: server_tuning == true
+
+- name: www.conf changed
+  template: src=www.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
+  when: server_tuning == false
+
+- name: www.conf changed (server_tuning)
+  template: src=www-tuning.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
+  when: server_tuning == true

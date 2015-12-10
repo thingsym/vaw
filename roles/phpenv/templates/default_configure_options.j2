@@ -1,5 +1,8 @@
-{% if server == "apache" %}
+{% if server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 %}
 --with-apxs2=/usr/sbin/apxs
+{% endif %}
+{% if server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 %}
+--with-apxs2=/usr/bin/apxs
 {% endif %}
 --enable-fpm
 --without-pear

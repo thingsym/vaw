@@ -1,0 +1,27 @@
+---
+- name: build environment
+  yum: name={{ item }} state=latest
+  with_items:
+    - patch
+    - libxml2-devel
+    - bison
+    - bison-devel
+    - openssl-devel
+    - curl
+    - curl-devel
+    - libjpeg-devel
+    - libpng-devel
+    - libmcrypt-devel
+    - readline-devel
+    - libtidy-devel
+    - libxslt-devel
+
+- name: build environment (CentOS/RHEL 6)
+  yum: name={{ item }} state=latest
+  with_items:
+    - re2c
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: build environment (CentOS/RHEL 7)
+  yum: name=http://pkgs.repoforge.org/re2c/re2c-0.13.5-1.el6.rf.x86_64.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7

@@ -1,19 +1,38 @@
 ---
 - name: PGP key installed
   rpm_key: state=present key=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-- name: MariaDB.repo changed
-  template: src=centos6-MariaDB.repo.j2 dest=/etc/yum.repos.d/MariaDB.repo
 
-- name: MariaDB installed
+- name: MariaDB repository installed (CentOS/RHEL 6)
+  template: src=MariaDB-centos6.repo.j2 dest=/etc/yum.repos.d/MariaDB.repo
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: MariaDB repository installed (CentOS/RHEL 7)
+  template: src=MariaDB-centos7.repo.j2 dest=/etc/yum.repos.d/MariaDB.repo
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: MariaDB installed (CentOS/RHEL 6)
   yum: name={{ item }} state=latest
   with_items:
+    - MariaDB-client
     - MariaDB-common
     - MariaDB-compat
     - MariaDB-server
-    - MariaDB-client
     - MariaDB-devel
     - MariaDB-shared
     - MySQL-python
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: MariaDB installed (CentOS/RHEL 7)
+  yum: name={{ item }} state=latest
+  with_items:
+    - mariadb
+    - mariadb-server
+    - mariadb-devel
+    - mariadb-libs
+    - mariadb-embedded
+    - MySQL-python
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
 - name: my.cnf changed
   template: src=my.cnf.j2 dest=/etc/my.cnf
 - name: mysqld started and enabled
