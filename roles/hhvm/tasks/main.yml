@@ -3,31 +3,36 @@
   template: src=hop5.repo.j2 dest=/etc/yum.repos.d/hop5.repo
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
-- name: gleez repository installed (CentOS/RHEL 7)
-  yum: name=http://yum.gleez.com/6/x86_64/gleez-repo-6-0.el6.noarch.rpm
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
-
-- name: gleez.repo edited (CentOS/RHEL 7)
-  replace: dest=/etc/yum.repos.d/gleez.repo regexp="6" replace="7"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
-
-- name: hhvm installed
-  yum: name=hhvm disable_gpg_check=yes
-
-- name: server.ini changed
-  template: src=server.ini.j2 dest=/etc/hhvm/server.ini
-
-- name: hhvm.service added
-  template: src=hhvm.service.j2 dest=/usr/lib/systemd/system/hhvm.service
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+- name: hhvm installed (CentOS/RHEL 6)
+  yum: name=hhvm enablerepo=hop5
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - name: init.d added
   template: src=init.d.hhvm.j2 dest=/etc/init.d/hhvm
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
+- name: gleez repository installed (CentOS/RHEL 7)
+  yum: name=http://yum.gleez.com/6/x86_64/gleez-repo-6-0.el6.noarch.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: gleez.repo edited
+  replace: dest=/etc/yum.repos.d/gleez.repo regexp='enabled=1' replace="enabled=0"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: hhvm installed (CentOS/RHEL 7)
+  yum: name=hhvm enablerepo=gleez disable_gpg_check=yes
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: hhvm.service added
+  template: src=hhvm.service.j2 dest=/usr/lib/systemd/system/hhvm.service
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
 - name: systemd daemon reloaded
   command: systemctl daemon-reload
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: server.ini changed
+  template: src=server.ini.j2 dest=/etc/hhvm/server.ini
 
 - name: mkdir /var/run/hhvm
   file: path=/var/run/hhvm state=directory owner=vagrant group=vagrant
