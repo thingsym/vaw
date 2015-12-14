@@ -21,8 +21,14 @@
 
 - name: my.cnf changed
   template: src=my.cnf.j2 dest=/etc/my.cnf
-- name: mysql started and enabled
+
+- name: mysql started and enabled (CentOS/RHEL 6)
   service: name=mysql state=restarted enabled=yes
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: mysql started and enabled (CentOS/RHEL 7)
+  service: name=mysqld state=restarted enabled=yes
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: set percona root password
   mysql_user:
