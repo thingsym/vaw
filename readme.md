@@ -49,7 +49,7 @@ You can verify the test data or real data on WordPress. VAW will realize buildin
 
 ### 3. Develop & Deploy Tools
 
-Pre-installing Dependency Manager for PHP 'Composer', command-line tools for WordPress 'WP-CLI' and version control system 'Git' in the standard.
+Pre-installing PHP version managment 'phpenv', Dependency Manager for PHP 'Composer', command-line tools for WordPress 'WP-CLI' and version control system 'Git' in the standard.
 
 You can install the develop tools or the deploy tools by usage. See Specification for list of installed tools.
 
@@ -135,7 +135,7 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/default'
+	vm_box                = 'vaw/centos6-default'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -144,7 +144,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	public_ip             = ''
 
 
-* `vm_box` (required) name of Vagrant Box (default: `vaw/default`)
+* `vm_box` (required) name of Vagrant Box (default: `vaw/centos6-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
@@ -441,16 +441,24 @@ VAW will be built in the directory structure of the following minimum unit.
 
 ## Vagrant Box
 
-Vagrant Box is probably compatible with centos-6.x x86_64.
+Vagrant Box is probably compatible with centos-7.x x86_64 and centos-6.x x86_64.
 
-By default, the Vagrantfile uses the `vaw/default` Box which has already provisioned default settings.
+By default, the Vagrantfile uses the `vaw/centos*-default` Box which has already provisioned default settings.
 
-In addition, can use the `vaw/full` Box which has already provisioned default settings and activate develop and deploy tools.
+In addition, can use the `vaw/centos*-full` Box which has already provisioned default settings and activate develop and deploy tools.
 
 You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
 
-* [vaw/default](https://atlas.hashicorp.com/vaw/boxes/default)
-* [vaw/full](https://atlas.hashicorp.com/vaw/boxes/full)
+### CentOS 7
+
+* [vaw/centos7-default](https://atlas.hashicorp.com/vaw/boxes/centos7-default)
+* [vaw/centos7-full](https://atlas.hashicorp.com/vaw/boxes/centos7-full)
+
+### CentOS 6
+
+* [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
+* [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
+
 
 ## Specification
 
@@ -567,11 +575,11 @@ The cache is located in the host side, like this:
 
 Delete the cache, the following command by Box.
 
-	rm -rf $HOME/.vagrant.d/cache/vaw/default
+	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
 
 or,
 
-	rm -rf $HOME/.vagrant.d/cache/vaw/full
+	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
 
 The command notation of if you are using the other Box.
 
