@@ -600,6 +600,12 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.0 - 2015.12.21
+	* fix Vagrantfile
+	* fix wp-cli role, compatible with WordPress 4.4
+	* improve hhvm role
+	* improve command phpenv.sh
+	* support CentOS 7 x86-64
 * version 0.2.1 - 2015.10.09
 	* add stylestats
 	* add plato
