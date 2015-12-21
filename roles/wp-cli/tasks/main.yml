@@ -1,5 +1,5 @@
 ---
 - name: get wp-cli
-  get_url: url={{ wp_cli_phar_url }} dest={{ WP_CLI }} validate_certs=no mode=0755
+  get_url: url={{ wp_cli_phar_url }} dest={{ WP_CLI }} validate_certs=no mode=0755 force=yes
 
 - include: package.yml

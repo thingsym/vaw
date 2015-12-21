@@ -4,3 +4,6 @@
 
 - name: edit PATH composer on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"
+
+- name: edit PATH composer on .bashrc
+  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"

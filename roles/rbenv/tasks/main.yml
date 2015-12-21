@@ -9,8 +9,14 @@
 - name: edit PATH rbenv on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.rbenv/bin:$PATH"
 
+- name: edit PATH rbenv on .bashrc
+  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.rbenv/bin:$PATH"
+
 - name: edit rbenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="eval \"$(rbenv init -)\""
+
+- name: edit rbenv init on .bashrc
+  lineinfile: dest={{ bashrc }} line="eval \"$(rbenv init -)\""
 
 - name: git checkout ruby-build
   git: repo=https://github.com/sstephenson/ruby-build.git dest=/home/vagrant/.rbenv/plugins/ruby-build force=yes

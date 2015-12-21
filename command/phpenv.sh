@@ -2,17 +2,17 @@
 # Usage: phpenv.sh <Version Number|list|versions|version>
 
 global() {
-    phpenv global $VERSION
+    phpenv global $PHP_VERSION
 
     if [[ $HTTPD_ACTIVE > 0 ]]; then
         sudo chown vagrant:vagrant /etc/httpd/conf.d/
 
-        if [[ $VERSION =~ ^5 ]]; then
+        if [[ $PHP_VERSION =~ ^5 ]]; then
             sed -i -e "s/^#LoadModule php5_module/LoadModule php5_module/" $HTTPD_PHP_CONF
             sed -i -e "s/^LoadModule php7_module/#LoadModule php7_module/" $HTTPD_PHP_CONF
             echo "[Info]: edit $HTTPD_PHP_CONF"
             sudo chown vagrant:vagrant /etc/httpd/modules/libphp5.so
-        elif [[ $VERSION =~ ^7 ]]; then
+        elif [[ $PHP_VERSION =~ ^7 ]]; then
             sed -i -e "s/^LoadModule php5_module/#LoadModule php5_module/" $HTTPD_PHP_CONF
             sed -i -e "s/^#LoadModule php7_module/LoadModule php7_module/" $HTTPD_PHP_CONF
             echo "[Info]: edit $HTTPD_PHP_CONF"
@@ -21,23 +21,44 @@ global() {
 
         sudo chown root:root /etc/httpd/conf.d/
 
-        phpenv apache-version $VERSION
+        phpenv apache-version $PHP_VERSION
     fi
 
     if [[ $PHP_FPM_ACTIVE > 0 ]]; then
-        sudo service php-fpm stop
+        if [[ $OS_VERSION =~ ^6 ]]; then
+            sudo service php-fpm stop
 
-        sudo cp /tmp/php-build/source/$VERSION/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-        echo "[Info]: add init.d.php-fpm to /etc/init.d/"
-        sudo chmod 755 /etc/init.d/php-fpm
+            if [[ -f /tmp/php-build/source/$PHP_VERSION/sapi/fpm/init.d.php-fpm ]]; then
+                sudo cp /tmp/php-build/source/$PHP_VERSION/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+                echo "[Info]: add init.d.php-fpm to /etc/init.d/"
+                sudo chmod 755 /etc/init.d/php-fpm
+            fi
 
-        sudo cp /home/vagrant/.phpenv/versions/$VERSION/sbin/php-fpm /usr/sbin/php-fpm
-        echo "[Info]: add php-fpm to /usr/sbin/"
-        sudo chmod 755 /usr/sbin/php-fpm
+            if [[ -f /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm ]]; then
+                sudo cp /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm /usr/sbin/php-fpm
+                echo "[Info]: add php-fpm to /usr/sbin/"
+                sudo chmod 755 /usr/sbin/php-fpm
+            fi
 
-        sudo service php-fpm start
+            sudo service php-fpm start
+        elif [[ $OS_VERSION =~ ^7 ]]; then
+            sudo systemctl stop php-fpm
+
+            if [[ -f $PHP_FPM_SERVICE ]]; then
+                sudo cp $PHP_FPM_SERVICE /usr/lib/systemd/system/php-fpm.service
+                echo "[Info]: add php-fpm.service to /usr/lib/systemd/system/"
+                sudo systemctl daemon-reload
+            fi
+
+            if [[ -f /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm ]]; then
+                sudo cp /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm /usr/sbin/php-fpm
+                echo "[Info]: add php-fpm to /usr/sbin/"
+                sudo chmod 755 /usr/sbin/php-fpm
+            fi
+
+            sudo systemctl start php-fpm
+        fi
     fi
-
 }
 
 install() {
@@ -45,15 +66,15 @@ install() {
         sudo chown vagrant:vagrant /etc/httpd/modules
     fi
 
-    phpenv install $VERSION /home/vagrant/.phpenv/versions/$VERSION
+    phpenv install $PHP_VERSION /home/vagrant/.phpenv/versions/$PHP_VERSION
 
     if [[ -d /etc/httpd/modules ]]; then
         if [[ -f /etc/httpd/modules/libphp5.so ]]; then
-            cp /etc/httpd/modules/libphp5.so /home/vagrant/.phpenv/versions/$VERSION/libphp5.so
+            cp /etc/httpd/modules/libphp5.so /home/vagrant/.phpenv/versions/$PHP_VERSION/libphp5.so
         fi
 
         if [[ -f /etc/httpd/modules/libphp7.so ]]; then
-            cp /etc/httpd/modules/libphp7.so /home/vagrant/.phpenv/versions/$VERSION/libphp7.so
+            cp /etc/httpd/modules/libphp7.so /home/vagrant/.phpenv/versions/$PHP_VERSION/libphp7.so
         fi
 
         sudo chown root:root /etc/httpd/modules
@@ -79,15 +100,56 @@ install() {
         echo "[Info]: edit $PHP_INI"
     fi
 
-    if [[ $PHP_FPM_ACTIVE == 0 ]]; then
-        if [[ -f /tmp/php-build/source/$VERSION/sapi/fpm/init.d.php-fpm ]]; then
-            sudo cp /tmp/php-build/source/$VERSION/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-            echo "[Info]: add init.d.php-fpm to /etc/init.d/"
-            sudo chmod 755 /etc/init.d/php-fpm
+    if [[ $OS_VERSION =~ ^6 ]]; then
+        if [[ $PHP_FPM_ACTIVE == 0 ]]; then
+            if [[ -f /tmp/php-build/source/$PHP_VERSION/sapi/fpm/init.d.php-fpm ]]; then
+                sudo cp /tmp/php-build/source/$PHP_VERSION/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+                echo "[Info]: add init.d.php-fpm to /etc/init.d/"
+                sudo chmod 755 /etc/init.d/php-fpm
+            fi
+        fi
+    elif [[ $OS_VERSION =~ ^7 ]]; then
+        if [[ -f /tmp/php-build/source/$PHP_VERSION/sapi/fpm/php-fpm.service ]]; then
+            sudo cp /tmp/php-build/source/$PHP_VERSION/sapi/fpm/php-fpm.service $PHP_FPM_SERVICE
+            sed -i -e "s/^PIDFile=\${prefix}\/var\/run\/php-fpm.pid/PIDFile=\/run\/php-fpm.pid/" $PHP_FPM_SERVICE
+            sed -i -e "s/^ExecStart=\${exec_prefix}\/sbin\/php-fpm --nodaemonize --fpm-config \${prefix}\/etc\/php-fpm.conf/ExecStart=\/usr\/sbin\/php-fpm --nodaemonize --fpm-config \/home\/vagrant\/.phpenv\/versions\/$PHP_VERSION\/etc\/php-fpm.conf/" $PHP_FPM_SERVICE
+            sed -i -e "8i EnvironmentFile=\/etc\/sysconfig\/php-fpm" $PHP_FPM_SERVICE
+            sed -i -e "11i PrivateTmp=true" $PHP_FPM_SERVICE
+            echo "[Info]: edit $PHP_FPM_SERVICE"
         fi
 
-        if [[ -f /home/vagrant/.phpenv/versions/$VERSION/sbin/php-fpm ]]; then
-            sudo cp /home/vagrant/.phpenv/versions/$VERSION/sbin/php-fpm /usr/sbin/php-fpm
+        if [[ ! -d /var/run/php-fpm ]]; then
+            sudo mkdir /var/run/php-fpm
+            sudo chmod 755 /var/run/php-fpm
+            HAS_NGINX_USER=`cat /etc/passwd | grep nginx | grep -v grep | wc -l`
+            if [[ $HAS_NGINX_USER > 0 ]]; then
+                sudo chown nginx:nginx /var/run/php-fpm
+            fi
+            echo "[Info]: add /var/run/php-fpm"
+        fi
+        if [[ ! -f /etc/sysconfig/php-fpm ]]; then
+            sudo touch /etc/sysconfig/php-fpm
+            sudo sh -c "echo '# Additional environment file for php-fpm' > /etc/sysconfig/php-fpm"
+            echo "[Info]: add /etc/sysconfig/php-fpm"
+        fi
+        if [[ ! -f /etc/tmpfiles.d/php-fpm.conf ]]; then
+            sudo touch /etc/tmpfiles.d/php-fpm.conf
+            sudo sh -c "echo 'd /var/run/php-fpm 0775 nginx nginx' > /etc/tmpfiles.d/php-fpm.conf"
+            echo "[Info]: add /etc/tmpfiles.d/php-fpm.conf"
+        fi
+
+        if [[ $PHP_FPM_ACTIVE == 0 ]]; then
+            if [[ -f $PHP_FPM_SERVICE ]]; then
+                sudo cp $PHP_FPM_SERVICE /usr/lib/systemd/system/php-fpm.service
+                echo "[Info]: add php-fpm.service to /usr/lib/systemd/system/"
+                sudo systemctl daemon-reload
+            fi
+        fi
+    fi
+
+    if [[ $PHP_FPM_ACTIVE == 0 ]]; then
+        if [[ -f /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm ]]; then
+            sudo cp /home/vagrant/.phpenv/versions/$PHP_VERSION/sbin/php-fpm /usr/sbin/php-fpm
             echo "[Info]: add php-fpm to /usr/sbin/"
             sudo chmod 755 /usr/sbin/php-fpm
         fi
@@ -127,8 +189,6 @@ install() {
     fi
 
     phpenv rehash
-
-    global
 }
 
 
@@ -138,15 +198,21 @@ if [[ $# != 1 ]]; then
     exit 1
 fi
 
-VERSION=$1
+PHP_VERSION=$1
+
+OS_VERSION=$(awk '{print $3}' /etc/*-release)
+if [[ $OS_VERSION =~ ^release ]]; then
+    OS_VERSION=$(awk '{print $4}' /etc/*-release)
+fi
 
 HTTPD_ACTIVE=`ps -ef | grep httpd | grep -v grep | wc -l`
 PHP_FPM_ACTIVE=`ps -ef | grep php-fpm | grep -v grep | wc -l`
 
 HTTPD_PHP_CONF="/etc/httpd/conf.d/php.conf"
-PHP_INI="/home/vagrant/.phpenv/versions/$VERSION/etc/php.ini"
-PHP_FPM_CONF="/home/vagrant/.phpenv/versions/$VERSION/etc/php-fpm.conf"
-PHP_FPM_WWW_CONF="/home/vagrant/.phpenv/versions/$VERSION/etc/php-fpm.d/www.conf"
+PHP_INI="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php.ini"
+PHP_FPM_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.conf"
+PHP_FPM_WWW_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.d/www.conf"
+PHP_FPM_SERVICE="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.service"
 
 if [[ $HTTPD_ACTIVE > 0 ]]; then
     if [[ ! -f "$HTTPD_PHP_CONF" ]]; then
@@ -156,25 +222,26 @@ if [[ $HTTPD_ACTIVE > 0 ]]; then
     fi
 fi
 
-if [[ $VERSION == 'version' ]]; then
+if [[ $PHP_VERSION == 'version' ]]; then
     phpenv version
     exit 0
 fi
 
-if [[ $VERSION == 'versions' ]]; then
+if [[ $PHP_VERSION == 'versions' ]]; then
     phpenv versions
     exit 0
 fi
 
-if [[ $VERSION == 'list' ]]; then
+if [[ $PHP_VERSION == 'list' ]]; then
     phpenv install
     exit 0
 fi
 
-if [[ -e /home/vagrant/.phpenv/versions/$VERSION ]]; then
+if [[ -e /home/vagrant/.phpenv/versions/$PHP_VERSION ]]; then
     global
 else
     install
+    global
 fi
 
 exit 0

@@ -4,6 +4,7 @@
   with_items:
     - sshpass
     - lftp
+    - python-devel
     - python-setuptools
     - python-pip
 

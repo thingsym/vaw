@@ -21,8 +21,14 @@
 - name: edit PATH phpenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.phpenv/bin:$PATH"
 
+- name: edit PATH phpenv init on .bashrc
+  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.phpenv/bin:$PATH"
+
 - name: edit phpenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="eval \"$(phpenv init -)\""
+
+- name: edit phpenv init on .bashrc
+  lineinfile: dest={{ bashrc }} line="eval \"$(phpenv init -)\""
 
 - name: git checkout php-build
   git: repo=https://github.com/CHH/php-build.git dest={{ phpenv_dir }}/plugins/php-build force=yes
@@ -41,23 +47,7 @@
   file: dest={{ phpenv_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
   sudo: yes
 
-- name: build environment
-  yum: name={{ item }} state=latest
-  with_items:
-    - patch
-    - libxml2-devel
-    - bison
-    - bison-devel
-    - re2c
-    - openssl-devel
-    - curl
-    - curl-devel
-    - libjpeg-devel
-    - libpng-devel
-    - libmcrypt-devel
-    - readline-devel
-    - libtidy-devel
-    - libxslt-devel
+- include: build-env.yml
 
 - name: set default_configure_options
   template: src=default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
@@ -77,14 +67,6 @@
 - name: touch php.log
   file: path=/var/log/php.log state=touch mode=0666
 
-- name: mkdir /var/run/php-fpm
-  file: path=/var/run/php-fpm state=directory owner=nginx group=nginx
-  when: server == "nginx" and fastcgi == "php-fpm"
-
-- name: mkdir /var/log/php-fpm
-  file: path=/var/log/php-fpm state=directory owner=nobody group=nobody
-  when: server == "nginx" and fastcgi == "php-fpm"
-
 - stat: path={{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}
   register: php_path
 
@@ -92,15 +74,6 @@
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(5.6.12) }}
   when: not php_path.stat.exists
 
-- stat: path=/etc/init.d/php-fpm
-  register: php_fpm
-
-- name: chkconfig php-fpm added
-  command: chkconfig --add php-fpm
-  when: server == "nginx" and fastcgi == "php-fpm" and php_fpm.stat.exists
-
-- name: php-fpm start and enabled
-  service: name=php-fpm state=restarted enabled=yes
-  when: server == "nginx" and fastcgi == "php-fpm" and php_fpm.stat.exists
+- include: php-fpm.yml
 
 - file: src={{ phpenv_dir }}/shims/php dest=/usr/bin/php state=link force=yes

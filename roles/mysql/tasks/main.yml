@@ -1,16 +1,26 @@
 ---
-- name: mysql repository installed
+- name: mysql repository installed (CentOS/RHEL 6)
   yum: name=https://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
-- name: mysql 6.5 installed
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: mysql repository installed (CentOS/RHEL 7)
+  yum: name=https://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+
+- name: mysql installed
   yum: name={{ item }} state=latest
   with_items:
-    - mysql
-    - mysql-devel
-    - mysql-server
+    - mysql-community-server
+    - mysql-community-devel
+    - mysql-community-client
+    - mysql-community-common
+    - mysql-community-libs
     - mysql-utilities
     - MySQL-python
+
 - name: my.cnf changed
   template: src=my.cnf.j2 dest=/etc/my.cnf
+
 - name: mysqld started and enabled
   service: name=mysqld state=restarted enabled=yes
 
