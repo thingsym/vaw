@@ -1,0 +1,11 @@
+[Unit]
+Description=HHVM HipHop Virtual Machine (FCGI)
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p /var/run/hhvm
+ExecStartPre=-/usr/bin/chown vagrant:vagrant /var/run/hhvm
+ExecStart=/usr/local/bin/hhvm --config /etc/hhvm/server.ini --mode daemon
+ExecStop=rm /var/run/hhvm/hhvm.pid
+
+[Install]
+WantedBy=multi-user.target

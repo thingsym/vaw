@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+# /etc/rc.d/init.d/hhvm
+#
+# Starts the hhvm daemon
+#
+# chkconfig: 345 26 74
+# description: HHVM (aka the HipHop Virtual Machine) is an open-source virtual machine designed for executing programs written in Hack and PHP
+# processname: hhvm
+
+### BEGIN INIT INFO
+# Provides: hhvm
+# Required-Start: $local_fs
+# Required-Stop: $local_fs
+# Default-Start:  2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop hhvm
+# Description: HHVM (aka the HipHop Virtual Machine) is an open-source virtual machine designed for executing programs written in Hack and PHP
+### END INIT INFO
+
+hhvm_mode=daemon
+hhvm_BIN=/usr/bin/hhvm
+hhvm_CONF=/etc/hhvm/server.ini
+hhvm_PID=/var/run/hhvm/hhvm.pid
+
+# Source function library.
+. /etc/init.d/functions
+
+start() {
+  echo -n "Starting hhvm"
+
+  if [ -r $hhvm_PID ] ; then
+    PID=`cat $hhvm_PID`
+    if ps -p $PID | grep -q $PID; then
+      echo " [(pid $PID) is already running]"
+      exit 1
+    fi
+  fi
+
+  $hhvm_BIN --config $hhvm_CONF --mode $hhvm_mode
+
+  if [ "$?" != 0 ] ; then
+    echo " [failed]"
+    exit 1
+  fi
+
+  touch /var/lock/subsys/hhvm
+
+  echo " [done]"
+}
+
+stop() {
+  echo -n "Gracefully shutting down hhvm"
+
+  if [ -r $hhvm_PID ] ; then
+    PID=`cat $hhvm_PID`
+    if ps -p $PID | grep -q $PID; then
+
+      kill -QUIT `cat $hhvm_PID`
+      rm -f $hhvm_PID
+      rm -f /var/lock/subsys/hhvm
+      echo " [done]"
+    else
+      echo " [not running]"
+    fi
+  else
+      echo " [no pid file found]"
+  fi
+
+}
+
+status() {
+  if [ ! -r $hhvm_PID ] ; then
+    echo "no pid file found - hhvm is not running ?"
+    exit 1
+  fi
+
+  PID=`cat $hhvm_PID`
+  if ps -p $PID | grep -q $PID; then
+    echo "hhvm (pid $PID) is running..."
+  else
+    echo "hhvm is not running"
+  fi
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  status)
+    status
+  ;;
+  restart)
+    stop
+    sleep 1
+    start
+  ;;
+  reload|condrestart|probe)
+    echo "$1 - Not supported."
+  ;;
+  *)
+    echo "Usage: hhvm {start|stop|status|reload|restart[|probe]"
+    exit 1
+  ;;
+esac

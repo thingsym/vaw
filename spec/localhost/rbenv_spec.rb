@@ -1,24 +1,33 @@
 require 'spec_helper'
+require 'shellwords'
 
 if property["develop_tools"] || property["deploy_tools"] then
 
   ['2.1.4'].each do |ruby_version|
     describe command("rbenv versions | grep #{ruby_version}") do
       let(:disable_sudo) { true }
-      let(:path) { '~/.rbenv/bin' }
       its(:stdout) { should match(/#{Regexp.escape(ruby_version)}/) }
     end
   end
 
   describe command('rbenv global') do
     let(:disable_sudo) { true }
-    let(:path) { '~/.rbenv/bin' }
     its(:stdout) { should match '2.1.4' }
   end
 
   describe file('/home/vagrant/.bash_profile') do
     its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
     its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
+  end
+
+  describe file('/home/vagrant/.bashrc') do
+    its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
+    its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
+  end
+
+  describe command('ruby -v') do
+    let(:disable_sudo) { true }
+    its(:stdout) { should match /^ruby 2\.1\.4/ }
   end
 
   describe file('/home/vagrant/.rbenv/plugins/ruby-build') do

@@ -30,9 +30,6 @@ end
 
 describe service('ntpd') do
   it { should be_enabled }
-end
-
-describe service('ntp') do
   it { should be_running }
 end
 
@@ -50,4 +47,12 @@ end
 
 describe command('ansible --version') do
   its(:exit_status) { should eq 0 }
+end
+
+describe file('/home/vagrant/.bash_profile') do
+  its(:content) { should match /export PATH=\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/sbin:\/sbin:\/usr\/local\/sbin:\$PATH/ }
+end
+
+describe file('/home/vagrant/.bashrc') do
+  its(:content) { should match /export PATH=\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/sbin:\/sbin:\/usr\/local\/sbin:\$PATH/ }
 end

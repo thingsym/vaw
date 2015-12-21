@@ -1,3 +1,4 @@
 bash_profile: /home/vagrant/.bash_profile
+bashrc: /home/vagrant/.bashrc
 php_version: 5.6.12
 phpenv_dir: /home/vagrant/.phpenv

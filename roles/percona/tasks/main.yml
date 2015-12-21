@@ -1,22 +1,34 @@
 ---
 - name: percona repository installed
   yum: name=http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm
-- name: percona-release.repo edited
+
+- name: percona-release.repo edited (CentOS/RHEL 6)
   replace: dest=/etc/yum.repos.d/percona-release.repo regexp="\$releasever" replace="6"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: percona-release.repo edited (CentOS/RHEL 7)
+  replace: dest=/etc/yum.repos.d/percona-release.repo regexp="\$releasever" replace="7"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: percona 5.6 installed
   yum: name={{ item }} state=latest
   with_items:
-    - Percona-Server-client-56
-    - Percona-Server-devel-56
     - Percona-Server-server-56
+    - Percona-Server-devel-56
+    - Percona-Server-client-56
     - Percona-Server-shared-56
-    # - Percona-XtraDB-Cluster-devel
     - MySQL-python
+
 - name: my.cnf changed
   template: src=my.cnf.j2 dest=/etc/my.cnf
-- name: mysql started and enabled
+
+- name: mysql started and enabled (CentOS/RHEL 6)
   service: name=mysql state=restarted enabled=yes
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
+- name: mysql started and enabled (CentOS/RHEL 7)
+  service: name=mysqld state=restarted enabled=yes
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: set percona root password
   mysql_user:

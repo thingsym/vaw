@@ -19,12 +19,12 @@ if property["develop_tools"] then
   end
 
   describe package('sass') do
-    let(:path) { '~/.rbenv/shims' }
+    let(:disable_sudo) { true }
     it { should be_installed.by('gem') }
   end
 
   describe package('compass') do
-    let(:path) { '~/.rbenv/shims' }
+    let(:disable_sudo) { true }
     it { should be_installed.by('gem') }
   end
 
@@ -53,12 +53,12 @@ if property["develop_tools"] then
   end
 
   describe command('phpunit --version') do
-    let(:path) { '~/.composer/vendor/bin' }
+    let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
   end
 
   describe command('phpcs --version') do
-    let(:path) { '~/.composer/vendor/bin' }
+    let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
   end
 

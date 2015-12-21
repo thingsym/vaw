@@ -3,8 +3,8 @@
 
 ## Vagrant Settings ##
 
-vm_box                = 'vaw/default'
-# vm_box                = 'vaw/full'
+vm_box                = 'vaw/centos6-default'
+# vm_box                = 'vaw/centos6-full'
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
@@ -15,12 +15,26 @@ public_ip             = ''
 ## That's all, stop setting. ##
 
 provision = <<-EOT
+  VERSION=$(awk '{print $3}' /etc/*-release)
+  if [[ $VERSION =~ ^release ]]; then
+    VERSION=$(awk '{print $4}' /etc/*-release)
+  fi
+
+  if [[ $VERSION =~ ^6 ]]; then
     echo '6' > /etc/yum/vars/releasever
-    yum clean all
-    rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  fi
+
+  yum clean all
+  yum -y install epel-release
+
+  if [[ $VERSION =~ ^6 ]]; then
     rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-    yum -y install ansible
-    ansible-playbook /vagrant/site.yml -c local -v --extra-vars "HOSTNAME=#{vm_hostname} DOCUMENT_ROOT=#{vm_document_root}"
+  elif [[ $VERSION =~ ^7 ]]; then
+    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
+  fi
+
+  yum -y install ansible
+  ansible-playbook /vagrant/site.yml -c local -v --extra-vars "HOSTNAME=#{vm_hostname} DOCUMENT_ROOT=#{vm_document_root}"
 EOT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -51,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provider "virtualbox" do |vb|
-    #vb.gui = true
+    # vb.gui = true
     # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize [
       "modifyvm", :id,

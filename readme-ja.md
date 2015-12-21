@@ -47,7 +47,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 ### 3. Develop & Deploy ツール
 
-プリインストールとして PHPパッケージ管理ツール「Composer」、WordPressのコマンドラインツール「WP-CLI」、ソースコードのバージョン管理ツール 「Git」が標準でインストール。
+プリインストールとしてプログラム言語 PHP のバージョン管理 「phpenv」、PHPパッケージ管理ツール「Composer」、WordPressのコマンドラインツール「WP-CLI」、ソースコードのバージョン管理ツール 「Git」が標準でインストール。
 
 ウェブサイトの構築やテーマやプラグインの開発など用途によって Develop ツールと Deploy ツールがインストールできます。有効化によってインストールされるツールの一覧は Specification を参照。
 
@@ -128,7 +128,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/default'
+	vm_box                = 'vaw/centos6-default'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -137,7 +137,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	public_ip             = ''
 
 
-* `vm_box` (required) Vagrant Box 名 (default: `vaw/default`)
+* `vm_box` (required) Vagrant Box 名 (default: `vaw/centos6-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
@@ -430,12 +430,20 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 
 ## Vagrant Box
 
-Box は centos-6.x x86_64 系に対応しています。
+Box は centos-7.x x86_64 系 と centos-6.x x86_64 系に対応しています。
 
-VAW では、2つの Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。
+VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。
 
-* [vaw/default](https://atlas.hashicorp.com/vaw/boxes/default)
-* [vaw/full](https://atlas.hashicorp.com/vaw/boxes/full)
+### CentOS 7
+
+* [vaw/centos7-default](https://atlas.hashicorp.com/vaw/boxes/centos7-default)
+* [vaw/centos7-full](https://atlas.hashicorp.com/vaw/boxes/centos7-full)
+
+### CentOS 6
+
+* [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
+* [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
+
 
 ## Specification
 
@@ -551,11 +559,11 @@ Vagrantプラグイン **vagrant-cachier** をインストールするとプロ�
 
 キャッシュの削除は、Box によって以下のコマンドを。
 
-	rm -rf $HOME/.vagrant.d/cache/vaw/default
+	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
 
 または、
 
-	rm -rf $HOME/.vagrant.d/cache/vaw/full
+	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
 
 ほかの Box を使っている場合の記法は、
 
@@ -582,6 +590,12 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.0 - 2015.12.21
+	* fix Vagrantfile
+	* fix wp-cli role, compatible with WordPress 4.4
+	* improve hhvm role
+	* improve command phpenv.sh
+	* support CentOS 7 x86-64
 * version 0.2.1 - 2015.10.09
 	* add stylestats
 	* add plato
