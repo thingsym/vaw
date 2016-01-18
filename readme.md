@@ -600,6 +600,8 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.1 - 2016.01.18
+	* fix yum releasever version
 * version 0.3.0 - 2015.12.21
 	* fix Vagrantfile
 	* fix wp-cli role, compatible with WordPress 4.4
