@@ -22,6 +22,8 @@ provision = <<-EOT
 
   if [[ $VERSION =~ ^6 ]]; then
     echo '6' > /etc/yum/vars/releasever
+  elif [[ $VERSION =~ ^7 ]]; then
+    echo '7' > /etc/yum/vars/releasever
   fi
 
   yum clean all
