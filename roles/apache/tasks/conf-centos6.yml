@@ -1,8 +1,3 @@
 ---
 - name: httpd.conf changed
   template: src=httpd.conf.centos6.j2 dest=/etc/httpd/conf/httpd.conf
-  when: server_tuning == false
-
-- name: httpd.conf changed (server_tuning)
-  template: src=httpd-tuning.conf.centos6.j2 dest=/etc/httpd/conf/httpd.conf
-  when: server_tuning == true

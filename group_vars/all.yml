@@ -3,7 +3,6 @@
 ## Server & Database Settings ##
 
 server             : 'apache'   # apache|nginx
-server_tuning      : false      # true|false
 
 # fastcgi is possible only server 'nginx'
 fastcgi            : 'php-fpm'  # php-fpm|hhvm
