@@ -50,7 +50,7 @@
 - include: build-env.yml
 
 - name: set default_configure_options
-  template: src=default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
+  template: src=php-build.default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
 
 - stat: path=/usr/lib64/httpd/modules/libphp5.so
   register: libphp5_path

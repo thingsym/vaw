@@ -15,15 +15,15 @@
   when: server_tuning == false and multisite == false
 
 - name: nginx.conf changed (multisite)
-  template: src=nginx-multisite.conf.j2 dest=/etc/nginx/nginx.conf
+  template: src=nginx.multisite.conf.j2 dest=/etc/nginx/nginx.conf
   when: server_tuning == false and multisite == true
 
 - name: wordpress.conf changed
-  template: src=wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
+  template: src=nginx.wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
   when: server_tuning == false
 
 - name: wordpress-multisite.conf changed
-  template: src=wordpress-multisite.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite.conf
+  template: src=nginx.wordpress.multisite.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite.conf
   when: server_tuning == false
 
 - name: nginx.conf changed (server_tuning)
