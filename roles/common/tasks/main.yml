@@ -6,9 +6,9 @@
   selinux: state=disabled
 
 - command: /usr/sbin/getenforce
-  register: getenforce
+  register: is_getenforce
 - fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
-  when: getenforce.stdout == 'Enforcing' or getenforce.stdout == 'Permissive'
+  when: is_getenforce.stdout == 'Enforcing' or is_getenforce.stdout == 'Permissive'
 
 - name: iptables stoped and disabled
   service: name=iptables state=stopped enabled=no

@@ -1,9 +1,9 @@
 ---
 - stat: path=/var/www/html/opcache
-  register: opcache_path
+  register: is_opcache_path
 - name: mkdir opcache_path
   file: path=/var/www/html/opcache state=directory recurse=yes
-  when: not opcache_path.stat.exists
+  when: not is_opcache_path.stat.exists
 
 - name: PHP's Zend Opcache Web Viewer - Opcache-Status
   get_url: url=https://raw.github.com/rlerdorf/opcache-status/master/opcache.php dest=/var/www/html/opcache/opcache.php

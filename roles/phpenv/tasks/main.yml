@@ -4,12 +4,12 @@
   sudo: yes
 
 - stat: path={{ phpenv_dir }}
-  register: phpenv_path
+  register: is_phpenv_path
 
 - name: phpenv installed
   command: /home/vagrant/phpenv/bin/phpenv-install.sh
   sudo_user: vagrant
-  when: not phpenv_path.stat.exists
+  when: not is_phpenv_path.stat.exists
 
 - name: delete /home/vagrant/phpenv
   file: path=/home/vagrant/phpenv state=absent
@@ -53,26 +53,26 @@
   template: src=php-build.default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
 
 - stat: path=/usr/lib64/httpd/modules/libphp5.so
-  register: libphp5_path
+  register: is_libphp5_path
 
 - file: path=/usr/lib64/httpd/modules/libphp5.so owner=vagrant group=vagrant
-  when: libphp5_path.stat.exists
+  when: is_libphp5_path.stat.exists
 
 - stat: path=/usr/lib64/httpd/modules/libphp7.so
-  register: libphp7_path
+  register: is_libphp7_path
 
 - file: path=/usr/lib64/httpd/modules/libphp7.so owner=vagrant group=vagrant
-  when: libphp7_path.stat.exists
+  when: is_libphp7_path.stat.exists
 
 - name: touch php.log
   file: path=/var/log/php.log state=touch mode=0666
 
 - stat: path={{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}
-  register: php_path
+  register: is_php_path
 
 - name: php installed by phpenv.sh
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(5.6.12) }}
-  when: not php_path.stat.exists
+  when: not is_php_path.stat.exists
 
 - include: php-fpm.yml
 

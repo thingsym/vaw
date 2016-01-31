@@ -1,27 +1,27 @@
 ---
 - stat: path={{ import_xml_data }}
-  register: xml_import
+  register: is_xml_import
 - name: plugin install wordpress-importer
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
-  when: xml_import.stat.exists and xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
+  when: is_xml_import.stat.exists and is_xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
 - name: import xml data
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
-  when: xml_import.stat.exists and xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
+  when: is_xml_import.stat.exists and is_xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
 - name: plugin deactivate wordpress-importer
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
-  when: xml_import.stat.exists and xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
+  when: is_xml_import.stat.exists and is_xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
 
 - stat: path={{ import_db_data }}
-  register: db_import
+  register: is_db_import
 - name: db data import
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db import {{ import_db_data }}
-  when: db_import.stat.exists and db_import.stat.isdir == false and import_xml_data == '' and theme_unit_test == false
+  when: is_db_import.stat.exists and is_db_import.stat.isdir == false and import_xml_data == '' and theme_unit_test == false
 
 - stat: path=/vagrant/uploads
-  register: uploads
+  register: is_uploads
 - name: import uploads dir
   copy: src=/vagrant/uploads dest={{ WP_PATH }}/wp-content directory_mode
-  when: uploads.stat.exists and uploads.stat.isdir == true
+  when: is_uploads.stat.exists and is_uploads.stat.isdir == true
 
 - name: replace old url
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} search-replace {{ replace_old_url }} {{ WP_URL }} --precise --recurse-objects
@@ -39,16 +39,16 @@
   when: theme_unit_test == true and lang == 'ja' and import_xml_data == '' and import_db_data == ''
 
 - stat: path=/home/vagrant/theme-unit-test-data.xml
-  register: unit_test
+  register: is_unit_test
 - name: plugin install wordpress-importer
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
-  when: unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+  when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
 - name: import theme-unit-test-data.xml
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import --authors=create /home/vagrant/theme-unit-test-data.xml --authors=create
-  when: unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+  when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
 - name: plugin deactivate wordpress-importer
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
-  when: unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+  when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
 - name: delete theme-unit-test-data.xml
   file: path=/home/vagrant/theme-unit-test-data.xml state=absent
-  when: unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+  when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
