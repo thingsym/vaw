@@ -42,12 +42,14 @@ elsif property["server"] == 'nginx' then
     it { should be_file }
   end
 
-  describe file('/etc/nginx/conf.d/wordpress.conf') do
-    it { should be_file }
-  end
-
-  describe file('/etc/nginx/conf.d/wordpress-multisite.conf') do
-    it { should be_file }
+  if property["multisite"] then
+    describe file('/etc/nginx/conf.d/wordpress-multisite.conf') do
+      it { should be_file }
+    end
+  else
+    describe file('/etc/nginx/conf.d/wordpress.conf') do
+      it { should be_file }
+    end
   end
 
 end
