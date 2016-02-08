@@ -13,9 +13,5 @@
   include: conf-centos7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
-- name: server tuning
-  include: tuning.yml
-  when: server_tuning == true
-
 - name: httpd started and enabled
   service: name=httpd state=restarted enabled=yes

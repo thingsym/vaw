@@ -1,16 +1,22 @@
 ---
+- stat: path=/vagrant/config/httpd.conf.centos7.j2
+  register: is_custom_httpd_conf
+
+- name: custom httpd.conf changed
+  template: src=/vagrant/config/httpd.conf.centos7.j2 dest=/etc/httpd/conf/httpd.conf
+  when: is_custom_httpd_conf.stat.exists
+
 - name: httpd.conf changed
   template: src=httpd.conf.centos7.j2 dest=/etc/httpd/conf/httpd.conf
-  when: server_tuning == false
+  when: not is_custom_httpd_conf.stat.exists
 
-- name: httpd.conf changed (server_tuning)
-  template: src=httpd-tuning.conf.centos7.j2 dest=/etc/httpd/conf/httpd.conf
-  when: server_tuning == true
+- stat: path=/vagrant/config/httpd.www.conf.centos7.j2
+  register: is_custom_www_conf
+
+- name: custom www.conf changed
+  template: src=/vagrant/config/httpd.www.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
+  when: is_custom_www_conf.stat.exists
 
 - name: www.conf changed
-  template: src=www.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
-  when: server_tuning == false
-
-- name: www.conf changed (server_tuning)
-  template: src=www-tuning.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
-  when: server_tuning == true
+  template: src=httpd.www.conf.centos7.j2 dest=/etc/httpd/conf.d/www.conf
+  when: not is_custom_www_conf.stat.exists
