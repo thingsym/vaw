@@ -588,6 +588,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.2 - 2016.02.09
+	* add custom config
+	* remove server tuning
 * version 0.3.1 - 2016.01.18
 	* fix yum releasever version
 * version 0.3.0 - 2015.12.21
