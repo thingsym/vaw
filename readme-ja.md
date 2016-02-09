@@ -14,7 +14,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM** (FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
 
-サーバは基本、素の設定でインストールされますが、キャッシュの有効化や mod-pagespeed など別途チューニング済みの設定でのインストールも可能。(随時チューニング中...)
+サーバ、データベースは基本、素の設定でインストールされますが、設定ファイルの編集でチューニングも可能。
 
 様々な組み合わせのサーバとデータベース構成で検証が可能です。
 
@@ -153,7 +153,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	## Server & Database Settings ##
 
 	server             : 'apache'   # apache|nginx
-	server_tuning      : false      # true|false
 
 	# fastcgi is possible only server 'nginx'
 	fastcgi            : 'php-fpm'  # php-fpm|hhvm
@@ -254,7 +253,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Server & Database Settings ##
 
 * `server` (required) ウェブサーバ名 (default: `apache` / value: `apache` | `nginx`)
-* `server_tuning` サーバのチューニングの有効化 (default: `false` / value: `true` | `false`)
 * `fastcgi` fastCGI 名 (default: `php-fpm` / value: `php-fpm` | `hhvm`)
 	* `fastcgi` は `server 'nginx'` のみ可能
 * `database` (required) データベース名 (default: `mysql` / value: `mysql` | `mariadb` | `percona`)
@@ -396,6 +394,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 ### Full Layout
 
 * backup (バックアップファイルを格納。無い場合、バックアップスクリプト起動時に自動作成)
+* config (チューニング用設定ファイルを格納)
 * command (シェルスクリプトを格納)
 * group_vars (Ansible のプロビジョニング設定ファイルを格納)
 	* all.yml (プロビジョニング設定ファイル)
@@ -511,23 +510,6 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 * db_backup.sh
 * phpenv.sh
 
-## Server Tuning Specification
-
-サーバのチューニング内容は以下の通り。随時チューニング中です。
-
-### Apache
-
-* [mod_cache](http://httpd.apache.org/docs/2.2/en/mod/mod_cache.html)
-* [mod_deflate](http://httpd.apache.org/docs/2.2/en/mod/mod_deflate.html)
-* [mod_expires](http://httpd.apache.org/docs/2.2/en/mod/mod_expires.html)
-* [mod-pagespeed](https://code.google.com/p/modpagespeed/)
-
-### nginx
-
-* [gzip](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
-* [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
-* [expires](http://nginx.org/en/docs/http/ngx_http_headers_module.html)
-
 ## Helper command
 
 VAW には、便利なスクリプトを用意しています。ターミナル上でスクリプトを走らせるだけ。データベースのデータバックアップや PHP の複数バージョンインストール、実行環境の切り替えができます。
@@ -544,6 +526,22 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
 	/vagrant/command/phpenv.sh 5.6.12
+
+## Custom Config
+
+ディレクトリ `config` に編集したチューニング用設定ファイルを追加すると、プロビジョニング時に配置します。
+チューニング用設定ファイルは以下の通り。
+
+* httpd.conf.centos6.j2
+* httpd.conf.centos7.j2
+* httpd.www.conf.centos7.j2
+* my.cnf.j2
+* nginx.conf.j2
+* nginx.multisite.conf.j2
+* nginx.wordpress.conf.j2
+* nginx.wordpress.multisite.conf.j2
+* php-build.default_configure_options.j2
+* php.conf.j2
 
 ## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
 
@@ -590,6 +588,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.2 - 2016.02.09
+	* add custom config
+	* remove server tuning
 * version 0.3.1 - 2016.01.18
 	* fix yum releasever version
 * version 0.3.0 - 2015.12.21

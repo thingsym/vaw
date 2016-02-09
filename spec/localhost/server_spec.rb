@@ -23,23 +23,6 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
-  if property["server_tuning"] then
-
-    describe file('/var/tmp/cache') do
-     it { should be_directory }
-     it { should be_mode 777 }
-    end
-
-    describe yumrepo('mod-pagespeed') do
-      it { should exist }
-    end
-
-    describe file('/etc/httpd/conf.d/pagespeed.conf') do
-     it { should be_file }
-    end
-
-  end
-
 elsif property["server"] == 'nginx' then
 
   describe yumrepo('nginx') do
@@ -59,26 +42,14 @@ elsif property["server"] == 'nginx' then
     it { should be_file }
   end
 
-  if property["server_tuning"] then
-
-    describe file('/etc/nginx/conf.d/wordpress-tuning.conf') do
-      it { should be_file }
-    end
-
-    describe file('/etc/nginx/conf.d/wordpress-multisite-tuning.conf') do
-      it { should be_file }
-    end
-
-  else
-
-    describe file('/etc/nginx/conf.d/wordpress.conf') do
-      it { should be_file }
-    end
-
+  if property["multisite"] then
     describe file('/etc/nginx/conf.d/wordpress-multisite.conf') do
       it { should be_file }
     end
-
+  else
+    describe file('/etc/nginx/conf.d/wordpress.conf') do
+      it { should be_file }
+    end
   end
 
 end

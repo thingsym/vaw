@@ -6,10 +6,4 @@ if property["ssl_admin"] then
     it { should be_installed }
   end
 
-elsif property["server"] == 'apache' && property["server_tuning"] then
-
-  describe package('openssl') do
-    it { should be_installed }
-  end
-
 end

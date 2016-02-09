@@ -14,9 +14,9 @@ Launch the development environment in Vagrant, you can build the website and ver
 
 Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
 
-By default, the server is installed in the default settings. Also can be installed in the tuned configuration.
+By default, the server and the databese is installed in the default settings. Also you can edit configuration files.
 
-You can validate on the server and database of various combinations.
+You can validate on the server and the database of various combinations.
 
 ### 2. Build WordPress environment
 
@@ -161,7 +161,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	## Server & Database Settings ##
 
 	server             : 'apache'   # apache|nginx
-	server_tuning      : false      # true|false
 
 	# fastcgi is possible only server 'nginx'
 	fastcgi            : 'php-fpm'  # php-fpm|hhvm
@@ -262,7 +261,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 #### Server & Database Settings ##
 
 * `server` (required) name of web server (default: `apache` / value: `apache` | `nginx`)
-* `server_tuning` server tuning mode (default: `false` / value: `true` | `false`)
 * `fastcgi` name of fastCGI (default: `php-fpm` / value: `php-fpm` | `hhvm`)
 	* `fastcgi` is possible only `server 'nginx'`
 * `database` (required) name of databese (default: `mysql` / value: `mysql` | `mariadb` | `percona`)
@@ -526,24 +524,6 @@ You can build the environment in a short period of time compared with provisioni
 * db_backup.sh
 * phpenv.sh
 
-## Server Tuning Specification
-
-As follows server tuning. It is in any time tuning.
-
-### Apache
-
-* [mod_cache](http://httpd.apache.org/docs/2.2/en/mod/mod_cache.html)
-* [mod_deflate](http://httpd.apache.org/docs/2.2/en/mod/mod_deflate.html)
-* [mod_expires](http://httpd.apache.org/docs/2.2/en/mod/mod_expires.html)
-* [mod-pagespeed](https://code.google.com/p/modpagespeed/)
-
-### nginx
-
-* [gzip](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
-* [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
-* [expires](http://nginx.org/en/docs/http/ngx_http_headers_module.html)
-
-
 ## Helper command
 
 **VAW** offers a useful scripts. Just run the script on a terminal. Database data backup, multiple versions installation of PHP, you can switch the execution environment.
@@ -560,6 +540,22 @@ As follows server tuning. It is in any time tuning.
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
 	/vagrant/command/phpenv.sh 5.6.12
+
+## Custom Config
+
+When you add a tuning configuration file that you edited in the directory `config`, place it at the time of provisioning.
+As follows editable configuration files.
+
+* httpd.conf.centos6.j2
+* httpd.conf.centos7.j2
+* httpd.www.conf.centos7.j2
+* my.cnf.j2
+* nginx.conf.j2
+* nginx.multisite.conf.j2
+* nginx.wordpress.conf.j2
+* nginx.wordpress.multisite.conf.j2
+* php-build.default_configure_options.j2
+* php.conf.j2
 
 ## Shortening of provisioning time by Vagrant plugin vagrant-cachier
 
@@ -600,6 +596,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.2 - 2016.02.09
+	* add custom config
+	* remove server tuning
 * version 0.3.1 - 2016.01.18
 	* fix yum releasever version
 * version 0.3.0 - 2015.12.21
