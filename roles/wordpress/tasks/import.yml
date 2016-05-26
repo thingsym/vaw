@@ -20,7 +20,7 @@
 - stat: path=/vagrant/uploads
   register: is_uploads
 - name: import uploads dir
-  copy: src=/vagrant/uploads dest={{ WP_PATH }}/wp-content directory_mode
+  copy: src=/vagrant/uploads dest={{ WP_PATH }}/wp-content directory_mode=yes
   when: is_uploads.stat.exists and is_uploads.stat.isdir == true
 
 - name: replace old url
