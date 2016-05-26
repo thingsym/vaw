@@ -95,8 +95,8 @@ install() {
         sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=4000/" $PHP_INI
         sed -i -e "s/^;opcache.revalidate_freq=2/opcache.revalidate_freq=60/" $PHP_INI
         sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
-        sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=1/" $PHP_INI
-        sed -i -e "s/^;opcache.enable=0/opcache.enable=1/" $PHP_INI
+        # sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=1/" $PHP_INI
+        # sed -i -e "s/^;opcache.enable=0/opcache.enable=1/" $PHP_INI
         echo "[Info]: edit $PHP_INI"
     fi
 
