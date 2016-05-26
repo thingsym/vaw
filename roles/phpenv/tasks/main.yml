@@ -90,5 +90,6 @@
   when: not is_php_path.stat.exists
 
 - include: php-fpm.yml
+  when: fastcgi == 'php-fpm'
 
 - file: src={{ phpenv_dir }}/shims/php dest=/usr/bin/php state=link force=yes
