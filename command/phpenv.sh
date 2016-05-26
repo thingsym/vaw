@@ -233,7 +233,7 @@ if [[ $PHP_VERSION == 'versions' ]]; then
 fi
 
 if [[ $PHP_VERSION == 'list' ]]; then
-    phpenv install
+    phpenv install -l
     exit 0
 fi
 
