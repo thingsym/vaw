@@ -10,7 +10,8 @@
 - name: nginx installed
   yum: name=nginx
 
-- stat: path=/vagrant/config/nginx.conf.j2
+- name: stat custom nginx.conf.j2
+  stat: path=/vagrant/config/nginx.conf.j2
   register: is_custom_nginx_conf
 
 - name: custom nginx.conf changed
@@ -21,7 +22,8 @@
   template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
   when: not is_custom_nginx_conf.stat.exists and multisite == false
 
-- stat: path=/vagrant/config/nginx.multisite.conf.j2
+- name: stat custom nginx.multisite.conf.j2
+  stat: path=/vagrant/config/nginx.multisite.conf.j2
   register: is_custom_nginx_multisite_conf
 
 - name: custom nginx.conf changed (multisite)
@@ -32,7 +34,8 @@
   template: src=nginx.multisite.conf.j2 dest=/etc/nginx/nginx.conf
   when: not is_custom_nginx_multisite_conf.stat.exists and multisite == true
 
-- stat: path=/vagrant/config/nginx.wordpress.conf.j2
+- name: stat custom nginx.wordpress.conf.j2
+  stat: path=/vagrant/config/nginx.wordpress.conf.j2
   register: is_custom_nginx_wordpress_conf
 
 - name: custom wordpress.conf changed
@@ -43,7 +46,8 @@
   template: src=nginx.wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
   when: not is_custom_nginx_wordpress_conf.stat.exists and multisite == false
 
-- stat: path=/vagrant/config/nginx.wordpress.multisite.conf.j2
+- name: stat custom nginx.wordpress.multisite.conf.j2
+  stat: path=/vagrant/config/nginx.wordpress.multisite.conf.j2
   register: is_custom_nginx_wordpress_multisite_conf
 
 - name: custom wordpress-multisite.conf changed

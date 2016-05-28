@@ -1,5 +1,6 @@
 ---
-- stat: path=/var/www/html/opcache
+- name: stat opcache_path
+  stat: path=/var/www/html/opcache
   register: is_opcache_path
 - name: mkdir opcache_path
   file: path=/var/www/html/opcache state=directory recurse=yes
