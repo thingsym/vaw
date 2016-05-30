@@ -1,8 +1,8 @@
 ---
 - name: "VAW (Vagrant Ansible WordPress) v0.3.2"
   hosts: localhost
-  user: vagrant
-  sudo: yes
+  remote_user: vagrant
+  become: yes
 
   roles:
     - { role: before-command, tags: [before-command] }

@@ -1,5 +1,6 @@
 ---
-- stat: path=/vagrant/config/httpd.conf.centos6.j2
+- name: stat custom httpd.conf.centos6.j2
+  stat: path=/vagrant/config/httpd.conf.centos6.j2
   register: is_custom_httpd_conf
 
 - name: custom httpd.conf changed

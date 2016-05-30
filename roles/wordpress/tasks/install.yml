@@ -4,13 +4,15 @@
   ignore_errors: yes
   # when: DB_RESET == true
 
-- stat: path={{ WP_PATH }}
+- name: stat WP_PATH
+  stat: path={{ WP_PATH }}
   register: is_wordpress_path
 - name: mkdir wordpress_path
   file: path={{ WP_PATH }} state=directory recurse=yes
   when: not is_wordpress_path.stat.exists
 
-- stat: path={{ DOCUMENT_ROOT }}{{ wp_site_path }}
+- name: stat site_path
+  stat: path={{ DOCUMENT_ROOT }}{{ wp_site_path }}
   register: is_site_path
 - name: mkdir site_path
   file: path={{ DOCUMENT_ROOT }}{{ wp_site_path }} state=directory recurse=yes
@@ -33,7 +35,8 @@
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --version={{ version }} --force
   when: version != "latest"
 
-- stat: path={{ WP_PATH }}/wp-config.php
+- name: stat wp-config.php
+  stat: path={{ WP_PATH }}/wp-config.php
   register: is_old_wp_config
 - name: delete WordPress config
   file: path={{ WP_PATH }}/wp-config.php state=absent
