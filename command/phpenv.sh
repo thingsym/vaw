@@ -1,7 +1,9 @@
 #!/bin/bash
-# Usage: phpenv.sh <Version Number|list|versions|version>
+# Usage: phpenv.sh <PHP Version Number>
+# Sub Commnad
+# phpenv.sh <list|versions|version|cache|nocache>
 
-global() {
+function global() {
     phpenv global $PHP_VERSION
 
     if [[ $HTTPD_ACTIVE > 0 ]]; then
@@ -61,7 +63,7 @@ global() {
     fi
 }
 
-install() {
+function install() {
     if [[ -d /etc/httpd/modules ]]; then
         sudo chown vagrant:vagrant /etc/httpd/modules
     fi
@@ -194,11 +196,13 @@ install() {
 
 if [[ $# != 1 ]]; then
     echo "[Error]: Not Found php version"
-    echo "[Info]: Usage: phpenv.sh <Version Number|list|versions|version>"
+    echo "[Info]: Usage: phpenv.sh <PHP Version Number>"
+    echo "[Info]: or Not Found Sub Commnad"
+    echo "[Info]: Usage: phpenv.sh <list|versions|version|cache|nocache>"
     exit 1
 fi
 
-PHP_VERSION=$1
+SUB_COMMAND=$1
 
 OS_VERSION=$(awk '{print $3}' /etc/*-release)
 if [[ $OS_VERSION =~ ^release ]]; then
@@ -209,10 +213,6 @@ HTTPD_ACTIVE=`ps -ef | grep httpd | grep -v grep | wc -l`
 PHP_FPM_ACTIVE=`ps -ef | grep php-fpm | grep -v grep | wc -l`
 
 HTTPD_PHP_CONF="/etc/httpd/conf.d/php.conf"
-PHP_INI="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php.ini"
-PHP_FPM_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.conf"
-PHP_FPM_WWW_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.d/www.conf"
-PHP_FPM_SERVICE="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.service"
 
 if [[ $HTTPD_ACTIVE > 0 ]]; then
     if [[ ! -f "$HTTPD_PHP_CONF" ]]; then
@@ -222,20 +222,27 @@ if [[ $HTTPD_ACTIVE > 0 ]]; then
     fi
 fi
 
-if [[ $PHP_VERSION == 'version' ]]; then
+if [[ $SUB_COMMAND == 'version' ]]; then
     phpenv version
     exit 0
 fi
 
-if [[ $PHP_VERSION == 'versions' ]]; then
+if [[ $SUB_COMMAND == 'versions' ]]; then
     phpenv versions
     exit 0
 fi
 
-if [[ $PHP_VERSION == 'list' ]]; then
+if [[ $SUB_COMMAND == 'list' ]]; then
     phpenv install -l
     exit 0
 fi
+
+PHP_VERSION=$1
+
+PHP_INI="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php.ini"
+PHP_FPM_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.conf"
+PHP_FPM_WWW_CONF="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.d/www.conf"
+PHP_FPM_SERVICE="/home/vagrant/.phpenv/versions/$PHP_VERSION/etc/php-fpm.service"
 
 if [[ -e /home/vagrant/.phpenv/versions/$PHP_VERSION ]]; then
     global
