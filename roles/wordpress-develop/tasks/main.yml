@@ -13,7 +13,6 @@
   # gem: name={{ item }} state=latest
   with_items:
     - sass
-    - compass
 
 - name: node.js package globally installed
   npm: name={{ item }} global=yes

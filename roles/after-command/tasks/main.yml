@@ -1,5 +1,6 @@
 ---
-- stat: path=/vagrant/command/after_provision.sh
+- name: stat after_provision.sh
+  stat: path=/vagrant/command/after_provision.sh
   register: after_command
 - name: after provision command
   command: /vagrant/command/after_provision.sh

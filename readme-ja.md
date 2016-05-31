@@ -582,12 +582,17 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 If you would like to contribute, here are some notes and guidlines.
 
 * All development happens on the **develop** branch, so it is always the most up-to-date
-* The master branch only contains tagged releases
-* If you are going to be submitting a pull request, please branch from **develop**, and submit your pull request back to the **develop** branch
+* The **master** branch only contains tagged releases
+* If you are going to be submitting a pull request, please submit your pull request to the **develop** branch
 * See about [forking](https://help.github.com/articles/fork-a-repo/) and [pull requests](https://help.github.com/articles/using-pull-requests/)
 
 ## Changelog
 
+* version 0.3.3 - 2016.05.31
+	* fix playbooks
+	* remove compass gem
+	* refactoring phpenv.sh
+	* disable OPcache
 * version 0.3.2 - 2016.02.09
 	* add custom config
 	* remove server tuning

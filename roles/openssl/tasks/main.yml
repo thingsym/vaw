@@ -6,7 +6,8 @@
     - openssl-devel
     - mod_ssl
 
-- stat: path=/etc/pki/tls/{{ HOSTNAME }}
+- name: stat ssl_path
+  stat: path=/etc/pki/tls/{{ HOSTNAME }}
   register: is_ssl_path
 - name: mkdir ssl
   file: path=/etc/pki/tls/{{ HOSTNAME }} state=directory owner=root
@@ -18,7 +19,8 @@
 - name: Generate a certificate
   shell: openssl req -new -x509 -key /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert -days 3650 -subj /CN={{ HOSTNAME }}
 
-- stat: path=/etc/httpd/conf.d/ssl.conf
+- name: stat ssl.conf
+  stat: path=/etc/httpd/conf.d/ssl.conf
   register: is_ssl_conf
 - name: delete ssl.conf
   file: path=/etc/httpd/conf.d/ssl.conf state=absent
