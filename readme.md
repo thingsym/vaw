@@ -596,6 +596,11 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.3.3 - 2016.05.31
+	* fix playbooks
+	* remove compass gem
+	* refactoring phpenv.sh
+	* disable OPcache
 * version 0.3.2 - 2016.02.09
 	* add custom config
 	* remove server tuning
