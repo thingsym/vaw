@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [[ -d /vagrant/backup ]]; then
 	echo "exist /vagrant/backup"
