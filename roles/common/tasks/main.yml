@@ -5,7 +5,8 @@
 - name: disable selinux
   selinux: state=disabled
 
-- command: /usr/sbin/getenforce
+- name: is_getenforce
+  command: /usr/sbin/getenforce
   register: is_getenforce
 - fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
   when: is_getenforce.stdout == 'Enforcing' or is_getenforce.stdout == 'Permissive'

@@ -19,7 +19,8 @@
   with_items:
     - grunt-cli
     - grunt-init
-    - gulp
+    - gulp-cli
+    - npm-check-updates
     - bower
     - stylestats
     - plato

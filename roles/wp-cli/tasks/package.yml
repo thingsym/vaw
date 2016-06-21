@@ -22,4 +22,4 @@
 
 # - name: change owner and group
 #   file: dest={{ wp_cli_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-#   sudo: yes
+#   become: yes
