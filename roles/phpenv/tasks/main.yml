@@ -1,15 +1,14 @@
 ---
 - name: git checkout phpenv
   git: repo=https://github.com/CHH/phpenv.git dest=/home/vagrant/phpenv force=yes
-  sudo: yes
+  become: yes
 
 - name: stat phpenv_path
   stat: path={{ phpenv_dir }}
   register: is_phpenv_path
 
 - name: phpenv installed
-  command: /home/vagrant/phpenv/bin/phpenv-install.sh
-  sudo_user: vagrant
+  command: sudo -u vagrant -i -- /home/vagrant/phpenv/bin/phpenv-install.sh
   when: not is_phpenv_path.stat.exists
 
 - name: delete /home/vagrant/phpenv
@@ -17,7 +16,7 @@
 
 - name: change mode, owner and group
   file: dest={{ phpenv_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+  become: yes
 
 - name: edit PATH phpenv init on .bash_profile
   lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.phpenv/bin:$PATH"
@@ -33,11 +32,11 @@
 
 - name: git checkout php-build
   git: repo=https://github.com/CHH/php-build.git dest={{ phpenv_dir }}/plugins/php-build force=yes
-  sudo: yes
+  become: yes
 
 - name: git checkout phpenv-apache-version
   git: repo=https://github.com/thingsym/phpenv-apache-version.git dest={{ phpenv_dir }}/plugins/phpenv-apache-version force=yes
-  sudo: yes
+  become: yes
   when: server == 'apache'
 
 - name: stat custom php.conf.j2
@@ -54,7 +53,7 @@
 
 - name: change mode, owner and group
   file: dest={{ phpenv_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+  become: yes
 
 - include: build-env.yml
 
