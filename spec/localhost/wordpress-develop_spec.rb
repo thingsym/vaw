@@ -24,19 +24,31 @@ if property["develop_tools"] then
   end
 
   describe command('grunt --version') do
-   its(:exit_status) { should eq 0 }
+    its(:exit_status) { should eq 0 }
   end
 
   describe command('grunt-init --version') do
-   its(:exit_status) { should eq 0 }
+    its(:exit_status) { should eq 0 }
   end
 
   describe command('gulp --version') do
    its(:exit_status) { should eq 0 }
   end
 
+  describe command('npm-check-updates --version') do
+   its(:exit_status) { should eq 0 }
+  end
+
   describe command('bower --version') do
    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('stylestats --version') do
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('plato --version') do
+    its(:exit_status) { should eq 0 }
   end
 
   describe file('/usr/local/share/wp-i18n/makepot.php') do
@@ -76,16 +88,13 @@ if property["develop_tools"] then
     it { should be_executable }
   end
 
-  describe command('plato --version') do
-   its(:exit_status) { should eq 0 }
-  end
-
-  describe command('stylestats --version') do
-   its(:exit_status) { should eq 0 }
-  end
-
   describe command('phpmd --version') do
-   its(:exit_status) { should eq 0 }
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe file('/var/www/html/webgrind/index.php') do
+    it { should be_file }
   end
 
 end
