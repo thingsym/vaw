@@ -84,4 +84,8 @@ if property["develop_tools"] then
    its(:exit_status) { should eq 0 }
   end
 
+  describe command('phpmd --version') do
+   its(:exit_status) { should eq 0 }
+  end
+
 end
