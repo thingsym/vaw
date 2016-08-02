@@ -7,3 +7,6 @@
 
 - name: edit PATH composer on .bashrc
   lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"
+
+- name: prestissimo installed
+  command: sudo -u vagrant -i -- {{ composer }} global require 'hirak/prestissimo=^0.3'
