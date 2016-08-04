@@ -1,14 +1,14 @@
 ---
 - name: stat opcache_path
-  stat: path=/var/www/html/opcache
+  stat: path={{ DOCUMENT_ROOT }}/opcache
   register: is_opcache_path
 - name: mkdir opcache_path
-  file: path=/var/www/html/opcache state=directory recurse=yes
+  file: path={{ DOCUMENT_ROOT }}/opcache state=directory recurse=yes
   when: not is_opcache_path.stat.exists
 
 - name: PHP's Zend Opcache Web Viewer - Opcache-Status
-  get_url: url=https://raw.github.com/rlerdorf/opcache-status/master/opcache.php dest=/var/www/html/opcache/opcache.php
+  get_url: url=https://raw.github.com/rlerdorf/opcache-status/master/opcache.php dest={{ DOCUMENT_ROOT }}/opcache/opcache.php
 - name: PHP's Zend Opcache Web Viewer - opcache-gui
-  get_url: url=https://raw.github.com/amnuts/opcache-gui/master/index.php dest=/var/www/html/opcache/op.php
+  get_url: url=https://raw.github.com/amnuts/opcache-gui/master/index.php dest={{ DOCUMENT_ROOT }}/opcache/op.php
 - name: PHP's Zend Opcache Web Viewer - ocp.php
-  get_url: url=https://gist.github.com/ck-on/4959032/raw/0b871b345fd6cfcd6d2be030c1f33d1ad6a475cb/ocp.php dest=/var/www/html/opcache/ocp.php
+  get_url: url=https://gist.github.com/ck-on/4959032/raw/0b871b345fd6cfcd6d2be030c1f33d1ad6a475cb/ocp.php dest={{ DOCUMENT_ROOT }}/opcache/ocp.php

@@ -1,0 +1,3 @@
+---
+- name: PHPMD installed
+  command: sudo -u vagrant -i -- {{ composer }} global require 'phpmd/phpmd=*'
