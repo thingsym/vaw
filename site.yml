@@ -3,6 +3,7 @@
   hosts: localhost
   remote_user: vagrant
   become: yes
+  connection: local
 
   roles:
     - { role: before-command, tags: [before-command] }
