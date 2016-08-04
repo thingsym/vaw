@@ -29,12 +29,6 @@ provision = <<-EOT
   yum clean all
   yum -y install epel-release
 
-  if [[ $VERSION =~ ^6 ]]; then
-    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-  elif [[ $VERSION =~ ^7 ]]; then
-    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
-  fi
-
   yum -y install ansible
   ansible-playbook /vagrant/site.yml -c local -v --extra-vars "HOSTNAME=#{vm_hostname} DOCUMENT_ROOT=#{vm_document_root}"
 EOT

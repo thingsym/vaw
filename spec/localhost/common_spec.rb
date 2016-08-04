@@ -37,10 +37,6 @@ describe yumrepo('epel') do
   it { should exist }
 end
 
-describe yumrepo('rpmforge') do
-  it { should exist }
-end
-
 describe yumrepo('ius') do
   it { should exist }
 end
