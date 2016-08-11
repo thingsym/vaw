@@ -26,17 +26,7 @@ provision = <<-EOT
     echo '7' > /etc/yum/vars/releasever
   fi
 
-  yum clean all
   yum -y install epel-release
-
-  if [[ $VERSION =~ ^6 ]]; then
-    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-  elif [[ $VERSION =~ ^7 ]]; then
-    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
-  fi
-
-  yum -y install ansible
-  ansible-playbook /vagrant/site.yml -c local -v --extra-vars "HOSTNAME=#{vm_hostname} DOCUMENT_ROOT=#{vm_document_root}"
 EOT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -78,6 +68,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :shell, :inline => provision
+
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.version = 'latest'
+    ansible.inventory_path = 'hosts/local'
+    ansible.playbook = 'site.yml'
+    ansible.verbose = 'v'
+    ansible.extra_vars = {
+      HOSTNAME: vm_hostname,
+      DOCUMENT_ROOT: vm_document_root
+    }
+  end
 
   if File.exist?("Rakefile")
     if Vagrant.has_plugin?("vagrant-serverspec")
