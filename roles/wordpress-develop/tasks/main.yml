@@ -5,8 +5,6 @@
     # - php-pecl-xdebug
     - subversion
     - gettext
-    - nodejs
-    - npm
 
 - name: gem libraries installed
   command: sudo -u vagrant -i -- gem install {{ item }}
@@ -15,7 +13,8 @@
     - sass
 
 - name: node.js package globally installed
-  npm: name={{ item }} global=yes
+  command: sudo -u vagrant -i -- npm install -g {{ item }}
+  # npm: name={{ item }} global=yes
   with_items:
     - grunt-cli
     - grunt-init
