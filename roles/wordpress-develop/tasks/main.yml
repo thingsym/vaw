@@ -31,3 +31,6 @@
 - include: opcache.yml
 - include: wrk.yml
 - include: selenium.yml
+- include: phpmd.yml
+- include: webgrind.yml
+
