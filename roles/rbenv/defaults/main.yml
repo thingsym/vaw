@@ -1,3 +1,2 @@
-bash_profile: /home/vagrant/.bash_profile
-bashrc: /home/vagrant/.bashrc
-ruby_version: 2.1.4
+home_dir: /home/vagrant
+ruby_version: 2.3.1
