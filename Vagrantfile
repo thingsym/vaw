@@ -46,6 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :public_network, ip: public_ip
   end
 
+  config.vm.synced_folder '.', '/vagrant', :create => 'true'
   config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true'
 
   config.ssh.forward_agent = true
