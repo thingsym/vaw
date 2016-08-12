@@ -12,6 +12,8 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
+vbguest_auto_update = false
+
 ## That's all, stop setting. ##
 
 provision = <<-EOT
@@ -54,6 +56,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
+  end
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = vbguest_auto_update
   end
 
   config.vm.provider "virtualbox" do |vb|
