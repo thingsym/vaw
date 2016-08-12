@@ -3,8 +3,8 @@
 
 ## Vagrant Settings ##
 
-vm_box                = 'vaw/centos6-default'
-# vm_box                = 'vaw/centos6-full'
+vm_box                = 'vaw/centos7-default'
+# vm_box                = 'vaw/centos7-full'
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
