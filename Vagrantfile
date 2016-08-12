@@ -3,14 +3,16 @@
 
 ## Vagrant Settings ##
 
-vm_box                = 'vaw/centos6-default'
-# vm_box                = 'vaw/centos6-full'
+vm_box                = 'vaw/centos7-default'
+# vm_box                = 'vaw/centos7-full'
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
 vm_document_root      = '/var/www/html'
 
 public_ip             = ''
+
+vbguest_auto_update = false
 
 ## That's all, stop setting. ##
 
@@ -44,6 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :public_network, ip: public_ip
   end
 
+  config.vm.synced_folder '.', '/vagrant', :create => 'true'
   config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true'
 
   config.ssh.forward_agent = true
@@ -54,6 +57,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
+  end
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = vbguest_auto_update
   end
 
   config.vm.provider "virtualbox" do |vb|
