@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shellwords'
 
 describe command('wp --version') do
   let(:disable_sudo) { true }
