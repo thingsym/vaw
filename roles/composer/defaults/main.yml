@@ -1,4 +1,0 @@
-install_dir: /usr/local/bin
-bash_profile: /home/vagrant/.bash_profile
-bashrc: /home/vagrant/.bashrc
-composer: /usr/local/bin/composer
