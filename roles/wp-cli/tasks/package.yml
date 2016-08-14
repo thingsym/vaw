@@ -1,25 +1,25 @@
 ---
 # - name: mkdir .wp-cli
-#   file: path={{ wp_cli_dir }} state=directory owner=vagrant group=vagrant
+#   file: path={{ home_dir }}/.wp-cli state=directory owner=vagrant group=vagrant
 
 # - name: create a composer.json
-#   command: chdir={{ wp_cli_dir }} {{ composer }} init --stability dev --no-interaction
+#   command: chdir={{ home_dir }}/.wp-cli {{ home_dir }}/.phpenv/shims/composer init --stability dev --no-interaction
 # - name: create a composer.json
-#   command: chdir={{ wp_cli_dir }} {{ composer }} config bin-dir bin
+#   command: chdir={{ home_dir }}/.wp-cli {{ home_dir }}/.phpenv/shims/composer config bin-dir bin
 # - name: create a composer.json
-#   command: chdir={{ wp_cli_dir }} {{ composer }} config vendor-dir vendor
+#   command: chdir={{ home_dir }}/.wp-cli {{ home_dir }}/.phpenv/shims/composer config vendor-dir vendor
 
 # - name: add WP-CLI package index
-#   command: chdir={{ wp_cli_dir }} {{ composer }} config repositories.wp-cli composer 'http://wp-cli.org/package-index/'
+#   command: chdir={{ home_dir }}/.wp-cli {{ home_dir }}/.phpenv/shims/composer config repositories.wp-cli composer 'http://wp-cli.org/package-index/'
 
 # - name: create a config.yml
-#   template: src=config.yml.j2 dest=/home/vagrant/.wp-cli/config.yml owner=vagrant
+#   template: src=config.yml.j2 dest={{ home_dir }}/.wp-cli/config.yml owner=vagrant
 
 # - name: WP-CLI Package installed
-#   command: chdir={{ wp_cli_dir }} {{ composer }} require {{ item }}=dev-master
+#   command: chdir={{ home_dir }}/.wp-cli {{ home_dir }}/.phpenv/shims/composer require {{ item }}=dev-master
 #   with_items:
 #     - danielbachhuber/dictator
 
 # - name: change owner and group
-#   file: dest={{ wp_cli_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
+#   file: dest={{ home_dir }}/.wp-cli state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
 #   become: yes
