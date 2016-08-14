@@ -29,10 +29,10 @@
   ignore_errors: yes
 
 - name: edit PATH on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
 - name: edit PATH on .bashrc
-  lineinfile: dest={{ bashrc }} line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
 - name: include task (CentOS/RHEL 6)
   include: centos6.yml

@@ -1,2 +1,1 @@
-bash_profile: /home/vagrant/.bash_profile
-bashrc: /home/vagrant/.bashrc
+home_dir: /home/vagrant
