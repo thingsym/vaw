@@ -51,7 +51,7 @@
   # PHP
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
-- name: WordPress config　(socket connection)
+- name: WordPress config (socket connection)
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbhost="localhost:{{mysql_socket}}"
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
