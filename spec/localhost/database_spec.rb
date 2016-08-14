@@ -33,7 +33,12 @@ elsif property["database"] == 'mariadb' then
     it { should be_installed }
   end
 
-  describe service('mysql') do
+  describe service('mysql'), :if => os[:release] == '6' do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe service('mariadb'), :if => os[:release] == '7' do
     it { should be_enabled }
     it { should be_running }
   end
