@@ -3,3 +3,4 @@ home_dir: /home/vagrant
 unit_test_url: https://wpcom-themes.svn.automattic.com/demo/theme-unit-test-data.xml
 unit_test_ja_url: https://raw.githubusercontent.com/jawordpressorg/theme-test-data-ja/master/wordpress-theme-test-date-ja.xml
 mysql_socket: /var/lib/mysql/mysql.sock
+WP_CLI: /usr/local/bin/wp

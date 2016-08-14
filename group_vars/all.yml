@@ -96,5 +96,3 @@ deploy_tools       : false   # true|false
 
 WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
 WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
-
-WP_CLI             : '/usr/local/bin/wp'
