@@ -1,6 +1,6 @@
 ---
 - name: openssl installed
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - openssl
     - openssl-devel

@@ -11,7 +11,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: percona 5.6 installed
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - Percona-Server-server-56
     - Percona-Server-devel-56

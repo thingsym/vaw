@@ -4,7 +4,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - name: hhvm installed (CentOS/RHEL 6)
-  yum: name=hhvm enablerepo=hop5
+  package: name=hhvm enablerepo=hop5
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - name: init.d added
@@ -20,7 +20,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: hhvm installed (CentOS/RHEL 7)
-  yum: name=hhvm enablerepo=gleez disable_gpg_check=yes
+  package: name=hhvm enablerepo=gleez disable_gpg_check=yes
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: hhvm.service added
