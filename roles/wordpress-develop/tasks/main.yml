@@ -1,6 +1,6 @@
 ---
 - name: develop tools installed
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     # - php-pecl-xdebug
     - subversion

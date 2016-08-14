@@ -8,7 +8,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: mysql installed
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - mysql-community-server
     - mysql-community-devel

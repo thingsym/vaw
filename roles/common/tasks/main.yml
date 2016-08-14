@@ -1,6 +1,6 @@
 ---
 - name: libselinux-python installed
-  yum: name=libselinux-python state=latest
+  package: name=libselinux-python state=latest
 
 - name: disable selinux
   selinux: state=disabled
@@ -12,7 +12,7 @@
   when: is_getenforce.stdout == 'Enforcing' or is_getenforce.stdout == 'Permissive'
 
 - name: ntp installed
-  yum: name=ntp
+  package: name=ntp
 - name: ntp started and enabled
   service: name=ntpd state=restarted enabled=yes
 
