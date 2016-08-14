@@ -1,8 +1,4 @@
 ---
-- name: PGP key installed
-  rpm_key: state=present key=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-  when: ansible_os_family == 'RedHat'
-
 - block:
   - name: MariaDB repository added (CentOS/RHEL 6)
     yum_repository:
