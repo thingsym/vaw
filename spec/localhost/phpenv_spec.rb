@@ -1,10 +1,18 @@
 require 'spec_helper'
+require 'shellwords'
 
 describe file('/home/vagrant/.phpenv/') do
   it { should be_directory }
   it { should be_mode 755 }
   it { should be_owned_by 'vagrant' }
   it { should be_grouped_into 'vagrant' }
+end
+
+[property["php_version"]].each do |php_version|
+  describe command("phpenv versions | grep #{php_version}") do
+    let(:disable_sudo) { true }
+    its(:stdout) { should match(/#{Regexp.escape(php_version)}/) }
+  end
 end
 
 describe command('phpenv global') do
@@ -24,6 +32,11 @@ end
 
 describe file('/home/vagrant/.phpenv/plugins/php-build') do
   it { should be_directory }
+end
+
+describe command('composer --version') do
+  let(:disable_sudo) { true }
+  its(:exit_status) { should eq 0 }
 end
 
 if property["server"] == 'apache' then

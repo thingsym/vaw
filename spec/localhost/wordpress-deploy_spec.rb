@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shellwords'
 
 if property["deploy_tools"] then
 

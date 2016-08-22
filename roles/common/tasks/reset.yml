@@ -15,26 +15,26 @@
   when: server == 'apache' or server == 'nginx' and fastcgi != 'php-fpm'
 
 - name: removed mysql
-  yum: name=mysql* state=absent
+  package: name=mysql* state=absent
   ignore_errors: yes
   when: database != 'mysql'
 
 - name: removed MariaDB
-  yum: name=MariaDB* state=absent
+  package: name=MariaDB* state=absent
   ignore_errors: yes
   when: database != 'mariadb'
 
 - name: removed mariadb
-  yum: name=mariadb* state=absent
+  package: name=mariadb* state=absent
   ignore_errors: yes
   when: database != 'mariadb'
 
 - name: removed Percona
-  yum: name=Percona* state=absent
+  package: name=Percona* state=absent
   ignore_errors: yes
   when: database != 'percona'
 
 - name: removed Percona
-  yum: name=percona* state=absent
+  package: name=percona* state=absent
   ignore_errors: yes
   when: database != 'percona'

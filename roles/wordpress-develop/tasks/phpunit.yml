@@ -1,3 +1,3 @@
 ---
 - name: PHPUnit installed
-  command: sudo -u vagrant -i -- {{ composer }} global require 'phpunit/phpunit=4.4.*'
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit=4.4.*'

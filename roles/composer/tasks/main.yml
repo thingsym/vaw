@@ -1,9 +1,0 @@
----
-- name: composer globally installed
-  shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar {{ install_dir }}/composer creates={{ install_dir }}/composer
-
-- name: edit PATH composer on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"
-
-- name: edit PATH composer on .bashrc
-  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.composer/vendor/bin:$PATH"

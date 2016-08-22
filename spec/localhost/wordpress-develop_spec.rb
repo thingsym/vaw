@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shellwords'
 
 if property["develop_tools"] then
 
@@ -10,39 +11,38 @@ if property["develop_tools"] then
     it { should be_installed }
   end
 
-  describe package('nodejs') do
-    it { should be_installed }
-  end
-
-  describe package('npm') do
-    it { should be_installed }
-  end
-
   describe package('sass') do
     let(:disable_sudo) { true }
     it { should be_installed.by('gem') }
   end
 
-  describe package('compass') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
+  describe command('/home/vagrant/.nodenv/shims/grunt --version') do
+    its(:exit_status) { should eq 0 }
   end
 
-  describe command('grunt --version') do
+  describe command('/home/vagrant/.nodenv/shims/grunt-init --version') do
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('/home/vagrant/.nodenv/shims/gulp --version') do
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('grunt-init --version') do
+  describe command('/home/vagrant/.nodenv/shims/npm-check-updates --version') do
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('gulp --version') do
+  describe command('/home/vagrant/.nodenv/shims/bower --version') do
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('bower --version') do
-   its(:exit_status) { should eq 0 }
+  describe command('/home/vagrant/.nodenv/shims/stylestats --version') do
+    its(:exit_status) { should eq 0 }
   end
+
+  # describe command('/home/vagrant/.nodenv/shims/plato --version') do
+  #   its(:exit_status) { should eq 0 }
+  # end
 
   describe file('/usr/local/share/wp-i18n/makepot.php') do
     it { should be_file }
@@ -81,12 +81,13 @@ if property["develop_tools"] then
     it { should be_executable }
   end
 
-  describe command('plato --version') do
-   its(:exit_status) { should eq 0 }
+  describe command('phpmd --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
   end
 
-  describe command('stylestats --version') do
-   its(:exit_status) { should eq 0 }
+  describe file('/var/www/html/webgrind/index.php') do
+    it { should be_file }
   end
 
 end

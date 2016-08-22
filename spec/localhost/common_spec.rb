@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shellwords'
 
 # require "pp"
 # pp property
@@ -34,10 +35,6 @@ describe service('ntpd') do
 end
 
 describe yumrepo('epel') do
-  it { should exist }
-end
-
-describe yumrepo('rpmforge') do
   it { should exist }
 end
 

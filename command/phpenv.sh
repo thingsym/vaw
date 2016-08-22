@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Usage: phpenv.sh <PHP Version Number>
 # Sub Commnad
 # phpenv.sh <list|versions|version|cache|nocache>
@@ -122,6 +122,8 @@ function install() {
 
         if [[ ! -d /var/run/php-fpm ]]; then
             sudo mkdir /var/run/php-fpm
+        fi
+        if [[ -d /var/run/php-fpm ]]; then
             sudo chmod 755 /var/run/php-fpm
             HAS_NGINX_USER=`cat /etc/passwd | grep nginx | grep -v grep | wc -l`
             if [[ $HAS_NGINX_USER > 0 ]]; then

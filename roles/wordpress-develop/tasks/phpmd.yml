@@ -1,0 +1,3 @@
+---
+- name: PHPMD installed
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpmd/phpmd=*'

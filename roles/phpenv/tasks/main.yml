@@ -1,43 +1,34 @@
 ---
 - name: git checkout phpenv
-  git: repo=https://github.com/CHH/phpenv.git dest=/home/vagrant/phpenv force=yes
-  sudo: yes
-
-- name: stat phpenv_path
-  stat: path={{ phpenv_dir }}
-  register: is_phpenv_path
-
-- name: phpenv installed
-  command: /home/vagrant/phpenv/bin/phpenv-install.sh
-  sudo_user: vagrant
-  when: not is_phpenv_path.stat.exists
-
-- name: delete /home/vagrant/phpenv
-  file: path=/home/vagrant/phpenv state=absent
-
+  git: repo=https://github.com/madumlao/phpenv.git dest={{ home_dir }}/.phpenv force=yes
+  become: yes
 - name: change mode, owner and group
-  file: dest={{ phpenv_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+  file: dest={{ home_dir }}/.phpenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
+  become: yes
 
-- name: edit PATH phpenv init on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.phpenv/bin:$PATH"
+- name: edit PATH phpenv on .bash_profile
+  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.phpenv/bin:$PATH"
 
-- name: edit PATH phpenv init on .bashrc
-  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.phpenv/bin:$PATH"
+- name: edit PATH phpenv on .bashrc
+  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=$HOME/.phpenv/bin:$PATH"
 
 - name: edit phpenv init on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="eval \"$(phpenv init -)\""
+  lineinfile: dest={{ home_dir }}/.bash_profile line="eval \"$(phpenv init -)\""
 
 - name: edit phpenv init on .bashrc
-  lineinfile: dest={{ bashrc }} line="eval \"$(phpenv init -)\""
+  lineinfile: dest={{ home_dir }}/.bashrc line="eval \"$(phpenv init -)\""
 
 - name: git checkout php-build
-  git: repo=https://github.com/CHH/php-build.git dest={{ phpenv_dir }}/plugins/php-build force=yes
-  sudo: yes
+  git: repo=https://github.com/php-build/php-build.git dest={{ home_dir }}/.phpenv/plugins/php-build force=yes
+  become: yes
+
+- name: git checkout phpenv-composer
+  git: repo=https://github.com/ngyuki/phpenv-composer.git dest={{ home_dir }}/.phpenv/plugins/phpenv-composer force=yes
+  become: yes
 
 - name: git checkout phpenv-apache-version
-  git: repo=https://github.com/thingsym/phpenv-apache-version.git dest={{ phpenv_dir }}/plugins/phpenv-apache-version force=yes
-  sudo: yes
+  git: repo=https://github.com/thingsym/phpenv-apache-version.git dest={{ home_dir }}/.phpenv/plugins/phpenv-apache-version force=yes
+  become: yes
   when: server == 'apache'
 
 - name: stat custom php.conf.j2
@@ -53,8 +44,8 @@
   when: not is_custom_php_conf.stat.exists and server == 'apache'
 
 - name: change mode, owner and group
-  file: dest={{ phpenv_dir }} state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+  file: dest={{ home_dir }}/.phpenv/plugins state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
+  become: yes
 
 - include: build-env.yml
 
@@ -67,7 +58,7 @@
   when: is_custom_default_configure_options.stat.exists
 
 - name: set default_configure_options
-  template: src=php-build.default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
+  template: src=php-build.default_configure_options.j2 dest={{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options
   when: not is_custom_default_configure_options.stat.exists
 
 - name: stat libphp5.so
@@ -90,15 +81,17 @@
   file: path=/var/log/php.log state=touch mode=0666
 
 - name: stat php_path
-  stat: path={{ phpenv_dir }}/versions/{{ php_version | default(5.6.12) }}
+  stat: path={{ home_dir }}/.phpenv/versions/{{ php_version | default(7.0.7) }}
   register: is_php_path
 
-- name: php installed by phpenv.sh
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(5.6.12) }}
+- name: php installed via phpenv.sh
+  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh {{ php_version | default(7.0.7) }}
   when: not is_php_path.stat.exists
 
 - include: php-fpm.yml
-  when: fastcgi == 'php-fpm'
 
 - name: create symbolic link
-  file: src={{ phpenv_dir }}/shims/php dest=/usr/bin/php state=link force=yes
+  file: src={{ home_dir }}/.phpenv/shims/php dest=/usr/bin/php state=link force=yes
+
+- name: prestissimo installed
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'hirak/prestissimo=^0.3'

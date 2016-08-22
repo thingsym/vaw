@@ -56,11 +56,13 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 ## Requirements
 
 * [Virtualbox](https://www.virtualbox.org)
-* [Vagrant](https://www.vagrantup.com) >= 1.7.1 (Box centos-6.x x86_64)
-* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) *optional (Vagrant plugin)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) *optional (Vagrant plugin)
-* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) *optional (Vagrant plugin)
-
+* [Vagrant](https://www.vagrantup.com) >= 1.8.4
+* [Ansible](https://www.ansible.com) >= 2.1.0.0
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) optional (Vagrant plugin)
+* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) optional (Vagrant plugin)
+optional (Vagrant plugin)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) optional (Vagrant plugin)
 
 ## Usage
 
@@ -79,6 +81,7 @@ Install the Vagrant plugin on the terminal as necessary.
 
 	vagrant plugin install vagrant-hostsupdater
 	vagrant plugin install vagrant-cachier
+	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-serverspec
 
 
@@ -135,7 +138,7 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/centos6-default'
+	vm_box                = 'vaw/centos7-default'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -143,14 +146,16 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	public_ip             = ''
 
+	vbguest_auto_update = false
 
-* `vm_box` (required) name of Vagrant Box (default: `vaw/centos6-default`)
+* `vm_box` (required) name of Vagrant Box (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
 	* auto create `wordpress` directory and synchronized
 * `public_ip` IP address of bridged connection (default: ``)
+* `vbguest_auto_update` update VirtualBox Guest Additions (default: false / value: true | false)
 
 ### Provisioning configuration file (YAML)
 
@@ -245,7 +250,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
 
-	php_version        : 5.6.12
+	php_version        : 7.0.7
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -255,7 +260,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 
-	WP_CLI             : '/usr/local/bin/wp'
 
 
 #### Server & Database Settings ##
@@ -387,7 +391,7 @@ Disable the setting case
 
 * `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
-* `php_version` version of PHP (default: 5.6.12)
+* `php_version` version of PHP (default: 7.0.7)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
 
@@ -406,10 +410,12 @@ You can create the same environment as the production environment, when you buil
 
 * backup (stores backup file. create automatically at running script, if it does not exist.)
 * command (stores shell script)
+* config (stores Custom Config)
+* config.sample (sample Custom Config)
 * group_vars (stores the provisioning configuration file of Ansible)
 	* all.yml (provisioning configuration file)
 * hosts
-	* development (inventory file)
+	* local (inventory file)
 * import (stores import data)
 * plugins (stores WordPress plugin zip format files)
 * Rakefile (Rakefile of ServerSpec)
@@ -431,6 +437,8 @@ VAW will be built in the directory structure of the following minimum unit.
 
 * group_vars (stores the provisioning configuration file of Ansible)
 	* all.yml (provisioning configuration file)
+* hosts
+	* local (inventory file)
 * roles (stores Ansible playbook of each role)
 * site.yml (Ansible playbook core file)
 * Vagrantfile (Vagrant configuration file)
@@ -481,9 +489,9 @@ You can build the environment in a short period of time compared with provisioni
 * [WordPress](https://wordpress.org)
 * [phpenv](https://github.com/CHH/phpenv)
 * [php-build](https://php-build.github.io)
-* [PHP](https://secure.php.net) ver.5.6.12 (Zend OPcache, APCu)
+* [PHP](https://secure.php.net) (Zend OPcache, APCu) via [phpenv](https://github.com/CHH/phpenv)
+* [Composer](https://getcomposer.org/) via [phpenv](https://github.com/CHH/phpenv)
 * [OpenSSL](https://www.openssl.org) (Selectable)
-* [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org)
 * [Git](http://git-scm.com)
 
@@ -491,7 +499,8 @@ You can build the environment in a short period of time compared with provisioni
 
 * [Subversion](https://subversion.apache.org)
 * [gettext](https://www.gnu.org/software/gettext/)
-* [Node.js](http://nodejs.org)
+* [nodenv](https://github.com/nodenv/nodenv)
+* [Node.js](http://nodejs.org) via [nodenv](https://github.com/nodenv/nodenv)
 * [npm](https://www.npmjs.com)
 * [Grunt](http://gruntjs.com)
 * [gulp.js](http://gulpjs.com)
@@ -505,6 +514,8 @@ You can build the environment in a short period of time compared with provisioni
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
+* [PHPMD](https://phpmd.org/)
+* [webgrind](https://github.com/jokkedk/webgrind)
 
 ### Deploy Tools (Activatable)
 
@@ -517,10 +528,13 @@ You can build the environment in a short period of time compared with provisioni
 
 * [rbenv](https://github.com/sstephenson/rbenv)
 * [ruby-build](https://github.com/sstephenson/ruby-build)
-* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+* [Ruby](https://www.ruby-lang.org/) via [rbenv](https://github.com/sstephenson/rbenv)
+
 
 ### Helper command
 
+* after_provision.sh
+* before_provision.sh
 * db_backup.sh
 * phpenv.sh
 
@@ -530,7 +544,7 @@ You can build the environment in a short period of time compared with provisioni
 
 ### db_backup.sh
 
-`db_backup.sh` will back up the database. Save at `backup-% Y% m% d% H% M% S.sql` format in the `backup` folder.
+`db_backup.sh` will back up the database. Save at `backup-%Y%m%d%H%M%S.sql` format in the `backup` folder.
 
 	cd /var/www/html
 	/vagrant/command/db_backup.sh
@@ -539,13 +553,15 @@ You can build the environment in a short period of time compared with provisioni
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh 5.6.12
+	/vagrant/command/phpenv.sh 7.0.7
 
 ## Custom Config
 
 When you add a tuning configuration file that you edited in the directory `config`, place it at the time of provisioning.
 As follows editable configuration files.
 
+* default-ruby-gems.j2
+* default-node-packages.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
@@ -596,6 +612,27 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.0 - 2016.08.22
+	* bump up php 7.0.7
+	* change to package module from yum module
+	* change default box to CentOS 7 from CentOS 6
+	* add synced_folder /vagrant
+	* add vagrant-vbguest
+	* change to yum_repository module from template module
+	* fix home_dir path into playbooks
+	* add phpenv-composer, remove composer role
+	* fix phpenv role
+	* add nodenv, remove nodejs, npm
+	* change provision to ansible_local from inline shell
+	* remove RepoForge repository
+	* add webgrind
+	* add phpmd
+	* add prestissimo
+	* fix re2c via yum
+	* fix tests
+	* add gulp-cli and npm-check-updates, remove gulp
+	* change to become, since sudo has been deprecated
+	* fix phpenv.sh
 * version 0.3.3 - 2016.05.31
 	* fix playbooks
 	* remove compass gem
@@ -655,4 +692,4 @@ If you would like to contribute, here are some notes and guidlines.
 
 VAW is distributed under GPLv3.
 
-Copyright (c) 2014-2015 thingsym
+Copyright (c) 2014-2016 thingsym

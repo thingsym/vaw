@@ -11,7 +11,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: percona 5.6 installed
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - Percona-Server-server-56
     - Percona-Server-devel-56
@@ -19,7 +19,7 @@
     - Percona-Server-shared-56
     - MySQL-python
 
-- name: stat my.cnf.j2
+- name: stat custom my.cnf.j2
   stat: path=/vagrant/config/my.cnf.j2
   register: is_custom_my_conf
 

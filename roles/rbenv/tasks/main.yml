@@ -1,37 +1,45 @@
 ---
 - name: git checkout rbenv
-  git: repo=https://github.com/sstephenson/rbenv.git dest=/home/vagrant/.rbenv force=yes
-  sudo: yes
-- name: change owner and group
-  file: dest=/home/vagrant/.rbenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+  git: repo=https://github.com/rbenv/rbenv.git dest={{ home_dir }}/.rbenv force=yes
+  become: yes
+- name: change mode, owner and group
+  file: dest={{ home_dir }}/.rbenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
+  become: yes
 
 - name: edit PATH rbenv on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="export PATH=$HOME/.rbenv/bin:$PATH"
+  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.rbenv/bin:$PATH"
 
 - name: edit PATH rbenv on .bashrc
-  lineinfile: dest={{ bashrc }} line="export PATH=$HOME/.rbenv/bin:$PATH"
+  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=$HOME/.rbenv/bin:$PATH"
 
 - name: edit rbenv init on .bash_profile
-  lineinfile: dest={{ bash_profile }} line="eval \"$(rbenv init -)\""
+  lineinfile: dest={{ home_dir }}/.bash_profile line="eval \"$(rbenv init -)\""
 
 - name: edit rbenv init on .bashrc
-  lineinfile: dest={{ bashrc }} line="eval \"$(rbenv init -)\""
+  lineinfile: dest={{ home_dir }}/.bashrc line="eval \"$(rbenv init -)\""
 
 - name: git checkout ruby-build
-  git: repo=https://github.com/sstephenson/ruby-build.git dest=/home/vagrant/.rbenv/plugins/ruby-build force=yes
-  sudo: yes
+  git: repo=https://github.com/rbenv/ruby-build.git dest={{ home_dir }}/.rbenv/plugins/ruby-build force=yes
+  become: yes
 
 - name: git checkout rbenv-gem-rehash
-  git: repo=https://github.com/sstephenson/rbenv-gem-rehash.git dest=/home/vagrant/.rbenv/plugins/rbenv-gem-rehash force=yes
-  sudo: yes
+  git: repo=https://github.com/rbenv/rbenv-gem-rehash.git dest={{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash force=yes
+  become: yes
 
-- name: change owner and group
-  file: dest=/home/vagrant/.rbenv/plugins state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  sudo: yes
+- name: git checkout rbenv-default-gems
+  git: repo=https://github.com/rbenv/rbenv-default-gems.git dest={{ home_dir }}/.rbenv/plugins/rbenv-default-gems force=yes
+  become: yes
+
+- name: git checkout rbenv-bundler
+  git: repo=https://github.com/carsomyr/rbenv-bundler.git dest={{ home_dir }}/.rbenv/plugins/rbenv-bundler force=yes
+  become: yes
+
+- name: change mode, owner and group
+  file: dest={{ home_dir }}/.rbenv/plugins state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
+  become: yes
 
 - name: build environment
-  yum: name={{ item }} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - gcc
     - cmake
@@ -40,9 +48,17 @@
     - readline-devel
     - zlib-devel
 
-- name: ruby installed by rbenv
-  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.1.4) }}
+- name: stat rbenv_default_gems
+  stat: path=/vagrant/config/default-ruby-gems.j2
+  register: is_rbenv_default_gems
+
+- name: default-gems changed
+  template: src=/vagrant/config/default-ruby-gems.j2 dest={{ home_dir }}/.rbenv/default-gems
+  when: is_rbenv_default_gems.stat.exists
+
+- name: ruby installed via rbenv
+  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.3.1) }}
   ignore_errors: yes
 
 - command: sudo -u vagrant -i -- rbenv rehash
-- command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.1.4) }}
+- command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.3.1) }}

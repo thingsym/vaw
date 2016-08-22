@@ -1,6 +1,6 @@
 ---
 - name: deploy tools installed
-  yum: name={{ item }}
+  package: name={{ item }}
   with_items:
     - sshpass
     - lftp

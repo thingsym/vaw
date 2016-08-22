@@ -1,8 +1,9 @@
 ---
-- name: "VAW (Vagrant Ansible WordPress) v0.3.3"
+- name: "VAW (Vagrant Ansible WordPress) v0.4.0"
   hosts: localhost
   remote_user: vagrant
   become: yes
+  connection: local
 
   roles:
     - { role: before-command, tags: [before-command] }
@@ -16,10 +17,10 @@
     - { role: nginx, tags: [nginx], when: "server == 'nginx'" }
     - { role: phpenv, tags: [phpenv] }
     - { role: hhvm, tags: [hhvm], when: "server == 'nginx' and fastcgi == 'hhvm'" }
-    - { role: composer, tags: [composer] }
     - { role: wp-cli, tags: [wp-cli] }
     - { role: wordpress, tags: [wordpress] }
     - { role: rbenv, tags: [rbenv], when: "develop_tools == true or deploy_tools == true" }
+    - { role: nodenv, tags: [nodenv], when: "develop_tools == true" }
     - { role: wordpress-develop, tags: [wordpress-develop], when: "develop_tools == true" }
     - { role: wordpress-deploy, tags: [wordpress-deploy], when: "deploy_tools == true" }
     - { role: after-command, tags: [after-command] }
