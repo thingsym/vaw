@@ -55,11 +55,13 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 ## Requirements
 
 * [Virtualbox](https://www.virtualbox.org)
-* [Vagrant](https://www.vagrantup.com) >= 1.7.1 (Box centos-6.x x86_64)
-* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) *optional (Vagrant plugin)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) *optional (Vagrant plugin)
-* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) *optional (Vagrant plugin)
-
+* [Vagrant](https://www.vagrantup.com) >= 1.8.4
+* [Ansible](https://www.ansible.com) >= 2.1.0.0
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) optional (Vagrant plugin)
+* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) optional (Vagrant plugin)
+optional (Vagrant plugin)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) optional (Vagrant plugin)
 
 ## Usage
 
@@ -77,6 +79,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 	vagrant plugin install vagrant-hostsupdater
 	vagrant plugin install vagrant-cachier
+	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-serverspec
 
 
@@ -128,7 +131,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/centos6-default'
+	vm_box                = 'vaw/centos7-default'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -136,14 +139,16 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	public_ip             = ''
 
+	vbguest_auto_update = false
 
-* `vm_box` (required) Vagrant Box 名 (default: `vaw/centos6-default`)
+* `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: ``)
+* `vbguest_auto_update` update VirtualBox Guest Additions (default: false / value: true | false)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -237,7 +242,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	WP_DEBUG           : true    # true|false
 	SAVEQUERIES        : true    # true|false
 
-	php_version        : 5.6.12
+	php_version        : 7.0.7
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -246,8 +251,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
-
-	WP_CLI             : '/usr/local/bin/wp'
 
 
 #### Server & Database Settings ##
@@ -381,7 +384,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: 5.6.12)
+* `php_version` PHPバージョン (default: 7.0.7)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
 
@@ -394,12 +397,13 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 ### Full Layout
 
 * backup (バックアップファイルを格納。無い場合、バックアップスクリプト起動時に自動作成)
-* config (チューニング用設定ファイルを格納)
 * command (シェルスクリプトを格納)
+* config (チューニング用設定ファイルを格納)
+* config.sample (チューニング用設定ファイルサンプル)
 * group_vars (Ansible のプロビジョニング設定ファイルを格納)
 	* all.yml (プロビジョニング設定ファイル)
 * hosts
-	* development (inventory file)
+	* local (inventory file)
 * import (インポートデータを格納)
 * plugins (zip 形式のプラグインファイルを格納)
 * Rakefile (ServerSpec の Rakefile)
@@ -421,6 +425,8 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 
 * group_vars (Ansible のプロビジョニング設定ファイルを格納)
 	* all.yml (プロビジョニング設定ファイル)
+* hosts
+	* local (inventory file)
 * roles (Ansible playbook を格納)
 * site.yml (Ansible playbook 本体ファイル)
 * Vagrantfile (Vagrant 設定ファイル)
@@ -467,9 +473,9 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 * [WordPress](https://wordpress.org)
 * [phpenv](https://github.com/CHH/phpenv)
 * [php-build](https://php-build.github.io)
-* [PHP](https://secure.php.net) ver.5.6.12 (Zend OPcache, APCu)
+* [PHP](https://secure.php.net) (Zend OPcache, APCu) via [phpenv](https://github.com/CHH/phpenv)
+* [Composer](https://getcomposer.org/) via [phpenv](https://github.com/CHH/phpenv)
 * [OpenSSL](https://www.openssl.org) (Selectable)
-* [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org)
 * [Git](http://git-scm.com)
 
@@ -477,7 +483,8 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 
 * [Subversion](https://subversion.apache.org)
 * [gettext](https://www.gnu.org/software/gettext/)
-* [Node.js](http://nodejs.org)
+* [nodenv](https://github.com/nodenv/nodenv)
+* [Node.js](http://nodejs.org) via [nodenv](https://github.com/nodenv/nodenv)
 * [npm](https://www.npmjs.com)
 * [Grunt](http://gruntjs.com)
 * [gulp.js](http://gulpjs.com)
@@ -491,6 +498,8 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
+* [PHPMD](https://phpmd.org/)
+* [webgrind](https://github.com/jokkedk/webgrind)
 
 ### Deploy Tools (Activatable)
 
@@ -503,10 +512,12 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 
 * [rbenv](https://github.com/sstephenson/rbenv)
 * [ruby-build](https://github.com/sstephenson/ruby-build)
-* [Ruby](https://www.ruby-lang.org/) ver.2.1.4
+* [Ruby](https://www.ruby-lang.org/) via [rbenv](https://github.com/sstephenson/rbenv)
 
 ### Helper command
 
+* after_provision.sh
+* before_provision.sh
 * db_backup.sh
 * phpenv.sh
 
@@ -525,13 +536,15 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh 5.6.12
+	/vagrant/command/phpenv.sh 7.0.7
 
 ## Custom Config
 
 ディレクトリ `config` に編集したチューニング用設定ファイルを追加すると、プロビジョニング時に配置します。
 チューニング用設定ファイルは以下の通り。
 
+* default-ruby-gems.j2
+* default-node-packages.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
