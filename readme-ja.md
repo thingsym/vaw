@@ -601,6 +601,27 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.0 - 2016.08.22
+	* bump up php 7.0.7
+	* change to package module from yum module
+	* change default box to CentOS 7 from CentOS 6
+	* add synced_folder /vagrant
+	* add vagrant-vbguest
+	* change to yum_repository module from template module
+	* fix home_dir path into playbooks
+	* add phpenv-composer, remove composer role
+	* fix phpenv role
+	* add nodenv, remove nodejs, npm
+	* change provision to ansible_local from inline shell
+	* remove RepoForge repository
+	* add webgrind
+	* add phpmd
+	* add prestissimo
+	* fix re2c via yum
+	* fix tests
+	* add gulp-cli and npm-check-updates, remove gulp
+	* change to become, since sudo has been deprecated
+	* fix phpenv.sh
 * version 0.3.3 - 2016.05.31
 	* fix playbooks
 	* remove compass gem
@@ -660,4 +681,4 @@ If you would like to contribute, here are some notes and guidlines.
 
 VAW is distributed under GPLv3.
 
-Copyright (c) 2014-2015 thingsym
+Copyright (c) 2014-2016 thingsym
