@@ -3,7 +3,7 @@ require 'shellwords'
 
 if property["develop_tools"] then
 
-  ['0.11.2'].each do |node_version|
+  ['4.5.0'].each do |node_version|
     describe command("nodenv versions | grep #{node_version}") do
       let(:disable_sudo) { true }
       its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
@@ -12,12 +12,12 @@ if property["develop_tools"] then
 
   describe command('node -v') do
     let(:disable_sudo) { true }
-    its(:stdout) { should match '0.11.2' }
+    its(:stdout) { should match '4.5.0' }
   end
 
   describe command('nodenv global') do
     let(:disable_sudo) { true }
-    its(:stdout) { should match '0.11.2' }
+    its(:stdout) { should match '4.5.0' }
   end
 
   describe file('/home/vagrant/.bash_profile') do

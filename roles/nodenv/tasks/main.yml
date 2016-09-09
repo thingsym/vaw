@@ -35,8 +35,8 @@
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv
-  command: sudo -u vagrant -i -- nodenv install {{ node_version | default('0.11.2') }}
+  command: sudo -u vagrant -i -- nodenv install {{ node_version | default('4.5.0') }}
   ignore_errors: yes
 
 - command: sudo -u vagrant -i -- nodenv rehash
-- command: sudo -u vagrant -i -- nodenv global {{ node_version | default('0.11.2') }}
+- command: sudo -u vagrant -i -- nodenv global {{ node_version | default('4.5.0') }}
