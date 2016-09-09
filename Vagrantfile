@@ -28,6 +28,7 @@ provision = <<-EOT
     echo '7' > /etc/yum/vars/releasever
   fi
 
+  yum clean all
   yum -y install epel-release
 EOT
 
