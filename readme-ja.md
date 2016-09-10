@@ -60,7 +60,7 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) optional (Vagrant plugin)
 * [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) optional (Vagrant plugin)
 optional (Vagrant plugin)
-* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) optional (Vagrant plugin)
 * [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) optional (Vagrant plugin)
 
 ## Usage
@@ -601,6 +601,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.1 - 2016.09.10
+	* fix inline shell in Vagrantfile
+	* fix nodejs version
 * version 0.4.0 - 2016.08.22
 	* bump up php 7.0.7
 	* change to package module from yum module
