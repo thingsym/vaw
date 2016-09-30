@@ -2,9 +2,7 @@
 - name: git checkout phpenv
   git: repo=https://github.com/madumlao/phpenv.git dest={{ home_dir }}/.phpenv force=yes
   become: yes
-- name: change mode, owner and group
-  file: dest={{ home_dir }}/.phpenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  become: yes
+  become_user: vagrant
 
 - name: edit PATH phpenv on .bash_profile
   lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.phpenv/bin:$PATH"
@@ -21,14 +19,17 @@
 - name: git checkout php-build
   git: repo=https://github.com/php-build/php-build.git dest={{ home_dir }}/.phpenv/plugins/php-build force=yes
   become: yes
+  become_user: vagrant
 
 - name: git checkout phpenv-composer
   git: repo=https://github.com/ngyuki/phpenv-composer.git dest={{ home_dir }}/.phpenv/plugins/phpenv-composer force=yes
   become: yes
+  become_user: vagrant
 
 - name: git checkout phpenv-apache-version
   git: repo=https://github.com/thingsym/phpenv-apache-version.git dest={{ home_dir }}/.phpenv/plugins/phpenv-apache-version force=yes
   become: yes
+  become_user: vagrant
   when: server == 'apache'
 
 - name: stat custom php.conf.j2
@@ -42,10 +43,6 @@
 - name: php.conf changed
   template: src=php.conf.j2 dest=/etc/httpd/conf.d/php.conf
   when: not is_custom_php_conf.stat.exists and server == 'apache'
-
-- name: change mode, owner and group
-  file: dest={{ home_dir }}/.phpenv/plugins state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  become: yes
 
 - include: build-env.yml
 
