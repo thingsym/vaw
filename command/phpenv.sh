@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Usage: phpenv.sh <PHP Version Number>
 # Sub Commnad
 # phpenv.sh <list|versions|version|cache|nocache>
