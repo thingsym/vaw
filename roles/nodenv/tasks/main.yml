@@ -2,9 +2,7 @@
 - name: git checkout nodenv
   git: repo=https://github.com/nodenv/nodenv.git dest={{ home_dir }}/.nodenv force=yes
   become: yes
-- name: change mode, owner and group
-  file: dest={{ home_dir }}/.nodenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  become: yes
+  become_user: vagrant
 
 - name: edit PATH nodenv on .bash_profile
   lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.nodenv/bin:$PATH"
@@ -38,5 +36,8 @@
   command: sudo -u vagrant -i -- nodenv install {{ node_version | default('4.5.0') }}
   ignore_errors: yes
 
-- command: sudo -u vagrant -i -- nodenv rehash
-- command: sudo -u vagrant -i -- nodenv global {{ node_version | default('4.5.0') }}
+- name: nodenv rehash
+  command: sudo -u vagrant -i -- nodenv rehash
+
+- name: nodenv global
+  command: sudo -u vagrant -i -- nodenv global {{ node_version | default('4.5.0') }}

@@ -5,18 +5,18 @@ if property["develop_tools"] then
 
   ['4.5.0'].each do |node_version|
     describe command("nodenv versions | grep #{node_version}") do
-      let(:disable_sudo) { true }
+      let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
     end
   end
 
   describe command('node -v') do
-    let(:disable_sudo) { true }
+    let(:sudo_options) { '-u vagrant -i' }
     its(:stdout) { should match '4.5.0' }
   end
 
   describe command('nodenv global') do
-    let(:disable_sudo) { true }
+    let(:sudo_options) { '-u vagrant -i' }
     its(:stdout) { should match '4.5.0' }
   end
 
@@ -39,7 +39,7 @@ if property["develop_tools"] then
   end
 
   describe command('npm -v') do
-    let(:disable_sudo) { true }
+    let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
   end
 end

@@ -10,13 +10,13 @@ end
 
 [property["php_version"]].each do |php_version|
   describe command("phpenv versions | grep #{php_version}") do
-    let(:disable_sudo) { true }
+    let(:sudo_options) { '-u vagrant -i' }
     its(:stdout) { should match(/#{Regexp.escape(php_version)}/) }
   end
 end
 
 describe command('phpenv global') do
-  let(:disable_sudo) { true }
+  let(:sudo_options) { '-u vagrant -i' }
   its(:stdout) { should match /#{property["php_version"]}/ }
 end
 
@@ -35,7 +35,7 @@ describe file('/home/vagrant/.phpenv/plugins/php-build') do
 end
 
 describe command('composer --version') do
-  let(:disable_sudo) { true }
+  let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }
 end
 
