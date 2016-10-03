@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [[ -d /vagrant/backup ]]; then
 	echo "exist /vagrant/backup"
 else

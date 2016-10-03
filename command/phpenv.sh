@@ -3,12 +3,12 @@
 # Sub Commnad
 # phpenv.sh <list|versions|version|cache|nocache>
 
+set -e
+
 function global() {
     phpenv global $PHP_VERSION
-
     if [[ $HTTPD_ACTIVE > 0 ]]; then
         sudo chown vagrant:vagrant /etc/httpd/conf.d/
-
         if [[ $PHP_VERSION =~ ^5 ]]; then
             sed -i -e "s/^#LoadModule php5_module/LoadModule php5_module/" $HTTPD_PHP_CONF
             sed -i -e "s/^LoadModule php7_module/#LoadModule php7_module/" $HTTPD_PHP_CONF
@@ -73,10 +73,12 @@ function install() {
     if [[ -d /etc/httpd/modules ]]; then
         if [[ -f /etc/httpd/modules/libphp5.so ]]; then
             cp /etc/httpd/modules/libphp5.so /home/vagrant/.phpenv/versions/$PHP_VERSION/libphp5.so
+            echo "[Info]: copy /etc/httpd/modules/libphp5.so to /home/vagrant/.phpenv/versions/$PHP_VERSION/"
         fi
 
         if [[ -f /etc/httpd/modules/libphp7.so ]]; then
             cp /etc/httpd/modules/libphp7.so /home/vagrant/.phpenv/versions/$PHP_VERSION/libphp7.so
+            echo "[Info]: copy /etc/httpd/modules/libphp7.so to /home/vagrant/.phpenv/versions/$PHP_VERSION/"
         fi
 
         sudo chown root:root /etc/httpd/modules
