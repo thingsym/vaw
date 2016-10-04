@@ -2,9 +2,7 @@
 - name: build environment
   package: name={{ item }} state=latest
   with_items:
-    - patch
     - libxml2-devel
-    - bison
     - bison-devel
     - openssl-devel
     - curl

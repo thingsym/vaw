@@ -1,0 +1,3 @@
+---
+- name: Development Tools installed
+  package: name="@Development Tools" state=present
