@@ -39,7 +39,6 @@
 - name: build environment
   package: name={{ item }} state=latest
   with_items:
-    - gcc
     - cmake
     - openssl-devel
     - libyaml-devel
