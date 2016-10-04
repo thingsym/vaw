@@ -2,9 +2,7 @@
 - name: git checkout rbenv
   git: repo=https://github.com/rbenv/rbenv.git dest={{ home_dir }}/.rbenv force=yes
   become: yes
-- name: change mode, owner and group
-  file: dest={{ home_dir }}/.rbenv state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  become: yes
+  become_user: vagrant
 
 - name: edit PATH rbenv on .bash_profile
   lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.rbenv/bin:$PATH"
@@ -21,27 +19,26 @@
 - name: git checkout ruby-build
   git: repo=https://github.com/rbenv/ruby-build.git dest={{ home_dir }}/.rbenv/plugins/ruby-build force=yes
   become: yes
+  become_user: vagrant
 
 - name: git checkout rbenv-gem-rehash
   git: repo=https://github.com/rbenv/rbenv-gem-rehash.git dest={{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash force=yes
   become: yes
+  become_user: vagrant
 
 - name: git checkout rbenv-default-gems
   git: repo=https://github.com/rbenv/rbenv-default-gems.git dest={{ home_dir }}/.rbenv/plugins/rbenv-default-gems force=yes
   become: yes
+  become_user: vagrant
 
 - name: git checkout rbenv-bundler
   git: repo=https://github.com/carsomyr/rbenv-bundler.git dest={{ home_dir }}/.rbenv/plugins/rbenv-bundler force=yes
   become: yes
-
-- name: change mode, owner and group
-  file: dest={{ home_dir }}/.rbenv/plugins state=directory mode=0755 recurse=yes owner=vagrant group=vagrant
-  become: yes
+  become_user: vagrant
 
 - name: build environment
   package: name={{ item }} state=latest
   with_items:
-    - gcc
     - cmake
     - openssl-devel
     - libyaml-devel
@@ -60,5 +57,8 @@
   command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.3.1) }}
   ignore_errors: yes
 
-- command: sudo -u vagrant -i -- rbenv rehash
-- command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.3.1) }}
+- name: rbenv rehash
+  command: sudo -u vagrant -i -- rbenv rehash
+
+- name: rbenv global
+  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.3.1) }}

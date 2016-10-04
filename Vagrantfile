@@ -17,16 +17,12 @@ vbguest_auto_update = false
 ## That's all, stop setting. ##
 
 provision = <<-EOT
-  VERSION=$(awk '{print $3}' /etc/*-release)
-  if [[ $VERSION =~ ^release ]]; then
-    VERSION=$(awk '{print $4}' /etc/*-release)
+  if [ -e /etc/os-release ]; then
+    MAJOR=$(awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' | sed 's/"//g' | sed -E 's/\.[0-9]{2}//g')
+  elif [ -e /etc/redhat-release ]; then
+    MAJOR=$(awk '{print $3}' /etc/redhat-release | sed -E 's/\.[0-9]+//g')
   fi
-
-  if [[ $VERSION =~ ^6 ]]; then
-    echo '6' > /etc/yum/vars/releasever
-  elif [[ $VERSION =~ ^7 ]]; then
-    echo '7' > /etc/yum/vars/releasever
-  fi
+  echo $MAJOR > /etc/yum/vars/releasever
 
   yum clean all
   yum -y install epel-release

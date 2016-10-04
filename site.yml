@@ -1,5 +1,5 @@
 ---
-- name: "VAW (Vagrant Ansible WordPress) v0.4.1"
+- name: "VAW (Vagrant Ansible WordPress) v0.4.2"
   hosts: localhost
   remote_user: vagrant
   become: yes
@@ -8,6 +8,7 @@
   roles:
     - { role: before-command, tags: [before-command] }
     - { role: common, tags: [common] }
+    - { role: develop-tools, tags: [develop-tools] }
     - { role: git, tags: [git] }
     - { role: mysql, tags: [mysql], when: "database == 'mysql'" }
     - { role: mariadb, tags: [mariadb], when: "database == 'mariadb'" }
