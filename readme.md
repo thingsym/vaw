@@ -612,6 +612,11 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.2 - 2016.10.04
+	* add develop-tools role, fix build environment
+	* fix the inline script to get the major version number
+	* fix sudo user
+	* fix shebang
 * version 0.4.1 - 2016.09.10
 	* fix inline shell in Vagrantfile
 	* fix nodejs version
@@ -625,7 +630,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* fix home_dir path into playbooks
 	* add phpenv-composer, remove composer role
 	* fix phpenv role
-	* add nodenv, remove nodejs, npm
+	* add nodenv role, remove nodejs, npm
 	* change provision to ansible_local from inline shell
 	* remove RepoForge repository
 	* add webgrind
@@ -658,11 +663,11 @@ If you would like to contribute, here are some notes and guidlines.
 * version 0.2.0 - 2015.08.31
 	* fix Fabric
 	* fix WordPress plugins
-	* fix rbenv and hhvm, MariaDB
+	* fix rbenv and hhvm, MariaDB roles
 	* fix memory 1.5GB
 	* remove php55 and php-fpm roles
 	* add command phpenv.sh
-	* add phpenv, replaced from php
+	* add phpenv role, replaced from php
 * version 0.1.8 - 2015.08.04
 	* fix WordPress plugins
 	* add PHPUnit Selenium
