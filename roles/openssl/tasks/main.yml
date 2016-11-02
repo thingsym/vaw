@@ -14,10 +14,10 @@
   when: not is_ssl_path.stat.exists
 
 - name: generate a key
-  shell: openssl genrsa -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key 2048
+  command: openssl genrsa -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key 2048
 
 - name: Generate a certificate
-  shell: openssl req -new -x509 -key /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert -days 3650 -subj /CN={{ HOSTNAME }}
+  command: openssl req -new -x509 -key /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert -days 3650 -subj /CN={{ HOSTNAME }}
 
 - name: stat ssl.conf
   stat: path=/etc/httpd/conf.d/ssl.conf
