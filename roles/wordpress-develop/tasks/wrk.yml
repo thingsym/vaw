@@ -6,7 +6,7 @@
   command: make chdir={{ home_dir }}/wrk
   become: yes
 - name: make wrk
-  copy: src={{ home_dir }}/wrk/wrk dest=/usr/local/bin mode=755
+  copy: src={{ home_dir }}/wrk/wrk dest=/usr/local/bin mode=0755
   become: yes
 - name: delete wrk dir
   file: path={{ home_dir }}/wrk state=absent
