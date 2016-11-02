@@ -17,7 +17,7 @@ describe package('libselinux-python') do
 end
 
 describe selinux do
-  it { should be_disabled }
+  it { should_not be_enforcing }
 end
 
 describe service('iptables') do
