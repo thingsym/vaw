@@ -51,7 +51,7 @@
   register: is_custom_default_configure_options
 
 - name: custom default_configure_options changed
-  template: src=/vagrant/config/php-build.default_configure_options.j2 dest={{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options
+  template: src=/vagrant/config/php-build.default_configure_options.j2 dest={{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options
   when: is_custom_default_configure_options.stat.exists
 
 - name: set default_configure_options
