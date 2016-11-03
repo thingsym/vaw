@@ -71,11 +71,12 @@
 
 - name: set WP_DEBUG in wp-config.php
   replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'WP_DEBUG', {{ WP_DEBUG }} );\n\n/* That"
+
 - name: set SAVEQUERIES in wp-config.php
   replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'SAVEQUERIES', {{ SAVEQUERIES }} );\n\n/* That"
 
 - name: set SSL in wp-config.php
-  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="#define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
+  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
   when: ssl_admin == true
 
 - name: change wp option for subdirectory install
