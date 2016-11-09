@@ -1,6 +1,6 @@
 ---
 - block:
-  - name: MariaDB repository added (CentOS/RHEL 6)
+  - name: MariaDB 10.1 repository added (CentOS/RHEL 6)
     yum_repository:
       name: mariadb
       description: MariaDB 10.1 centos repository
@@ -11,18 +11,17 @@
   - name: MariaDB installed (CentOS/RHEL 6)
     package: name={{ item }} state=latest
     with_items:
+      - MariaDB-server
       - MariaDB-client
       - MariaDB-common
       - MariaDB-compat
       - MariaDB-devel
-      - MariaDB-server
       - MariaDB-shared
       - MySQL-python
-
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - block:
-  - name: MariaDB repository installed (CentOS/RHEL 7)
+  - name: MariaDB 10.1 repository installed (CentOS/RHEL 7)
     yum_repository:
       name: mariadb
       description: MariaDB 10.1 centos repository
@@ -33,13 +32,13 @@
   - name: MariaDB installed (CentOS/RHEL 7)
     package: name={{ item }} state=latest
     with_items:
+      - mariadb-server
+      - MariaDB-client
       - mariadb
       - mariadb-devel
-      - mariadb-server
       - mariadb-libs
       - mariadb-embedded
       - MySQL-python
-
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: stat custom my.cnf.j2
