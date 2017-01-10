@@ -26,7 +26,7 @@
 - include: wp-i18n.yml
 - include: phpunit.yml
 - include: wp-phpcs.yml
-- include: opcache.yml
+- include: opcache-viewer.yml
 - include: wrk.yml
 - include: selenium.yml
 - include: phpmd.yml
