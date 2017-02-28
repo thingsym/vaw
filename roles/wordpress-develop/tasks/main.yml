@@ -27,8 +27,8 @@
 - include: phpunit.yml
 - include: wp-phpcs.yml
 - include: opcache-viewer.yml
+- include: cachetool.yml
 - include: wrk.yml
 - include: selenium.yml
 - include: phpmd.yml
 - include: webgrind.yml
-

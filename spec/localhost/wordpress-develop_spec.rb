@@ -62,6 +62,11 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe command('cachetool -V') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
   describe file('/var/www/html/opcache') do
     it { should be_directory }
   end
