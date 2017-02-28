@@ -23,6 +23,7 @@
     - stylestats
     - plato
 
+- include: yarn.yml
 - include: wp-i18n.yml
 - include: phpunit.yml
 - include: wp-phpcs.yml
