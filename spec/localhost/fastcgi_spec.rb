@@ -53,6 +53,10 @@ if property["server"] == 'nginx' then
       it { should be_running }
     end
 
+    describe file('/var/run/php-fpm/php-fcgi.pid') do
+      it { should be_socket }
+    end
+
   elsif property["fastcgi"] == 'hhvm' then
 
     describe file('/var/run/hhvm') do

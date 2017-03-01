@@ -72,6 +72,15 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe command('phpcs -i') do
+    let(:disable_sudo) { true }
+    its(:stdout) { should match /WordPress\-Core/ }
+  end
+
+  describe file('/home/vagrant/.phpenv/versions/' + property["php_version"] + '/composer/vendor/squizlabs/php_codesniffer') do
+    it { should be_directory }
+  end
+
   describe file('/var/www/html/opcache') do
     it { should be_directory }
   end
