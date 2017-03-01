@@ -60,6 +60,7 @@ plugins            :
                         - developer
                         - monster-widget
                         - wordpress-beta-tester
+                        - wp-multibyte-patch
 
 # theme_mod          :
 #                        background_color: 'cccccc'
