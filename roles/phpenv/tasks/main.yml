@@ -90,5 +90,8 @@
 - name: create symbolic link
   file: src={{ home_dir }}/.phpenv/shims/php dest=/usr/bin/php state=link force=yes
 
+- name: packagist.jp repository added
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer config -g repos.packagist composer https://packagist.jp
+
 - name: prestissimo installed
   command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'hirak/prestissimo=^0.3'
