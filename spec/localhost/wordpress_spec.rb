@@ -10,17 +10,19 @@ describe file("/var/www/html#{property["wp_site_path"]}/wp-config.php") do
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php") do
-  it { should contain("define\('DB_NAME', '#{property["db_name"]}'\);") }
-  it { should contain("define\('DB_USER', '#{property["db_user"]}'\);") }
-  it { should contain("define\('DB_PASSWORD', '#{property["db_password"]}'\);") }
+  it { should contain("define\( 'DB_NAME', '#{property["db_name"]}' \);") }
+  it { should contain("define\( 'DB_USER', '#{property["db_user"]}' \);") }
+  it { should contain("define\( 'DB_PASSWORD', '#{property["db_password"]}' \);") }
+  it { should contain("define\( 'DB_CHARSET', '#{property["db_charset"]}' \);") }
+  it { should contain("define\( 'DB_COLLATE', '#{property["db_collate"]}' \);") }
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php"), :if => os[:release] == '6' do
-  it { should contain("define\('DB_HOST', '#{property["db_host"]}'\);") }
+  it { should contain("define\( 'DB_HOST', '#{property["db_host"]} '\);") }
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php"), :if => os[:release] == '7' do
-  it { should contain("define\('DB_HOST', '#{property["db_host"]}:/var/lib/mysql/mysql.sock'\);") }
+  it { should contain("define\( 'DB_HOST', '#{property["db_host"]}:/var/lib/mysql/mysql.sock' \);") }
 end
 
 if property["WP_DEBUG"] == 'true' then
