@@ -32,6 +32,8 @@
 
 - name: nodenv-default-packages changed
   template: src=/vagrant/config/default-node-packages.j2 dest={{ home_dir }}/.nodenv/default-packages
+  become: yes
+  become_user: vagrant
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv
