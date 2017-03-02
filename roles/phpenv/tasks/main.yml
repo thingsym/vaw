@@ -1,6 +1,6 @@
 ---
 - name: git checkout phpenv
-  git: repo=https://github.com/madumlao/phpenv.git dest={{ home_dir }}/.phpenv force=yes
+  git: repo=https://github.com/madumlao/phpenv.git dest={{ home_dir }}/.phpenv force=yes recursive=no
   become: yes
   become_user: vagrant
 
