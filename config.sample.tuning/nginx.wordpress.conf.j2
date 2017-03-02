@@ -10,7 +10,7 @@ server {
 
 {% if ssl_admin %}
     listen 443 ssl;
-    ssl_certificate       /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert;
+    ssl_certificate       /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt;
     ssl_certificate_key   /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key;
 {% endif %}
 
@@ -86,7 +86,7 @@ server {
         fastcgi_index   index.php;
         fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include         fastcgi_params;
-        fastcgi_param HTTPS on;
+        fastcgi_param   HTTPS on;
         fastcgi_pass_header "X-Accel-Redirect";
         fastcgi_pass_header "X-Accel-Buffering";
         fastcgi_pass_header "X-Accel-Charset";
@@ -115,4 +115,3 @@ server {
     location = /robots.txt { access_log off; log_not_found off; }
     location ~ /\. { deny  all; access_log off; log_not_found off; }
 }
-
