@@ -59,21 +59,11 @@ if property["server"] == 'nginx' then
 
   elsif property["fastcgi"] == 'hhvm' then
 
-    describe file('/var/run/hhvm') do
-     it { should be_directory }
-     it { should be_owned_by 'vagrant' }
-     it { should be_grouped_into 'vagrant' }
-    end
-
     describe file('/var/log/hhvm/') do
      it { should be_directory }
     end
 
     describe yumrepo('hop5'), :if => os[:release] =~ /^6/ do
-      it { should exist }
-    end
-
-    describe yumrepo('gleez'), :if => os[:release] =~ /^7/ do
       it { should exist }
     end
 
