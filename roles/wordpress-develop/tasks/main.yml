@@ -28,8 +28,10 @@
 - include: phpunit.yml
 - include: wp-phpcs.yml
 - include: opcache-viewer.yml
+  tags: sync-dir
 - include: cachetool.yml
 - include: wrk.yml
 - include: selenium.yml
 - include: phpmd.yml
 - include: webgrind.yml
+  tags: sync-dir
