@@ -12,7 +12,10 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
-vbguest_auto_update = false
+vbguest_auto_update   = false
+
+ansible_install_mode  = :default    # :default|:pip
+ansible_version       = 'latest'    # only :pip
 
 ## That's all, stop setting. ##
 
@@ -74,7 +77,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :inline => provision
 
   config.vm.provision "ansible_local" do |ansible|
-    ansible.version = 'latest'
+    ansible.install_mode = ansible_install_mode
+    ansible.version = ansible_version
     ansible.inventory_path = 'hosts/local'
     ansible.playbook = 'site.yml'
     ansible.verbose = 'v'
