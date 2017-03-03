@@ -9,12 +9,6 @@ server {
     charset      utf-8;
     client_max_body_size   100M;
 
-{% if ssl_admin %}
-    listen 443 ssl;
-    ssl_certificate       /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert;
-    ssl_certificate_key   /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key;
-{% endif %}
-
     access_log  /var/log/nginx/{{ HOSTNAME }}.access.log main;
     error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;
 
@@ -34,8 +28,62 @@ server {
         root   /usr/share/nginx/html;
     }
 
+    location ~ \.php$ {
+        #root           {{ DOCUMENT_ROOT }};
+{% if fastcgi == "php-fpm" %}
+        fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
+{% elif fastcgi == "hhvm" %}
+        #fastcgi_pass   unix:/var/run/hhvm/hhvm.pid;
+        fastcgi_pass    127.0.0.1:9000;
+{% endif %}
+        fastcgi_index   index.php;
+        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include         fastcgi_params;
+    }
+
+    location = /robots.txt { access_log off; log_not_found off; }
+    location ~ /\. { deny  all; access_log off; log_not_found off; }
+}
+
 
 {% if ssl_admin %}
+server {
+    listen       443 ssl;
+    root         {{ DOCUMENT_ROOT }};
+    server_name  {{ HOSTNAME }};
+    index        index.php index.html index.htm;
+    charset      utf-8;
+    client_max_body_size   100M;
+
+    access_log  /var/log/nginx/{{ HOSTNAME }}.access.log main;
+    error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;
+
+    ssl on;
+    ssl_certificate       /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt;
+    ssl_certificate_key   /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key;
+
+    ssl_session_cache    shared:SSL:1m;
+    ssl_session_timeout  5m;
+
+    ssl_ciphers AESGCM:HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers  on;
+
+    location / {
+        try_files $uri $uri/ {{ wp_site_path }}/index.php?$args;
+    }
+
+    error_page  404              /404.html;
+    location = /404.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page  500 502 503 504   /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
     location ~ /wp-(admin.*\.php|login\.php)$ {
 {% if fastcgi == "php-fpm" %}
         fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
@@ -46,9 +94,8 @@ server {
         fastcgi_index   index.php;
         fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include         fastcgi_params;
-        fastcgi_param HTTPS on;
+        fastcgi_param   HTTPS on;
     }
-{% endif %}
 
     location ~ \.php$ {
         #root           {{ DOCUMENT_ROOT }};
@@ -66,3 +113,4 @@ server {
     location = /robots.txt { access_log off; log_not_found off; }
     location ~ /\. { deny  all; access_log off; log_not_found off; }
 }
+{% endif %}
