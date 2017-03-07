@@ -8,8 +8,10 @@
 - name: is_getenforce
   command: /usr/sbin/getenforce
   register: is_getenforce
-- fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
-  when: is_getenforce.stdout == 'Enforcing' or is_getenforce.stdout == 'Permissive'
+
+- name: SELinux is turned off
+  fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
+  when: is_getenforce.stdout == 'Enforcing'
 
 - name: ntp installed
   package: name=ntp
@@ -42,4 +44,5 @@
   include: centos7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
+- include: ssh-config.yml
 - include: reset.yml

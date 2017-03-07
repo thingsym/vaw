@@ -30,14 +30,11 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 character-set-server = utf8
 plugin-load = handlersocket.so
 
-[mysqld_safe]
-log-error=/var/log/mysqld.log
-pid-file=/var/run/mysqld/mysqld.pid
-
 # slow_query_log = 1
 # slow_query_log_file = mysql-slow.log
 # long_query_time = 0.1
 # log_queries_not_using_indexes
 
-
-
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

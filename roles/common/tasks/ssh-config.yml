@@ -1,0 +1,13 @@
+---
+- name: stat custom ~/.ssh/config
+  stat:
+    path: /vagrant/config/ssh-config.j2
+  register: is_custom_ssh_config
+
+- name: custom ~/.ssh/config changed
+  template:
+    src: /vagrant/config/ssh-config.j2
+    dest: /home/vagrant/.ssh/config
+    owner: vagrant
+    group: vagrant
+  when: is_custom_ssh_config.stat.exists

@@ -23,12 +23,15 @@
     - stylestats
     - plato
 
+- include: yarn.yml
 - include: wp-i18n.yml
 - include: phpunit.yml
 - include: wp-phpcs.yml
-- include: opcache.yml
+- include: opcache-viewer.yml
+  tags: sync-dir
+- include: cachetool.yml
 - include: wrk.yml
 - include: selenium.yml
 - include: phpmd.yml
 - include: webgrind.yml
-
+  tags: sync-dir

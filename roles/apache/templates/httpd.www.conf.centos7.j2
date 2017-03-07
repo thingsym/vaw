@@ -17,6 +17,10 @@
 </VirtualHost>
 
 {% if ssl_admin %}
+<IfModule mod_ssl.c>
+
+Mutex fcntl
+
 #
 # This is the Apache server configuration file providing SSL support.
 # It contains the configuration directives to instruct the server how to
@@ -27,8 +31,6 @@
 # what they do.  They're here only as hints or reminders.  If you are unsure
 # consult the online docs. You have been warned.
 #
-
-LoadModule ssl_module modules/mod_ssl.so
 
 #
 # When we also provide SSL we have to listen to the
@@ -90,7 +92,6 @@ SSLCryptoDevice builtin
 ## SSL Virtual Host Context
 ##
 
-<IfModule mod_ssl.c>
 <VirtualHost *:443>
     ServerName {{ HOSTNAME }}
     DocumentRoot {{ DOCUMENT_ROOT }}
@@ -108,7 +109,7 @@ SSLCryptoDevice builtin
     </Directory>
 
     SSLEngine On
-    SSLCertificateFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.cert
+    SSLCertificateFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt
     SSLCertificateKeyFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key
 
 </VirtualHost>

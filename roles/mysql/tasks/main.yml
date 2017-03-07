@@ -7,7 +7,13 @@
   yum: name=https://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
-- name: mysql installed
+- name: yum-config disable mysql57-community
+  command: yum-config-manager --disable mysql57-community
+
+- name: yum-config enable mysql56-community
+  command: yum-config-manager --enable mysql56-community
+
+- name: mysql 5.6 installed
   package: name={{ item }} state=latest
   with_items:
     - mysql-community-server

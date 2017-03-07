@@ -4,7 +4,7 @@
 
 Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
-**VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and client.
+**VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and clients.
 
 ## Features
 
@@ -108,6 +108,7 @@ ID and password for the initial setting is as follows. Can be set in the provisi
 
 #### Database
 
+* ROOT USER `root`
 * ROOT PASSWORD `admin`
 * HOST `localhost`
 * DATABASE NAME `wordpress`
@@ -121,11 +122,11 @@ ID and password for the initial setting is as follows. Can be set in the provisi
 
 ## Customize Options
 
-You can build a variety of environment that edit the configuration file of VAW.
+You can build a variety of environment that edit configuration files of VAW.
 
 There are two configuration files you can customize.
 
-Run `vagrant up` or `vagrant provision`, after editing the configuration file.
+Run `vagrant up` or `vagrant provision`, after editing the configuration files.
 
 ### Vagrant configuration file (Ruby)
 
@@ -146,7 +147,12 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	public_ip             = ''
 
-	vbguest_auto_update = false
+	vbguest_auto_update   = false
+
+	ansible_install_mode  = :default    # :default|:pip
+	ansible_version       = 'latest'    # only :pip
+
+	provision_only_wordpress = false
 
 * `vm_box` (required) name of Vagrant Box (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -156,6 +162,9 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	* auto create `wordpress` directory and synchronized
 * `public_ip` IP address of bridged connection (default: ``)
 * `vbguest_auto_update` update VirtualBox Guest Additions (default: false / value: true | false)
+* `ansible_install_mode` (required)  the way to install Ansible (default: :default / value: :default | :pip)
+* `ansible_version` version of Ansible to install (default: latest)
+* `provision_only_wordpress` only WordPress provision mode (default: false / value: true | false)
 
 ### Provisioning configuration file (YAML)
 
@@ -178,6 +187,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	db_user            : 'admin'
 	db_password        : 'admin'
 	db_prefix          : 'wp_'
+	db_charset         : ''
+	db_collate         : '' # utf8mb4_general_ci
 
 	## WordPress Settings ##
 
@@ -221,6 +232,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
+	                        - wp-multibyte-patch
 
 	# theme_mod          :
 	#                        background_color: 'cccccc'
@@ -274,6 +286,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `db_user` (required) database user name (default: `admin`)
 * `db_password` (required) database user password (default: `admin`)
 * `db_prefix` database prefix (default: `wp_`)
+* `db_charset` database character set (default: ``)
+* `db_collate` database collation (default: ``)
 
 #### WordPress Settings ##
 
@@ -451,7 +465,7 @@ Vagrant Box is probably compatible with centos-7.x x86_64 and centos-6.x x86_64.
 
 By default, the Vagrantfile uses the `vaw/centos*-default` Box which has already provisioned default settings.
 
-In addition, can use the `vaw/centos*-full` Box which has already provisioned default settings and activate develop and deploy tools.
+In addition, you can use the `vaw/centos*-full` Box which has already provisioned default settings and activate develop and deploy tools.
 
 You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
 
@@ -502,15 +516,17 @@ You can build the environment in a short period of time compared with provisioni
 * [nodenv](https://github.com/nodenv/nodenv)
 * [Node.js](http://nodejs.org) via [nodenv](https://github.com/nodenv/nodenv)
 * [npm](https://www.npmjs.com)
+* [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
 * [gulp.js](http://gulpjs.com)
-* [Bower](Bower)
+* [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
 * [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
+* [cachetool](http://gordalina.github.io/cachetool/)
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
@@ -560,8 +576,8 @@ You can build the environment in a short period of time compared with provisioni
 When you add a tuning configuration file that you edited in the directory `config`, place it at the time of provisioning.
 As follows editable configuration files.
 
-* default-ruby-gems.j2
 * default-node-packages.j2
+* default-ruby-gems.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
@@ -572,10 +588,19 @@ As follows editable configuration files.
 * nginx.wordpress.multisite.conf.j2
 * php-build.default_configure_options.j2
 * php.conf.j2
+* ssh-config.j2
+
+## Shortening of provisioning time by only WordPress provision mode
+
+**only WordPress provision mode** provision only sync folder including WordPress.
+
+When you provision VAW by **only WordPress provision mode**, you can shorten the provisioning time.
+
+The setting is to set the value of `provision_only_wordpress` to `true` in the Vagrant configuration file.
 
 ## Shortening of provisioning time by Vagrant plugin vagrant-cachier
 
-When you install the Vagrant plugin **vagrant-cachier**, can shorten the provisioning time.
+When you install the Vagrant plugin **vagrant-cachier**, you can shorten the provisioning time.
 
 Installed package will be cached by the Box unit. When you launch multiple environments using the same Box, you can shorten the provisioning time using the cache.
 
@@ -589,7 +614,7 @@ Delete the cache, the following command by Box.
 
 	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
 
-or,
+or
 
 	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
 
@@ -612,6 +637,29 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.3 - 2017.03.07
+	* add custom ~/.ssh/config
+	* add only WordPress provision mode
+	* add ansible install_mode
+	* fix hhvm
+	* change filename extension from cert to crt
+	* add packagist.jp repository
+	* fix wp core config parameter
+	* add yarn
+	* add cachetool
+	* fix mysql and mariadb tasks
+	* add yum-utils
+	* fix database tests
+	* update percona-release-0.1-4.noarch.rpm
+	* fix my.cnf.j2
+	* fix httpd.conf when ssl enable
+	* add tests of wordpress
+	* replace from shell module to command module
+	* provision fail only when SELinux is Enforcing
+	* fix dest path of default_configure_options
+	* fix php.conf.j2
+	* bump up node 6.9.1
+	* fix default-node-packages.j2
 * version 0.4.2 - 2016.10.04
 	* add develop-tools role, fix build environment
 	* fix the inline script to get the major version number

@@ -44,6 +44,11 @@ if property["develop_tools"] then
   #   its(:exit_status) { should eq 0 }
   # end
 
+  describe command('yarn --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+  end
+
   describe file('/usr/local/share/wp-i18n/makepot.php') do
     it { should be_file }
   end
@@ -60,6 +65,20 @@ if property["develop_tools"] then
   describe command('phpcs --version') do
     let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
+  end
+
+  describe command('cachetool -V') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('phpcs -i') do
+    let(:disable_sudo) { true }
+    its(:stdout) { should match /WordPress\-Core/ }
+  end
+
+  describe file('/home/vagrant/.phpenv/versions/' + property["php_version"] + '/composer/vendor/squizlabs/php_codesniffer') do
+    it { should be_directory }
   end
 
   describe file('/var/www/html/opcache') do

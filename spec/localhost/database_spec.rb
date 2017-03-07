@@ -9,6 +9,7 @@ if property["database"] == 'mysql' then
 
   describe package('mysql-community-server') do
     it { should be_installed }
+    it { should be_installed.with_version '5.6' }
   end
 
   describe service('mysqld') do
@@ -31,6 +32,7 @@ elsif property["database"] == 'mariadb' then
 
   describe package('MariaDB-server') do
     it { should be_installed }
+    it { should be_installed.with_version '10.1' }
   end
 
   describe service('mysql'), :if => os[:release] == '6' do
@@ -51,6 +53,7 @@ elsif property["database"] == 'percona' then
 
   describe package('Percona-Server-server-56') do
     it { should be_installed }
+    it { should be_installed.with_version '5.6' }
   end
 
   describe service('mysql'), :if => os[:release] == '6' do
@@ -71,4 +74,12 @@ end
 
 describe port(3306) do
   it { should be_listening }
+end
+
+describe command("mysqlshow -u root -p#{property["db_root_password"]} mysql") do
+  its(:stdout) { should match /Database: mysql/ }
+end
+
+describe command( "mysqladmin -u root -p#{property["db_root_password"]} ping" ) do
+  its(:stdout) { should match /mysqld is alive/ }
 end

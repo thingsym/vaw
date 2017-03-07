@@ -15,6 +15,8 @@ db_name            : 'wordpress'
 db_user            : 'admin'
 db_password        : 'admin'
 db_prefix          : 'wp_'
+db_charset         : ''
+db_collate         : '' # utf8mb4_general_ci
 
 ## WordPress Settings ##
 
@@ -58,6 +60,7 @@ plugins            :
                         - developer
                         - monster-widget
                         - wordpress-beta-tester
+                        - wp-multibyte-patch
 
 # theme_mod          :
 #                        background_color: 'cccccc'
