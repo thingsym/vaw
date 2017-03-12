@@ -2,7 +2,7 @@
 
 **VAW (Vagrant Ansible WordPress)** は、WordPress でウェブサイトを構築する開発者、サイト運営者、WordPress のテーマ・プラグイン開発者のための Ansible playbooks です。
 
-Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブサイトの構築や動作検証ができます。もちろん、WordPress テーマやプラグインの開発も。
+Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブサイトの構築や動作検証ができます。もちろん　WordPress テーマやプラグインの開発も。
 
 また、**VAW** は、開発パートナーやデザイナー、クライアントとポータブルに環境を共有してコラボレーションツールとして活用できます。
 
@@ -106,6 +106,7 @@ optional (Vagrant plugin)
 
 #### Database
 
+* ROOT USER `root`
 * ROOT PASSWORD `admin`
 * HOST `localhost`
 * DATABASE NAME `wordpress`
@@ -139,7 +140,12 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	public_ip             = ''
 
-	vbguest_auto_update = false
+	vbguest_auto_update   = false
+
+	ansible_install_mode  = :default    # :default|:pip
+	ansible_version       = 'latest'    # only :pip
+
+	provision_only_wordpress = false
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -148,7 +154,10 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: ``)
-* `vbguest_auto_update` update VirtualBox Guest Additions (default: false / value: true | false)
+* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: false / value: true | false)
+* `ansible_install_mode` (required)  Ansible のインストール方法 (default: :default / value: :default | :pip)
+* `ansible_version` インストールする Ansible のバージョン (default: latest)
+* `provision_only_wordpress` only WordPress provision mode (default: false / value: true | false)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -170,6 +179,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	db_user            : 'admin'
 	db_password        : 'admin'
 	db_prefix          : 'wp_'
+	db_charset         : ''
+	db_collate         : '' # utf8mb4_general_ci
 
 	## WordPress Settings ##
 
@@ -213,6 +224,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - developer
 	                        - monster-widget
 	                        - wordpress-beta-tester
+	                        - wp-multibyte-patch
 
 	# theme_mod          :
 	#                        background_color: 'cccccc'
@@ -264,7 +276,9 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `db_name` (required) データベース名 (default: `wordpress`)
 * `db_user` (required) データベースユーザ名 (default: `admin`)
 * `db_password` (required) データベースパスワード (default: `admin`)
-* `db_prefix` データベースプレフィックス名 (default: `wp_`)
+* `db_prefix` データベースのプレフィックス名 (default: `wp_`)
+* `db_charset` データベースの文字コード (default: ``)
+* `db_collate` データベースの照合順序 (default: ``)
 
 #### WordPress Settings ##
 
@@ -486,15 +500,17 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 * [nodenv](https://github.com/nodenv/nodenv)
 * [Node.js](http://nodejs.org) via [nodenv](https://github.com/nodenv/nodenv)
 * [npm](https://www.npmjs.com)
+* [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
 * [gulp.js](http://gulpjs.com)
-* [Bower](Bower)
+* [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
 * [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
 * [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
+* [cachetool](http://gordalina.github.io/cachetool/)
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
@@ -543,8 +559,8 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 ディレクトリ `config` に編集したチューニング用設定ファイルを追加すると、プロビジョニング時に配置します。
 チューニング用設定ファイルは以下の通り。
 
-* default-ruby-gems.j2
 * default-node-packages.j2
+* default-ruby-gems.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
@@ -555,6 +571,15 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * nginx.wordpress.multisite.conf.j2
 * php-build.default_configure_options.j2
 * php.conf.j2
+* ssh-config.j2
+
+## only WordPress provision mode でプロビジョニング時間の短縮
+
+**only WordPress provision mode** は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
+
+**only WordPress provision mode** でプロビジョニングすると、プロビジョニング時間の短縮ができます。
+
+設定は、Vagrant 設定ファイルの `provision_only_wordpress` を `true` にするだけ。
 
 ## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
 
@@ -601,6 +626,29 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.3 - 2017.03.07
+	* add custom ~/.ssh/config
+	* add only WordPress provision mode
+	* add ansible install_mode
+	* fix hhvm
+	* change filename extension from cert to crt
+	* add packagist.jp repository
+	* fix wp core config parameter
+	* add yarn
+	* add cachetool
+	* fix mysql and mariadb tasks
+	* add yum-utils
+	* fix database tests
+	* update percona-release-0.1-4.noarch.rpm
+	* fix my.cnf.j2
+	* fix httpd.conf when ssl enable
+	* add tests of wordpress
+	* replace from shell module to command module
+	* provision fail only when SELinux is Enforcing
+	* fix dest path of default_configure_options
+	* fix php.conf.j2
+	* bump up node 6.9.1
+	* fix default-node-packages.j2
 * version 0.4.2 - 2016.10.04
 	* add develop-tools role, fix build environment
 	* fix the inline script to get the major version number
