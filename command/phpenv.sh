@@ -87,8 +87,8 @@ function install() {
     if [[ -f $PHP_INI ]]; then
         sed -i -e "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/" $PHP_INI
         sed -i -e "s/^display_errors = Off/display_errors = On/" $PHP_INI
-        sed -i -e "s/^post_max_size = 8M/post_max_size = 36M/" $PHP_INI
-        sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 36M/" $PHP_INI
+        sed -i -e "s/^post_max_size = 8M/post_max_size = 32M/" $PHP_INI
+        sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
         sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
         sed -i -e "s/^;mbstring.internal_encoding =/mbstring.internal_encoding = UTF-8/" $PHP_INI
         sed -i -e "s/^;date.timezone =/date.timezone = UTC/" $PHP_INI
