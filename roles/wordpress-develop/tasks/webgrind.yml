@@ -1,3 +1,6 @@
 ---
 - name: git checkout webgrind
-  git: repo=https://github.com/jokkedk/webgrind.git dest={{ DOCUMENT_ROOT }}/webgrind
+  git:
+    repo: https://github.com/jokkedk/webgrind.git
+    dest: "{{ DOCUMENT_ROOT }}/webgrind"
+    force: yes

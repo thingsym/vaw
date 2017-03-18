@@ -1,16 +1,23 @@
 ---
 - name: openssl installed
-  package: name={{ item }} state=latest
+  package:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - openssl
     - openssl-devel
     - mod_ssl
 
 - name: stat ssl_path
-  stat: path=/etc/pki/tls/{{ HOSTNAME }}
+  stat:
+    path: "/etc/pki/tls/{{ HOSTNAME }}"
   register: is_ssl_path
+
 - name: mkdir ssl
-  file: path=/etc/pki/tls/{{ HOSTNAME }} state=directory owner=root
+  file:
+    path: "/etc/pki/tls/{{ HOSTNAME }}"
+    state: directory
+    owner: root
   when: not is_ssl_path.stat.exists
 
 - name: generate a key
@@ -20,8 +27,12 @@
   command: openssl req -new -x509 -key /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt -days 3650 -subj /CN={{ HOSTNAME }}
 
 - name: stat ssl.conf
-  stat: path=/etc/httpd/conf.d/ssl.conf
+  stat:
+    path: /etc/httpd/conf.d/ssl.conf
   register: is_ssl_conf
+
 - name: delete ssl.conf
-  file: path=/etc/httpd/conf.d/ssl.conf state=absent
+  file:
+    path: /etc/httpd/conf.d/ssl.conf
+    state: absent
   when: is_ssl_conf.stat.exists

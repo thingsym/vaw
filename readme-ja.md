@@ -626,6 +626,9 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.4.4 - 2017.03.18
+	* using YAML dictionaries in tasks
+	* add centos-box.sh
 * version 0.4.3 - 2017.03.07
 	* add custom ~/.ssh/config
 	* add only WordPress provision mode

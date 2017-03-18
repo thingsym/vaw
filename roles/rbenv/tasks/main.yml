@@ -1,43 +1,68 @@
 ---
 - name: git checkout rbenv
-  git: repo=https://github.com/rbenv/rbenv.git dest={{ home_dir }}/.rbenv force=yes
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: "{{ home_dir }}/.rbenv"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: edit PATH rbenv on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.rbenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "export PATH=$HOME/.rbenv/bin:$PATH"
 
 - name: edit PATH rbenv on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=$HOME/.rbenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "export PATH=$HOME/.rbenv/bin:$PATH"
 
 - name: edit rbenv init on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="eval \"$(rbenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "eval \"$(rbenv init -)\""
 
 - name: edit rbenv init on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="eval \"$(rbenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "eval \"$(rbenv init -)\""
 
 - name: git checkout ruby-build
-  git: repo=https://github.com/rbenv/ruby-build.git dest={{ home_dir }}/.rbenv/plugins/ruby-build force=yes
+  git:
+    repo: https://github.com/rbenv/ruby-build.git
+    dest: "{{ home_dir }}/.rbenv/plugins/ruby-build"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout rbenv-gem-rehash
-  git: repo=https://github.com/rbenv/rbenv-gem-rehash.git dest={{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash force=yes
+  git:
+    repo: https://github.com/rbenv/rbenv-gem-rehash.git
+    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout rbenv-default-gems
-  git: repo=https://github.com/rbenv/rbenv-default-gems.git dest={{ home_dir }}/.rbenv/plugins/rbenv-default-gems force=yes
+  git:
+    repo: https://github.com/rbenv/rbenv-default-gems.git
+    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-default-gems"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout rbenv-bundler
-  git: repo=https://github.com/carsomyr/rbenv-bundler.git dest={{ home_dir }}/.rbenv/plugins/rbenv-bundler force=yes
+  git:
+    repo: https://github.com/carsomyr/rbenv-bundler.git
+    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-bundler"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: build environment
-  package: name={{ item }} state=latest
+  package:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - cmake
     - openssl-devel
@@ -46,11 +71,14 @@
     - zlib-devel
 
 - name: stat rbenv_default_gems
-  stat: path=/vagrant/config/default-ruby-gems.j2
+  stat:
+    path: /vagrant/config/default-ruby-gems.j2
   register: is_rbenv_default_gems
 
 - name: default-gems changed
-  template: src=/vagrant/config/default-ruby-gems.j2 dest={{ home_dir }}/.rbenv/default-gems
+  template:
+    src: /vagrant/config/default-ruby-gems.j2
+    dest: "{{ home_dir }}/.rbenv/default-gems"
   when: is_rbenv_default_gems.stat.exists
 
 - name: ruby installed via rbenv

@@ -1,3 +1,5 @@
 ---
 - name: git installed
-  package: name=git state=latest
+  package:
+    name: git
+    state: latest

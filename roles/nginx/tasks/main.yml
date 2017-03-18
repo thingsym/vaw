@@ -1,62 +1,88 @@
 ---
 - name: nginx repository installed (CentOS/RHEL 6)
-  yum: name=http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+  yum:
+    name: http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - name: nginx repository installed (CentOS/RHEL 7)
-  yum: name=http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+  yum:
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: nginx installed
-  package: name=nginx
+  package:
+    name: nginx
 
 - name: stat custom nginx.conf.j2
-  stat: path=/vagrant/config/nginx.conf.j2
+  stat:
+    path: /vagrant/config/nginx.conf.j2
   register: is_custom_nginx_conf
 
 - name: custom nginx.conf changed
-  template: src=/vagrant/config/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  template:
+    src: /vagrant/config/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
   when: is_custom_nginx_conf.stat.exists and multisite == false
 
 - name: nginx.conf changed
-  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
   when: not is_custom_nginx_conf.stat.exists and multisite == false
 
 - name: stat custom nginx.multisite.conf.j2
-  stat: path=/vagrant/config/nginx.multisite.conf.j2
+  stat:
+    path: /vagrant/config/nginx.multisite.conf.j2
   register: is_custom_nginx_multisite_conf
 
 - name: custom nginx.conf changed (multisite)
-  template: src=/vagrant/config/nginx.multisite.conf.j2 dest=/etc/nginx/nginx.conf
+  template:
+    src: /vagrant/config/nginx.multisite.conf.j2
+    dest: /etc/nginx/nginx.conf
   when: is_custom_nginx_multisite_conf.stat.exists and multisite == true
 
 - name: nginx.conf changed (multisite)
-  template: src=nginx.multisite.conf.j2 dest=/etc/nginx/nginx.conf
+  template:
+    src: nginx.multisite.conf.j2
+    dest: /etc/nginx/nginx.conf
   when: not is_custom_nginx_multisite_conf.stat.exists and multisite == true
 
 - name: stat custom nginx.wordpress.conf.j2
-  stat: path=/vagrant/config/nginx.wordpress.conf.j2
+  stat:
+    path: /vagrant/config/nginx.wordpress.conf.j2
   register: is_custom_nginx_wordpress_conf
 
 - name: custom wordpress.conf changed
-  template: src=/vagrant/config/nginx.wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
+  template:
+    src: /vagrant/config/nginx.wordpress.conf.j2
+    dest: /etc/nginx/conf.d/wordpress.conf
   when: is_custom_nginx_wordpress_conf.stat.exists and multisite == false
 
 - name: wordpress.conf changed
-  template: src=nginx.wordpress.conf.j2 dest=/etc/nginx/conf.d/wordpress.conf
+  template:
+    src: nginx.wordpress.conf.j2
+    dest: /etc/nginx/conf.d/wordpress.conf
   when: not is_custom_nginx_wordpress_conf.stat.exists and multisite == false
 
 - name: stat custom nginx.wordpress.multisite.conf.j2
-  stat: path=/vagrant/config/nginx.wordpress.multisite.conf.j2
+  stat:
+    path: /vagrant/config/nginx.wordpress.multisite.conf.j2
   register: is_custom_nginx_wordpress_multisite_conf
 
 - name: custom wordpress-multisite.conf changed
-  template: src=/vagrant/config/nginx.wordpress.multisite.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite.conf
+  template:
+    src: /vagrant/config/nginx.wordpress.multisite.conf.j2
+    dest: /etc/nginx/conf.d/wordpress-multisite.conf
   when: is_custom_nginx_wordpress_multisite_conf.stat.exists and multisite == true
 
 - name: wordpress-multisite.conf changed
-  template: src=nginx.wordpress.multisite.conf.j2 dest=/etc/nginx/conf.d/wordpress-multisite.conf
+  template:
+    src: nginx.wordpress.multisite.conf.j2
+    dest: /etc/nginx/conf.d/wordpress-multisite.conf
   when: not is_custom_nginx_wordpress_multisite_conf.stat.exists and multisite == true
 
 - name: nginx started and enabled
-  service: name=nginx state=restarted enabled=yes
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

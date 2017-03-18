@@ -1,14 +1,23 @@
 ---
 - name: mkdir /var/run/php-fpm
-  file: path=/var/run/php-fpm state=directory owner=nginx group=nginx
+  file:
+    path: /var/run/php-fpm
+    state: directory
+    owner: nginx
+    group: nginx
   when: server == "nginx" and fastcgi == "php-fpm"
 
 - name: mkdir /var/log/php-fpm
-  file: path=/var/log/php-fpm state=directory owner=nobody group=nobody
+  file:
+    path: /var/log/php-fpm
+    state: directory
+    owner: nobody
+    group: nobody
   when: server == "nginx" and fastcgi == "php-fpm"
 
 - name: stat init_php_fpm
-  stat: path=/etc/init.d/php-fpm
+  stat:
+    path: /etc/init.d/php-fpm
   register: is_init_php_fpm
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
@@ -17,5 +26,8 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 and server == "nginx" and fastcgi == "php-fpm" and is_init_php_fpm.stat.exists
 
 - name: php-fpm start and enabled
-  service: name=php-fpm state=restarted enabled=yes
+  service:
+    name: php-fpm
+    state: restarted
+    enabled: yes
   when: server == "nginx" and fastcgi == "php-fpm"

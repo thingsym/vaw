@@ -1,37 +1,57 @@
 ---
 - name: git checkout nodenv
-  git: repo=https://github.com/nodenv/nodenv.git dest={{ home_dir }}/.nodenv force=yes
+  git:
+    repo: https://github.com/nodenv/nodenv.git
+    dest: "{{ home_dir }}/.nodenv"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: edit PATH nodenv on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.nodenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "export PATH=$HOME/.nodenv/bin:$PATH"
 
 - name: edit PATH nodenv on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=$HOME/.nodenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "export PATH=$HOME/.nodenv/bin:$PATH"
 
 - name: edit nodenv init on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="eval \"$(nodenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "eval \"$(nodenv init -)\""
 
 - name: edit nodenv init on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="eval \"$(nodenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "eval \"$(nodenv init -)\""
 
 - name: git checkout node-build
-  git: repo=https://github.com/nodenv/node-build.git dest={{ home_dir }}/.nodenv/plugins/node-build force=yes
+  git:
+    repo: https://github.com/nodenv/node-build.git
+    dest: "{{ home_dir }}/.nodenv/plugins/node-build"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout nodenv-default-packages
-  git: repo=https://github.com/nodenv/nodenv-default-packages.git dest={{ home_dir }}/.nodenv/plugins/nodenv-default-packages force=yes
+  git:
+    repo: https://github.com/nodenv/nodenv-default-packages.git
+    dest: "{{ home_dir }}/.nodenv/plugins/nodenv-default-packages"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: stat default_node_packages
-  stat: path=/vagrant/config/default-node-packages.j2
+  stat:
+    path: /vagrant/config/default-node-packages.j2
   register: is_default_node_packages
 
 - name: nodenv-default-packages changed
-  template: src=/vagrant/config/default-node-packages.j2 dest={{ home_dir }}/.nodenv/default-packages
+  template:
+    src: /vagrant/config/default-node-packages.j2
+    dest: "{{ home_dir }}/.nodenv/default-packages"
   become: yes
   become_user: vagrant
   when: is_default_node_packages.stat.exists

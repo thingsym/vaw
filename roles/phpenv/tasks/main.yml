@@ -1,84 +1,127 @@
 ---
 - name: git checkout phpenv
-  git: repo=https://github.com/madumlao/phpenv.git dest={{ home_dir }}/.phpenv force=yes recursive=no
+  git:
+    repo: https://github.com/madumlao/phpenv.git
+    dest: "{{ home_dir }}/.phpenv"
+    force: yes
+    recursive: no
   become: yes
   become_user: vagrant
 
 - name: edit PATH phpenv on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=$HOME/.phpenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "export PATH=$HOME/.phpenv/bin:$PATH"
 
 - name: edit PATH phpenv on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=$HOME/.phpenv/bin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "export PATH=$HOME/.phpenv/bin:$PATH"
 
 - name: edit phpenv init on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="eval \"$(phpenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "eval \"$(phpenv init -)\""
 
 - name: edit phpenv init on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="eval \"$(phpenv init -)\""
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "eval \"$(phpenv init -)\""
 
 - name: git checkout php-build
-  git: repo=https://github.com/php-build/php-build.git dest={{ home_dir }}/.phpenv/plugins/php-build force=yes
+  git:
+    repo: https://github.com/php-build/php-build.git
+    dest: "{{ home_dir }}/.phpenv/plugins/php-build"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout phpenv-composer
-  git: repo=https://github.com/ngyuki/phpenv-composer.git dest={{ home_dir }}/.phpenv/plugins/phpenv-composer force=yes
+  git:
+    repo: https://github.com/ngyuki/phpenv-composer.git
+    dest: "{{ home_dir }}/.phpenv/plugins/phpenv-composer"
+    force: yes
   become: yes
   become_user: vagrant
 
 - name: git checkout phpenv-apache-version
-  git: repo=https://github.com/thingsym/phpenv-apache-version.git dest={{ home_dir }}/.phpenv/plugins/phpenv-apache-version force=yes
+  git:
+    repo: https://github.com/thingsym/phpenv-apache-version.git
+    dest: "{{ home_dir }}/.phpenv/plugins/phpenv-apache-version"
+    force: yes
   become: yes
   become_user: vagrant
   when: server == 'apache'
 
 - name: stat custom php.conf.j2
-  stat: path=/vagrant/config/php.conf.j2
+  stat:
+    path: /vagrant/config/php.conf.j2
   register: is_custom_php_conf
 
 - name: custom php.conf changed
-  template: src=/vagrant/config/php.conf.j2 dest=/etc/httpd/conf.d/php.conf
+  template:
+    src: /vagrant/config/php.conf.j2
+    dest: /etc/httpd/conf.d/php.conf
   when: is_custom_php_conf.stat.exists and server == 'apache'
 
 - name: php.conf changed
-  template: src=php.conf.j2 dest=/etc/httpd/conf.d/php.conf
+  template:
+    src: php.conf.j2
+    dest: /etc/httpd/conf.d/php.conf
   when: not is_custom_php_conf.stat.exists and server == 'apache'
 
 - include: build-env.yml
 
 - name: stat custom php-build.default_configure_options.j2
-  stat: path=/vagrant/config/php-build.default_configure_options.j2
+  stat:
+    path: /vagrant/config/php-build.default_configure_options.j2
   register: is_custom_default_configure_options
 
 - name: custom default_configure_options changed
-  template: src=/vagrant/config/php-build.default_configure_options.j2 dest={{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options
+  template:
+    src: /vagrant/config/php-build.default_configure_options.j2
+    dest: "{{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options"
   when: is_custom_default_configure_options.stat.exists
 
 - name: set default_configure_options
-  template: src=php-build.default_configure_options.j2 dest={{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options
+  template:
+    src: php-build.default_configure_options.j2
+    dest: "{{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options"
   when: not is_custom_default_configure_options.stat.exists
 
 - name: stat libphp5.so
-  stat: path=/usr/lib64/httpd/modules/libphp5.so
+  stat:
+    path: /usr/lib64/httpd/modules/libphp5.so
   register: is_libphp5_path
 
 - name: change owner and group
-  file: path=/usr/lib64/httpd/modules/libphp5.so owner=vagrant group=vagrant
+  file:
+    path: /usr/lib64/httpd/modules/libphp5.so
+    owner: vagrant
+    group: vagrant
   when: is_libphp5_path.stat.exists
 
 - name: stat libphp7.so
-  stat: path=/usr/lib64/httpd/modules/libphp7.so
+  stat:
+    path: /usr/lib64/httpd/modules/libphp7.so
   register: is_libphp7_path
 
 - name: change owner and group
-  file: path=/usr/lib64/httpd/modules/libphp7.so owner=vagrant group=vagrant
+  file:
+    path: /usr/lib64/httpd/modules/libphp7.so
+    owner: vagrant
+    group: vagrant
   when: is_libphp7_path.stat.exists
 
 - name: touch php.log
-  file: path=/var/log/php.log state=touch mode=0666
+  file:
+    path: /var/log/php.log
+    state: touch
+    mode: 0666
 
 - name: stat php_path
-  stat: path={{ home_dir }}/.phpenv/versions/{{ php_version | default(7.0.7) }}
+  stat:
+    path: "{{ home_dir }}/.phpenv/versions/{{ php_version | default(7.0.7) }}"
   register: is_php_path
 
 - name: php installed via phpenv.sh
@@ -88,7 +131,11 @@
 - include: php-fpm.yml
 
 - name: create symbolic link
-  file: src={{ home_dir }}/.phpenv/shims/php dest=/usr/bin/php state=link force=yes
+  file:
+    src: "{{ home_dir }}/.phpenv/shims/php"
+    dest: /usr/bin/php
+    state: link
+    force: yes
 
 - name: packagist.jp repository added
   command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer config -g repos.packagist composer https://packagist.jp

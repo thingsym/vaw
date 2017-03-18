@@ -2,12 +2,15 @@
 - name: set permalink structure
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
   when: permalink_structure.structure != '' and permalink_structure.category == '' and permalink_structure.tag == ''
+
 - name: set permalink structure
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
   when: permalink_structure.structure != '' and permalink_structure.category != '' and permalink_structure.tag == ''
+
 - name: set permalink structure
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
   when: permalink_structure.structure != '' and permalink_structure.category == '' and permalink_structure.tag != ''
+
 - name: set permalink structure
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
   when: permalink_structure.structure != '' and permalink_structure.category != '' and permalink_structure.tag != ''

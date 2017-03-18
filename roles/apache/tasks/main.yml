@@ -1,6 +1,8 @@
 ---
 - name: httpd installed
-  package: name={{ item }} state=latest
+  package:
+    name: "{{ item }}"
+    state: latest
   with_items:
       - httpd
       - httpd-devel
@@ -14,4 +16,7 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: httpd started and enabled
-  service: name=httpd state=restarted enabled=yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

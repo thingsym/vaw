@@ -9,4 +9,6 @@
     gpgcheck: yes
 
 - name: yarn installed
-  package: name=yarn state=latest
+  package:
+    name: yarn
+    state: latest
