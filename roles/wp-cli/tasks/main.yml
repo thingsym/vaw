@@ -6,5 +6,3 @@
     validate_certs: no
     mode: 0755
     force: yes
-
-- include: package.yml
