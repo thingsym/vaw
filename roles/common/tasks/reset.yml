@@ -1,40 +1,59 @@
 ---
 - name: apache stopped
-  service: name=httpd state=stopped enabled=no
+  service:
+    name: httpd
+    state: stopped
+    enabled: no
   ignore_errors: yes
   when: server != 'apache'
 
 - name: nginx stopped
-  service: name=nginx state=stopped enabled=no
+  service:
+    name: nginx
+    state: stopped
+    enabled: no
   ignore_errors: yes
   when: server != 'nginx'
 
 - name: php-fpm stopped
-  service: name=php-fpm state=stopped enabled=no
+  service:
+    name: php-fpm
+    state: stopped
+    enabled: no
   ignore_errors: yes
   when: server == 'apache' or server == 'nginx' and fastcgi != 'php-fpm'
 
 - name: removed mysql
-  package: name=mysql* state=absent
+  package:
+    name: mysql*
+    state: absent
   ignore_errors: yes
   when: database != 'mysql'
 
 - name: removed MariaDB
-  package: name=MariaDB* state=absent
+  package:
+    name: MariaDB*
+    state: absent
   ignore_errors: yes
   when: database != 'mariadb'
 
 - name: removed mariadb
-  package: name=mariadb* state=absent
+  package:
+    name: mariadb*
+    state: absent
   ignore_errors: yes
   when: database != 'mariadb'
 
 - name: removed Percona
-  package: name=Percona* state=absent
+  package:
+    name: Percona*
+    state: absent
   ignore_errors: yes
   when: database != 'percona'
 
 - name: removed Percona
-  package: name=percona* state=absent
+  package:
+    name: percona*
+    state: absent
   ignore_errors: yes
   when: database != 'percona'

@@ -1,3 +1,8 @@
 ---
 - name: cachetool installed
-  get_url: url=http://gordalina.github.io/cachetool/downloads/cachetool.phar dest=/usr/local/bin/cachetool validate_certs=no mode=0755 force=yes
+  get_url:
+    url: http://gordalina.github.io/cachetool/downloads/cachetool.phar
+    dest: /usr/local/bin/cachetool
+    validate_certs: no
+    mode: 0755
+    force: yes

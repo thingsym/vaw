@@ -1,6 +1,10 @@
 ---
 - name: Development Tools installed
-  package: name="@Development Tools" state=present
+  package:
+    name: "@Development Tools"
+    state: present
 
 - name: yum-utils installed
-  package: name=yum-utils state=present
+  package:
+    name: yum-utils
+    state: present

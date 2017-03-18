@@ -1,19 +1,25 @@
 ---
 - name: develop tools installed
-  package: name={{ item }} state=latest
+  package:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - subversion
     - gettext
 
 - name: gem libraries installed
   command: sudo -u vagrant -i -- gem install {{ item }}
-  # gem: name={{ item }} state=latest
+  # gem:
+  #   name: "{{ item }}"
+  #   state: latest
   with_items:
     - sass
 
 - name: node.js package globally installed
   command: sudo -u vagrant -i -- npm install -g {{ item }}
-  # npm: name={{ item }} global=yes
+  # npm:
+  #   name: "{{ item }}"
+  #   global: yes
   with_items:
     - grunt-cli
     - grunt-init

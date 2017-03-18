@@ -9,7 +9,9 @@
       gpgcheck: yes
 
   - name: MariaDB installed (CentOS/RHEL 6)
-    package: name={{ item }} state=latest
+    package:
+      name: "{{ item }}"
+      state: latest
     with_items:
       - MariaDB-server
       - MariaDB-client
@@ -30,7 +32,9 @@
       gpgcheck: yes
 
   - name: MariaDB installed (CentOS/RHEL 7)
-    package: name={{ item }} state=latest
+    package:
+      name: "{{ item }}"
+      state: latest
     with_items:
       - mariadb-server
       - MariaDB-client
@@ -42,35 +46,43 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: stat custom my.cnf.j2
-  stat: path=/vagrant/config/my.cnf.j2
+  stat:
+    path: /vagrant/config/my.cnf.j2
   register: is_custom_my_conf
 
 - name: custom my.cnf changed
-  template: src=/vagrant/config/my.cnf.j2 dest=/etc/my.cnf
+  template:
+    src: /vagrant/config/my.cnf.j2
+    dest: /etc/my.cnf
   when: is_custom_my_conf.stat.exists
 
 - name: my.cnf changed
-  template: src=my.cnf.j2 dest=/etc/my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf
   when: not is_custom_my_conf.stat.exists
 
 - name: mysqld started and enabled
-  service: name=mysql state=restarted enabled=yes
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
 
 - name: set MariaDB root password
   mysql_user:
-    name: "root"
+    name: root
     password: "{{ db_root_password }}"
-    host: "localhost"
+    host: localhost
     state: present
   ignore_errors: yes
 
 - name: set MariaDB root password
   mysql_user:
-    name: "root"
+    name: root
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
-    login_user: "root"
+    login_user: root
     login_password: "{{ db_root_password }}"
   with_items:
     - "{{ ansible_hostname }}"
@@ -82,7 +94,7 @@
     name: ""
     host: "{{ item }}"
     state: absent
-    login_user: "root"
+    login_user: root
     login_password: "{{ db_root_password }}"
   with_items:
     - localhost
@@ -91,8 +103,11 @@
   mysql_db:
      name: test
      state: absent
-     login_user: "root"
+     login_user: root
      login_password: "{{ db_root_password }}"
 
 - name: create symbolic link
-  file: src=/var/lib/mysql/mysql.sock dest=/tmp/mysql.sock state=link
+  file:
+    src: /var/lib/mysql/mysql.sock
+    dest: /tmp/mysql.sock
+    state: link

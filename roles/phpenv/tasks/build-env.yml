@@ -1,6 +1,8 @@
 ---
 - name: build environment
-  package: name={{ item }} state=latest
+  package:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - libxml2-devel
     - bison-devel

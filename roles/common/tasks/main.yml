@@ -1,40 +1,54 @@
 ---
 - name: libselinux-python installed
-  package: name=libselinux-python state=latest
+  package:
+    name: libselinux-python
+    state: latest
 
 - name: disable selinux
-  selinux: state=disabled
+  selinux:
+    state: disabled
 
 - name: is_getenforce
   command: /usr/sbin/getenforce
   register: is_getenforce
 
 - name: SELinux is turned off
-  fail: msg="SELinux is turned off. please run again, 'vagrant reload --provision'"
+  fail:
+    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"
   when: is_getenforce.stdout == 'Enforcing'
 
 - name: ntp installed
-  package: name=ntp
-- name: ntp started and enabled
-  service: name=ntpd state=restarted enabled=yes
+  package:
+    name: ntp
 
-- name: create swap space
-  command: dd if=/dev/zero of=/swapfile bs=1M count=1024
-  ignore_errors: yes
+- name: ntp started and enabled
+  service:
+    name: ntpd
+    state: restarted
+    enabled: yes
+
+- block:
+  - name: create swap space
+    command: dd if=/dev/zero of=/swapfile bs=1M count=1024
+    ignore_errors: yes
+  - name: Make swap
+    command: mkswap /swapfile
+    ignore_errors: yes
   when: ansible_swaptotal_mb < 1
-- name: Make swap
-  command: mkswap /swapfile
-  ignore_errors: yes
-  when: ansible_swaptotal_mb < 1
+
 - name: swapon
   command: swapon /swapfile
   ignore_errors: yes
 
 - name: edit PATH on .bash_profile
-  lineinfile: dest={{ home_dir }}/.bash_profile line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bash_profile"
+    line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
 - name: edit PATH on .bashrc
-  lineinfile: dest={{ home_dir }}/.bashrc line="export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc"
+    line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
 - name: include task (CentOS/RHEL 6)
   include: centos6.yml

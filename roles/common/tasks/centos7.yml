@@ -1,6 +1,10 @@
 ---
 - name: firewalld stoped and disabled (CentOS/RHEL 7)
-  service: name=firewalld state=stopped enabled=no
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
 
 - name: IUS repository installed (CentOS/RHEL 7)
-  yum: name=http://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-14.ius.centos7.noarch.rpm
+  yum:
+    name: http://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-14.ius.centos7.noarch.rpm

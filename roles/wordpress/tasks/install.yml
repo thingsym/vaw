@@ -4,41 +4,56 @@
   ignore_errors: yes
 
 - name: stat WP_PATH
-  stat: path={{ WP_PATH }}
+  stat:
+    path: "{{ WP_PATH }}"
   register: is_wordpress_path
+
 - name: mkdir wordpress_path
-  file: path={{ WP_PATH }} state=directory recurse=yes
+  file:
+    path: "{{ WP_PATH }}"
+    state: directory
+    recurse: yes
   when: not is_wordpress_path.stat.exists
 
 - name: stat site_path
-  stat: path={{ DOCUMENT_ROOT }}{{ wp_site_path }}
+  stat:
+    path: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}"
   register: is_site_path
+
 - name: mkdir site_path
-  file: path={{ DOCUMENT_ROOT }}{{ wp_site_path }} state=directory recurse=yes
+  file:
+    path: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}"
+    state: directory
+    recurse: yes
   when: not is_site_path.stat.exists
 
 - name: Setup MySQL user for WordPress
   mysql_user:
     name: "{{ db_user }}"
     password: "{{ db_password }}"
-    host: "localhost"
+    host: localhost
     priv: "{{ db_name }}.*:ALL"
-    state: "present"
-    login_user: "root"
+    state: present
+    login_user: root
     login_password: "{{ db_root_password }}"
 
 - name: WordPress latest installed
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --force
   when: version == "latest"
+
 - name: WordPress version installed
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --version={{ version }} --force
   when: version != "latest"
 
 - name: stat wp-config.php
-  stat: path={{ WP_PATH }}/wp-config.php
+  stat:
+    path: "{{ WP_PATH }}/wp-config.php"
   register: is_old_wp_config
+
 - name: delete WordPress config
-  file: path={{ WP_PATH }}/wp-config.php state=absent
+  file:
+    path: "{{ WP_PATH }}/wp-config.php"
+    state: absent
   when: is_old_wp_config.stat.exists
 
 - name: WordPress config
@@ -66,17 +81,28 @@
   when: multisite == true
 
 - name: .htaccess changed
-  template: src=wordpress.multisite.htaccess.j2 dest={{ WP_PATH }}/.htaccess
+  template:
+    src: wordpress.multisite.htaccess.j2
+    dest: "{{ WP_PATH }}/.htaccess"
   when: multisite == true and server == "apache"
 
 - name: set WP_DEBUG in wp-config.php
-  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'WP_DEBUG', {{ WP_DEBUG }} );\n\n/* That"
+  replace:
+    dest: "{{ WP_PATH }}/wp-config.php"
+    regexp: '\n/\* That'
+    replace: "define( 'WP_DEBUG', {{ WP_DEBUG }} );\n\n/* That"
 
 - name: set SAVEQUERIES in wp-config.php
-  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="define( 'SAVEQUERIES', {{ SAVEQUERIES }} );\n\n/* That"
+  replace:
+    dest: "{{ WP_PATH }}/wp-config.php"
+    regexp: '\n/\* That'
+    replace: "define( 'SAVEQUERIES', {{ SAVEQUERIES }} );\n\n/* That"
 
 - name: set SSL in wp-config.php
-  replace: dest={{ WP_PATH }}/wp-config.php regexp='\n/\* That' replace="// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
+  replace:
+    dest: "{{ WP_PATH }}/wp-config.php"
+    regexp: '\n/\* That'
+    replace: "// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
   when: ssl_admin == true
 
 - name: change wp option for subdirectory install
@@ -84,17 +110,23 @@
   when: wp_site_path != wp_dir
 
 - name: copy index.php for subdirectory install
-  copy: src={{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php
+  copy:
+    src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php"
+    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
   when: wp_site_path != wp_dir
 
 - name: change load path in index.php for subdirectory install
-  replace: dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php regexp="'/wp-blog-header.php'" replace="'{{ wp_dir }}/wp-blog-header.php'"
+  replace:
+    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
+    regexp: "'/wp-blog-header.php'"
+    replace: "'{{ wp_dir }}/wp-blog-header.php'"
   when: wp_site_path != wp_dir
 
 - name: copy .htaccess for subdirectory install
-  copy: src={{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess dest={{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess
+  copy:
+    src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
+    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
   when: wp_site_path != wp_dir and multisite == true and server == "apache"
-
 
 - name: themes install
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ item }}
