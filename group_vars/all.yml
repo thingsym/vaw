@@ -2,37 +2,37 @@
 
 ## Server & Database Settings ##
 
-server             : 'apache'   # apache|nginx
+server             : apache   # apache|nginx
 
 # fastcgi is possible only server 'nginx'
-fastcgi            : 'php-fpm'  # php-fpm|hhvm
+fastcgi            : none   # none|php-fpm|hhvm
 
-database           : 'mysql'    # mysql|mariadb|percona
-db_root_password   : 'admin'
+database           : mysql    # mysql|mariadb|percona
+db_root_password   : admin
 
-db_host            : 'localhost'
-db_name            : 'wordpress'
-db_user            : 'admin'
-db_password        : 'admin'
-db_prefix          : 'wp_'
+db_host            : localhost
+db_name            : wordpress
+db_user            : admin
+db_password        : admin
+db_prefix          : wp_
 db_charset         : ''
 db_collate         : '' # utf8mb4_general_ci
 
 ## WordPress Settings ##
 
-title              : 'VAW (Vagrant Ansible WordPress)'
-admin_user         : 'admin'
-admin_password     : 'admin'
-admin_email        : 'hoge@example.com'
+title              : VAW (Vagrant Ansible WordPress)
+admin_user         : admin
+admin_password     : admin
+admin_email        : hoge@example.com
 
 # e.g. latest, 4.1, 4.1-beta1
 # see Release Archive - https://wordpress.org/download/release-archive/
 # 3.5.2 or later to work properly
-version            : 'latest'
+version            : latest
 
 # e.g. en_US, ja, ...
 # see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
-lang               : 'en_US'
+lang               : en_US
 
 # in own directory or subdirectory install.
 # see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
