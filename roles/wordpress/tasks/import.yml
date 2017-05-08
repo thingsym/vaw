@@ -34,7 +34,7 @@
 - name: get wordpress import unit-test data
   get_url:
     url: "{{ unit_test_url }}"
-    dest: "{{ home_dir }}/theme-unit-test-data.xml"
+    dest: "/tmp/theme-unit-test-data.xml"
     force: yes
     validate_certs: no
   when: theme_unit_test == true and lang != 'ja' and import_xml_data == '' and import_db_data == ''
@@ -54,14 +54,14 @@
 - name: get wordpress import unit-test-ja data
   get_url:
     url: "{{ unit_test_ja_url }}"
-    dest: "{{ home_dir }}/theme-unit-test-data.xml"
+    dest: "/tmp/theme-unit-test-data.xml"
     force: yes
     validate_certs: no
   when: theme_unit_test == true and lang == 'ja' and import_xml_data == '' and import_db_data == ''
 
 - name: stat theme-unit-test-data.xml
   stat:
-    path: "{{ home_dir }}/theme-unit-test-data.xml"
+    path: "/tmp/theme-unit-test-data.xml"
   register: is_unit_test
 
 - block:
@@ -69,14 +69,14 @@
     command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
 
   - name: import theme-unit-test-data.xml
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import --authors=create {{ home_dir }}theme-unit-test-data.xml --authors=create
+    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
 
   - name: plugin deactivate wordpress-importer
     command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
 
   - name: delete theme-unit-test-data.xml
     file:
-      path: "{{ home_dir }}/theme-unit-test-data.xml"
+      path: "/tmp/theme-unit-test-data.xml"
       state: absent
   when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
 
