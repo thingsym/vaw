@@ -77,9 +77,14 @@ permalink_structure  :
                       category    : ''
                       tag         : ''
 
-# Any one of three ways to import
+# Any one of four ways to import
 import_xml_data    : ''   # local path, /vagrant/import/~.xml
 import_db_data     : ''   # local path, /vagrant/import/~.sql
+import_backwpup    :
+                      path          : ''   # local path, /vagrant/import/~.zip
+                      db_data_file  : ''
+                      xml_data_file : ''
+import_admin       : false   # true|false
 theme_unit_test    : false   # true|false
 
 replace_old_url         : ''   # to vm_hostname from old url
@@ -91,11 +96,12 @@ WP_DEBUG           : true   # true|false
 SAVEQUERIES        : true   # true|false
 
 php_version        : 7.0.7
+http_protocol      : http   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
 
 ## That's all, stop setting. Let's vagrant up!! ##
 
-WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
+WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
 WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
