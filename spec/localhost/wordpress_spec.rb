@@ -1,8 +1,16 @@
 require 'spec_helper'
 require 'shellwords'
 
-describe command("mysqlshow -u #{property["db_user"]} -p#{property["db_password"]} #{property["db_name"]}") do
-  its(:stdout) { should match /#{property["db_name"]}/ }
+if property["import_admin"] then
+  describe command("mysqlshow -u #{property["db_user"]} -p#{property["db_password"]} #{property["db_name"]}") do
+    its(:stdout) { should match /#{property["db_name"]}/ }
+  end
+elsif property["import_db_data"] or property["import_backwpup"]["db_data_file"] then
+  # nothing
+else
+  describe command("mysqlshow -u #{property["db_user"]} -p#{property["db_password"]} #{property["db_name"]}") do
+    its(:stdout) { should match /#{property["db_name"]}/ }
+  end
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}/wp-config.php") do
@@ -25,19 +33,19 @@ describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-
   it { should contain("define\( 'DB_HOST', '#{property["db_host"]}:/var/lib/mysql/mysql.sock' \);") }
 end
 
-if property["WP_DEBUG"] == 'true' then
+if property["WP_DEBUG"] then
   describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php") do
     it { should contain("define\( 'WP_DEBUG', True \);") }
   end
 end
 
-if property["SAVEQUERIES"] == 'true' then
+if property["SAVEQUERIES"] then
   describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php") do
     it { should contain("define\( 'SAVEQUERIES', True \);") }
   end
 end
 
-if property["ssl_admin"] == 'true' then
+if property["ssl_admin"] then
   describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php") do
     it { should contain("define\( 'FORCE_SSL_ADMIN', true \);") }
   end
