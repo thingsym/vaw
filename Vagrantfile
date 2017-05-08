@@ -98,8 +98,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if File.exist?("Rakefile")
     if Vagrant.has_plugin?("vagrant-serverspec")
-      config.vm.provision :serverspec do |spec|
-        spec.pattern = "spec/localhost/*_spec.rb"
+      if provision_only_wordpress then
+        config.vm.provision :serverspec do |spec|
+          spec.pattern = "spec/sync-dir/*_spec.rb"
+        end
+      else
+        config.vm.provision :serverspec do |spec|
+          spec.pattern = "spec/localhost/*_spec.rb"
+        end
       end
     end
   end
