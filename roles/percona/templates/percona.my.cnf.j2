@@ -1,5 +1,4 @@
-# For advice on how to change settings please see
-# http://dev.mysql.com/doc/refman/5.6/en/server-configuration-defaults.html
+# Percona Server template configuration
 
 [mysqld]
 #
@@ -21,14 +20,14 @@ innodb_buffer_pool_size = 128M
 datadir=/var/lib/mysql
 socket=/var/lib/mysql/mysql.sock
 
+bind-address = 127.0.0.1
+local-infile = 0
+
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
 
 # Recommended in standard MySQL setup
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-
-character-set-server = utf8
-plugin-load = handlersocket.so
 
 # slow_query_log = 1
 # slow_query_log_file = mysql-slow.log
