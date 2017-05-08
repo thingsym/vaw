@@ -39,18 +39,6 @@
     validate_certs: no
   when: theme_unit_test == true and lang != 'ja' and import_xml_data == '' and import_db_data == ''
 
-- name: stat uploads
-  stat:
-    path: /vagrant/uploads
-  register: is_uploads
-
-- name: import uploads dir
-  copy:
-    src: /vagrant/uploads
-    dest: "{{ WP_PATH }}/wp-content"
-    directory_mode: yes
-  when: is_uploads.stat.exists and is_uploads.stat.isdir == true
-
 - name: get wordpress import unit-test-ja data
   get_url:
     url: "{{ unit_test_ja_url }}"
@@ -79,6 +67,30 @@
       path: "/tmp/theme-unit-test-data.xml"
       state: absent
   when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+
+
+- name: stat wp-content
+  stat:
+    path: /vagrant/wp-content
+  register: is_wp_content
+
+- name: rsync wp-content dir
+  synchronize:
+    src: /vagrant/wp-content
+    dest: "{{ WP_PATH }}"
+  when: is_wp_content.stat.exists and is_wp_content.stat.isdir == true
+
+
+- name: stat uploads
+  stat:
+    path: /vagrant/uploads
+  register: is_uploads
+
+- name: rsync uploads dir
+  synchronize:
+    src: /vagrant/uploads
+    dest: "{{ WP_PATH }}/wp-content"
+  when: is_uploads.stat.exists and is_uploads.stat.isdir == true
 
 
 - name: replace old url
