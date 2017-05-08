@@ -51,7 +51,6 @@ activate_theme     : ''
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :
                         - theme-check
-                        - plugin-check
                         - log-deprecated-notices
                         - debug-bar
                         - query-monitor
