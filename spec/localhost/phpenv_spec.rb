@@ -112,6 +112,14 @@ describe 'PHP config parameters' do
     its(:value) { should match /text\/html/ }
   end
 
+  context php_config('opcache.enable_cli') do
+    its(:value) { should eq 0 }
+  end
+
+  context php_config('opcache.enable') do
+    its(:value) { should eq 0 }
+  end
+
 end
 
 describe package('patch') do
