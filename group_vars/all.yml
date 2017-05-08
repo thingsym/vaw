@@ -96,11 +96,12 @@ WP_DEBUG           : true   # true|false
 SAVEQUERIES        : true   # true|false
 
 php_version        : 7.0.7
+http_protocol      : http   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
 
 ## That's all, stop setting. Let's vagrant up!! ##
 
-WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
+WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
 WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
