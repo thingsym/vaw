@@ -30,6 +30,7 @@
     when: import_admin == true
   when: is_db_import.stat.exists and is_db_import.stat.isdir == false and import_xml_data == '' and theme_unit_test == false
 
+- include: backwpup.yml
 
 - name: get wordpress import unit-test data
   get_url:

@@ -77,9 +77,14 @@ permalink_structure  :
                       category    : ''
                       tag         : ''
 
-# Any one of three ways to import
+# Any one of four ways to import
 import_xml_data    : ''   # local path, /vagrant/import/~.xml
 import_db_data     : ''   # local path, /vagrant/import/~.sql
+import_backwpup    :
+                      path          : ''   # local path, /vagrant/import/~.zip
+                      db_data_file  : ''
+                      xml_data_file : ''
+import_admin       : false   # true|false
 theme_unit_test    : false   # true|false
 
 replace_old_url         : ''   # to vm_hostname from old url
