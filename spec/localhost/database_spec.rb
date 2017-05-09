@@ -72,6 +72,11 @@ describe file('/etc/my.cnf') do
   it { should be_file }
 end
 
+describe file("/etc/my.cnf") do
+  it { should contain("character-set-server = utf8") }
+  it { should contain("skip-character-set-client-handshake") }
+end
+
 describe port(3306) do
   it { should be_listening }
 end

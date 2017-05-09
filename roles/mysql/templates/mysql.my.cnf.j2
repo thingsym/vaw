@@ -27,14 +27,14 @@ symbolic-links=0
 # Recommended in standard MySQL setup
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
-[mysqld_safe]
-log-error=/var/log/mysqld.log
-pid-file=/var/run/mysqld/mysqld.pid
+character-set-server = utf8
+skip-character-set-client-handshake
 
 # slow_query_log = 1
 # slow_query_log_file = mysql-slow.log
 # long_query_time = 0.1
 # log_queries_not_using_indexes
 
-
-
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
