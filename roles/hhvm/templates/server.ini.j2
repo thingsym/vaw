@@ -9,7 +9,8 @@ pid = /var/run/hhvm/hhvm.pid
 
 hhvm.pid_file = /var/run/hhvm/hhvm.pid
 
-hhvm.server.port = 9000
+# hhvm.server.port = 9000
+hhvm.server.file_socket = /var/run/hhvm/hhvm.sock
 hhvm.server.user = nobody
 hhvm.server.group = nobody
 hhvm.server.type = fastcgi

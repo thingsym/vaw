@@ -95,8 +95,10 @@ if property["server"] == 'nginx' then
       it { should be_file }
     end
 
-    describe port(9000) do
-      it { should be_listening }
+    describe file('/var/run/hhvm/hhvm.sock') do
+      it { should be_socket }
+    end
+
     describe process("hhvm") do
       its(:user) { should eq "nobody" }
       its(:group) { should eq "nobody" }
