@@ -3,9 +3,8 @@
   file:
     path: /var/run/php-fpm
     state: directory
-    owner: nginx
-    group: nginx
-  when: server == "nginx" and fastcgi == "php-fpm"
+    owner: nobody
+    group: nobody
 
 - name: mkdir /var/log/php-fpm
   file:
@@ -13,7 +12,6 @@
     state: directory
     owner: nobody
     group: nobody
-  when: server == "nginx" and fastcgi == "php-fpm"
 
 - name: stat init_php_fpm
   stat:

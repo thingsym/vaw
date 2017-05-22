@@ -49,6 +49,8 @@
   file:
     path: /var/log/hhvm/
     state: directory
+    owner: nobody
+    group: nobody
 
 - name: hhvm started and enabled
   service:
