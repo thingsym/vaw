@@ -16,6 +16,7 @@
     - { role: openssl,             tags: [openssl],              when: "ssl_admin == true" }
     - { role: apache,              tags: [apache],               when: "server == 'apache'" }
     - { role: nginx,               tags: [nginx],                when: "server == 'nginx'" }
+    - { role: h2o,                 tags: [h2o],                  when: "server == 'h2o'" }
     - { role: phpenv,              tags: [phpenv] }
     - { role: hhvm,                tags: [hhvm],                 when: "server == 'nginx' and fastcgi == 'hhvm'" }
     - { role: wp-cli,              tags: [wp-cli] }
