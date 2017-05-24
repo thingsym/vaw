@@ -82,11 +82,11 @@
   when: is_rbenv_default_gems.stat.exists
 
 - name: ruby installed via rbenv
-  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.3.1) }}
+  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}
   ignore_errors: yes
 
 - name: rbenv rehash
   command: sudo -u vagrant -i -- rbenv rehash
 
 - name: rbenv global
-  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.3.1) }}
+  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.4.1) }}
