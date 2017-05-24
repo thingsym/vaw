@@ -7,8 +7,8 @@ if property["server"] == 'nginx' then
 
     describe file('/var/run/php-fpm') do
       it { should be_directory }
-      it { should be_owned_by 'nginx' }
-      it { should be_grouped_into 'nginx' }
+      it { should be_owned_by 'nobody' }
+      it { should be_grouped_into 'nobody' }
     end
 
     describe file('/var/log/php-fpm') do
@@ -57,10 +57,17 @@ if property["server"] == 'nginx' then
       it { should be_socket }
     end
 
+    describe process("php-fpm") do
+      its(:user) { should eq "nobody" }
+      its(:group) { should eq "nobody" }
+    end
+
   elsif property["fastcgi"] == 'hhvm' then
 
     describe file('/var/log/hhvm/') do
      it { should be_directory }
+     it { should be_owned_by 'nobody' }
+     it { should be_grouped_into 'nobody' }
     end
 
     describe yumrepo('hop5'), :if => os[:release] =~ /^6/ do
@@ -88,8 +95,13 @@ if property["server"] == 'nginx' then
       it { should be_file }
     end
 
-    describe port(9000) do
-      it { should be_listening }
+    describe file('/var/run/hhvm/hhvm.sock') do
+      it { should be_socket }
+    end
+
+    describe process("hhvm") do
+      its(:user) { should eq "nobody" }
+      its(:group) { should eq "nobody" }
     end
 
   end

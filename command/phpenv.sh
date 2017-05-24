@@ -127,10 +127,11 @@ function install() {
         fi
         if [[ -d /var/run/php-fpm ]]; then
             sudo chmod 755 /var/run/php-fpm
-            HAS_NGINX_USER=`cat /etc/passwd | grep nginx | grep -v grep | wc -l`
-            if [[ $HAS_NGINX_USER > 0 ]]; then
-                sudo chown nginx:nginx /var/run/php-fpm
-            fi
+            # HAS_NGINX_USER=`cat /etc/passwd | grep nginx | grep -v grep | wc -l`
+            # if [[ $HAS_NGINX_USER > 0 ]]; then
+            #     sudo chown nobody:nobody /var/run/php-fpm
+            # fi
+            sudo chown nobody:nobody /var/run/php-fpm
             echo "[Info]: add /var/run/php-fpm"
         fi
         if [[ ! -f /etc/sysconfig/php-fpm ]]; then
@@ -140,7 +141,7 @@ function install() {
         fi
         if [[ ! -f /etc/tmpfiles.d/php-fpm.conf ]]; then
             sudo touch /etc/tmpfiles.d/php-fpm.conf
-            sudo sh -c "echo 'd /var/run/php-fpm 0775 nginx nginx' > /etc/tmpfiles.d/php-fpm.conf"
+            sudo sh -c "echo 'd /var/run/php-fpm 0775 nobody nobody' > /etc/tmpfiles.d/php-fpm.conf"
             echo "[Info]: add /etc/tmpfiles.d/php-fpm.conf"
         fi
 
@@ -170,11 +171,11 @@ function install() {
         sed -i -e "s/^;daemonize = yes/daemonize = yes/" $PHP_FPM_CONF
         echo "[Info]: edit $PHP_FPM_CONF [global]"
 
-        sed -i -e "s/^user = nobody/user = nginx/" $PHP_FPM_CONF
-        sed -i -e "s/^group = nobody/group = nginx/" $PHP_FPM_CONF
+        sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_CONF
+        sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_CONF
         sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
-        sed -i -e "s/^;listen.owner = nobody/listen.owner = nginx/" $PHP_FPM_CONF
-        sed -i -e "s/^;listen.group = nobody/listen.group = nginx/" $PHP_FPM_CONF
+        sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_CONF
+        sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_CONF
         sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_CONF
         sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_CONF
         echo "[Info]: edit $PHP_FPM_CONF [www]"
@@ -184,11 +185,11 @@ function install() {
         sudo cp $PHP_FPM_WWW_CONF.default $PHP_FPM_WWW_CONF
         echo "[Info]: add $PHP_FPM_WWW_CONF"
 
-        sed -i -e "s/^user = nobody/user = nginx/" $PHP_FPM_WWW_CONF
-        sed -i -e "s/^group = nobody/group = nginx/" $PHP_FPM_WWW_CONF
+        sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_WWW_CONF
+        sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_WWW_CONF
         sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
-        sed -i -e "s/^;listen.owner = nobody/listen.owner = nginx/" $PHP_FPM_WWW_CONF
-        sed -i -e "s/^;listen.group = nobody/listen.group = nginx/" $PHP_FPM_WWW_CONF
+        sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_WWW_CONF
+        sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_WWW_CONF
         sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_WWW_CONF
         sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_WWW_CONF
         echo "[Info]: edit $PHP_FPM_WWW_CONF"

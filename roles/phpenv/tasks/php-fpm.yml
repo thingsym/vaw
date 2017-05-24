@@ -3,9 +3,8 @@
   file:
     path: /var/run/php-fpm
     state: directory
-    owner: nginx
-    group: nginx
-  when: server == "nginx" and fastcgi == "php-fpm"
+    owner: nobody
+    group: nobody
 
 - name: mkdir /var/log/php-fpm
   file:
@@ -13,21 +12,20 @@
     state: directory
     owner: nobody
     group: nobody
-  when: server == "nginx" and fastcgi == "php-fpm"
 
-- name: stat init_php_fpm
-  stat:
-    path: /etc/init.d/php-fpm
-  register: is_init_php_fpm
+- block:
+  - name: stat init_php_fpm
+    stat:
+      path: /etc/init.d/php-fpm
+    register: is_init_php_fpm
+
+  - name: chkconfig php-fpm added (CentOS/RHEL 6)
+    command: chkconfig --add php-fpm
+    when: is_init_php_fpm.stat.exists
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
-
-- name: chkconfig php-fpm added (CentOS/RHEL 6)
-  command: chkconfig --add php-fpm
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 and server == "nginx" and fastcgi == "php-fpm" and is_init_php_fpm.stat.exists
 
 - name: php-fpm start and enabled
   service:
     name: php-fpm
     state: restarted
     enabled: yes
-  when: server == "nginx" and fastcgi == "php-fpm"

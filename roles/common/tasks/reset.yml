@@ -15,13 +15,21 @@
   ignore_errors: yes
   when: server != 'nginx'
 
+- name: h2o stopped
+  service:
+    name: h2o
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+  when: server != 'h2o'
+
 - name: php-fpm stopped
   service:
     name: php-fpm
     state: stopped
     enabled: no
   ignore_errors: yes
-  when: server == 'apache' or server == 'nginx' and fastcgi != 'php-fpm'
+  when: fastcgi != 'php-fpm'
 
 - name: removed mysql
   package:

@@ -53,6 +53,29 @@ elsif property["server"] == 'nginx' then
     end
   end
 
+elsif property["server"] == 'h2o' then
+
+  describe yumrepo('bintray-tatsushid-h2o-rpm'), :if => os[:family] == 'redhat' do
+    it { should exist }
+  end
+
+  describe package('h2o') do
+    it { should be_installed }
+  end
+
+  describe service('h2o') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe file('/etc/h2o/h2o.conf') do
+    it { should be_file }
+  end
+
+  describe file('/var/run/h2o') do
+    it { should be_directory }
+  end
+
 end
 
 describe port(80) do
