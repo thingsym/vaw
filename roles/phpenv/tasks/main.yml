@@ -129,6 +129,7 @@
   when: not is_php_path.stat.exists
 
 - include: php-fpm.yml
+  when: fastcgi == "php-fpm"
 
 - name: create symbolic link
   file:

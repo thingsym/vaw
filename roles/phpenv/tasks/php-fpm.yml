@@ -28,4 +28,3 @@
     name: php-fpm
     state: restarted
     enabled: yes
-  when: server == "nginx" and fastcgi == "php-fpm"
