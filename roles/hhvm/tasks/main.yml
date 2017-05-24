@@ -16,7 +16,7 @@
 
   - name: init.d added
     template:
-      src: init.d.hhvm.j2
+      src: hhvm.init.d.j2
       dest: /etc/init.d/hhvm
 
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
@@ -42,7 +42,7 @@
 
 - name: server.ini changed
   template:
-    src: server.ini.j2
+    src: hhvm.server.ini.j2
     dest: /etc/hhvm/server.ini
 
 - name: mkdir /var/log/hhvm/
