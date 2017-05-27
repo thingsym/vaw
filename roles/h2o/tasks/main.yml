@@ -48,7 +48,7 @@
 
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise'
 
-- name: stat custom h2o.j2
+- name: stat custom h2o.conf.j2
   stat:
     path: /vagrant/config/h2o.conf.j2
   register: is_custom_h2o_conf

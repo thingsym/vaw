@@ -86,7 +86,7 @@ import_backwpup    :
 import_admin       : false   # true|false
 theme_unit_test    : false   # true|false
 
-replace_old_url         : ''   # to vm_hostname from old url
+replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 regenerate_thumbnails   : false   # true|false
 
 ## Develop & Deploy Settings ##
