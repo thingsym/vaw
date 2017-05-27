@@ -72,13 +72,30 @@ describe file('/etc/my.cnf') do
   it { should be_file }
 end
 
+describe 'MySQL config parameters' do
+  context mysql_config('socket') do
+    its(:value) { should eq '/var/lib/mysql/mysql.sock' }
+  end
+
+  context mysql_config('character-set-server') do
+    its(:value) { should eq 'utf8' }
+  end
+end
+
 describe file("/etc/my.cnf") do
-  it { should contain("character-set-server = utf8") }
   it { should contain("skip-character-set-client-handshake") }
 end
 
 describe port(3306) do
   it { should be_listening }
+end
+
+describe file('/var/lib/mysql/mysql.sock') do
+  it { should be_socket }
+end
+
+describe file('/tmp/mysql.sock') do
+  it { should be_socket }
 end
 
 describe command("mysqlshow -u root -p#{property["db_root_password"]} mysql") do
