@@ -7,8 +7,12 @@
       - httpd
       - httpd-devel
 
-- name: httpd config (CentOS/RHEL 6)
-  include: conf-centos6.yml
+- block:
+  - name: mod_proxy_fcgi installed
+    package:
+      name: mod_proxy_fcgi
+  - name: httpd config (CentOS/RHEL 6)
+    include: conf-centos6.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
 
 - name: httpd config (CentOS/RHEL 7)
