@@ -15,7 +15,7 @@ public_ip             = ''
 vbguest_auto_update   = false
 
 ansible_install_mode  = :default    # :default|:pip
-ansible_version       = 'latest'    # only :pip
+ansible_version       = 'latest'    # only :pip required
 
 provision_only_wordpress = false
 
