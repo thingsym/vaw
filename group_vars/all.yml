@@ -3,9 +3,7 @@
 ## Server & Database Settings ##
 
 server             : apache   # apache|nginx|h2o
-
-# fastcgi is possible only server 'nginx'
-fastcgi            : none   # none|php-fpm|hhvm
+fastcgi            : none     # none|php-fpm|hhvm
 
 database           : mysql    # mysql|mariadb|percona
 db_root_password   : admin

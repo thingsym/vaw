@@ -3,7 +3,7 @@
 # easy for developers to write dynamically generated webpages.
 #
 
-LoadModule php5_module modules/libphp5.so
+#LoadModule php5_module modules/libphp5.so
 #LoadModule php7_module modules/libphp7.so
 
 #
@@ -11,7 +11,7 @@ LoadModule php5_module modules/libphp5.so
 #
 
 <FilesMatch "\.php$">
-SetHandler application/x-httpd-php
+  SetHandler application/x-httpd-php
 </FilesMatch>
 
 #
