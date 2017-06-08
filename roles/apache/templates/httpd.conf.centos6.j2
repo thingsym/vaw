@@ -403,7 +403,7 @@ DocumentRoot "{{ DOCUMENT_ROOT }}"
 # negotiated documents.  The MultiViews Option can be used for the
 # same purpose, but it is much slower.
 #
-DirectoryIndex index.html index.html.var
+# DirectoryIndex index.html index.html.var
 
 #
 # AccessFileName: The name of the file to look for in each directory
@@ -1028,6 +1028,14 @@ NameVirtualHost *:80
         AllowOverride None
     </Directory>
 
+    DirectoryIndex index.php
+
+{% if fastcgi == "php-fpm" %}
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
+{% elif fastcgi == "hhvm" %}
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
+{% endif %}
+
 </VirtualHost>
 
 {% if ssl_admin %}
@@ -1122,6 +1130,14 @@ SSLCryptoDevice builtin
     SSLEngine On
     SSLCertificateFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt
     SSLCertificateKeyFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key
+
+    DirectoryIndex index.php
+
+{% if fastcgi == "php-fpm" %}
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
+{% elif fastcgi == "hhvm" %}
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
+{% endif %}
 
 </VirtualHost>
 </IfModule>

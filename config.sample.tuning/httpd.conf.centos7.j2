@@ -63,8 +63,8 @@ Include conf.modules.d/*.conf
 # It is usually good practice to create a dedicated user and group for
 # running httpd, as with most system services.
 #
-User vagrant
-Group vagrant
+User nobody
+Group nobody
 
 # 'Main' server configuration
 #
@@ -161,7 +161,7 @@ DocumentRoot "{{ DOCUMENT_ROOT }}"
 # is requested.
 #
 <IfModule dir_module>
-    DirectoryIndex index.html
+    # DirectoryIndex index.html
 </IfModule>
 
 #
