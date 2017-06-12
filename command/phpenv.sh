@@ -5,7 +5,7 @@ set -e
 usage_exit() {
   echo "[Error]: Not Found PHP version"
   echo "[Info]: phpenv.sh version 0.1.1 for CentOS"
-  echo "[Info]: Usage: phpenv.sh <[Version Number|-v x.x.x]> <-m [mod_php|php-fpm]>"
+  echo "[Info]: Usage: phpenv.sh <[Version Number|-v x.x.x]> <-m [mod_php|php-fpm]> <-s [tcp|unix]>"
   echo "[Info]: or Not Found Sub Commnad"
   echo "[Info]: Usage: phpenv.sh <[-l|-i|-h]>"
   exit 1
@@ -15,11 +15,13 @@ if [ "$#" -eq 0 ]; then
   usage_exit
 fi
 
-while getopts "v:m:rlih" OPT ; do
+while getopts "v:m:s:rlih" OPT ; do
   case $OPT in
     v)  PHP_VERSION=$OPTARG
         ;;
     m)  MODE=$OPTARG
+        ;;
+    s)  SOCKET=$OPTARG
         ;;
     r)  REMOVE=true
         ;;
@@ -40,6 +42,10 @@ shift $(( $OPTIND - 1 ))
 
 if [ ! "$PHP_VERSION" ]; then
   PHP_VERSION=$1
+fi
+
+if [ ! "$SOCKET" ]; then
+  SOCKET="socket"
 fi
 
 function global() {
@@ -221,8 +227,9 @@ function install() {
 
     sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_CONF
     sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_CONF
-    if [[ $OS_VERSION =~ ^7 ]]; then
+    if [ "$SOCKET" = "socket" ]; then
       sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
+      echo "[Info]: $SOCKET connect"
     fi
     sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_CONF
     sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_CONF
@@ -237,8 +244,9 @@ function install() {
 
     sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_WWW_CONF
-    if [[ $OS_VERSION =~ ^7 ]]; then
-      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
+    if [ "$SOCKET" = "socket" ]; then
+      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
+      echo "[Info]: $SOCKET connect"
     fi
     sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_WWW_CONF
