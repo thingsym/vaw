@@ -125,12 +125,22 @@
   register: is_php_path
 
 - block:
-  - name: php installed via phpenv.sh (php-fpm)
-    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }} -m php-fpm
-    when: fastcgi == "php-fpm"
   - name: php installed via phpenv.sh (mod_php)
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }} -m mod_php
     when: server == "apache" and fastcgi == "none"
+
+  - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }} -m php-fpm -s tcp
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 and server == "apache" and fastcgi == "php-fpm"
+
+  - name: php installed via phpenv.sh (php-fpm / CentOS7 and apache only)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }} -m php-fpm
+    when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 and server == "apache" and fastcgi == "php-fpm"
+
+  - name: php installed via phpenv.sh (php-fpm)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }} -m php-fpm
+    when: server != "apache" and fastcgi == "php-fpm"
+
   - name: php installed via phpenv.sh
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.0.7) }}
     when: not ( ( server == "apache" and fastcgi == "none" ) or fastcgi == "php-fpm" )
