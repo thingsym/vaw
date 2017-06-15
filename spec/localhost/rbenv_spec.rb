@@ -46,6 +46,10 @@ if property["develop_tools"] || property["deploy_tools"] then
     it { should be_directory }
   end
 
+  describe yumrepo('city-fan'), :if => os[:family] == 'redhat' && os[:release] == '6'  do
+    it { should exist }
+  end
+
   describe package('gcc') do
     it { should be_installed }
   end
