@@ -24,6 +24,49 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
+  describe command("httpd -M | grep 'proxy_fcgi_module'") do
+    its(:stdout) { should match(/proxy_fcgi_module/) }
+  end
+
+  if os[:release] =~ /^6/ then
+    describe package('mod_proxy_fcgi') do
+      it { should be_installed }
+    end
+
+    describe command("httpd -V | grep 'Server MPM'") do
+      its(:stdout) { should match(/Prefork/) }
+    end
+
+    describe command("httpd -M | grep 'mpm_prefork_module'") do
+      its(:stdout) { should match(/mpm_prefork_module/) }
+    end
+  end
+
+  if os[:release] =~ /^7/ then
+    if property["fastcgi"] == 'none' then
+      describe command("httpd -V | grep 'Server MPM'") do
+        its(:stdout) { should match(/prefork/) }
+      end
+
+      describe command("httpd -M | grep 'mpm_prefork_module'") do
+        its(:stdout) { should match(/mpm_prefork_module/) }
+      end
+    end
+  end
+
+  if property["fastcgi"] == 'none' then
+    if property["php_version"] =~ /^7/ then
+      describe command("httpd -M | grep 'php7_module'") do
+        its(:stdout) { should match(/php7_module/) }
+      end
+    end
+    if property["php_version"] =~ /^5/ then
+      describe command("httpd -M | grep 'php5_module'") do
+        its(:stdout) { should match(/php5_module/) }
+      end
+    end
+  end
+
 elsif property["server"] == 'nginx' then
 
   describe yumrepo('nginx') do
