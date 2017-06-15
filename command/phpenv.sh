@@ -45,7 +45,7 @@ if [ ! "$PHP_VERSION" ]; then
 fi
 
 if [ ! "$SOCKET" ]; then
-  SOCKET="socket"
+  SOCKET="unix"
 fi
 
 function global() {
@@ -79,6 +79,28 @@ function global() {
   fi
 
   if [ "$MODE" = "php-fpm" ]; then
+    if [[ -f $PHP_FPM_CONF ]]; then
+      if [ "$SOCKET" = "unix" ]; then
+        sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
+        echo "[Info]: $SOCKET connect"
+      elif [ "$SOCKET" = "tcp" ]; then
+        sed -i -e "s/^listen = \/var\/run\/php-fpm\/php-fcgi\.pid/listen = 127.0.0.1:9000/" $PHP_FPM_CONF
+        echo "[Info]: $SOCKET connect"
+      fi
+      echo "[Info]: edit $PHP_FPM_CONF"
+    fi
+
+    if [[ -f $PHP_FPM_WWW_CONF ]]; then
+      if [ "$SOCKET" = "unix" ]; then
+        sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
+        echo "[Info]: $SOCKET connect"
+      elif [ "$SOCKET" = "tcp" ]; then
+        sed -i -e "s/^listen = \/var\/run\/php-fpm\/php-fcgi\.pid/listen = 127.0.0.1:9000/" $PHP_FPM_WWW_CONF
+        echo "[Info]: $SOCKET connect"
+      fi
+      echo "[Info]: edit $PHP_FPM_WWW_CONF"
+    fi
+
     if [[ $PHP_FPM_ACTIVE > 0 ]]; then
       if type systemctl > /dev/null 2>&1; then
         sudo systemctl stop php-fpm
@@ -227,10 +249,6 @@ function install() {
 
     sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_CONF
     sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_CONF
-    if [ "$SOCKET" = "socket" ]; then
-      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
-      echo "[Info]: $SOCKET connect"
-    fi
     sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_CONF
     sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_CONF
     sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_CONF
@@ -244,10 +262,6 @@ function install() {
 
     sed -i -e "s/^user = nobody/user = nobody/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^group = nobody/group = nobody/" $PHP_FPM_WWW_CONF
-    if [ "$SOCKET" = "socket" ]; then
-      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
-      echo "[Info]: $SOCKET connect"
-    fi
     sed -i -e "s/^;listen.owner = nobody/listen.owner = nobody/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^;listen.group = nobody/listen.group = nobody/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_WWW_CONF
