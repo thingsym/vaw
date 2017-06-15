@@ -5,7 +5,7 @@
 server             : apache   # apache|nginx|h2o
 fastcgi            : none     # none|php-fpm|hhvm
 
-database           : mysql    # mysql|mariadb|percona
+database           : mariadb  # mariadb|mysql|percona
 db_root_password   : admin
 
 db_host            : localhost
