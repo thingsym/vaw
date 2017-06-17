@@ -80,6 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "--memory", "1536",
       '--natdnshostresolver1', 'on',
       '--natdnsproxy1', 'on',
+      '--cableconnected1', "on",
     ]
   end
 
