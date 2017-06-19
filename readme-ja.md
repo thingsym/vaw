@@ -649,6 +649,32 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.0 - 2017.06.20
+	* fix centos-box.sh
+	* fix vm_box, using public Vagrant boxes
+	* add CityFan repository for libcurl, only CentOS 6
+	* set permission to synced_folder wordpress
+	* change default database to mariadb from mysql
+	* fix server test
+	* fix php install via phpenv.sh
+	* add socket argument to phpenv.sh
+	* add fastcgi to apache
+	* improve phpenv.sh version 0.1.1 for CentOS
+	* add forwarded_port for Browsersync
+	* fix php post_max_size to 32M
+	* remove wp-phpcs ruleset
+	* add custom hhvm.server.ini
+	* bump up Ruby version number to 2.4.1
+	* add webserver h2o
+	* change hhvm fastcgi connect to UNIX domain socket from TCP
+	* change webserver and fastcgi owner/group nobody
+	* add my.cnf for each database
+	* fix opcach disable
+	* add tests for sync-dir
+	* update activate plugins
+	* add wordpress import for backwpup
+	* add wp-content automatic place
+	* fix sendfile off
 * version 0.4.4 - 2017.03.18
 	* using YAML dictionaries in tasks
 	* add centos-box.sh
