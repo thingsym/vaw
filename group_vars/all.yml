@@ -74,7 +74,7 @@ permalink_structure  :
                       category    : ''
                       tag         : ''
 
-# Any one of four ways to import
+# Any one of 4 ways to import
 import_xml_data    : ''   # local path, /vagrant/import/~.xml
 import_db_data     : ''   # local path, /vagrant/import/~.sql
 import_backwpup    :
