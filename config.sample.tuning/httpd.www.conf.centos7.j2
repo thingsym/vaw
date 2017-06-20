@@ -62,6 +62,16 @@
         AllowOverride None
     </Directory>
 
+{% if fastcgi == "php-fpm" %}
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/var/run/php-fpm/php-fcgi.pid|fcgi://localhost:9000"
+    </FilesMatch>
+{% elif fastcgi == "hhvm" %}
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/var/run/hhvm/hhvm.sock|fcgi://localhost:9000"
+    </FilesMatch>
+{% endif %}
+
 </VirtualHost>
 
 {% if ssl_admin %}
@@ -206,6 +216,16 @@ SSLCryptoDevice builtin
     SSLEngine On
     SSLCertificateFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt
     SSLCertificateKeyFile /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key
+
+{% if fastcgi == "php-fpm" %}
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/var/run/php-fpm/php-fcgi.pid|fcgi://localhost:9000"
+    </FilesMatch>
+{% elif fastcgi == "hhvm" %}
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/var/run/hhvm/hhvm.sock|fcgi://localhost:9000"
+    </FilesMatch>
+{% endif %}
 
 </VirtualHost>
 </IfModule>

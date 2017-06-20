@@ -7,7 +7,9 @@
   become: yes
 
 - name: make wrk
-  command: make chdir={{ home_dir }}/wrk
+  command: make
+  args:
+    chdir: "{{ home_dir }}/wrk"
   become: yes
 
 - name: make wrk

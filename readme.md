@@ -10,9 +10,9 @@ Launch the development environment in Vagrant, you can build the website and ver
 
 ### 1. Build Server and Database environment
 
-**VAW** will build server from **Apache** or **nginx**, and build database from **MySQL**, **MariaDB** or **Percona MySQL**.
+**VAW** will build server from **Apache**, **nginx** or **H2O**, and build database from **MariaDB**, **MySQL** or **Percona MySQL**.
 
-Server nginx is a FastCGI configuration as a reverse proxy. And building a PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
+On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
 
 By default, the server and the databese is installed in the default settings. Also you can edit configuration files.
 
@@ -39,11 +39,13 @@ You can verify the test data or real data on WordPress. VAW will realize buildin
 	* Install the plugin in the local path (developing plugin and official directory unregistered plugin support)
 * Setting theme_mod (theme modification value) and Options
 * Setting permalink structure
-* Importing data from any one of three ways
+* Importing data from any one of 4 ways
 	* WordPress export (WXR) file
 	* SQL file (database dump data)
+	* Backup plugin "BackWPup" archive file (Zip, Tar, Tar GZip, Tar BZip2)
 	* Theme Unit Test
-* Automatic placement to wp-content of uploads directory
+* Automatically place wp-content directory
+* Automatically place uploads directory
 * Replacement to the URL of the test environment from the URL of the production environment
 * Regenerate thumbnails
 
@@ -58,11 +60,13 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 * [Virtualbox](https://www.virtualbox.org)
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
 * [Ansible](https://www.ansible.com) >= 2.1.0.0
-* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) optional (Vagrant plugin)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) optional (Vagrant plugin)
-optional (Vagrant plugin)
-* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) optional (Vagrant plugin)
-* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) optional (Vagrant plugin)
+
+#### Vagrant plugin (optional)
+
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
+* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec)
 
 ## Usage
 
@@ -150,7 +154,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	vbguest_auto_update   = false
 
 	ansible_install_mode  = :default    # :default|:pip
-	ansible_version       = 'latest'    # only :pip
+	ansible_version       = 'latest'    # only :pip required
 
 	provision_only_wordpress = false
 
@@ -160,11 +164,11 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vm_hostname` (required) hostname (default: `vaw.local`)
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
 	* auto create `wordpress` directory and synchronized
-* `public_ip` IP address of bridged connection (default: ``)
-* `vbguest_auto_update` update VirtualBox Guest Additions (default: false / value: true | false)
-* `ansible_install_mode` (required)  the way to install Ansible (default: :default / value: :default | :pip)
-* `ansible_version` version of Ansible to install (default: latest)
-* `provision_only_wordpress` only WordPress provision mode (default: false / value: true | false)
+* `public_ip` IP address of bridged connection (default: `''`)
+* `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
+* `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
+* `ansible_version` version of Ansible to install (default: `latest`)
+* `provision_only_wordpress` only WordPress provision mode (default: `false` / value: `true` | `false`)
 
 ### Provisioning configuration file (YAML)
 
@@ -174,12 +178,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	## Server & Database Settings ##
 
-	server             : 'apache'   # apache|nginx
+	server             : apache   # apache|nginx|h2o
+	fastcgi            : none     # none|php-fpm|hhvm
 
-	# fastcgi is possible only server 'nginx'
-	fastcgi            : 'php-fpm'  # php-fpm|hhvm
-
-	database           : 'mysql'    # mysql|mariadb|percona
+	database           : mariadb  # mariadb|mysql|percona
 	db_root_password   : 'admin'
 
 	db_host            : 'localhost'
@@ -223,7 +225,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
 	                        - theme-check
-	                        - plugin-check
 	                        - log-deprecated-notices
 	                        - debug-bar
 	                        - query-monitor
@@ -249,12 +250,17 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                      category    : ''
 	                      tag         : ''
 
-	# Any one of three ways to import
+	# Any one of 4 ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
+	import_backwpup    :
+	                      path          : ''   # local path, /vagrant/import/~.zip
+	                      db_data_file  : ''
+	                      xml_data_file : ''
+	import_admin       : false   # true|false
 	theme_unit_test    : false   # true|false
 
-	replace_old_url         : ''   # to vm_hostname from old url
+	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
 	## Develop & Deploy Settings ##
@@ -263,31 +269,30 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	SAVEQUERIES        : true    # true|false
 
 	php_version        : 7.0.7
+	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
 
 	## That's all, stop setting. Let's vagrant up!! ##
 
-	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
+	WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
-
 
 
 #### Server & Database Settings ##
 
-* `server` (required) name of web server (default: `apache` / value: `apache` | `nginx`)
-* `fastcgi` name of fastCGI (default: `php-fpm` / value: `php-fpm` | `hhvm`)
-	* `fastcgi` is possible only `server 'nginx'`
-* `database` (required) name of databese (default: `mysql` / value: `mysql` | `mariadb` | `percona`)
+* `server` (required) name of web server (default: `apache` / value: `apache` | `nginx` | `h2o`)
+* `fastcgi` name of fastCGI (default: `none` / value: `none` | `php-fpm` | `hhvm`)
+* `database` (required) name of databese (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
 * `db_root_password` (required) database root password (default: `admin`)
 * `db_host` (required) database host (default: `localhost`)
 * `db_name` (required) name of database (default: `wordpress`)
 * `db_user` (required) database user name (default: `admin`)
 * `db_password` (required) database user password (default: `admin`)
 * `db_prefix` database prefix (default: `wp_`)
-* `db_charset` database character set (default: ``)
-* `db_collate` database collation (default: ``)
+* `db_charset` database character set (default: `''`)
+* `db_collate` database collation (default: `''`)
 
 #### WordPress Settings ##
 
@@ -391,13 +396,14 @@ Disable the setting case
 	* `structure` set the permalink structure using the structure tags
 	* `category` set the prefix of the category archive
 	* `tag` set the prefix of the tag archive
-
 * `import_xml_data` local WordPress export (WXR) file path `/vagrant/import/~.xml`
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
 * `import_db_data` local sql dump file path `/vagrant/import/~.sql`
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
+* `import_backwpup`
+	* `path` Archive file path `/vagrant/import/~.zip` (Zip, Tar, Tar GZip, Tar BZip2)
+	* `db_data_file` DB backup file name (Import from one of data files)
+	* `xml_data_file` XML export file name (imported from one of the data files)
+* `import_admin` Add WordPress administrator user (default: `false` / value: `true` | `false`)
 * `theme_unit_test` import Theme Unit Test data enabled flag (default: `false` / value: `true` | `false`)
-	* Any one of three ways (`import_xml_data`, `import_db_data` or `theme_unit_test`) to import
 * `replace_old_url` replace to `vm_hostname` from `old url`
 * `regenerate_thumbnails` regenerate thumbnails enabled flag (default: `false` / value: `true` | `false`)
 
@@ -406,9 +412,9 @@ Disable the setting case
 * `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
 * `php_version` version of PHP (default: 7.0.7)
+* `http_protocol` HTTP protocol (default: `http` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
-
 
 ## Directory Layout
 
@@ -416,7 +422,9 @@ Directory structure of VAW is as follows.
 
 This directory synchronize to the guest OS side `/vagrant`. `wordpress` creates automatically and synchronize to `vm_document_root`.
 
-`uploads` is the directory where stored images in `wp-content` directory of WordPress. `uploads` will be placed automatically in WordPress which was built at the time of provisioning, if you place `uploads` in this directory from the production environment.
+`wp-content` is a directory that stores WordPress themes, plugins, and upload files. `wp-content` will be placed automatically in WordPress which was built at the time of provisioning, if you place `wp-content` in this directory from the production environment.
+
+`uploads` is a directory where stored upload files in `wp-content` directory of WordPress. `uploads` will be placed automatically in WordPress which was built at the time of provisioning, if you place `uploads` in this directory from the production environment.
 
 You can create the same environment as the production environment, when you build a wordpress by import database dump data, substitution of url, regeneration of thumbnail image. You can set all from the provisioning configuration file.
 
@@ -431,6 +439,7 @@ You can create the same environment as the production environment, when you buil
 * hosts
 	* local (inventory file)
 * import (stores import data)
+* LICENSE (license file)
 * plugins (stores WordPress plugin zip format files)
 * Rakefile (Rakefile of ServerSpec)
 * readme-ja.md
@@ -440,10 +449,12 @@ You can create the same environment as the production environment, when you buil
 * spec (stores ServerSpec spec file)
 	* localhost
 	* spec_helper.rb
+	* sync-dir
 * themes (stores WordPress theme zip format files)
 * uploads (uploads directory in the wp-content)
 * Vagrantfile (Vagrant configuration file)
 * wordpress (synchronize to the Document Root. create automatically at `vagrant up`, if it does not exist.)
+* wp-content (WordPress's wp-content directory)
 
 ### Minimum Layout
 
@@ -461,13 +472,14 @@ VAW will be built in the directory structure of the following minimum unit.
 
 ## Vagrant Box
 
-Vagrant Box is probably compatible with centos-7.x x86_64 and centos-6.x x86_64.
+VAW supports VirtualBox for providers of Vagrant.
+Operating system and architecture supported centos-7.x x86_64 and centos-6.x x86_64 Vagrant Box. To download Vagrant Box, you can search from [Discover Vagrant Boxes] (https://atlas.hashicorp.com/boxes/search).
 
 By default, the Vagrantfile uses the `vaw/centos*-default` Box which has already provisioned default settings.
 
 In addition, you can use the `vaw/centos*-full` Box which has already provisioned default settings and activate develop and deploy tools.
 
-You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
+You can build the environment in a short period of time compared with provisioning from the pure vagrant Box. Only WordPress provision mode is also possible.
 
 ### CentOS 7
 
@@ -486,16 +498,17 @@ You can build the environment in a short period of time compared with provisioni
 
 * [Apache](http://httpd.apache.org)
 * [nginx](http://nginx.org)
+* [H2O](https://h2o.examp1e.net)
 
-### FastCGI (Selectable, Only nginx)
+### FastCGI (Selectable)
 
 * [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
 * [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
 
-* [MySQL](http://www.mysql.com)
 * [MariaDB](https://mariadb.org)
+* [MySQL](http://www.mysql.com)
 * [Percona MySQL](http://www.percona.com/software/percona-server)
 
 ### Pre-installing
@@ -518,7 +531,7 @@ You can build the environment in a short period of time compared with provisioni
 * [npm](https://www.npmjs.com)
 * [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
-* [gulp.js](http://gulpjs.com)
+* [gulp](http://gulpjs.com)
 * [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
@@ -551,6 +564,7 @@ You can build the environment in a short period of time compared with provisioni
 
 * after_provision.sh
 * before_provision.sh
+* centos-box.sh
 * db_backup.sh
 * phpenv.sh
 
@@ -569,7 +583,10 @@ You can build the environment in a short period of time compared with provisioni
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh 7.0.7
+	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s
+
+	# help
+	/vagrant/command/phpenv.sh -h
 
 ## Custom Config
 
@@ -578,14 +595,18 @@ As follows editable configuration files.
 
 * default-node-packages.j2
 * default-ruby-gems.j2
+* h2o.conf.j2
+* hhvm.server.ini.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
-* my.cnf.j2
+* mariadb.my.cnf.j2
+* mysql.my.cnf.j2
 * nginx.conf.j2
 * nginx.multisite.conf.j2
 * nginx.wordpress.conf.j2
 * nginx.wordpress.multisite.conf.j2
+* percona.my.cnf.j2
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
@@ -637,6 +658,32 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.0 - 2017.06.20
+	* fix centos-box.sh
+	* fix vm_box, using public Vagrant boxes
+	* add CityFan repository for libcurl, only CentOS 6
+	* set permission to synced_folder wordpress
+	* change default database to mariadb from mysql
+	* fix server test
+	* fix php install via phpenv.sh
+	* add socket argument to phpenv.sh
+	* add fastcgi to apache
+	* improve phpenv.sh version 0.1.1 for CentOS
+	* add forwarded_port for Browsersync
+	* fix php post_max_size to 32M
+	* remove wp-phpcs ruleset
+	* add custom hhvm.server.ini
+	* bump up Ruby version number to 2.4.1
+	* add webserver h2o
+	* change hhvm fastcgi connect to UNIX domain socket from TCP
+	* change webserver and fastcgi owner/group nobody
+	* add my.cnf for each database
+	* fix opcach disable
+	* add tests for sync-dir
+	* update activate plugins
+	* add wordpress import for backwpup
+	* add wp-content automatic place
+	* fix sendfile off
 * version 0.4.4 - 2017.03.18
 	* using YAML dictionaries in tasks
 	* add centos-box.sh
@@ -689,7 +736,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* add prestissimo
 	* fix re2c via yum
 	* fix tests
-	* add gulp-cli and npm-check-updates, remove gulp
+	* add gulp-cli and npm-check-updates, remove gulp globally
 	* change to become, since sudo has been deprecated
 	* fix phpenv.sh
 * version 0.3.3 - 2016.05.31
@@ -751,4 +798,4 @@ If you would like to contribute, here are some notes and guidlines.
 
 VAW is distributed under GPLv3.
 
-Copyright (c) 2014-2016 thingsym
+Copyright (c) 2014-2017 thingsym

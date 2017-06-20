@@ -2,7 +2,7 @@
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
 
-user              nginx;
+user              nobody;
 worker_processes  1;
 
 error_log   /var/log/nginx/error.log;
@@ -29,7 +29,7 @@ http {
 
     access_log  /var/log/nginx/access.log main;
 
-    sendfile        on;
+    sendfile        off;
     tcp_nopush      on;
     tcp_nodelay     on;
 

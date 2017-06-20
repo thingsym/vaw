@@ -2,37 +2,35 @@
 
 ## Server & Database Settings ##
 
-server             : 'apache'   # apache|nginx
+server             : apache   # apache|nginx|h2o
+fastcgi            : none     # none|php-fpm|hhvm
 
-# fastcgi is possible only server 'nginx'
-fastcgi            : 'php-fpm'  # php-fpm|hhvm
+database           : mariadb  # mariadb|mysql|percona
+db_root_password   : admin
 
-database           : 'mysql'    # mysql|mariadb|percona
-db_root_password   : 'admin'
-
-db_host            : 'localhost'
-db_name            : 'wordpress'
-db_user            : 'admin'
-db_password        : 'admin'
-db_prefix          : 'wp_'
+db_host            : localhost
+db_name            : wordpress
+db_user            : admin
+db_password        : admin
+db_prefix          : wp_
 db_charset         : ''
 db_collate         : '' # utf8mb4_general_ci
 
 ## WordPress Settings ##
 
-title              : 'VAW (Vagrant Ansible WordPress)'
-admin_user         : 'admin'
-admin_password     : 'admin'
-admin_email        : 'hoge@example.com'
+title              : VAW (Vagrant Ansible WordPress)
+admin_user         : admin
+admin_password     : admin
+admin_email        : hoge@example.com
 
 # e.g. latest, 4.1, 4.1-beta1
 # see Release Archive - https://wordpress.org/download/release-archive/
 # 3.5.2 or later to work properly
-version            : 'latest'
+version            : latest
 
 # e.g. en_US, ja, ...
 # see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
-lang               : 'en_US'
+lang               : en_US
 
 # in own directory or subdirectory install.
 # see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
@@ -51,7 +49,6 @@ activate_theme     : ''
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :
                         - theme-check
-                        - plugin-check
                         - log-deprecated-notices
                         - debug-bar
                         - query-monitor
@@ -77,12 +74,17 @@ permalink_structure  :
                       category    : ''
                       tag         : ''
 
-# Any one of three ways to import
+# Any one of 4 ways to import
 import_xml_data    : ''   # local path, /vagrant/import/~.xml
 import_db_data     : ''   # local path, /vagrant/import/~.sql
+import_backwpup    :
+                      path          : ''   # local path, /vagrant/import/~.zip
+                      db_data_file  : ''
+                      xml_data_file : ''
+import_admin       : false   # true|false
 theme_unit_test    : false   # true|false
 
-replace_old_url         : ''   # to vm_hostname from old url
+replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 regenerate_thumbnails   : false   # true|false
 
 ## Develop & Deploy Settings ##
@@ -91,11 +93,12 @@ WP_DEBUG           : true   # true|false
 SAVEQUERIES        : true   # true|false
 
 php_version        : 7.0.7
+http_protocol      : http   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
 
 ## That's all, stop setting. Let's vagrant up!! ##
 
-WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
+WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
 WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'

@@ -10,9 +10,9 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 ### 1. サーバ、データベース環境の構築
 
-サーバは、**Apache**、**nginx** から、データベースは、**MySQL**、**MariaDB**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
+サーバは、**Apache**、**nginx**、**H2O** から、データベースは、**MariaDB**、**MySQL**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
 
-サーバ nginx は、リバースプロキシとして FastCGI 構成で **PHP-FPM** (FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
+すべてのウェブサーバで、FastCGI 構成が可能で **PHP-FPM** (FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
 
 サーバ、データベースは基本、素の設定でインストールされますが、設定ファイルの編集でチューニングも可能。
 
@@ -30,18 +30,20 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 * テーマのインストール
 	* テーマの自動有効化
 	* 複数のテーマを一括インストール
-	* ローカルにあるテーマをインストール (開発中テーマや公式ディレクトリ未登録テーマに対応)
+	* ローカルにあるテーマをインストール (開発中テーマや公式ディレクトリ未掲載テーマに対応)
 * プラグインのインストール
 	* プラグインの自動有効化
 	* 複数のプラグインを一括インストール
-	* ローカルにあるプラグインをインストール (開発中プラグインや公式ディレクトリ未登録プラグインに対応)
+	* ローカルにあるプラグインをインストール (開発中プラグインや公式ディレクトリ未掲載プラグインに対応)
 * theme_mod (theme modification value) と Options の設定
 * パーマリンク構造の設定
-* データのインポートは 3 つのいずれかからインポートできます
+* データのインポートは 4 つのいずれかからインポートできます
 	* XML (WXR) 形式
 	* SQLデータ (データベースダンプデータ)
+	* バックアッププラグイン「BackWPup」アーカイブファイル (Zip, Tar, Tar GZip, Tar BZip2)
 	* テストデータ (Theme Unit Test)
-* uploads ディレクトリの wp-content へ自動配置
+* wp-content ディレクトリの自動配置
+* uploads ディレクトリの自動配置
 * 本番環境の URL からテスト環境の URL に置換処理
 * サムネイル画像の再生成
 
@@ -51,17 +53,18 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 ウェブサイトの構築やテーマやプラグインの開発など用途によって Develop ツールと Deploy ツールがインストールできます。有効化によってインストールされるツールの一覧は Specification を参照。
 
-
 ## Requirements
 
 * [Virtualbox](https://www.virtualbox.org)
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
 * [Ansible](https://www.ansible.com) >= 2.1.0.0
-* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) optional (Vagrant plugin)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier) optional (Vagrant plugin)
-optional (Vagrant plugin)
-* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) optional (Vagrant plugin)
-* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) optional (Vagrant plugin)
+
+#### Vagrant plugin (optional)
+
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
+* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec)
 
 ## Usage
 
@@ -120,7 +123,7 @@ optional (Vagrant plugin)
 
 ## Customize Options
 
-VAW は、設定ファイルを編集することで様々な環境が立ち上がります。カスタマイズできる設定ファイルは 2 種類あります。設定ファイルの編集後、`vagrant up` または、`vagrant provision` するだけ。
+VAW は、設定ファイルを編集することで様々な環境が立ち上がります。カスタマイズできる設定ファイルは 2 種類あります。設定ファイルの編集後、開発環境の立ち上げは、`vagrant up` または `vagrant provision` するだけ。
 
 ### Vagrant 設定ファイル (Ruby)
 
@@ -143,7 +146,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	vbguest_auto_update   = false
 
 	ansible_install_mode  = :default    # :default|:pip
-	ansible_version       = 'latest'    # only :pip
+	ansible_version       = 'latest'    # only :pip required
 
 	provision_only_wordpress = false
 
@@ -153,11 +156,11 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
-* `public_ip` bridge 接続する IP アドレス (default: ``)
-* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: false / value: true | false)
-* `ansible_install_mode` (required)  Ansible のインストール方法 (default: :default / value: :default | :pip)
-* `ansible_version` インストールする Ansible のバージョン (default: latest)
-* `provision_only_wordpress` only WordPress provision mode (default: false / value: true | false)
+* `public_ip` bridge 接続する IP アドレス (default: `''`)
+* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
+* `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
+* `ansible_version` インストールする Ansible のバージョン (default: `latest`)
+* `provision_only_wordpress`  WordPress だけプロビジョニングする短縮モード (default: `false` / value: `true` | `false`)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -166,12 +169,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	## Server & Database Settings ##
 
-	server             : 'apache'   # apache|nginx
+	server             : apache   # apache|nginx|h2o
+	fastcgi            : none     # none|php-fpm|hhvm
 
-	# fastcgi is possible only server 'nginx'
-	fastcgi            : 'php-fpm'  # php-fpm|hhvm
-
-	database           : 'mysql'    # mysql|mariadb|percona
+	database           : mariadb  # mariadb|mysql|percona
 	db_root_password   : 'admin'
 
 	db_host            : 'localhost'
@@ -215,7 +216,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
 	activate_plugins   :
 	                        - theme-check
-	                        - plugin-check
 	                        - log-deprecated-notices
 	                        - debug-bar
 	                        - query-monitor
@@ -241,12 +241,17 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                      category    : ''
 	                      tag         : ''
 
-	# Any one of three ways to import
+	# Any one of 4 ways to import
 	import_xml_data    : ''   # local path, /vagrant/import/~.xml
 	import_db_data     : ''   # local path, /vagrant/import/~.sql
+	import_backwpup    :
+	                      path          : ''   # local path, /vagrant/import/~.zip
+	                      db_data_file  : ''
+	                      xml_data_file : ''
+	import_admin       : false   # true|false
 	theme_unit_test    : false   # true|false
 
-	replace_old_url         : ''   # to vm_hostname from old url
+	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
 	## Develop & Deploy Settings ##
@@ -255,30 +260,30 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	SAVEQUERIES        : true    # true|false
 
 	php_version        : 7.0.7
+	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
 
 	## That's all, stop setting. Let's vagrant up!! ##
 
-	WP_URL             : '{{ HOSTNAME }}{{ wp_site_path }}'
+	WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
 	WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 
 
 #### Server & Database Settings ##
 
-* `server` (required) ウェブサーバ名 (default: `apache` / value: `apache` | `nginx`)
-* `fastcgi` fastCGI 名 (default: `php-fpm` / value: `php-fpm` | `hhvm`)
-	* `fastcgi` は `server 'nginx'` のみ可能
-* `database` (required) データベース名 (default: `mysql` / value: `mysql` | `mariadb` | `percona`)
+* `server` (required) ウェブサーバ名 (default: `apache` / value: `apache` | `nginx` | `h2o`)
+* `fastcgi` fastCGI 名 (default: `none` / value: `none` | `php-fpm` | `hhvm`)
+* `database` (required) データベース名 (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
 * `db_root_password` (required) データベースの root パスワード (default: `admin`)
 * `db_host` (required) データベースホスト名 (default: `localhost`)
 * `db_name` (required) データベース名 (default: `wordpress`)
 * `db_user` (required) データベースユーザ名 (default: `admin`)
 * `db_password` (required) データベースパスワード (default: `admin`)
 * `db_prefix` データベースのプレフィックス名 (default: `wp_`)
-* `db_charset` データベースの文字コード (default: ``)
-* `db_collate` データベースの照合順序 (default: ``)
+* `db_charset` データベースの文字コード (default: `''`)
+* `db_collate` データベースの照合順序 (default: `''`)
 
 #### WordPress Settings ##
 
@@ -297,7 +302,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `wp_dir` サブディレクトリにインストールするディレクトリパス (default: ドキュメントルートにインストール)
 * `wp_site_path` サイトパス (default: ドキュメントルート)
-	*  `wp_dir` と `wp_site_path` が同じパスの場合、ディレクトリにインストールされます。
+	* `wp_dir` と `wp_site_path` が同じパスの場合、ディレクトリにインストールされます。
 	* `wp_dir` と `wp_site_path` のパスが違う場合、サブディレクトリインストールになります。必ず `wp_site_path` は `wp_dir` より一つ上のディレクトリに置いてください。
 	*  [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory) を参照
 
@@ -384,13 +389,14 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	* `structure` Structure Tags で投稿のパーマリンク構造を設定
 	* `category` カテゴリーアーカイブのカテゴリープレフィックスを設定
 	* `tag` タグアーカイブのタグプレフィックスを設定
-
 * `import_xml_data` WXR 形式のファイルパス `/vagrant/import/~.xml`
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
 * `import_db_data` SQL ダンプファイルパス `/vagrant/import/~.sql`
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
+* `import_backwpup`
+	* `path` アーカイブファイルパス `/vagrant/import/~.zip` (Zip, Tar, Tar GZip, Tar BZip2)
+	* `db_data_file` DBバックアップファイル名 (データファイルのどちらかひとつからインポート)
+	* `xml_data_file` XML エクスポートファイル名 (データファイルのどちらかひとつからインポート)
+* `import_admin` WordPress 管理者ユーザーの追加 (default: `false` / value: `true` | `false`)
 * `theme_unit_test` テーマユニットテストデータのインポート有効化 (default: `false` / value: `true` | `false`)
-	* インポートは以下の3つのいずれか (`import_xml_data`, `import_db_data`, `theme_unit_test`)
 * `replace_old_url` `old url` から `vm_hostname` に置換
 * `regenerate_thumbnails` サムネイル画像の再生成を有効化 (default: `false` / value: `true` | `false`)
 
@@ -398,7 +404,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: 7.0.7)
+* `php_version` PHPバージョン (default: `7.0.7`)
+* `http_protocol` HTTP プロトコル (default: `http` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
 
@@ -406,7 +413,11 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 VAW のディレクトリ構成は以下の通りです。本ディレクトリは、ゲストOS側で `/vagrant` に同期します。また、`wordpress` は自動で作成されて Vagrant 設定ファイルで設定した Document Root `vm_document_root` に同期します。
 
-`uploads` は WordPress の wp-content にある画像を格納したディレクトリです。本番環境から本ディレクトリに `uploads` をコピーして置くとプロビジョニング時に構築した WordPress に自動で配置されます。データベースのダンプデータのインポートと url の置換、サムネイル画像の再生成を活用して構築すると、本番環境と同じ環境が作れます。すべてプロビジョニング設定ファイルから設定できます。
+`wp-content` は WordPress のテーマやプラグイン、アップロードファイルを格納したディレクトリです。本番環境から本ディレクトリに `wp-content` をコピーして置くとプロビジョニング時に構築した WordPress に自動で配置されます。
+
+`uploads` は WordPress の wp-content にあるアップロードファイルを格納したディレクトリです。本番環境から本ディレクトリに `uploads` をコピーして置くとプロビジョニング時に構築した WordPress に自動で配置されます。
+
+データベースのダンプデータのインポートと url の置換、サムネイル画像の再生成を活用して構築すると、本番環境と同じ環境が作れます。すべてプロビジョニング設定ファイルから設定できます。
 
 ### Full Layout
 
@@ -419,6 +430,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 * hosts
 	* local (inventory file)
 * import (インポートデータを格納)
+* LICENSE (ライセンスファイル)
 * plugins (zip 形式のプラグインファイルを格納)
 * Rakefile (ServerSpec の Rakefile)
 * readme-ja.md
@@ -428,10 +440,12 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 * spec (ServerSpec spec file を格納)
 	* localhost
 	* spec_helper.rb
+	* sync-dir
 * themes (zip 形式のテーマファイルを格納)
-* uploads (wp-content にある uploads ディレクトリ)
+* uploads (WordPress の wp-content にある uploads ディレクトリ)
 * Vagrantfile (Vagrant 設定ファイル)
 * wordpress (Document Root に同期するディレクトリ、無い場合、`vagrant up` 時に自動作成)
+* wp-content (WordPress の wp-content ディレクトリ)
 
 ### Minimum Layout
 
@@ -446,12 +460,12 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 * Vagrantfile (Vagrant 設定ファイル)
 * wordpress (Document Root に同期するディレクトリ、無い場合、`vagrant up` 時に自動作成)
 
-
 ## Vagrant Box
 
-Box は centos-7.x x86_64 系 と centos-6.x x86_64 系に対応しています。
+VAW は、Vagrant のプロバイダ VirtualBox をサポートしています。
+OS とアーキテクチャは、centos-7.x x86_64 系 と centos-6.x x86_64 系 Vagrant Box に対応しています。Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://atlas.hashicorp.com/boxes/search) から検索できます。
 
-VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。
+VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。また、only WordPress provision mode でさらなるプロビジョニング時間短縮が図れます。
 
 ### CentOS 7
 
@@ -470,16 +484,17 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 
 * [Apache](http://httpd.apache.org)
 * [nginx](http://nginx.org)
+* [H2O](https://h2o.examp1e.net)
 
-### FastCGI (Selectable, Only nginx)
+### FastCGI (Selectable)
 
 * [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
 * [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
 
-* [MySQL](http://www.mysql.com)
 * [MariaDB](https://mariadb.org)
+* [MySQL](http://www.mysql.com)
 * [Percona MySQL](http://www.percona.com/software/percona-server)
 
 ### Pre-installing
@@ -502,7 +517,7 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 * [npm](https://www.npmjs.com)
 * [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
-* [gulp.js](http://gulpjs.com)
+* [gulp](http://gulpjs.com)
 * [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
@@ -534,6 +549,7 @@ VAW では、CentOS 7 と CentOS 6 用に 2 つずつ Box を用意していま�
 
 * after_provision.sh
 * before_provision.sh
+* centos-box.sh
 * db_backup.sh
 * phpenv.sh
 
@@ -552,7 +568,10 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh 7.0.7
+	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s
+
+	# help
+	/vagrant/command/phpenv.sh -h
 
 ## Custom Config
 
@@ -561,14 +580,18 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 * default-node-packages.j2
 * default-ruby-gems.j2
+* h2o.conf.j2
+* hhvm.server.ini.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
-* my.cnf.j2
+* mariadb.my.cnf.j2
+* mysql.my.cnf.j2
 * nginx.conf.j2
 * nginx.multisite.conf.j2
 * nginx.wordpress.conf.j2
 * nginx.wordpress.multisite.conf.j2
+* percona.my.cnf.j2
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
@@ -577,7 +600,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 **only WordPress provision mode** は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
 
-**only WordPress provision mode** でプロビジョニングすると、プロビジョニング時間の短縮ができます。
+事前に Vagrant Box を作った上で、**only WordPress provision mode** でプロビジョニングすると、プロビジョニング時間の短縮ができます。
 
 設定は、Vagrant 設定ファイルの `provision_only_wordpress` を `true` にするだけ。
 
@@ -626,6 +649,32 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.0 - 2017.06.20
+	* fix centos-box.sh
+	* fix vm_box, using public Vagrant boxes
+	* add CityFan repository for libcurl, only CentOS 6
+	* set permission to synced_folder wordpress
+	* change default database to mariadb from mysql
+	* fix server test
+	* fix php install via phpenv.sh
+	* add socket argument to phpenv.sh
+	* add fastcgi to apache
+	* improve phpenv.sh version 0.1.1 for CentOS
+	* add forwarded_port for Browsersync
+	* fix php post_max_size to 32M
+	* remove wp-phpcs ruleset
+	* add custom hhvm.server.ini
+	* bump up Ruby version number to 2.4.1
+	* add webserver h2o
+	* change hhvm fastcgi connect to UNIX domain socket from TCP
+	* change webserver and fastcgi owner/group nobody
+	* add my.cnf for each database
+	* fix opcach disable
+	* add tests for sync-dir
+	* update activate plugins
+	* add wordpress import for backwpup
+	* add wp-content automatic place
+	* fix sendfile off
 * version 0.4.4 - 2017.03.18
 	* using YAML dictionaries in tasks
 	* add centos-box.sh
@@ -678,7 +727,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* add prestissimo
 	* fix re2c via yum
 	* fix tests
-	* add gulp-cli and npm-check-updates, remove gulp
+	* add gulp-cli and npm-check-updates, remove gulp globally
 	* change to become, since sudo has been deprecated
 	* fix phpenv.sh
 * version 0.3.3 - 2016.05.31
@@ -740,4 +789,4 @@ If you would like to contribute, here are some notes and guidlines.
 
 VAW is distributed under GPLv3.
 
-Copyright (c) 2014-2016 thingsym
+Copyright (c) 2014-2017 thingsym

@@ -3,8 +3,14 @@
 
 ## Vagrant Settings ##
 
-vm_box                = 'vaw/centos7-default'
+# Vagrant BOX
+vm_box                = 'bento/centos-7.3'
+# vm_box                = 'bento/centos-6.9'
+
+# VAW default Vagrant BOX
+# vm_box                = 'vaw/centos7-default'
 # vm_box                = 'vaw/centos7-full'
+
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
@@ -15,7 +21,7 @@ public_ip             = ''
 vbguest_auto_update   = false
 
 ansible_install_mode  = :default    # :default|:pip
-ansible_version       = 'latest'    # only :pip
+ansible_version       = 'latest'    # only :pip required
 
 provision_only_wordpress = false
 
@@ -48,8 +54,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :public_network, ip: public_ip
   end
 
+  config.vm.network :forwarded_port, guest: 3000, host: 3000, auto_correct: true
+  config.vm.network :forwarded_port, guest: 3001, host: 3001, auto_correct: true
+
   config.vm.synced_folder '.', '/vagrant', :create => 'true'
-  config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true'
+  config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true', :mount_options => ['dmode=755', 'fmode=644']
 
   config.ssh.forward_agent = true
 
@@ -66,13 +75,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provider "virtualbox" do |vb|
-    # vb.gui = true
-    # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize [
       "modifyvm", :id,
       "--memory", "1536",
       '--natdnshostresolver1', 'on',
       '--natdnsproxy1', 'on',
+      '--cableconnected1', "on",
     ]
   end
 
@@ -98,8 +106,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if File.exist?("Rakefile")
     if Vagrant.has_plugin?("vagrant-serverspec")
-      config.vm.provision :serverspec do |spec|
-        spec.pattern = "spec/localhost/*_spec.rb"
+      if provision_only_wordpress then
+        config.vm.provision :serverspec do |spec|
+          spec.pattern = "spec/sync-dir/*_spec.rb"
+        end
+      else
+        config.vm.provision :serverspec do |spec|
+          spec.pattern = "spec/localhost/*_spec.rb"
+        end
       end
     end
   end

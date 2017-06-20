@@ -11,8 +11,8 @@
 - name: phpcs config-set wp-phpcs
   command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs
 
-- name: ruleset.xml fixed
-  replace:
-    dest: "{{ share_path }}/wp-phpcs/WordPress-Core/ruleset.xml"
-    regexp: '<property name=\"indent\" value=\"4\"/>'
-    replace: '<property name=\"indent\" value=\"1\"/>'
+# - name: ruleset.xml fixed
+#   replace:
+#     dest: "{{ share_path }}/wp-phpcs/WordPress-Core/ruleset.xml"
+#     regexp: "<property name=\"indent\" value=\"4\"/>"
+#     replace: "<property name=\"indent\" value=\"1\"/>"

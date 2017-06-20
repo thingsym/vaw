@@ -70,6 +70,21 @@
     - readline-devel
     - zlib-devel
 
+- block:
+  - name: CityFan repository added (CentOS/RHEL 6)
+    yum_repository:
+      name: city-fan
+      description: City Fan Repo
+      baseurl: http://nervion.us.es/city-fan/yum-repo/rhel$releasever/$basearch/
+      gpgcheck: no
+      enabled: no
+  - name: libcurl installed
+    yum:
+      name: libcurl
+      enablerepo: city-fan,epel
+      state: latest
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+
 - name: stat rbenv_default_gems
   stat:
     path: /vagrant/config/default-ruby-gems.j2
@@ -82,11 +97,11 @@
   when: is_rbenv_default_gems.stat.exists
 
 - name: ruby installed via rbenv
-  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.3.1) }}
+  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}
   ignore_errors: yes
 
 - name: rbenv rehash
   command: sudo -u vagrant -i -- rbenv rehash
 
 - name: rbenv global
-  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.3.1) }}
+  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.4.1) }}

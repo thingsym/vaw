@@ -1,0 +1,62 @@
+---
+- name: stat import_backwpup
+  stat:
+    path: "{{ import_backwpup.path }}"
+  register: is_import_backwpup
+
+- block:
+  - file:
+      path: /tmp/backwpup
+      state: directory
+
+  - name: unarchive import_backwpup
+    unarchive:
+      src: "{{ import_backwpup.path }}"
+      dest: /tmp/backwpup
+
+  - name: stat db_data_file
+    stat:
+      path: "/tmp/backwpup/{{ import_backwpup.db_data_file }}"
+    register: is_db_data_file
+
+  - block:
+    - name: db data import
+      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
+
+    - name: add user admin
+      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+      when: import_admin == true
+    when: is_db_data_file.stat.exists
+
+  - name: stat xml_data_file
+    stat:
+      path: "/tmp/backwpup/{{ import_backwpup.xml_data_file }}"
+    register: is_xml_data_file
+
+  - block:
+    - name: plugin install wordpress-importer
+      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
+
+    - name: import xml data
+      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import /tmp/backwpup/{{ import_backwpup.xml_data_file }} --authors=create
+
+    - name: plugin deactivate wordpress-importer
+      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    when: is_xml_data_file.stat.exists
+
+  - name: stat wp-content
+    stat:
+      path: /tmp/backwpup/wp-content
+    register: is_backwpup_wp_content
+
+  - name: rsync wp-content
+    synchronize:
+      src: /tmp/backwpup/wp-content
+      dest: "{{ WP_PATH }}"
+    when: is_backwpup_wp_content.stat.exists and is_backwpup_wp_content.stat.isdir == true
+
+  - file:
+      path: /tmp/backwpup
+      state: absent
+
+  when: is_import_backwpup.stat.exists

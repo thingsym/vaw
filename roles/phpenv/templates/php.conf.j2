@@ -4,14 +4,14 @@
 #
 
 #LoadModule php5_module modules/libphp5.so
-LoadModule php7_module modules/libphp7.so
+#LoadModule php7_module modules/libphp7.so
 
 #
 # Cause the PHP interpreter to handle files with a .php extension.
 #
 
 <FilesMatch "\.php$">
-SetHandler application/x-httpd-php
+  SetHandler application/x-httpd-php
 </FilesMatch>
 
 #

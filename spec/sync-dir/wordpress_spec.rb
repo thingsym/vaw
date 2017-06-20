@@ -6,7 +6,7 @@ if property["import_admin"] then
     its(:stdout) { should match /#{property["db_name"]}/ }
   end
 elsif property["import_db_data"] or property["import_backwpup"]["db_data_file"] then
-  # Nothing to do
+  # nothing
 else
   describe command("mysqlshow -u #{property["db_user"]} -p#{property["db_password"]} #{property["db_name"]}") do
     its(:stdout) { should match /#{property["db_name"]}/ }

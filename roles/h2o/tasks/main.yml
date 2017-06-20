@@ -1,0 +1,72 @@
+---
+- block:
+  - name: bintray-tatsushid-h2o-rpm.repo repository added (CentOS/RHEL)
+    yum_repository:
+      name: bintray-tatsushid-h2o-rpm
+      description: bintray-tatsushid-h2o-rpm - packages by tatsushid from Bintray
+      baseurl: https://dl.bintray.com/tatsushid/h2o-rpm/centos/$releasever/$basearch/
+
+  - name: h2o installed
+    package:
+      name: h2o
+      state: latest
+      disable_gpg_check: yes
+  when: ansible_os_family == 'RedHat'
+
+- block:
+  - name: GPG key added (Debian)
+    apt_key:
+      url: https://bintray.com/user/downloadSubjectPublicKey?username=bintray
+      state: present
+
+  - name: tatsushid repository installed (Debian)
+    apt_repository:
+      repo: "deb http://dl.bintray.com/tatsushid/h2o-deb {{ ansible_distribution_release }}-backports main"
+      filename: 'bintray-tatsushid-h2o'
+      state: present
+
+  - name: apt-get update
+    command: apt-get update
+
+  - name: h2o installed
+    package:
+      name: h2o
+      state: latest
+  when: ansible_os_family == 'Debian'
+
+- block:
+  - name: stat /var/run/h2o
+    stat:
+      path: /var/run/h2o
+    register: is_h2o_dir
+
+  - name: mkdie /var/run/h2o
+    file:
+      path: /var/run/h2o
+      state: directory
+    when: not is_h2o_dir.stat.exists
+
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise'
+
+- name: stat custom h2o.conf.j2
+  stat:
+    path: /vagrant/config/h2o.conf.j2
+  register: is_custom_h2o_conf
+
+- name: custom h2o.conf changed
+  template:
+    src: /vagrant/config/h2o.conf.j2
+    dest: /etc/h2o/h2o.conf
+  when: is_custom_h2o_conf.stat.exists
+
+- name: h2o.conf changed
+  template:
+    src: h2o.conf.j2
+    dest: /etc/h2o/h2o.conf
+  when: not is_custom_h2o_conf.stat.exists
+
+- name: h2o started and enabled
+  service:
+    name: h2o
+    state: restarted
+    enabled: yes
