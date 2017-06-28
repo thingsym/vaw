@@ -10,21 +10,21 @@
 
 - name: stat ssl_path
   stat:
-    path: "/etc/pki/tls/{{ HOSTNAME }}"
+    path: /etc/pki/tls/vaw
   register: is_ssl_path
 
 - name: mkdir ssl
   file:
-    path: "/etc/pki/tls/{{ HOSTNAME }}"
+    path: /etc/pki/tls/vaw
     state: directory
     owner: root
   when: not is_ssl_path.stat.exists
 
 - name: generate a key
-  command: openssl genrsa -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key 2048
+  command: openssl genrsa -out /etc/pki/tls/vaw/server.key 2048
 
 - name: Generate a certificate
-  command: openssl req -new -x509 -key /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key -out /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt -days 3650 -subj /CN={{ HOSTNAME }}
+  command: openssl req -new -x509 -key /etc/pki/tls/vaw/server.key -out /etc/pki/tls/vaw/server.crt -days 3650 -subj /CN={{ HOSTNAME }}
 
 - name: stat ssl.conf
   stat:
