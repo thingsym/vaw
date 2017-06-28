@@ -146,13 +146,13 @@ describe package('openssl-devel') do
   it { should be_installed }
 end
 
-describe package('curl') do
+describe package('libcurl') do
   it { should be_installed }
 end
 
-# describe package('curl-devel') do
-#   it { should be_installed }
-# end
+describe package('libcurl-devel') do
+  it { should be_installed }
+end
 
 # describe package('libjpeg-devel') do
 #   it { should be_installed }

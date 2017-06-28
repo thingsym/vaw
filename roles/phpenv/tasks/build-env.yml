@@ -7,8 +7,6 @@
     - libxml2-devel
     - bison-devel
     - openssl-devel
-    - curl
-    - curl-devel
     - libjpeg-devel
     - libpng-devel
     - libmcrypt-devel

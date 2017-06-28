@@ -70,21 +70,6 @@
     - readline-devel
     - zlib-devel
 
-- block:
-  - name: CityFan repository added (CentOS/RHEL 6)
-    yum_repository:
-      name: city-fan
-      description: City Fan Repo
-      baseurl: http://nervion.us.es/city-fan/yum-repo/rhel$releasever/$basearch/
-      gpgcheck: no
-      enabled: no
-  - name: libcurl installed
-    yum:
-      name: libcurl
-      enablerepo: city-fan,epel
-      state: latest
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
-
 - name: stat rbenv_default_gems
   stat:
     path: /vagrant/config/default-ruby-gems.j2
