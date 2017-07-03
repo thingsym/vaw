@@ -6,8 +6,8 @@ hosts:
       port: 443
       host: 0.0.0.0
       ssl:
-        certificate-file: /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.crt
-        key-file: /etc/pki/tls/{{ HOSTNAME }}/{{ HOSTNAME }}.key
+        certificate-file: /etc/pki/tls/vaw/server.crt
+        key-file: /etc/pki/tls/vaw/server.key
     paths:
       "/":
         file.dir: {{ DOCUMENT_ROOT }}
