@@ -23,7 +23,7 @@ vbguest_auto_update   = false
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
 
-provision_only_wordpress = false
+provision_mode        = 'normal'    # normal|wordpress|box
 
 ## That's all, stop setting. ##
 
@@ -86,8 +86,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell, :inline => provision
 
-  if provision_only_wordpress then
+  if provision_mode == 'wordpress' then
     ansible_tags = 'sync-dir'
+  elsif provision_mode == 'box' then
+    ansible_skip_tags = 'sync-dir'
   end
 
   config.vm.provision "ansible_local" do |ansible|
@@ -96,24 +98,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.inventory_path = 'hosts/local'
     ansible.playbook = 'site.yml'
     ansible.tags = ansible_tags
-    # ansible.skip_tags = ansible_tags
     ansible.verbose = 'v'
+    ansible.skip_tags = ansible_skip_tags
     ansible.extra_vars = {
       HOSTNAME: vm_hostname,
       DOCUMENT_ROOT: vm_document_root
     }
   end
 
-  if File.exist?("Rakefile")
-    if Vagrant.has_plugin?("vagrant-serverspec")
-      if provision_only_wordpress then
-        config.vm.provision :serverspec do |spec|
-          spec.pattern = "spec/sync-dir/*_spec.rb"
-        end
-      else
-        config.vm.provision :serverspec do |spec|
-          spec.pattern = "spec/localhost/*_spec.rb"
-        end
+  if provision_mode == 'box' then
+    config.vm.provision :shell, path: "command/centos-box.sh"
+  end
+
+  if Vagrant.has_plugin?("vagrant-serverspec")
+    if provision_mode == 'wordpress' then
+      config.vm.provision :serverspec do |spec|
+        spec.pattern = "spec/sync-dir/*_spec.rb"
+      end
+    elsif provision_mode == 'box' then
+      config.vm.provision :serverspec do |spec|
+        spec.pattern = "spec/box/*_spec.rb"
+      end
+    else
+      config.vm.provision :serverspec do |spec|
+        spec.pattern = "spec/localhost/*_spec.rb"
       end
     end
   end

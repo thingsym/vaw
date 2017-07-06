@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
+# usage: sudo /vagrant/command/centos-box.sh
+
 set -e
 
-sudo rm -f /etc/sysconfig/network-scripts/ifcfg-eth1
-sudo ln -s -f /dev/null /etc/udev/rules.d/70-persistent-net.rules
-sudo rm -rf /dev/.udev/
-sudo rm -f /etc/udev/rules.d/70-persistent-ipoib.rules
-sudo rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
-sudo du -sh /var/cache/yum
-sudo yum clean all
+ln -s -f /dev/null /etc/udev/rules.d/70-persistent-net.rules
 
-# swapoff /swapfile
-# dd if=/dev/zero of=/swapfile bs=1M
-# rm -f /swapfile
+rm -f /etc/sysconfig/network-scripts/ifcfg-eth1
+rm -rf /dev/.udev/
+rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
+rm -f /etc/udev/rules.d/70-persistent-ipoib.rules
+
+du -sh /var/cache/yum
+yum clean all
 
 exit
