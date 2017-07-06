@@ -148,7 +148,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_only_wordpress = false
+	provision_mode        = 'normal'    # normal|wordpress|box
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -160,7 +160,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
-* `provision_only_wordpress`  WordPress だけプロビジョニングする短縮モード (default: `false` / value: `true` | `false`)
+* `provision_mode` (required) プロビジョニングモード (default: `normal` / value: `normal` | `wordpress` | `box`)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -477,6 +477,88 @@ VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
 
+## プロビジョニングモード
+
+VAW には、3つのプロビジョニングモードがあります。
+
+* `normal` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
+* `wordpress` は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
+* `box` は、Vagrant Box を作成するためのプロビジョニングをします。
+
+VAW は、いろんなサーバ、データベース構成の組み合わせでプロビジョニングできることが特徴です。
+その反面、まっさらな Vagrant Box から環境を構築することは、プロビジョニングに時間がかかります。
+
+あらかじめサーバ、データベース構成を設定した Vagrant Box を作成できます。
+作った Vagrant Box を使い回すことでプロビジョニングの時間短縮が図れます。
+
+まず、Provision mode `box` で Vagrant Box を作成します。
+次に、作成した Vagrant Box を Provision mode `wordpress` でプロビジョニングします。
+作成した Vagrant Boxをベースに WordPress開発環境が素早く立ち上がります。
+
+
+## Vagrant Box の作り方
+
+プロビジョニングモードをどのように活用するのか。
+
+Vagrant Box の作り方から、つくった Vagrant Box でプロビジョニングして WordPress開発環境を構築するまでの流れを通じて見てみましょう。
+
+### 1. 設定ファイルの設定
+
+Vagrant Box 作成するため Vagrant 環境を立ち上げます。
+まず、Vagrant 設定ファイルとプロビジョニング設定ファイルの設定をします。
+
+Vagrant 設定ファイルの `provision_mode` を `box` に設定。
+
+	provision_mode        = 'box'    # normal|wordpress|box
+
+プロビジョニング設定ファイルの設定はお好みで。
+ただし、`provision_mode` が `box` 場合、
+プロビジョニング時にプロビジョニング設定ファイルの WordPress Settings セクションがスキップされます。
+
+### 2. プロビジョニング
+
+プロビジョニングをして環境を構築します。
+
+	vagrant up
+
+### 3. Vagrant Box の作成 (パッケージ化)
+
+プロビジョニングが完了したら、box 名を付けて Vagrant Box を作成します。 (e.g. sample.box)
+
+	vagrant package --output sample.box
+
+### 4. Vagrant Box の登録
+
+作成した Vagrant Box を Vagrant に追加します。(e.g. VM名 sample として登録)
+
+	vagrant box add sample.box --name sample
+
+Vagrant Box 作成のために作った Vagrant Box は、削除して構いません。 (e.g. sample.box)
+立ち上げた Vagrant環境は、動作確認後に削除して構いません。
+
+	vagrant destroy
+
+### 5. 作成した Vagrant Box でプロビジョニング
+
+作成した Vagrant Box でWordPress開発用に Vagrant環境を立ち上げます。
+Vagrant 設定ファイルとプロビジョニング設定ファイルの設定をします。
+
+Vagrant 設定ファイルの `vm_box` を `sample` に設定。 (e.g. VM名 sample)
+Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
+
+	vm_box                = 'sample'
+	...
+	provision_mode        = 'wordpress'    # normal|wordpress|box
+
+プロビジョニング設定ファイルの設定はお好みで。
+`provision_mode` が `wordpress` 場合、
+プロビジョニング時にプロビジョニング設定ファイルの WordPress Settings セクションだけが有効になります。
+
+### 6. 仮想環境を立ち上げます
+
+	vagrant up
+
+プロビジョニングが完了したら、WordPress開発環境が立ち上がります。
 
 ## Specification
 
@@ -595,14 +677,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## only WordPress provision mode でプロビジョニング時間の短縮
-
-**only WordPress provision mode** は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
-
-事前に Vagrant Box を作った上で、**only WordPress provision mode** でプロビジョニングすると、プロビジョニング時間の短縮ができます。
-
-設定は、Vagrant 設定ファイルの `provision_only_wordpress` を `true` にするだけ。
 
 ## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
 

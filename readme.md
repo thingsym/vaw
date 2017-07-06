@@ -156,7 +156,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_only_wordpress = false
+	provision_mode        = 'normal'    # normal|wordpress|box
 
 * `vm_box` (required) name of Vagrant Box (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -168,7 +168,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
-* `provision_only_wordpress` only WordPress provision mode (default: `false` / value: `true` | `false`)
+* `provision_mode` (required) Provisioning mode (default: `normal` / value: `normal` | `wordpress` | `box`)
 
 ### Provisioning configuration file (YAML)
 
@@ -491,6 +491,85 @@ You can build the environment in a short period of time compared with provisioni
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
 
+## Provisioning mode
+
+The VAW has three provisioning modes.
+
+* `normal` will normal provisioning from the pure Vagrant Box.
+* `wordpress` provisions only sync folders including WordPress.
+* `box` provision to create a Vagrant Box.
+
+The VAW is characterized by being able to provision with various server and database configuration combinations. On the other hand, it takes time to build the environment from pure Vagrant Box.
+
+You can create a Vagrant Box with server and database configuration in advance. By using the created Vagrant Box you can shorten the provisioning time.
+
+First, create a Vagrant Box with Provision mode `box`.
+Next, provision the created Vagrant Box with Provision mode `wordpress`.
+Based on the Vagrant Box you created, WordPress development environment will start quickly anytime.
+
+## How to make Vagrant Box
+
+How to use the provisioning mode?
+
+Let's see how to make Vagrant Box through the process from provisioning with Vagrant Box to building WordPress development environment.
+
+### 1. Setting of configuration file
+
+We will launch the Vagrant environment for creating Vagrant Box.
+First of all, Set up the Vagrant configuration file and the provisioning configuration file.
+
+Set `provision_mode` in the Vagrant configuration file to `box`.
+
+	provision_mode        = 'box'    # normal|wordpress|box
+
+You can set the provisioning configuration file as you like.
+
+However, if `provision_mode` is `box`, the WordPress Settings section of the provisioning configuration file will be skipped during provisioning.
+
+### 2. Provisioning
+
+Provision and build the environment.
+
+	vagrant up
+
+### 3. Creating a Vagrant Box (Packaging)
+
+After provisioning is completed, create a Vagrant Box with a box name. (e.g. sample.box)
+
+	vagrant package --output sample.box
+
+### 4. Registration of Vagrant Box
+
+Add the created Vagrant Box to Vagrant. (Register as eg sample)
+
+	vagrant box add sample.box --name sample
+
+You can delete the Vagrant Box file created for creating Vagrant Box. (e.g. sample.box)
+You can destroy the launched Vagrant environment after checking the operation.
+
+	vagrant destroy
+
+### 5. Provisioning with the created Vagrant Box
+
+Launch the Vagrant environment for WordPress development with the Vagrant Box you created.
+Set up the Vagrant configuration file and the provisioning configuration file.
+
+Set `vm_box` of the Vagrant configuration file to `sample`. (e.g. sample)
+Set `provision_mode` in the Vagrant configuration file to `wordpress`.
+
+	vm_box                = 'sample'
+	...
+	provision_mode        = 'wordpress'    # normal|wordpress|box
+
+You can set the provisioning configuration file as you like.
+
+However, if `provision_mode` is `wordpress`, only the WordPress Settings section of the provisioning configuration file is enabled during provisioning.
+
+### 6. Launch a virtual environment
+
+	vagrant up
+
+After provisioning, you can launch a WordPress development environment.
 
 ## Specification
 
@@ -610,14 +689,6 @@ As follows editable configuration files.
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## Shortening of provisioning time by only WordPress provision mode
-
-**only WordPress provision mode** provision only sync folder including WordPress.
-
-When you provision VAW by **only WordPress provision mode**, you can shorten the provisioning time.
-
-The setting is to set the value of `provision_only_wordpress` to `true` in the Vagrant configuration file.
 
 ## Shortening of provisioning time by Vagrant plugin vagrant-cachier
 
