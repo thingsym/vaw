@@ -32,10 +32,6 @@ if property["develop_tools"] then
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/bower --version') do
-   its(:exit_status) { should eq 0 }
-  end
-
   describe command('/home/vagrant/.nodenv/shims/stylestats --version') do
     its(:exit_status) { should eq 0 }
   end

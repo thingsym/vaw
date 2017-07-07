@@ -611,7 +611,6 @@ After provisioning, you can launch a WordPress development environment.
 * [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
 * [gulp](http://gulpjs.com)
-* [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
