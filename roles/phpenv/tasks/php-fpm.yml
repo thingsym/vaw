@@ -3,15 +3,15 @@
   file:
     path: /var/run/php-fpm
     state: directory
-    owner: nobody
-    group: nobody
+    owner: vagrant
+    group: vagrant
 
 - name: mkdir /var/log/php-fpm
   file:
     path: /var/log/php-fpm
     state: directory
-    owner: nobody
-    group: nobody
+    owner: vagrant
+    group: vagrant
 
 - block:
   - name: stat init_php_fpm
