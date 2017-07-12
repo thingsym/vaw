@@ -1,16 +1,16 @@
 # VAW (Vagrant Ansible WordPress)
 
-**VAW (Vagrant Ansible WordPress)** is Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.
+The **VAW (Vagrant Ansible WordPress)** is **Ansible playbooks** for website developer, webmaster and WordPress theme/plugin developer.
 
 Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
-**VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and clients.
+The **VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and clients.
 
 ## Features
 
 ### 1. Build Server and Database environment
 
-**VAW** will build server from **Apache**, **nginx** or **H2O**, and build database from **MariaDB**, **MySQL** or **Percona MySQL**.
+The **VAW** will build server from **Apache**, **nginx** or **H2O**, and build database from **MariaDB**, **MySQL** or **Percona MySQL**.
 
 On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
 
@@ -20,9 +20,9 @@ You can validate on the server and the database of various combinations.
 
 ### 2. Build WordPress environment
 
-**VAW** will build a WordPress which has been processed in a variety of settings and data.
+The **VAW** will build a WordPress which has been processed in a variety of settings and data.
 
-You can verify the test data or real data on WordPress. VAW will realize building of WordPress synchronized with the data and files in the production environment.
+You can verify the test data or real data on WordPress. The VAW will realize building of WordPress synchronized with the data and files in the production environment.
 
 * Install specified version WordPress Core
 * Install WordPress Core in Your Language
@@ -89,7 +89,7 @@ Install the Vagrant plugin on the terminal as necessary.
 	vagrant plugin install vagrant-serverspec
 
 
-### 4. Download Ansible playbooks of VAW
+### 4. Download Ansible playbooks of the VAW
 
 Download a Vagrantfile and Ansible playbooks from the following link.
 
@@ -100,7 +100,8 @@ Download a Vagrantfile and Ansible playbooks from the following link.
 	cd vaw-x.x.x
 	vagrant up
 
-If you don't have a Box at first, begins from the download of Box. After provisioning, you can launch a WordPress environment.
+If you don't have a Box at first, begins from the download of Box.
+After provisioning, you can launch a WordPress development environment.
 
 ### 6. Access to the website and the WordPress Admin
 
@@ -126,7 +127,7 @@ ID and password for the initial setting is as follows. Can be set in the provisi
 
 ## Customize Options
 
-You can build a variety of environment that edit configuration files of VAW.
+You can build a variety of environment that edit configuration files of the VAW.
 
 There are two configuration files you can customize.
 
@@ -143,7 +144,7 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/centos7-default'
+	vm_box                = 'bento/centos-7.3'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -156,9 +157,9 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_only_wordpress = false
+	provision_mode        = 'normal'    # normal|wordpress|box
 
-* `vm_box` (required) name of Vagrant Box (default: `vaw/centos7-default`)
+* `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.3`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
@@ -168,7 +169,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
-* `provision_only_wordpress` only WordPress provision mode (default: `false` / value: `true` | `false`)
+* `provision_mode` (required) Provisioning mode (default: `normal` / value: `normal` | `wordpress` | `box`)
 
 ### Provisioning configuration file (YAML)
 
@@ -182,31 +183,31 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	fastcgi            : none     # none|php-fpm|hhvm
 
 	database           : mariadb  # mariadb|mysql|percona
-	db_root_password   : 'admin'
+	db_root_password   : admin
 
-	db_host            : 'localhost'
-	db_name            : 'wordpress'
-	db_user            : 'admin'
-	db_password        : 'admin'
-	db_prefix          : 'wp_'
+	db_host            : localhost
+	db_name            : wordpress
+	db_user            : admin
+	db_password        : admin
+	db_prefix          : wp_
 	db_charset         : ''
 	db_collate         : '' # utf8mb4_general_ci
 
 	## WordPress Settings ##
 
-	title              : 'VAW (Vagrant Ansible WordPress)'
-	admin_user         : 'admin'
-	admin_password     : 'admin'
-	admin_email        : 'hoge@example.com'
+	title              : VAW (Vagrant Ansible WordPress)
+	admin_user         : admin
+	admin_password     : admin
+	admin_email        : hoge@example.com
 
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	# 3.5.2 or later to work properly
-	version            : 'latest'
+	version            : latest
 
-	# e.g. en_US, ja
+	# e.g. en_US, ja, ...
 	# see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
-	lang               : 'en_US'
+	lang               : en_US
 
 	# in own directory or subdirectory install.
 	# see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
@@ -216,13 +217,13 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	multisite          : false   # true|false
 	ssl_admin          : false   # true|false
 
-	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
+	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
 	# themes             :
 	#                         - yoko
 	#                         - Responsive
 
-	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
+	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
 	                        - theme-check
 	                        - log-deprecated-notices
@@ -265,8 +266,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	## Develop & Deploy Settings ##
 
-	WP_DEBUG           : true    # true|false
-	SAVEQUERIES        : true    # true|false
+	WP_DEBUG           : true   # true|false
+	SAVEQUERIES        : true   # true|false
 
 	php_version        : 7.0.7
 	http_protocol      : http   # http|https
@@ -418,7 +419,7 @@ Disable the setting case
 
 ## Directory Layout
 
-Directory structure of VAW is as follows.
+Directory structure of the VAW is as follows.
 
 This directory synchronize to the guest OS side `/vagrant`. `wordpress` creates automatically and synchronize to `vm_document_root`.
 
@@ -447,6 +448,7 @@ You can create the same environment as the production environment, when you buil
 * roles (stores Ansible playbook of each role)
 * site.yml (Ansible playbook core file)
 * spec (stores ServerSpec spec file)
+	* box
 	* localhost
 	* spec_helper.rb
 	* sync-dir
@@ -458,7 +460,7 @@ You can create the same environment as the production environment, when you buil
 
 ### Minimum Layout
 
-VAW will be built in the directory structure of the following minimum unit.
+The VAW will be built in the directory structure of the following minimum unit.
 
 * group_vars (stores the provisioning configuration file of Ansible)
 	* all.yml (provisioning configuration file)
@@ -472,14 +474,14 @@ VAW will be built in the directory structure of the following minimum unit.
 
 ## Vagrant Box
 
-VAW supports VirtualBox for providers of Vagrant.
-Operating system and architecture supported centos-7.x x86_64 and centos-6.x x86_64 Vagrant Box. To download Vagrant Box, you can search from [Discover Vagrant Boxes] (https://atlas.hashicorp.com/boxes/search).
+The VAW supports VirtualBox for providers of Vagrant.
+Operating system and architecture supported centos-7.x x86_64 and centos-6.x x86_64 Vagrant Box. To download Vagrant Box, you can search from [Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox).
 
 By default, the Vagrantfile uses the `vaw/centos*-default` Box which has already provisioned default settings.
 
 In addition, you can use the `vaw/centos*-full` Box which has already provisioned default settings and activate develop and deploy tools.
 
-You can build the environment in a short period of time compared with provisioning from the pure vagrant Box. Only WordPress provision mode is also possible.
+You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
 
 ### CentOS 7
 
@@ -491,6 +493,85 @@ You can build the environment in a short period of time compared with provisioni
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
 
+## Provisioning mode
+
+The VAW has three provisioning modes.
+
+* `normal` will normal provisioning from the pure Vagrant Box.
+* `wordpress` provisions only sync folders including WordPress.
+* `box` provision to create a Vagrant Box.
+
+The VAW is characterized by being able to provision with various server and database configuration combinations. On the other hand, it takes time to build the environment from pure Vagrant Box.
+
+You can create a Vagrant Box with server and database configuration in advance. By using the created Vagrant Box you can shorten the provisioning time.
+
+First, create a Vagrant Box with Provision mode `box`.
+Next, provision the created Vagrant Box with Provision mode `wordpress`.
+Based on the Vagrant Box you created, WordPress development environment will start quickly anytime.
+
+## How to make Vagrant Box
+
+How to use the provisioning mode?
+
+Let's see how to make Vagrant Box through the process from provisioning with Vagrant Box to building WordPress development environment.
+
+### 1. Setting of configuration file
+
+We will launch the Vagrant environment for creating Vagrant Box.
+First of all, Set up the Vagrant configuration file and the provisioning configuration file.
+
+Set `provision_mode` in the Vagrant configuration file to `box`.
+
+	provision_mode        = 'box'    # normal|wordpress|box
+
+You can set the provisioning configuration file as you like.
+
+However, if `provision_mode` is `box`, the WordPress Settings section of the provisioning configuration file will be skipped during provisioning.
+
+### 2. Provisioning
+
+Provision and build the environment.
+
+	vagrant up
+
+### 3. Creating a Vagrant Box (Packaging)
+
+After provisioning is completed, create a Vagrant Box with a box name. (e.g. sample.box)
+
+	vagrant package --output sample.box
+
+### 4. Registration of Vagrant Box
+
+Add the created Vagrant Box to Vagrant. (Register as eg sample)
+
+	vagrant box add sample.box --name sample
+
+You can delete the Vagrant Box file created for creating Vagrant Box. (e.g. sample.box)
+You can destroy the launched Vagrant environment after checking the operation.
+
+	vagrant destroy
+
+### 5. Provisioning with the created Vagrant Box
+
+Launch the Vagrant environment for WordPress development with the Vagrant Box you created.
+Set up the Vagrant configuration file and the provisioning configuration file.
+
+Set `vm_box` of the Vagrant configuration file to `sample`. (e.g. sample)
+Set `provision_mode` in the Vagrant configuration file to `wordpress`.
+
+	vm_box                = 'sample'
+	...
+	provision_mode        = 'wordpress'    # normal|wordpress|box
+
+You can set the provisioning configuration file as you like.
+
+However, if `provision_mode` is `wordpress`, only the WordPress Settings section of the provisioning configuration file is enabled during provisioning.
+
+### 6. Launch a virtual environment
+
+	vagrant up
+
+After provisioning, you can launch a WordPress development environment.
 
 ## Specification
 
@@ -532,7 +613,6 @@ You can build the environment in a short period of time compared with provisioni
 * [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
 * [gulp](http://gulpjs.com)
-* [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
@@ -570,7 +650,7 @@ You can build the environment in a short period of time compared with provisioni
 
 ## Helper command
 
-**VAW** offers a useful scripts. Just run the script on a terminal. Database data backup, multiple versions installation of PHP, you can switch the execution environment.
+The **VAW** offers a useful scripts. Just run the script on a terminal. Database data backup, multiple versions installation of PHP, you can switch the execution environment.
 
 ### db_backup.sh
 
@@ -583,7 +663,7 @@ You can build the environment in a short period of time compared with provisioni
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s
+	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -610,14 +690,6 @@ As follows editable configuration files.
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## Shortening of provisioning time by only WordPress provision mode
-
-**only WordPress provision mode** provision only sync folder including WordPress.
-
-When you provision VAW by **only WordPress provision mode**, you can shorten the provisioning time.
-
-The setting is to set the value of `provision_only_wordpress` to `true` in the Vagrant configuration file.
 
 ## Shortening of provisioning time by Vagrant plugin vagrant-cachier
 
@@ -658,6 +730,15 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.1 - 2017.07.12
+	* fix php-cgi not found
+	* fix webserver and fastcgi owner/group
+	* remove bower
+	* add tests for box
+	* fix centos-box.sh
+	* change provision_only_wordpress mode to provision_mode
+	* rename certificate file and key
+	* fix libcurl installation
 * version 0.5.0 - 2017.06.20
 	* fix centos-box.sh
 	* fix vm_box, using public Vagrant boxes
@@ -678,7 +759,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* change hhvm fastcgi connect to UNIX domain socket from TCP
 	* change webserver and fastcgi owner/group nobody
 	* add my.cnf for each database
-	* fix opcach disable
+	* fix opcache disable
 	* add tests for sync-dir
 	* update activate plugins
 	* add wordpress import for backwpup
@@ -796,6 +877,6 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## License
 
-VAW is distributed under GPLv3.
+The VAW is distributed under GPLv3.
 
 Copyright (c) 2014-2017 thingsym

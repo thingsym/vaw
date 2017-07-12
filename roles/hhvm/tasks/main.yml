@@ -61,8 +61,8 @@
   file:
     path: /var/log/hhvm/
     state: directory
-    owner: nobody
-    group: nobody
+    owner: vagrant
+    group: vagrant
 
 - name: hhvm started and enabled
   service:

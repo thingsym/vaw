@@ -1,8 +1,8 @@
 # VAW (Vagrant Ansible WordPress)
 
-**VAW (Vagrant Ansible WordPress)** は、WordPress でウェブサイトを構築する開発者、サイト運営者、WordPress のテーマ・プラグイン開発者のための Ansible playbooks です。
+**VAW (Vagrant Ansible WordPress)** は、WordPress でウェブサイトを構築する開発者、サイト運営者、WordPress のテーマ・プラグイン開発者のための **Ansible playbooks** です。
 
-Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブサイトの構築や動作検証ができます。もちろん　WordPress テーマやプラグインの開発も。
+Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブサイトの構築や動作検証ができます。もちろん WordPress テーマやプラグインの開発も。
 
 また、**VAW** は、開発パートナーやデザイナー、クライアントとポータブルに環境を共有してコラボレーションツールとして活用できます。
 
@@ -97,7 +97,8 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 	cd vaw-x.x.x
 	vagrant up
 
-初回で Box がない場合、Box のダウンロードから始まり、プロビジョニング後、WordPress 環境が立ち上がります。
+初回で Box がない場合、Box のダウンロードから始まります。
+プロビジョニングが完了したら、WordPress開発環境が立ち上がります。
 
 ### 6. ウェブサイトと WordPress 管理画面にアクセス
 
@@ -135,7 +136,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'vaw/centos7-default'
+	vm_box                = 'bento/centos-7.3'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -148,7 +149,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_only_wordpress = false
+	provision_mode        = 'normal'    # normal|wordpress|box
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -160,7 +161,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
-* `provision_only_wordpress`  WordPress だけプロビジョニングする短縮モード (default: `false` / value: `true` | `false`)
+* `provision_mode` (required) プロビジョニングモード (default: `normal` / value: `normal` | `wordpress` | `box`)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -173,31 +174,31 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	fastcgi            : none     # none|php-fpm|hhvm
 
 	database           : mariadb  # mariadb|mysql|percona
-	db_root_password   : 'admin'
+	db_root_password   : admin
 
-	db_host            : 'localhost'
-	db_name            : 'wordpress'
-	db_user            : 'admin'
-	db_password        : 'admin'
-	db_prefix          : 'wp_'
+	db_host            : localhost
+	db_name            : wordpress
+	db_user            : admin
+	db_password        : admin
+	db_prefix          : wp_
 	db_charset         : ''
 	db_collate         : '' # utf8mb4_general_ci
 
 	## WordPress Settings ##
 
-	title              : 'VAW (Vagrant Ansible WordPress)'
-	admin_user         : 'admin'
-	admin_password     : 'admin'
-	admin_email        : 'hoge@example.com'
+	title              : VAW (Vagrant Ansible WordPress)
+	admin_user         : admin
+	admin_password     : admin
+	admin_email        : hoge@example.com
 
 	# e.g. latest, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	# 3.5.2 or later to work properly
-	version            : 'latest'
+	version            : latest
 
-	# e.g. en_US, ja
+	# e.g. en_US, ja, ...
 	# see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
-	lang               : 'en_US'
+	lang               : en_US
 
 	# in own directory or subdirectory install.
 	# see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
@@ -207,13 +208,13 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	multisite          : false   # true|false
 	ssl_admin          : false   # true|false
 
-	# theme slug|url|zip (local path, /vagrant/themes/~.zip) |empty ('')
+	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
 	# themes             :
 	#                         - yoko
 	#                         - Responsive
 
-	# plugin slug|url|zip (local path, /vagrant/plugins/~.zip) |empty ('')
+	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
 	                        - theme-check
 	                        - log-deprecated-notices
@@ -256,8 +257,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	## Develop & Deploy Settings ##
 
-	WP_DEBUG           : true    # true|false
-	SAVEQUERIES        : true    # true|false
+	WP_DEBUG           : true   # true|false
+	SAVEQUERIES        : true   # true|false
 
 	php_version        : 7.0.7
 	http_protocol      : http   # http|https
@@ -438,6 +439,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 * roles (role 毎の Ansible playbook を格納)
 * site.yml (Ansible playbook 本体ファイル)
 * spec (ServerSpec spec file を格納)
+	* box
 	* localhost
 	* spec_helper.rb
 	* sync-dir
@@ -463,9 +465,9 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 ## Vagrant Box
 
 VAW は、Vagrant のプロバイダ VirtualBox をサポートしています。
-OS とアーキテクチャは、centos-7.x x86_64 系 と centos-6.x x86_64 系 Vagrant Box に対応しています。Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://atlas.hashicorp.com/boxes/search) から検索できます。
+OS とアーキテクチャは、centos-7.x x86_64 系 と centos-6.x x86_64 系 Vagrant Box に対応しています。Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
 
-VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。また、only WordPress provision mode でさらなるプロビジョニング時間短縮が図れます。
+VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。
 
 ### CentOS 7
 
@@ -477,6 +479,88 @@ VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
 
+## プロビジョニングモード
+
+VAW には、3つのプロビジョニングモードがあります。
+
+* `normal` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
+* `wordpress` は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
+* `box` は、Vagrant Box を作成するためのプロビジョニングをします。
+
+VAW は、いろんなサーバ、データベース構成の組み合わせでプロビジョニングできることが特徴です。
+その反面、まっさらな Vagrant Box から環境を構築することは、プロビジョニングに時間がかかります。
+
+あらかじめサーバ、データベース構成を設定した Vagrant Box を作成できます。
+作った Vagrant Box を使い回すことでプロビジョニングの時間短縮が図れます。
+
+まず、Provision mode `box` で Vagrant Box を作成します。
+次に、作成した Vagrant Box を Provision mode `wordpress` でプロビジョニングします。
+作成した Vagrant Boxをベースに WordPress開発環境が素早く立ち上がります。
+
+
+## Vagrant Box の作り方
+
+プロビジョニングモードをどのように活用するのか。
+
+Vagrant Box の作り方から、つくった Vagrant Box でプロビジョニングして WordPress開発環境を構築するまでの流れを通じて見てみましょう。
+
+### 1. 設定ファイルの設定
+
+Vagrant Box 作成するため Vagrant 環境を立ち上げます。
+まず、Vagrant 設定ファイルとプロビジョニング設定ファイルの設定をします。
+
+Vagrant 設定ファイルの `provision_mode` を `box` に設定。
+
+	provision_mode        = 'box'    # normal|wordpress|box
+
+プロビジョニング設定ファイルの設定はお好みで。
+ただし、`provision_mode` が `box` 場合、
+プロビジョニング時にプロビジョニング設定ファイルの WordPress Settings セクションがスキップされます。
+
+### 2. プロビジョニング
+
+プロビジョニングをして環境を構築します。
+
+	vagrant up
+
+### 3. Vagrant Box の作成 (パッケージ化)
+
+プロビジョニングが完了したら、box 名を付けて Vagrant Box を作成します。 (e.g. sample.box)
+
+	vagrant package --output sample.box
+
+### 4. Vagrant Box の登録
+
+作成した Vagrant Box を Vagrant に追加します。(e.g. VM名 sample として登録)
+
+	vagrant box add sample.box --name sample
+
+Vagrant Box 作成のために作った Vagrant Box は、削除して構いません。 (e.g. sample.box)
+立ち上げた Vagrant環境は、動作確認後に削除して構いません。
+
+	vagrant destroy
+
+### 5. 作成した Vagrant Box でプロビジョニング
+
+作成した Vagrant Box でWordPress開発用に Vagrant環境を立ち上げます。
+Vagrant 設定ファイルとプロビジョニング設定ファイルの設定をします。
+
+Vagrant 設定ファイルの `vm_box` を `sample` に設定。 (e.g. VM名 sample)
+Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
+
+	vm_box                = 'sample'
+	...
+	provision_mode        = 'wordpress'    # normal|wordpress|box
+
+プロビジョニング設定ファイルの設定はお好みで。
+`provision_mode` が `wordpress` 場合、
+プロビジョニング時にプロビジョニング設定ファイルの WordPress Settings セクションだけが有効になります。
+
+### 6. 仮想環境を立ち上げます
+
+	vagrant up
+
+プロビジョニングが完了したら、WordPress開発環境が立ち上がります。
 
 ## Specification
 
@@ -518,7 +602,6 @@ VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用
 * [Yarn](https://yarnpkg.com/)
 * [Grunt](http://gruntjs.com)
 * [gulp](http://gulpjs.com)
-* [Bower](https://bower.io/)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 * [Xdebug](http://xdebug.org)
 * [PHPUnit](https://phpunit.de)
@@ -568,7 +651,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s
+	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -595,14 +678,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## only WordPress provision mode でプロビジョニング時間の短縮
-
-**only WordPress provision mode** は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
-
-事前に Vagrant Box を作った上で、**only WordPress provision mode** でプロビジョニングすると、プロビジョニング時間の短縮ができます。
-
-設定は、Vagrant 設定ファイルの `provision_only_wordpress` を `true` にするだけ。
 
 ## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
 
@@ -649,6 +724,15 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.1 - 2017.07.12
+	* fix php-cgi not found
+	* fix webserver and fastcgi owner/group
+	* remove bower
+	* add tests for box
+	* fix centos-box.sh
+	* change provision_only_wordpress mode to provision_mode
+	* rename certificate file and key
+	* fix libcurl installation
 * version 0.5.0 - 2017.06.20
 	* fix centos-box.sh
 	* fix vm_box, using public Vagrant boxes
@@ -669,7 +753,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* change hhvm fastcgi connect to UNIX domain socket from TCP
 	* change webserver and fastcgi owner/group nobody
 	* add my.cnf for each database
-	* fix opcach disable
+	* fix opcache disable
 	* add tests for sync-dir
 	* update activate plugins
 	* add wordpress import for backwpup
