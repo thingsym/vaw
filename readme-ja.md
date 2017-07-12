@@ -724,6 +724,15 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.1 - 2017.07.12
+	* fix php-cgi not found
+	* fix webserver and fastcgi owner/group
+	* remove bower
+	* add tests for box
+	* fix centos-box.sh
+	* change provision_only_wordpress mode to provision_mode
+	* rename certificate file and key
+	* fix libcurl installation
 * version 0.5.0 - 2017.06.20
 	* fix centos-box.sh
 	* fix vm_box, using public Vagrant boxes
