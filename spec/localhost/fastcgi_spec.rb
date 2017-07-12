@@ -5,14 +5,14 @@ if property["fastcgi"] == 'php-fpm' then
 
   describe file('/var/run/php-fpm') do
     it { should be_directory }
-    it { should be_owned_by 'nobody' }
-    it { should be_grouped_into 'nobody' }
+    it { should be_owned_by 'vagrant' }
+    it { should be_grouped_into 'vagrant' }
   end
 
   describe file('/var/log/php-fpm') do
     it { should be_directory }
-    it { should be_owned_by 'nobody' }
-    it { should be_grouped_into 'nobody' }
+    it { should be_owned_by 'vagrant' }
+    it { should be_grouped_into 'vagrant' }
   end
 
   describe file('/usr/sbin/php-fpm') do
@@ -58,17 +58,21 @@ if property["fastcgi"] == 'php-fpm' then
   else
     describe file('/var/run/php-fpm/php-fcgi.pid') do
       it { should be_socket }
-      it { should be_owned_by 'nobody' }
-      it { should be_grouped_into 'nobody' }
+      it { should be_owned_by 'vagrant' }
+      it { should be_grouped_into 'vagrant' }
     end
+  end
+
+  describe command("ps -C php-fpm -o user") do
+    its(:stdout) { should match /vagrant/ }
   end
 
 elsif property["fastcgi"] == 'hhvm' then
 
   describe file('/var/log/hhvm/') do
    it { should be_directory }
-   it { should be_owned_by 'nobody' }
-   it { should be_grouped_into 'nobody' }
+   it { should be_owned_by 'vagrant' }
+   it { should be_grouped_into 'vagrant' }
   end
 
   describe yumrepo('hop5'), :if => os[:release] =~ /^6/ do
@@ -82,6 +86,10 @@ elsif property["fastcgi"] == 'hhvm' then
   describe service('hhvm') do
     it { should be_enabled }
     it { should be_running }
+  end
+
+  describe command("ps -C hhvm -o user") do
+    its(:stdout) { should match /vagrant/ }
   end
 
   describe file('/etc/hhvm/server.ini') do
@@ -98,8 +106,8 @@ elsif property["fastcgi"] == 'hhvm' then
 
   describe file('/var/run/hhvm/hhvm.sock') do
     it { should be_socket }
-    it { should be_owned_by 'nobody' }
-    it { should be_grouped_into 'nobody' }
+    it { should be_owned_by 'vagrant' }
+    it { should be_grouped_into 'vagrant' }
   end
 
 end
