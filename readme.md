@@ -57,14 +57,13 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 
 ## Requirements
 
-* [Virtualbox](https://www.virtualbox.org)
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
 * [Ansible](https://www.ansible.com) >= 2.1.0.0
 
 #### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec)
 
@@ -84,7 +83,6 @@ Download the Vagrant form [www.vagrantup.com](https://www.vagrantup.com) and ins
 Install the Vagrant plugin on the terminal as necessary.
 
 	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-serverspec
 
@@ -690,32 +688,6 @@ As follows editable configuration files.
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## Shortening of provisioning time by Vagrant plugin vagrant-cachier
-
-When you install the Vagrant plugin **vagrant-cachier**, you can shorten the provisioning time.
-
-Installed package will be cached by the Box unit. When you launch multiple environments using the same Box, you can shorten the provisioning time using the cache.
-
-#### How to delete cache
-
-The cache is located in the host side, like this:
-
-	ls -al $HOME/.vagrant.d/cache/
-
-Delete the cache, the following command by Box.
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
-
-or
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
-
-The command notation of if you are using the other Box.
-
-	rm -rf $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
-
-See [vagrant-cachier Usage](http://fgrehm.viewdocs.io/vagrant-cachier/usage).
 
 ## Contribute
 
