@@ -77,6 +77,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       '--natdnshostresolver1', 'on',
       '--natdnsproxy1', 'on',
       '--cableconnected1', "on",
+      "--hwvirtex", "on",
+      "--nestedpaging", "on",
+      "--largepages", "on",
+      "--ioapic", "on",
+      "--pae", "on",
+      "--paravirtprovider", "kvm",
     ]
   end
 
