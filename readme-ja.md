@@ -55,14 +55,13 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 ## Requirements
 
-* [Virtualbox](https://www.virtualbox.org)
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
 * [Ansible](https://www.ansible.com) >= 2.1.0.0
 
 #### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec)
 
@@ -81,7 +80,6 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 必要に応じてターミナル上で Vagrant plugin をインストールします。
 
 	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-serverspec
 
@@ -678,32 +676,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php-build.default_configure_options.j2
 * php.conf.j2
 * ssh-config.j2
-
-## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
-
-Vagrantプラグイン **vagrant-cachier** をインストールするとプロビジョニング時間の短縮ができます。
-
-キャッシュは Box 単位で必要なパッケージがキャッシュされて、同一の Box を利用して複数の環境を立ち上げるとそのキャッシュを利用したプロビジョニングを始めるので、時間の短縮が試せます。
-
-#### キャッシュの削除方法
-
-キャッシュの場所は、ホスト側の以下にあります。
-
-	ls -al $HOME/.vagrant.d/cache/
-
-キャッシュの削除は、Box によって以下のコマンドを。
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
-
-または、
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
-
-ほかの Box を使っている場合の記法は、
-
-	rm -rf $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
-
-詳しくは、[vagrant-cachier Usage](http://fgrehm.viewdocs.io/vagrant-cachier/usage) を参考に。
 
 ## 黒い画面が苦手な人も Vagrant Maneger で簡単に環境が立ち上がります
 
