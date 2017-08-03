@@ -155,7 +155,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_mode        = 'normal'    # normal|wordpress|box
+	provision_mode        = 'all'   　　 # all|wordpress|box
 
 * `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.3`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -167,7 +167,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
-* `provision_mode` (required) Provisioning mode (default: `normal` / value: `normal` | `wordpress` | `box`)
+* `provision_mode` (required) Provisioning mode (default: `all` / value: `all` | `wordpress` | `box`)
 
 ### Provisioning configuration file (YAML)
 
@@ -484,7 +484,7 @@ You can build the environment in a short period of time compared with provisioni
 
 The VAW has three provisioning modes.
 
-* `normal` will normal provisioning from the pure Vagrant Box.
+* `all` will normal provisioning from the pure Vagrant Box.
 * `wordpress` provisions only sync folders including WordPress.
 * `box` provision to create a Vagrant Box.
 
@@ -509,7 +509,7 @@ First of all, Set up the Vagrant configuration file and the provisioning configu
 
 Set `provision_mode` in the Vagrant configuration file to `box`.
 
-	provision_mode        = 'box'    # normal|wordpress|box
+	provision_mode        = 'box'    # all|wordpress|box
 
 You can set the provisioning configuration file as you like.
 
@@ -548,7 +548,7 @@ Set `provision_mode` in the Vagrant configuration file to `wordpress`.
 
 	vm_box                = 'sample'
 	...
-	provision_mode        = 'wordpress'    # normal|wordpress|box
+	provision_mode        = 'wordpress'    # all|wordpress|box
 
 You can set the provisioning configuration file as you like.
 

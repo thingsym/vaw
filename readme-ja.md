@@ -147,7 +147,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_mode        = 'normal'    # normal|wordpress|box
+	provision_mode        = 'all'       # all|wordpress|box
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -159,7 +159,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
-* `provision_mode` (required) プロビジョニングモード (default: `normal` / value: `normal` | `wordpress` | `box`)
+* `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -470,7 +470,7 @@ VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用
 
 VAW には、3つのプロビジョニングモードがあります。
 
-* `normal` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
+* `all` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
 * `wordpress` は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
 * `box` は、Vagrant Box を作成するためのプロビジョニングをします。
 
@@ -498,7 +498,7 @@ Vagrant Box 作成するため Vagrant 環境を立ち上げます。
 
 Vagrant 設定ファイルの `provision_mode` を `box` に設定。
 
-	provision_mode        = 'box'    # normal|wordpress|box
+	provision_mode        = 'box'    # all|wordpress|box
 
 プロビジョニング設定ファイルの設定はお好みで。
 ただし、`provision_mode` が `box` 場合、
@@ -537,7 +537,7 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 
 	vm_box                = 'sample'
 	...
-	provision_mode        = 'wordpress'    # normal|wordpress|box
+	provision_mode        = 'wordpress'    # all|wordpress|box
 
 プロビジョニング設定ファイルの設定はお好みで。
 `provision_mode` が `wordpress` 場合、

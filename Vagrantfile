@@ -23,7 +23,7 @@ vbguest_auto_update   = false
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
 
-provision_mode        = 'normal'    # normal|wordpress|box
+provision_mode        = 'all'       # all|wordpress|box
 
 ## That's all, stop setting. ##
 
