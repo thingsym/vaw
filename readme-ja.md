@@ -204,7 +204,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	wp_site_path       : ''   #e.g. /wordpress
 
 	multisite          : false   # true|false
-	ssl_admin          : false   # true|false
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
@@ -248,10 +247,12 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
-	## Develop & Deploy Settings ##
-
 	WP_DEBUG           : true   # true|false
 	SAVEQUERIES        : true   # true|false
+
+	## Develop & Deploy Settings ##
+
+	ssl_wp_admin       : false   # true|false
 
 	php_version        : 7.0.7
 	http_protocol      : http   # http|https
@@ -301,7 +302,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	*  [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory) を参照
 
 * `multisite` マルチサイトの有効化 (default: `false` / value: `true` | `false`)
-* `ssl_admin` 管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
 * `activate_theme` テーマをインストール・有効化 (default: default theme)
 	* デフォルトテーマ `''`, `theme slug`, `zip file URL`,  `local zip file path` から設定
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
@@ -386,11 +386,12 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `theme_unit_test` テーマユニットテストデータのインポート有効化 (default: `false` / value: `true` | `false`)
 * `replace_old_url` `old url` から `vm_hostname` に置換
 * `regenerate_thumbnails` サムネイル画像の再生成を有効化 (default: `false` / value: `true` | `false`)
+* `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
+* `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
 
 #### Develop & Deploy Settings ##
 
-* `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
-* `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
+* `ssl_wp_admin` WordPress管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
 * `php_version` PHPバージョン (default: `7.0.7`)
 * `http_protocol` HTTP プロトコル (default: `http` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)

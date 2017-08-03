@@ -213,7 +213,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	wp_site_path       : ''   #e.g. /wordpress
 
 	multisite          : false   # true|false
-	ssl_admin          : false   # true|false
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
@@ -257,10 +256,12 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
-	## Develop & Deploy Settings ##
-
 	WP_DEBUG           : true   # true|false
 	SAVEQUERIES        : true   # true|false
+
+	## Develop & Deploy Settings ##
+
+	ssl_wp_admin       : false   # true|false
 
 	php_version        : 7.0.7
 	http_protocol      : http   # http|https
@@ -309,7 +310,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	* see [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory)
 
 * `multisite` Multisite enabled flag (default: `false` / value: `true` | `false`)
-* `ssl_admin` administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `activate_theme` install a theme and activated (default: default theme)
 	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
@@ -393,11 +393,12 @@ Disable the setting case
 * `theme_unit_test` import Theme Unit Test data enabled flag (default: `false` / value: `true` | `false`)
 * `replace_old_url` replace to `vm_hostname` from `old url`
 * `regenerate_thumbnails` regenerate thumbnails enabled flag (default: `false` / value: `true` | `false`)
+* `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
+* `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
 
 #### Develop & Deploy Settings ##
 
-* `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
-* `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
+* `ssl_wp_admin` WordPress administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `php_version` version of PHP (default: 7.0.7)
 * `http_protocol` HTTP protocol (default: `http` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
