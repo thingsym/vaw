@@ -217,9 +217,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
-	# themes             :
-	#                         - yoko
-	#                         - Responsive
+	themes             : []
 
 	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
@@ -234,13 +232,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - wordpress-beta-tester
 	                        - wp-multibyte-patch
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -331,9 +326,7 @@ Configuration example
 
 Disable the setting case
 
-	# themes             :
-	#                      - yoko
-	#                      - Responsive
+	themes             : []
 
 * `activate_plugins` install plagins and activated
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
@@ -348,9 +341,7 @@ Configuration example
 
 Disable the setting case
 
-	# activate_plugins   :
-	#                         - theme-check
-	#                         - plugin-check
+	activate_plugins   : []
 
 * `plugins` install plagins
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
@@ -369,8 +360,7 @@ Configuration example
 
 Disable the setting case
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 * `options` setting options
 	* see [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
@@ -385,9 +375,7 @@ Configuration example
 
 Disable the setting case
 
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 * `permalink_structure` setting permalink structure
 	* set the following three permalink structures

@@ -208,9 +208,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
-	# themes             :
-	#                         - yoko
-	#                         - Responsive
+	themes             : []
 
 	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
@@ -225,13 +223,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - wordpress-beta-tester
 	                        - wp-multibyte-patch
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -324,9 +319,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# themes             :
-	#                      - yoko
-	#                      - Responsive
+	themes             : []
 
 * `activate_plugins` プラグインのインストール・有効化 (複数可)
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
@@ -342,9 +335,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# activate_plugins   :
-	#                         - theme-check
-	#                         - plugin-check
+	activate_plugins   : []
 
 * `plugins` プラグインのインストール
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
@@ -362,8 +353,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 * `options` オプションの設定
 	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
@@ -378,9 +368,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 * `permalink_structure` パーマリンク構造の設定
 	* 以下の3つのパーマリンク構造の設定できます

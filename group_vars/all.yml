@@ -42,9 +42,7 @@ ssl_admin          : false   # true|false
 
 # default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 activate_theme     : ''
-# themes             :
-#                         - yoko
-#                         - Responsive
+themes             : []
 
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :
@@ -59,13 +57,10 @@ plugins            :
                         - wordpress-beta-tester
                         - wp-multibyte-patch
 
-# theme_mod          :
-#                        background_color: 'cccccc'
+theme_mod          : {}
 
 # see Option Reference - http://codex.wordpress.org/Option_Reference
-# options            :
-#                        blogname: 'blog title'
-#                        blogdescription: 'blog description'
+options            : {}
 
 # e.g. /%year%/%monthnum%/%postname%
 # see http://codex.wordpress.org/Using_Permalinks
