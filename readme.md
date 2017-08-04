@@ -155,7 +155,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_mode        = 'normal'    # normal|wordpress|box
+	provision_mode        = 'all'   　　 # all|wordpress|box
 
 * `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.3`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -167,7 +167,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
-* `provision_mode` (required) Provisioning mode (default: `normal` / value: `normal` | `wordpress` | `box`)
+* `provision_mode` (required) Provisioning mode (default: `all` / value: `all` | `wordpress` | `box`)
 
 ### Provisioning configuration file (YAML)
 
@@ -198,7 +198,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	admin_password     : admin
 	admin_email        : hoge@example.com
 
-	# e.g. latest, 4.1, 4.1-beta1
+	# e.g. latest, nightly, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	# 3.5.2 or later to work properly
 	version            : latest
@@ -213,13 +213,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	wp_site_path       : ''   #e.g. /wordpress
 
 	multisite          : false   # true|false
-	ssl_admin          : false   # true|false
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
-	# themes             :
-	#                         - yoko
-	#                         - Responsive
+	themes             : []
 
 	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
@@ -234,13 +231,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                        - wordpress-beta-tester
 	                        - wp-multibyte-patch
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -262,10 +256,12 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
-	## Develop & Deploy Settings ##
-
 	WP_DEBUG           : true   # true|false
 	SAVEQUERIES        : true   # true|false
+
+	## Develop & Deploy Settings ##
+
+	ssl_wp_admin       : false   # true|false
 
 	php_version        : 7.0.7
 	http_protocol      : http   # http|https
@@ -314,7 +310,6 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	* see [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory)
 
 * `multisite` Multisite enabled flag (default: `false` / value: `true` | `false`)
-* `ssl_admin` administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `activate_theme` install a theme and activated (default: default theme)
 	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
 	* set `/vagrant/themes/~.zip` by local zip file path
@@ -331,9 +326,7 @@ Configuration example
 
 Disable the setting case
 
-	# themes             :
-	#                      - yoko
-	#                      - Responsive
+	themes             : []
 
 * `activate_plugins` install plagins and activated
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
@@ -348,9 +341,7 @@ Configuration example
 
 Disable the setting case
 
-	# activate_plugins   :
-	#                         - theme-check
-	#                         - plugin-check
+	activate_plugins   : []
 
 * `plugins` install plagins
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
@@ -369,8 +360,7 @@ Configuration example
 
 Disable the setting case
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 * `options` setting options
 	* see [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
@@ -385,9 +375,7 @@ Configuration example
 
 Disable the setting case
 
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 * `permalink_structure` setting permalink structure
 	* set the following three permalink structures
@@ -405,11 +393,12 @@ Disable the setting case
 * `theme_unit_test` import Theme Unit Test data enabled flag (default: `false` / value: `true` | `false`)
 * `replace_old_url` replace to `vm_hostname` from `old url`
 * `regenerate_thumbnails` regenerate thumbnails enabled flag (default: `false` / value: `true` | `false`)
+* `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
+* `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
 
 #### Develop & Deploy Settings ##
 
-* `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
-* `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
+* `ssl_wp_admin` WordPress administration over SSL enabled flag (default: `false` / value: `true` | `false`)
 * `php_version` version of PHP (default: 7.0.7)
 * `http_protocol` HTTP protocol (default: `http` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
@@ -495,7 +484,7 @@ You can build the environment in a short period of time compared with provisioni
 
 The VAW has three provisioning modes.
 
-* `normal` will normal provisioning from the pure Vagrant Box.
+* `all` will normal provisioning from the pure Vagrant Box.
 * `wordpress` provisions only sync folders including WordPress.
 * `box` provision to create a Vagrant Box.
 
@@ -520,7 +509,7 @@ First of all, Set up the Vagrant configuration file and the provisioning configu
 
 Set `provision_mode` in the Vagrant configuration file to `box`.
 
-	provision_mode        = 'box'    # normal|wordpress|box
+	provision_mode        = 'box'    # all|wordpress|box
 
 You can set the provisioning configuration file as you like.
 
@@ -559,7 +548,7 @@ Set `provision_mode` in the Vagrant configuration file to `wordpress`.
 
 	vm_box                = 'sample'
 	...
-	provision_mode        = 'wordpress'    # normal|wordpress|box
+	provision_mode        = 'wordpress'    # all|wordpress|box
 
 You can set the provisioning configuration file as you like.
 

@@ -23,7 +23,7 @@ admin_user         : admin
 admin_password     : admin
 admin_email        : hoge@example.com
 
-# e.g. latest, 4.1, 4.1-beta1
+# e.g. latest, nightly, 4.1, 4.1-beta1
 # see Release Archive - https://wordpress.org/download/release-archive/
 # 3.5.2 or later to work properly
 version            : latest
@@ -38,13 +38,10 @@ wp_dir             : ''   #e.g. /wordpress
 wp_site_path       : ''   #e.g. /wordpress
 
 multisite          : false   # true|false
-ssl_admin          : false   # true|false
 
 # default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 activate_theme     : ''
-# themes             :
-#                         - yoko
-#                         - Responsive
+themes             : []
 
 # slug|url|zip (local path, /vagrant/plugins/~.zip)
 activate_plugins   :
@@ -59,13 +56,10 @@ plugins            :
                         - wordpress-beta-tester
                         - wp-multibyte-patch
 
-# theme_mod          :
-#                        background_color: 'cccccc'
+theme_mod          : {}
 
 # see Option Reference - http://codex.wordpress.org/Option_Reference
-# options            :
-#                        blogname: 'blog title'
-#                        blogdescription: 'blog description'
+options            : {}
 
 # e.g. /%year%/%monthnum%/%postname%
 # see http://codex.wordpress.org/Using_Permalinks
@@ -87,10 +81,12 @@ theme_unit_test    : false   # true|false
 replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 regenerate_thumbnails   : false   # true|false
 
-## Develop & Deploy Settings ##
-
 WP_DEBUG           : true   # true|false
 SAVEQUERIES        : true   # true|false
+
+## Develop & Deploy Settings ##
+
+ssl_admin          : false   # true|false
 
 php_version        : 7.0.7
 http_protocol      : http   # http|https
