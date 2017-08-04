@@ -198,7 +198,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	admin_password     : admin
 	admin_email        : hoge@example.com
 
-	# e.g. latest, 4.1, 4.1-beta1
+	# e.g. latest, nightly, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	# 3.5.2 or later to work properly
 	version            : latest
