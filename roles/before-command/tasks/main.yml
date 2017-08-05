@@ -6,4 +6,17 @@
 
 - name: before provision command
   command: /vagrant/command/before_provision.sh
+  sudo: false
   when: before_command.stat.exists
+
+- block:
+  - name: stat before_provision.sh
+    stat:
+      path: /vagrant/command/before_provision.sh
+    register: before_command
+
+  - name: before provision command
+    command: /vagrant/command/before_provision.sh
+    sudo: false
+    when: before_command.stat.exists
+  tags: sync-dir
