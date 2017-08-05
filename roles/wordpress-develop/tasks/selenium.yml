@@ -1,3 +1,8 @@
 ---
-- name: PHPUnit Selenium installed
-  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit-selenium=>=1.2'
+- name: PHPUnit Selenium installed (PHP7)
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit-selenium=3.*'
+  when: php_version | match("^7")
+
+- name: PHPUnit Selenium installed (PHP5)
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit-selenium=2.*'
+  when: php_version | match("^5")
