@@ -53,24 +53,36 @@ if property["develop_tools"] then
     its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
   end
 
-  describe command('phpunit --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
+  if property["php_version"] =~ /^7/ then
+    describe command('phpunit --version') do
+      let(:disable_sudo) { true }
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /^PHPUnit 5\.7/ }
+    end
+  end
+
+  if property["php_version"] =~ /^5/ then
+    describe command('phpunit --version') do
+      let(:disable_sudo) { true }
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /^PHPUnit 4\.8/ }
+    end
   end
 
   describe command('phpcs --version') do
     let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
-  end
-
-  describe command('cachetool -V') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /^PHP_CodeSniffer version 2\.9/ }
   end
 
   describe command('phpcs -i') do
     let(:disable_sudo) { true }
     its(:stdout) { should match /WordPress\-Core/ }
+  end
+
+  describe command('cachetool -V') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
   end
 
   describe file('/home/vagrant/.phpenv/versions/' + property["php_version"] + '/composer/vendor/squizlabs/php_codesniffer') do
