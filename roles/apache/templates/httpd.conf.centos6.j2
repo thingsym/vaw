@@ -215,7 +215,7 @@ LoadModule version_module modules/mod_version.so
 #LoadModule unique_id_module modules/mod_unique_id.so
 #
 
-{% if ssl_admin %}
+{% if ssl_wp_admin %}
 LoadModule ssl_module modules/mod_ssl.so
 {% endif %}
 
@@ -1038,7 +1038,7 @@ NameVirtualHost *:80
 
 </VirtualHost>
 
-{% if ssl_admin %}
+{% if ssl_wp_admin %}
 #
 # This is the Apache server configuration file providing SSL support.
 # It contains the configuration directives to instruct the server how to
