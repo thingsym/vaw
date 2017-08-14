@@ -167,6 +167,8 @@ function install() {
   if [[ -f $PHP_INI ]]; then
     sed -i -e "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/" $PHP_INI
     sed -i -e "s/^display_errors = Off/display_errors = On/" $PHP_INI
+    sed -i -e "s/^display_startup_errors = Off/display_startup_errors = On/" $PHP_INI
+    sed -i -e "s/^track_errors = Off/track_errors = On/" $PHP_INI
     sed -i -e "s/^post_max_size = 8M/post_max_size = 32M/" $PHP_INI
     sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
     sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
@@ -181,6 +183,8 @@ function install() {
     sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
     sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=0/" $PHP_INI
     sed -i -e "s/^;opcache.enable=0/opcache.enable=0/" $PHP_INI
+    sed -i -e "s/^;opcache.enable_cli=1/opcache.enable_cli=0/" $PHP_INI
+    sed -i -e "s/^;opcache.enable=1/opcache.enable=0/" $PHP_INI
     echo "[Info]: edit $PHP_INI"
   fi
 
