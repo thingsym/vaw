@@ -6,7 +6,8 @@
 
 - name: before provision command
   command: /vagrant/command/before_provision.sh
-  sudo: false
+  become: yes
+  become_user: vagrant
   when: before_command.stat.exists
 
 - block:
@@ -17,6 +18,7 @@
 
   - name: before provision command
     command: /vagrant/command/before_provision.sh
-    sudo: false
+    become: yes
+    become_user: vagrant
     when: before_command.stat.exists
   tags: sync-dir

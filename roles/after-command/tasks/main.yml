@@ -6,7 +6,8 @@
 
 - name: after provision command
   command: /vagrant/command/after_provision.sh
-  sudo: false
+  become: yes
+  become_user: vagrant
   when: after_command.stat.exists
 
 - block:
@@ -17,6 +18,7 @@
 
   - name: after provision command
     command: /vagrant/command/after_provision.sh
-    sudo: false
+    become: yes
+    become_user: vagrant
     when: after_command.stat.exists
   tags: sync-dir
