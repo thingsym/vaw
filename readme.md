@@ -263,7 +263,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	ssl_wp_admin       : false   # true|false
 
-	php_version        : 7.0.7
+	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
@@ -399,7 +399,7 @@ Disable the setting case
 #### Develop & Deploy Settings ##
 
 * `ssl_wp_admin` WordPress administration over SSL enabled flag (default: `false` / value: `true` | `false`)
-* `php_version` version of PHP (default: 7.0.7)
+* `php_version` version of PHP (default: 7.1.7)
 * `http_protocol` HTTP protocol (default: `http` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
@@ -650,7 +650,7 @@ The **VAW** offers a useful scripts. Just run the script on a terminal. Database
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 7.1.7 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h

@@ -254,7 +254,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	ssl_wp_admin       : false   # true|false
 
-	php_version        : 7.0.7
+	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
@@ -392,7 +392,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Develop & Deploy Settings ##
 
 * `ssl_wp_admin` WordPress管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.0.7`)
+* `php_version` PHPバージョン (default: `7.1.7`)
 * `http_protocol` HTTP プロトコル (default: `http` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
@@ -638,7 +638,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 7.1.7 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
