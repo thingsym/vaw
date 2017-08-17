@@ -691,6 +691,18 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.2 - 2017.08.17
+	* bump up PHP version number to 7.1.7
+	* fix phpenv.sh
+	* change setting name from ssl_admin to ssl_wp_admin
+	* enable sync-dir with before-command and after-command
+	* fixed version with PHPUnit, PHP_CodeSniffer and PHPUnit Selenium
+	* change label of provision_mode from normal to all
+	* change order of setting items
+	* fix settings format
+	* add .travis.yml
+	* fix vb.customize for improve VirutalBox performance
+	* remove vagrant-cachier plugin
 * version 0.5.1 - 2017.07.12
 	* fix php-cgi not found
 	* fix webserver and fastcgi owner/group
