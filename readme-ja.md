@@ -55,14 +55,13 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 
 ## Requirements
 
-* [Virtualbox](https://www.virtualbox.org)
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
 * [Ansible](https://www.ansible.com) >= 2.1.0.0
 
 #### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
-* [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec)
 
@@ -81,7 +80,6 @@ Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブ
 必要に応じてターミナル上で Vagrant plugin をインストールします。
 
 	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-serverspec
 
@@ -149,7 +147,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_mode        = 'normal'    # normal|wordpress|box
+	provision_mode        = 'all'       # all|wordpress|box
 
 * `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -161,7 +159,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
-* `provision_mode` (required) プロビジョニングモード (default: `normal` / value: `normal` | `wordpress` | `box`)
+* `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -191,7 +189,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	admin_password     : admin
 	admin_email        : hoge@example.com
 
-	# e.g. latest, 4.1, 4.1-beta1
+	# e.g. latest, nightly, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
 	# 3.5.2 or later to work properly
 	version            : latest
@@ -206,13 +204,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	wp_site_path       : ''   #e.g. /wordpress
 
 	multisite          : false   # true|false
-	ssl_admin          : false   # true|false
 
 	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
 	activate_theme     : ''
-	# themes             :
-	#                         - yoko
-	#                         - Responsive
+	themes             : []
 
 	# slug|url|zip (local path, /vagrant/plugins/~.zip)
 	activate_plugins   :
@@ -227,13 +222,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                        - wordpress-beta-tester
 	                        - wp-multibyte-patch
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 	# see Option Reference - http://codex.wordpress.org/Option_Reference
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 	# e.g. /%year%/%monthnum%/%postname%
 	# see http://codex.wordpress.org/Using_Permalinks
@@ -255,12 +247,14 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
 	regenerate_thumbnails   : false   # true|false
 
-	## Develop & Deploy Settings ##
-
 	WP_DEBUG           : true   # true|false
 	SAVEQUERIES        : true   # true|false
 
-	php_version        : 7.0.7
+	## Develop & Deploy Settings ##
+
+	ssl_wp_admin       : false   # true|false
+
+	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
@@ -308,7 +302,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	*  [Giving WordPress Its Own Directory](http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory) を参照
 
 * `multisite` マルチサイトの有効化 (default: `false` / value: `true` | `false`)
-* `ssl_admin` 管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
 * `activate_theme` テーマをインストール・有効化 (default: default theme)
 	* デフォルトテーマ `''`, `theme slug`, `zip file URL`,  `local zip file path` から設定
 	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
@@ -326,9 +319,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# themes             :
-	#                      - yoko
-	#                      - Responsive
+	themes             : []
 
 * `activate_plugins` プラグインのインストール・有効化 (複数可)
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
@@ -344,9 +335,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# activate_plugins   :
-	#                         - theme-check
-	#                         - plugin-check
+	activate_plugins   : []
 
 * `plugins` プラグインのインストール
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
@@ -364,8 +353,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# theme_mod          :
-	#                        background_color: 'cccccc'
+	theme_mod          : {}
 
 * `options` オプションの設定
 	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
@@ -380,9 +368,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 設定を無効にする場合
 
-	# options            :
-	#                        blogname: 'blog title'
-	#                        blogdescription: 'blog description'
+	options            : {}
 
 * `permalink_structure` パーマリンク構造の設定
 	* 以下の3つのパーマリンク構造の設定できます
@@ -400,12 +386,13 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `theme_unit_test` テーマユニットテストデータのインポート有効化 (default: `false` / value: `true` | `false`)
 * `replace_old_url` `old url` から `vm_hostname` に置換
 * `regenerate_thumbnails` サムネイル画像の再生成を有効化 (default: `false` / value: `true` | `false`)
+* `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
+* `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
 
 #### Develop & Deploy Settings ##
 
-* `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
-* `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.0.7`)
+* `ssl_wp_admin` WordPress管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
+* `php_version` PHPバージョン (default: `7.1.7`)
 * `http_protocol` HTTP プロトコル (default: `http` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
@@ -483,7 +470,7 @@ VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用
 
 VAW には、3つのプロビジョニングモードがあります。
 
-* `normal` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
+* `all` は、まっさらな Vagrant Box から通常のプロビジョニングを行います。
 * `wordpress` は、WordPress が含まれた同期フォルダだけプロビジョニングをします。
 * `box` は、Vagrant Box を作成するためのプロビジョニングをします。
 
@@ -511,7 +498,7 @@ Vagrant Box 作成するため Vagrant 環境を立ち上げます。
 
 Vagrant 設定ファイルの `provision_mode` を `box` に設定。
 
-	provision_mode        = 'box'    # normal|wordpress|box
+	provision_mode        = 'box'    # all|wordpress|box
 
 プロビジョニング設定ファイルの設定はお好みで。
 ただし、`provision_mode` が `box` 場合、
@@ -550,7 +537,7 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 
 	vm_box                = 'sample'
 	...
-	provision_mode        = 'wordpress'    # normal|wordpress|box
+	provision_mode        = 'wordpress'    # all|wordpress|box
 
 プロビジョニング設定ファイルの設定はお好みで。
 `provision_mode` が `wordpress` 場合、
@@ -651,7 +638,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh -v 7.0.7 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 7.1.7 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -679,32 +666,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php.conf.j2
 * ssh-config.j2
 
-## Vagrantプラグイン vagrant-cachier でプロビジョニング時間の短縮
-
-Vagrantプラグイン **vagrant-cachier** をインストールするとプロビジョニング時間の短縮ができます。
-
-キャッシュは Box 単位で必要なパッケージがキャッシュされて、同一の Box を利用して複数の環境を立ち上げるとそのキャッシュを利用したプロビジョニングを始めるので、時間の短縮が試せます。
-
-#### キャッシュの削除方法
-
-キャッシュの場所は、ホスト側の以下にあります。
-
-	ls -al $HOME/.vagrant.d/cache/
-
-キャッシュの削除は、Box によって以下のコマンドを。
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-default
-
-または、
-
-	rm -rf $HOME/.vagrant.d/cache/vaw/centos7-full
-
-ほかの Box を使っている場合の記法は、
-
-	rm -rf $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
-
-詳しくは、[vagrant-cachier Usage](http://fgrehm.viewdocs.io/vagrant-cachier/usage) を参考に。
-
 ## 黒い画面が苦手な人も Vagrant Maneger で簡単に環境が立ち上がります
 
 デザイナーやウェブサイト運営者など普段ターミナルに馴染みがない方や黒い画面が苦手だなぁと思っている方は Vagrant Maneger の導入をお薦めします。インストールすると、メニューバーにアイコンのメニューが追加されます。後はダウンロードした VAW をブックマークに登録して、メニューから `UP` を選ぶだけで環境が立ち上ります。Vagrant で操作する基本コマンドもほとんど用意されていて、コマンドを打つことから解放されたい方はどうぞ。
@@ -724,6 +685,18 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.2 - 2017.08.17
+	* bump up PHP version number to 7.1.7
+	* fix phpenv.sh
+	* change setting name from ssl_admin to ssl_wp_admin
+	* enable sync-dir with before-command and after-command
+	* fixed version with PHPUnit, PHP_CodeSniffer and PHPUnit Selenium
+	* change label of provision_mode from normal to all
+	* change order of setting items
+	* fix settings format
+	* add .travis.yml
+	* fix vb.customize for improve VirutalBox performance
+	* remove vagrant-cachier plugin
 * version 0.5.1 - 2017.07.12
 	* fix php-cgi not found
 	* fix webserver and fastcgi owner/group

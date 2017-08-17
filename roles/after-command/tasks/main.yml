@@ -6,4 +6,19 @@
 
 - name: after provision command
   command: /vagrant/command/after_provision.sh
+  become: yes
+  become_user: vagrant
   when: after_command.stat.exists
+
+- block:
+  - name: stat after_provision.sh
+    stat:
+      path: /vagrant/command/after_provision.sh
+    register: after_command
+
+  - name: after provision command
+    command: /vagrant/command/after_provision.sh
+    become: yes
+    become_user: vagrant
+    when: after_command.stat.exists
+  tags: sync-dir

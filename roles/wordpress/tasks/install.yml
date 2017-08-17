@@ -103,7 +103,7 @@
     dest: "{{ WP_PATH }}/wp-config.php"
     regexp: '\n/\* That'
     replace: "// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
-  when: ssl_admin == true
+  when: ssl_wp_admin == true
 
 - name: change wp option for subdirectory install
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'

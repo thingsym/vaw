@@ -23,7 +23,7 @@ vbguest_auto_update   = false
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
 
-provision_mode        = 'normal'    # normal|wordpress|box
+provision_mode        = 'all'       # all|wordpress|box
 
 ## That's all, stop setting. ##
 
@@ -66,10 +66,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.hostsupdater.remove_on_suspend = true
   end
 
-  if Vagrant.has_plugin?("vagrant-cachier")
-    config.cache.scope = :box
-  end
-
   if Vagrant.has_plugin?("vagrant-vbguest")
     config.vbguest.auto_update = vbguest_auto_update
   end
@@ -81,6 +77,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       '--natdnshostresolver1', 'on',
       '--natdnsproxy1', 'on',
       '--cableconnected1', "on",
+      "--hwvirtex", "on",
+      "--nestedpaging", "on",
+      "--largepages", "on",
+      "--ioapic", "on",
+      "--pae", "on",
+      "--paravirtprovider", "kvm",
     ]
   end
 
