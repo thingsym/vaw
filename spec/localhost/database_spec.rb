@@ -78,7 +78,7 @@ describe 'MySQL config parameters' do
   end
 
   context mysql_config('character-set-server') do
-    its(:value) { should eq 'utf8' }
+    its(:value) { should eq 'utf8mb4' }
   end
 end
 
