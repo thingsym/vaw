@@ -5,7 +5,8 @@
   register: is_import_backwpup
 
 - block:
-  - file:
+  - name: mkdir /tmp/backwpup
+    file:
       path: /tmp/backwpup
       state: directory
 
