@@ -601,6 +601,7 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 * [stylestats](https://github.com/t32k/stylestats)
 * [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
+* [MailHog](https://github.com/mailhog/MailHog)
 
 ### Deploy Tools (Activatable)
 

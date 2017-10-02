@@ -99,4 +99,27 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe command('mailhog -version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('which mhsendmail') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe port(1025) do
+    it { should be_listening }
+  end
+
+  describe port(8025) do
+    it { should be_listening }
+  end
+
+  describe command('/usr/sbin/daemonize'), :if => os[:release] == '6' do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
 end

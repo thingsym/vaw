@@ -32,6 +32,9 @@
 - include: wp-i18n.yml
 - include: phpunit.yml
 - include: wp-phpcs.yml
+- include: daemonize.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+- include: mailhog.yml
 - include: opcache-viewer.yml
   tags: sync-dir
 - include: cachetool.yml
