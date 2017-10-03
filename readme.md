@@ -612,6 +612,7 @@ After provisioning, you can launch a WordPress development environment.
 * [stylestats](https://github.com/t32k/stylestats)
 * [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
+* [MailHog](https://github.com/mailhog/MailHog)
 
 ### Deploy Tools (Activatable)
 
@@ -691,6 +692,10 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.3 - 2017.10.03
+	* fix comment
+	* change database charset from utf8 to utf8mb4
+	* add MailHog
 * version 0.5.2 - 2017.08.17
 	* bump up PHP version number to 7.1.7
 	* fix phpenv.sh

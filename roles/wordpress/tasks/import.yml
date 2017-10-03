@@ -32,7 +32,7 @@
 
 - include: backwpup.yml
 
-- name: get wordpress import unit-test data
+- name: get wordpress unit-test data
   get_url:
     url: "{{ unit_test_url }}"
     dest: "/tmp/theme-unit-test-data.xml"
@@ -40,7 +40,7 @@
     validate_certs: no
   when: theme_unit_test == true and lang != 'ja' and import_xml_data == '' and import_db_data == ''
 
-- name: get wordpress import unit-test-ja data
+- name: get wordpress unit-test-ja data
   get_url:
     url: "{{ unit_test_ja_url }}"
     dest: "/tmp/theme-unit-test-data.xml"

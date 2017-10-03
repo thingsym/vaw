@@ -120,6 +120,10 @@ describe 'PHP config parameters' do
     its(:value) { should eq 0 }
   end
 
+  context php_config('sendmail_path') do
+    its(:value) { should eq '/usr/local/bin/mhsendmail' }
+  end
+
 end
 
 describe package('patch') do

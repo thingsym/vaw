@@ -185,6 +185,8 @@ function install() {
     sed -i -e "s/^;opcache.enable=0/opcache.enable=0/" $PHP_INI
     sed -i -e "s/^;opcache.enable_cli=1/opcache.enable_cli=0/" $PHP_INI
     sed -i -e "s/^;opcache.enable=1/opcache.enable=0/" $PHP_INI
+
+    sed -i -e "s/^;sendmail_path =/sendmail_path = \/usr\/local\/bin\/mhsendmail/" $PHP_INI
     echo "[Info]: edit $PHP_INI"
   fi
 
