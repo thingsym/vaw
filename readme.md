@@ -263,6 +263,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	ssl_wp_admin       : false   # true|false
 
+	# See Supported Versions http://php.net/supported-versions.php
 	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 

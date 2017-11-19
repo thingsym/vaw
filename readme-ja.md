@@ -254,6 +254,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	ssl_wp_admin       : false   # true|false
 
+	# See Supported Versions http://php.net/supported-versions.php
 	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 
