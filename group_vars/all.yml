@@ -55,6 +55,7 @@ plugins            :
                         - monster-widget
                         - wordpress-beta-tester
                         - wp-multibyte-patch
+                        - rewrite-rules-inspector
 
 theme_mod          : {}
 
