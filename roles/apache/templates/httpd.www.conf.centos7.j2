@@ -4,7 +4,7 @@
 
     <Directory {{ DOCUMENT_ROOT }}>
         Options FollowSymLinks
-        AllowOverride FileInfo Options
+        AllowOverride Limit AuthConfig FileInfo Options
         Require all granted
     </Directory>
 
@@ -109,7 +109,7 @@ SSLCryptoDevice builtin
 
     <Directory {{ DOCUMENT_ROOT }}>
         Options FollowSymLinks
-        AllowOverride FileInfo Options
+        AllowOverride Limit AuthConfig FileInfo Options
         Order allow,deny
         Allow from all
     </Directory>

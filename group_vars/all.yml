@@ -55,6 +55,7 @@ plugins            :
                         - monster-widget
                         - wordpress-beta-tester
                         - wp-multibyte-patch
+                        - rewrite-rules-inspector
 
 theme_mod          : {}
 
@@ -88,6 +89,7 @@ SAVEQUERIES        : true   # true|false
 
 ssl_wp_admin       : false   # true|false
 
+# See Supported Versions http://php.net/supported-versions.php
 php_version        : 7.1.7
 http_protocol      : http   # http|https
 
