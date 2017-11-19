@@ -254,6 +254,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	ssl_wp_admin       : false   # true|false
 
+	# See Supported Versions http://php.net/supported-versions.php
 	php_version        : 7.1.7
 	http_protocol      : http   # http|https
 
@@ -686,6 +687,12 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.4 - 2017.11.19
+	* fix comment
+	* add WordPress plugin
+	* update theme-unit-test
+	* fix AllowOverride in httpd.conf for security plugins
+	* add default-character-set utf8mb4 with client section
 * version 0.5.3 - 2017.10.03
 	* fix comment
 	* change database charset from utf8 to utf8mb4
