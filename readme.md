@@ -696,6 +696,8 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## Changelog
 
+* version 0.5.5 - 2017.12.05
+	* add documentation
 * version 0.5.4 - 2017.11.19
 	* fix comment
 	* add WordPress plugin
