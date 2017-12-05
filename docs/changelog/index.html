@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>VAW (Vagrant Ansible WordPress) Documentation</title>
+<link href="/vaw/css/theme.min.css" rel="stylesheet">
+<meta name="generator" content="Hugo 0.30" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body><header>
+<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
+
+ <span class="version">Version 0.5.4</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fa fa-github"></i></a>
+<p class="description">Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</p>
+
+</header>
+<div class="container">
+<div class="content-container">
+<main><h1>Changelog</h1><ul>
+<li>version 0.5.4 - 2017.11.19
+
+<ul>
+<li>fix comment</li>
+<li>add WordPress plugin</li>
+<li>update theme-unit-test</li>
+<li>fix AllowOverride in httpd.conf for security plugins</li>
+<li>add default-character-set utf8mb4 with client section</li>
+</ul></li>
+<li>version 0.5.3 - 2017.10.03
+
+<ul>
+<li>fix comment</li>
+<li>change database charset from utf8 to utf8mb4</li>
+<li>add MailHog</li>
+</ul></li>
+<li>version 0.5.2 - 2017.08.17
+
+<ul>
+<li>bump up PHP version number to 7.1.7</li>
+<li>fix phpenv.sh</li>
+<li>change setting name from ssl_admin to ssl_wp_admin</li>
+<li>enable sync-dir with before-command and after-command</li>
+<li>fixed version with PHPUnit, PHP_CodeSniffer and PHPUnit Selenium</li>
+<li>change label of provision_mode from normal to all</li>
+<li>change order of setting items</li>
+<li>fix settings format</li>
+<li>add .travis.yml</li>
+<li>fix vb.customize for improve VirutalBox performance</li>
+<li>remove vagrant-cachier plugin</li>
+</ul></li>
+<li>version 0.5.1 - 2017.07.12
+
+<ul>
+<li>fix php-cgi not found</li>
+<li>fix webserver and fastcgi owner/group</li>
+<li>remove bower</li>
+<li>add tests for box</li>
+<li>fix centos-box.sh</li>
+<li>change provision_only_wordpress mode to provision_mode</li>
+<li>rename certificate file and key</li>
+<li>fix libcurl installation</li>
+</ul></li>
+<li>version 0.5.0 - 2017.06.20
+
+<ul>
+<li>fix centos-box.sh</li>
+<li>fix vm_box, using public Vagrant boxes</li>
+<li>add CityFan repository for libcurl, only CentOS 6</li>
+<li>set permission to synced_folder wordpress</li>
+<li>change default database to mariadb from mysql</li>
+<li>fix server test</li>
+<li>fix php install via phpenv.sh</li>
+<li>add socket argument to phpenv.sh</li>
+<li>add fastcgi to apache</li>
+<li>improve phpenv.sh version 0.1.1 for CentOS</li>
+<li>add forwarded_port for Browsersync</li>
+<li>fix php post_max_size to 32M</li>
+<li>remove wp-phpcs ruleset</li>
+<li>add custom hhvm.server.ini</li>
+<li>bump up Ruby version number to 2.4.1</li>
+<li>add webserver h2o</li>
+<li>change hhvm fastcgi connect to UNIX domain socket from TCP</li>
+<li>change webserver and fastcgi owner/group nobody</li>
+<li>add my.cnf for each database</li>
+<li>fix opcache disable</li>
+<li>add tests for sync-dir</li>
+<li>update activate plugins</li>
+<li>add wordpress import for backwpup</li>
+<li>add wp-content automatic place</li>
+<li>fix sendfile off</li>
+</ul></li>
+<li>version 0.4.4 - 2017.03.18
+
+<ul>
+<li>using YAML dictionaries in tasks</li>
+<li>add centos-box.sh</li>
+</ul></li>
+<li>version 0.4.3 - 2017.03.07
+
+<ul>
+<li>add custom ~/.ssh/config</li>
+<li>add only WordPress provision mode</li>
+<li>add ansible install_mode</li>
+<li>fix hhvm</li>
+<li>change filename extension from cert to crt</li>
+<li>add packagist.jp repository</li>
+<li>fix wp core config parameter</li>
+<li>add yarn</li>
+<li>add cachetool</li>
+<li>fix mysql and mariadb tasks</li>
+<li>add yum-utils</li>
+<li>fix database tests</li>
+<li>update percona-release-0.1-4.noarch.rpm</li>
+<li>fix my.cnf.j2</li>
+<li>fix httpd.conf when ssl enable</li>
+<li>add tests of wordpress</li>
+<li>replace from shell module to command module</li>
+<li>provision fail only when SELinux is Enforcing</li>
+<li>fix dest path of default_configure_options</li>
+<li>fix php.conf.j2</li>
+<li>bump up node 6.9.1</li>
+<li>fix default-node-packages.j2</li>
+</ul></li>
+<li>version 0.4.2 - 2016.10.04
+
+<ul>
+<li>add develop-tools role, fix build environment</li>
+<li>fix the inline script to get the major version number</li>
+<li>fix sudo user</li>
+<li>fix shebang</li>
+</ul></li>
+<li>version 0.4.1 - 2016.09.10
+
+<ul>
+<li>fix inline shell in Vagrantfile</li>
+<li>fix nodejs version</li>
+</ul></li>
+<li>version 0.4.0 - 2016.08.22
+
+<ul>
+<li>bump up php 7.0.7</li>
+<li>change to package module from yum module</li>
+<li>change default box to CentOS 7 from CentOS 6</li>
+<li>add synced_folder /vagrant</li>
+<li>add vagrant-vbguest</li>
+<li>change to yum_repository module from template module</li>
+<li>fix home_dir path into playbooks</li>
+<li>add phpenv-composer, remove composer role</li>
+<li>fix phpenv role</li>
+<li>add nodenv role, remove nodejs, npm</li>
+<li>change provision to ansible_local from inline shell</li>
+<li>remove RepoForge repository</li>
+<li>add webgrind</li>
+<li>add phpmd</li>
+<li>add prestissimo</li>
+<li>fix re2c via yum</li>
+<li>fix tests</li>
+<li>add gulp-cli and npm-check-updates, remove gulp globally</li>
+<li>change to become, since sudo has been deprecated</li>
+<li>fix phpenv.sh</li>
+</ul></li>
+<li>version 0.3.3 - 2016.05.31
+
+<ul>
+<li>fix playbooks</li>
+<li>remove compass gem</li>
+<li>refactoring phpenv.sh</li>
+<li>disable OPcache</li>
+</ul></li>
+<li>version 0.3.2 - 2016.02.09
+
+<ul>
+<li>add custom config</li>
+<li>remove server tuning</li>
+</ul></li>
+<li>version 0.3.1 - 2016.01.18
+
+<ul>
+<li>fix yum releasever version</li>
+</ul></li>
+<li>version 0.3.0 - 2015.12.21
+
+<ul>
+<li>fix Vagrantfile</li>
+<li>fix wp-cli role, compatible with WordPress 4.4</li>
+<li>improve hhvm role</li>
+<li>improve command phpenv.sh</li>
+<li>support CentOS 7 x86-64</li>
+</ul></li>
+<li>version 0.2.1 - 2015.10.09
+
+<ul>
+<li>add stylestats</li>
+<li>add plato</li>
+</ul></li>
+<li>version 0.2.0 - 2015.08.31
+
+<ul>
+<li>fix Fabric</li>
+<li>fix WordPress plugins</li>
+<li>fix rbenv and hhvm, MariaDB roles</li>
+<li>fix memory 1.5GB</li>
+<li>remove php55 and php-fpm roles</li>
+<li>add command phpenv.sh</li>
+<li>add phpenv role, replaced from php</li>
+</ul></li>
+<li>version 0.1.8 - 2015.08.04
+
+<ul>
+<li>fix WordPress plugins</li>
+<li>add PHPUnit Selenium</li>
+</ul></li>
+<li>version 0.1.7 - 2015.07.06
+
+<ul>
+<li>add public_network</li>
+</ul></li>
+<li>version 0.1.6 - 2015.06.15
+
+<ul>
+<li>add vm_box_version</li>
+</ul></li>
+<li>version 0.1.5 - 2015.06.04
+
+<ul>
+<li>add Fabric</li>
+<li>add wrk</li>
+<li>add command db_backup.sh</li>
+<li>nginx tuning</li>
+</ul></li>
+<li>version 0.1.4 - 2015.04.29
+
+<ul>
+<li>fix Ansible 1.9.x</li>
+</ul></li>
+<li>version 0.1.3 - 2015.02.17
+
+<ul>
+<li>fix fastcgi_spec.rb</li>
+</ul></li>
+<li>version 0.1.2 - 2015.01.31
+
+<ul>
+<li>change how to set the environment variables to .bash_profile</li>
+<li>fix Vagrantfile</li>
+</ul></li>
+<li>version 0.1.1 - 2015.01.14
+
+<ul>
+<li>change setting format</li>
+<li>fix yum repository metadata</li>
+<li>add WordPress options</li>
+<li>add sass and compass gems</li>
+<li>fix wp-cli role</li>
+</ul></li>
+<li>version 0.1.0 - 2014.12.22
+
+<ul>
+<li>initial release</li>
+</ul></li>
+</ul>
+<div class="navigation">
+<a class="nav nav-prev" href="/vaw/contribution/" title="Contribution"><i class="fa fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
+    <a class="nav nav-next" href="/vaw/license/" title="License">Next - License <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+<footer></footer>
+</main><div class="sidebar"><nav><ul>
+  <li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li><li class=""><a href="/vaw/about/">About VAW</a></li><li class=""><a href="/vaw/getting-started/">Getting Started</a><ul><li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li></ul></li><li class=""><a href="/vaw/configuration/">Configuration file</a><ul><li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li><li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li></ul></li><li class=""><a href="/vaw/directory-layout/">Directory Layout</a></li><li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a></li><li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a><ul><li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li></ul></li><li class=""><a href="/vaw/specification/">Specification</a></li><li class=""><a href="/vaw/helper-command/">Helper Command</a></li><li class=""><a href="/vaw/custom-config/">Custom Config</a></li><li class=""><a href="/vaw/contribution/">Contribution</a></li><li class=" parent active"><a href="/vaw/changelog/">Changelog</a></li><li class=""><a href="/vaw/license/">License</a></li></ul>
+</nav>
+
+<div class="sidebar-footer"></div>
+</div>
+</div></div>
+</body>
+</html>

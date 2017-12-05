@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>VAW (Vagrant Ansible WordPress) Documentation</title>
+<link href="/vaw/css/theme.min.css" rel="stylesheet">
+<meta name="generator" content="Hugo 0.30" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body><header>
+<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
+
+ <span class="version">Version 0.5.4</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fa fa-github"></i></a>
+<p class="description">Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</p>
+
+</header>
+<div class="container">
+<div class="content-container">
+<main><h1>all.yml</h1>
+
+<h3 id="provisioning-configuration-file-yaml">Provisioning configuration file (YAML)</h3>
+
+<p>Provisioning configuration file is <strong>group_vars/all.yml</strong>.</p>
+
+<p>In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.</p>
+
+<pre><code>## Server &amp; Database Settings ##
+
+server             : apache   # apache|nginx|h2o
+fastcgi            : none     # none|php-fpm|hhvm
+
+database           : mariadb  # mariadb|mysql|percona
+db_root_password   : admin
+
+db_host            : localhost
+db_name            : wordpress
+db_user            : admin
+db_password        : admin
+db_prefix          : wp_
+db_charset         : ''
+db_collate         : '' # utf8mb4_general_ci
+
+## WordPress Settings ##
+
+title              : VAW (Vagrant Ansible WordPress)
+admin_user         : admin
+admin_password     : admin
+admin_email        : hoge@example.com
+
+# e.g. latest, nightly, 4.1, 4.1-beta1
+# see Release Archive - https://wordpress.org/download/release-archive/
+# 3.5.2 or later to work properly
+version            : latest
+
+# e.g. en_US, ja, ...
+# see wordpress-i18n list - http://svn.automattic.com/wordpress-i18n/
+lang               : en_US
+
+# in own directory or subdirectory install.
+# see http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
+wp_dir             : ''   #e.g. /wordpress
+wp_site_path       : ''   #e.g. /wordpress
+
+multisite          : false   # true|false
+
+# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
+activate_theme     : ''
+themes             : []
+
+# slug|url|zip (local path, /vagrant/plugins/~.zip)
+activate_plugins   :
+                        - theme-check
+                        - log-deprecated-notices
+                        - debug-bar
+                        - query-monitor
+                        - broken-link-checker
+plugins            :
+                        - developer
+                        - monster-widget
+                        - wordpress-beta-tester
+                        - wp-multibyte-patch
+
+theme_mod          : {}
+
+# see Option Reference - http://codex.wordpress.org/Option_Reference
+options            : {}
+
+# e.g. /%year%/%monthnum%/%postname%
+# see http://codex.wordpress.org/Using_Permalinks
+permalink_structure  :
+                      structure   : ''
+                      category    : ''
+                      tag         : ''
+
+# Any one of 4 ways to import
+import_xml_data    : ''   # local path, /vagrant/import/~.xml
+import_db_data     : ''   # local path, /vagrant/import/~.sql
+import_backwpup    :
+                      path          : ''   # local path, /vagrant/import/~.zip
+                      db_data_file  : ''
+                      xml_data_file : ''
+import_admin       : false   # true|false
+theme_unit_test    : false   # true|false
+
+replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
+regenerate_thumbnails   : false   # true|false
+
+WP_DEBUG           : true   # true|false
+SAVEQUERIES        : true   # true|false
+
+## Develop &amp; Deploy Settings ##
+
+ssl_wp_admin       : false   # true|false
+
+# See Supported Versions http://php.net/supported-versions.php
+php_version        : 7.1.7
+http_protocol      : http   # http|https
+
+develop_tools      : false   # true|false
+deploy_tools       : false   # true|false
+
+## That's all, stop setting. Let's vagrant up!! ##
+
+WP_URL             : '{{ http_protocol }}://{{ HOSTNAME }}{{ wp_site_path }}'
+WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
+</code></pre>
+
+<h4 id="server-database-settings">Server &amp; Database Settings</h4>
+
+<ul>
+<li><code>server</code> (required) name of web server (default: <code>apache</code> / value: <code>apache</code> | <code>nginx</code> | <code>h2o</code>)</li>
+<li><code>fastcgi</code> name of fastCGI (default: <code>none</code> / value: <code>none</code> | <code>php-fpm</code> | <code>hhvm</code>)</li>
+<li><code>database</code> (required) name of databese (default: <code>mariadb</code> / value: <code>mariadb</code> | <code>mysql</code> | <code>percona</code>)</li>
+<li><code>db_root_password</code> (required) database root password (default: <code>admin</code>)</li>
+<li><code>db_host</code> (required) database host (default: <code>localhost</code>)</li>
+<li><code>db_name</code> (required) name of database (default: <code>wordpress</code>)</li>
+<li><code>db_user</code> (required) database user name (default: <code>admin</code>)</li>
+<li><code>db_password</code> (required) database user password (default: <code>admin</code>)</li>
+<li><code>db_prefix</code> database prefix (default: <code>wp_</code>)</li>
+<li><code>db_charset</code> database character set (default: <code>''</code>)</li>
+<li><code>db_collate</code> database collation (default: <code>''</code>)</li>
+</ul>
+
+<h4 id="wordpress-settings">WordPress Settings</h4>
+
+<ul>
+<li><code>title</code> WordPress site title (default: <code>VAW (Vagrant Ansible WordPress)</code>)</li>
+<li><code>admin_user</code> (required) WordPress admin user name (default: <code>admin</code>)</li>
+<li><code>admin_password</code> (required) WordPress admin user password (default: <code>admin</code>)</li>
+<li><code>admin_email</code> (required) WordPress admin email address (default: <code>hoge@example.com</code>)</li>
+<li><code>version</code> (required) version of WordPress (default: <code>latest</code>)
+
+<ul>
+<li>e.g. <code>latest</code>, <code>4.1</code>, <code>4.1-beta1</code></li>
+<li>see <a href="https://wordpress.org/download/release-archive/">Release Archive</a></li>
+<li>version 3.5.2 or later to work properly</li>
+</ul></li>
+
+<li><p><code>lang</code> (required) WordPress in your language (default: <code>en_US</code>)</p>
+
+<ul>
+<li>e.g. <code>en_US</code>, <code>ja</code>, &hellip;</li>
+<li>see <a href="http://svn.automattic.com/wordpress-i18n/">wordpress-i18n list</a></li>
+</ul></li>
+
+<li><p><code>wp_dir</code> directory path to subdirectory install WordPress (default: install to document root)</p></li>
+
+<li><p><code>wp_site_path</code> path of site (default: document root)</p>
+
+<ul>
+<li>If <code>wp_dir</code> and <code>wp_site_path</code> are the same path, in own directory install.</li>
+<li>If <code>wp_dir</code> and <code>wp_site_path</code> are different path, install to subdirectory. Note that <code>wp_site_path</code> be placed on one above the directory than <code>wp_dir</code>.</li>
+<li>see <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">Giving WordPress Its Own Directory</a></li>
+</ul></li>
+
+<li><p><code>multisite</code> Multisite enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</p></li>
+
+<li><p><code>activate_theme</code> install a theme and activated (default: default theme)</p>
+
+<ul>
+<li>set default theme <code>''</code>, <code>theme slug</code>, <code>zip file URL</code> or  <code>local zip file path</code></li>
+<li>set <code>/vagrant/themes/~.zip</code> by local zip file path</li>
+</ul></li>
+
+<li><p><code>themes</code> install themes</p>
+
+<ul>
+<li>set in YAML arrays of hashes format <code>theme slug</code>, <code>zip file URL</code> or <code>local zip file path</code></li>
+<li>set <code>/vagrant/themes/~.zip</code> by local zip file path</li>
+<li>comment out with a <code>#</code> at the beginning of a line, if you want to disable the setting.</li>
+</ul></li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>themes             :
+                     - yoko
+                     - Responsive
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>themes             : []
+</code></pre>
+
+<ul>
+<li><code>activate_plugins</code> install plagins and activated
+
+<ul>
+<li>set in YAML arrays of hashes format <code>plagin slug</code>, <code>zip file URL</code> or <code>local zip file path</code></li>
+<li>set <code>/vagrant/plagins/~.zip</code> by local zip file path</li>
+<li>comment out with a <code>#</code> at the beginning of a line, if you want to disable the setting.</li>
+</ul></li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>activate_plugins   :
+                        - theme-check
+                        - plugin-check
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>activate_plugins   : []
+</code></pre>
+
+<ul>
+<li><p><code>plugins</code> install plagins</p>
+
+<ul>
+<li>set in YAML arrays of hashes format <code>plagin slug</code>, <code>zip file URL</code> or <code>local zip file path</code></li>
+<li>set <code>/vagrant/plagins/~.zip</code> by local zip file path</li>
+<li>comment out with a <code>#</code> at the beginning of a line, if you want to disable the setting.</li>
+</ul></li>
+
+<li><p><code>theme_mod</code> setting theme_mod (theme modification value)</p>
+
+<ul>
+<li>see <a href="http://codex.wordpress.org/Function_Reference/set_theme_mod">set_theme_mod()</a></li>
+<li>set in YAML nested hash format</li>
+<li>comment out with a <code>#</code> at the beginning of a line, if you want to disable the setting.</li>
+</ul></li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>theme_mod          :
+                       background_color: 'cccccc'
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>theme_mod          : {}
+</code></pre>
+
+<ul>
+<li><code>options</code> setting options
+
+<ul>
+<li>see <a href="http://codex.wordpress.org/Function_Reference/update_option">update_option()</a> and <a href="http://codex.wordpress.org/Option_Reference">Option Reference</a></li>
+<li>set in YAML nested hash format</li>
+<li>comment out with a <code>#</code> at the beginning of a line, if you want to disable the setting.</li>
+</ul></li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>options            :
+                       blogname: 'blog title'
+                       blogdescription: 'blog description'
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>options            : {}
+</code></pre>
+
+<ul>
+<li><code>permalink_structure</code> setting permalink structure
+
+<ul>
+<li>set the following three permalink structures</li>
+<li>see <a href="http://codex.wordpress.org/Using_Permalinks">Using Permalinks</a></li>
+<li><code>structure</code> set the permalink structure using the structure tags</li>
+<li><code>category</code> set the prefix of the category archive</li>
+<li><code>tag</code> set the prefix of the tag archive</li>
+</ul></li>
+<li><code>import_xml_data</code> local WordPress export (WXR) file path <code>/vagrant/import/~.xml</code></li>
+<li><code>import_db_data</code> local sql dump file path <code>/vagrant/import/~.sql</code></li>
+<li><code>import_backwpup</code>
+
+<ul>
+<li><code>path</code> Archive file path <code>/vagrant/import/~.zip</code> (Zip, Tar, Tar GZip, Tar BZip2)</li>
+<li><code>db_data_file</code> DB backup file name (Import from one of data files)</li>
+<li><code>xml_data_file</code> XML export file name (imported from one of the data files)</li>
+</ul></li>
+<li><code>import_admin</code> Add WordPress administrator user (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>theme_unit_test</code> import Theme Unit Test data enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>replace_old_url</code> replace to <code>vm_hostname</code> from <code>old url</code></li>
+<li><code>regenerate_thumbnails</code> regenerate thumbnails enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>WP_DEBUG</code> debug mode (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>SAVEQUERIES</code> save the database queries (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
+</ul>
+
+<h4 id="develop-deploy-settings">Develop &amp; Deploy Settings</h4>
+
+<ul>
+<li><code>ssl_wp_admin</code> WordPress administration over SSL enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>php_version</code> version of PHP (default: 7.1.7)</li>
+<li><code>http_protocol</code> HTTP protocol (default: <code>http</code> / value: <code>http</code> | <code>https</code>)</li>
+<li><code>develop_tools</code> activate develop tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>deploy_tools</code> activate deploy tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+</ul>
+<div class="navigation">
+<a class="nav nav-prev" href="/vaw/configuration/vagrantfile/" title="Vagrantfile"><i class="fa fa-arrow-left" aria-hidden="true"></i> Prev - Vagrantfile</a>
+    <a class="nav nav-next" href="/vaw/directory-layout/" title="Directory Layout">Next - Directory Layout <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+<footer></footer>
+</main><div class="sidebar"><nav><ul>
+  <li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li><li class=""><a href="/vaw/about/">About VAW</a></li><li class=""><a href="/vaw/getting-started/">Getting Started</a><ul><li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li></ul></li><li class=" parent"><a href="/vaw/configuration/">Configuration file</a><ul><li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li><li class="active"><a href="/vaw/configuration/all-yml/">all.yml</a></li></ul></li><li class=""><a href="/vaw/directory-layout/">Directory Layout</a></li><li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a></li><li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a><ul><li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li></ul></li><li class=""><a href="/vaw/specification/">Specification</a></li><li class=""><a href="/vaw/helper-command/">Helper Command</a></li><li class=""><a href="/vaw/custom-config/">Custom Config</a></li><li class=""><a href="/vaw/contribution/">Contribution</a></li><li class=""><a href="/vaw/changelog/">Changelog</a></li><li class=""><a href="/vaw/license/">License</a></li></ul>
+</nav>
+
+<div class="sidebar-footer"></div>
+</div>
+</div></div>
+</body>
+</html>

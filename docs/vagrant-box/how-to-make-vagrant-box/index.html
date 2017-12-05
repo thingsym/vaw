@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>VAW (Vagrant Ansible WordPress) Documentation</title>
+<link href="/vaw/css/theme.min.css" rel="stylesheet">
+<meta name="generator" content="Hugo 0.30" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body><header>
+<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
+
+ <span class="version">Version 0.5.4</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fa fa-github"></i></a>
+<p class="description">Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</p>
+
+</header>
+<div class="container">
+<div class="content-container">
+<main><h1>How to make Vagrant Box</h1>
+
+<p>How to use the provisioning mode?</p>
+
+<p>Let&rsquo;s see how to make Vagrant Box through the process from provisioning with Vagrant Box to building WordPress development environment.</p>
+
+<h2 id="1-setting-of-configuration-file">1. Setting of configuration file</h2>
+
+<p>We will launch the Vagrant environment for creating Vagrant Box.
+First of all, Set up the Vagrant configuration file and the provisioning configuration file.</p>
+
+<p>Set <code>provision_mode</code> in the Vagrant configuration file to <code>box</code>.</p>
+
+<pre><code>provision_mode        = 'box'    # all|wordpress|box
+</code></pre>
+
+<p>You can set the provisioning configuration file as you like.</p>
+
+<p>However, if <code>provision_mode</code> is <code>box</code>, the WordPress Settings section of the provisioning configuration file will be skipped during provisioning.</p>
+
+<h2 id="2-provisioning">2. Provisioning</h2>
+
+<p>Provision and build the environment.</p>
+
+<pre><code>vagrant up
+</code></pre>
+
+<h2 id="3-creating-a-vagrant-box-packaging">3. Creating a Vagrant Box (Packaging)</h2>
+
+<p>After provisioning is completed, create a Vagrant Box with a box name. (e.g. sample.box)</p>
+
+<pre><code>vagrant package --output sample.box
+</code></pre>
+
+<h2 id="4-registration-of-vagrant-box">4. Registration of Vagrant Box</h2>
+
+<p>Add the created Vagrant Box to Vagrant. (Register as eg sample)</p>
+
+<pre><code>vagrant box add sample.box --name sample
+</code></pre>
+
+<p>You can delete the Vagrant Box file created for creating Vagrant Box. (e.g. sample.box)
+You can destroy the launched Vagrant environment after checking the operation.</p>
+
+<pre><code>vagrant destroy
+</code></pre>
+
+<h2 id="5-provisioning-with-the-created-vagrant-box">5. Provisioning with the created Vagrant Box</h2>
+
+<p>Launch the Vagrant environment for WordPress development with the Vagrant Box you created.
+Set up the Vagrant configuration file and the provisioning configuration file.</p>
+
+<p>Set <code>vm_box</code> of the Vagrant configuration file to <code>sample</code>. (e.g. sample)
+Set <code>provision_mode</code> in the Vagrant configuration file to <code>wordpress</code>.</p>
+
+<pre><code>vm_box                = 'sample'
+...
+provision_mode        = 'wordpress'    # all|wordpress|box
+</code></pre>
+
+<p>You can set the provisioning configuration file as you like.</p>
+
+<p>However, if <code>provision_mode</code> is <code>wordpress</code>, only the WordPress Settings section of the provisioning configuration file is enabled during provisioning.</p>
+
+<h2 id="6-launch-a-virtual-environment">6. Launch a virtual environment</h2>
+
+<pre><code>vagrant up
+</code></pre>
+
+<p>After provisioning, you can launch a WordPress development environment.</p>
+<div class="navigation">
+<a class="nav nav-prev" href="/vaw/vagrant-box/" title="Vagrant Box"><i class="fa fa-arrow-left" aria-hidden="true"></i> Prev - Vagrant Box</a>
+    <a class="nav nav-next" href="/vaw/specification/" title="Specification">Next - Specification <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+<footer></footer>
+</main><div class="sidebar"><nav><ul>
+  <li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li><li class=""><a href="/vaw/about/">About VAW</a></li><li class=""><a href="/vaw/getting-started/">Getting Started</a><ul><li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li></ul></li><li class=""><a href="/vaw/configuration/">Configuration file</a><ul><li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li><li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li></ul></li><li class=""><a href="/vaw/directory-layout/">Directory Layout</a></li><li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a></li><li class=" parent"><a href="/vaw/vagrant-box/">Vagrant Box</a><ul><li class="active"><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li></ul></li><li class=""><a href="/vaw/specification/">Specification</a></li><li class=""><a href="/vaw/helper-command/">Helper Command</a></li><li class=""><a href="/vaw/custom-config/">Custom Config</a></li><li class=""><a href="/vaw/contribution/">Contribution</a></li><li class=""><a href="/vaw/changelog/">Changelog</a></li><li class=""><a href="/vaw/license/">License</a></li></ul>
+</nav>
+
+<div class="sidebar-footer"></div>
+</div>
+</div></div>
+</body>
+</html>
