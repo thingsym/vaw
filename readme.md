@@ -129,6 +129,9 @@ You can build a variety of environment that edit configuration files of the VAW.
 
 There are two configuration files you can customize.
 
+* Vagrantfile
+* group_vars/all.yml
+
 Run `vagrant up` or `vagrant provision`, after editing the configuration files.
 
 ### Vagrant configuration file (Ruby)
@@ -137,7 +140,7 @@ Vagrant configuration file is **Vagrantfile**.
 
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 
-If you launch multiple environments, change the name of the directory. Should rewrite `vm_ip` and` vm_hostname`. Note not to overlap with other environments.
+If you launch multiple environments, change the name of the directory. Should rewrite `vm_ip` and `vm_hostname`. Note not to overlap with other environments.
 
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
@@ -155,7 +158,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
-	provision_mode        = 'all'   　　 # all|wordpress|box
+	provision_mode        = 'all'       # all|wordpress|box
 
 * `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.3`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
@@ -680,7 +683,7 @@ As follows editable configuration files.
 * php.conf.j2
 * ssh-config.j2
 
-## Contribute
+## Contribution
 
 Small patches and bug reports can be submitted a issue tracker in Github. Forking on Github is another good way. You can send a pull request.
 
