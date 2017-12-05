@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>VAW (Vagrant Ansible WordPress) Documentation</title>
+<link href="/vaw/css/theme.min.css" rel="stylesheet">
+<meta name="generator" content="Hugo 0.30" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body><header>
+<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
+
+ <span class="version">Version 0.5.4</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fa fa-github"></i></a>
+<p class="description">Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</p>
+
+</header>
+<div class="container">
+<div class="content-container">
+<main><h1>Getting Started</h1>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="1-install-virtualbox">1. Install Virtualbox</h3>
+
+<p>Download the VirtualBox form <a href="https://www.virtualbox.org">www.virtualbox.org</a> and install.</p>
+
+<h3 id="2-install-vagrant">2. Install Vagrant</h3>
+
+<p>Download the Vagrant form <a href="https://www.vagrantup.com">www.vagrantup.com</a> and install.</p>
+
+<h3 id="3-install-vagrant-plugin">3. Install Vagrant plugin</h3>
+
+<p>Install the Vagrant plugin on the terminal as necessary.</p>
+
+<pre><code>vagrant plugin install vagrant-hostsupdater
+vagrant plugin install vagrant-vbguest
+vagrant plugin install vagrant-serverspec
+</code></pre>
+
+<h3 id="4-download-ansible-playbooks-of-the-vaw">4. Download Ansible playbooks of the VAW</h3>
+
+<p>Download a Vagrantfile and Ansible playbooks from the following link.</p>
+
+<p><a href="https://github.com/thingsym/vaw/archive/master.zip">Download Zip format file</a></p>
+
+<h3 id="5-launch-a-virtual-environment">5. Launch a virtual environment</h3>
+
+<pre><code>cd vaw-x.x.x
+vagrant up
+</code></pre>
+
+<p>If you don&rsquo;t have a Box at first, begins from the download of Box.
+After provisioning, you can launch a WordPress development environment.</p>
+
+<h3 id="6-access-to-the-website-and-the-wordpress-admin">6. Access to the website and the WordPress Admin</h3>
+
+<p>Access to the website <strong><a href="http://vaw.local/">http://vaw.local/</a></strong>. Access to the WordPress admin <strong><a href="http://vaw.local/wp-admin/">http://vaw.local/wp-admin/</a></strong>.</p>
+<div class="navigation">
+<a class="nav nav-prev" href="/vaw/about/" title="About VAW"><i class="fa fa-arrow-left" aria-hidden="true"></i> Prev - About VAW</a>
+    <a class="nav nav-next" href="/vaw/getting-started/requirements/" title="Requirements">Next - Requirements <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+<footer></footer>
+</main><div class="sidebar"><nav><ul>
+  <li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li><li class=""><a href="/vaw/about/">About VAW</a></li><li class=" parent active"><a href="/vaw/getting-started/">Getting Started</a><ul><li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li></ul></li><li class=""><a href="/vaw/configuration/">Configuration file</a><ul><li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li><li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li></ul></li><li class=""><a href="/vaw/directory-layout/">Directory Layout</a></li><li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a></li><li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a><ul><li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li></ul></li><li class=""><a href="/vaw/specification/">Specification</a></li><li class=""><a href="/vaw/helper-command/">Helper Command</a></li><li class=""><a href="/vaw/custom-config/">Custom Config</a></li><li class=""><a href="/vaw/contribution/">Contribution</a></li><li class=""><a href="/vaw/changelog/">Changelog</a></li><li class=""><a href="/vaw/license/">License</a></li></ul>
+</nav>
+
+<div class="sidebar-footer"></div>
+</div>
+</div></div>
+</body>
+</html>
