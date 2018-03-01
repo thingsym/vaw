@@ -1,10 +1,12 @@
 # VAW (Vagrant Ansible WordPress)
 
-**VAW (Vagrant Ansible WordPress)** は、WordPress でウェブサイトを構築する開発者、サイト運営者、WordPress のテーマ・プラグイン開発者のための **Ansible playbooks** です。
+**VAW (Vagrant Ansible WordPress)** は、WordPress でウェブサイトを構築する開発者、デザイナー、サイト運営者、WordPress のテーマ・プラグイン開発者のための **Ansible playbooks** です。
 
 Vagrant で開発環境やテスト環境を素早く立ち上げて、ウェブサイトの構築や動作検証ができます。もちろん WordPress テーマやプラグインの開発も。
 
 また、**VAW** は、開発パートナーやデザイナー、クライアントとポータブルに環境を共有してコラボレーションツールとして活用できます。
+
+VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/](https://thingsym.github.io/vaw/)
 
 ## Features
 
@@ -681,14 +683,15 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 ## Contribution
 
+### Patches and Bug Fixes
+
 Small patches and bug reports can be submitted a issue tracker in Github. Forking on Github is another good way. You can send a pull request.
 
-If you would like to contribute, here are some notes and guidlines.
-
-* All development happens on the **develop** branch, so it is always the most up-to-date
-* The **master** branch only contains tagged releases
-* If you are going to be submitting a pull request, please submit your pull request to the **develop** branch
-* See about [forking](https://help.github.com/articles/fork-a-repo/) and [pull requests](https://help.github.com/articles/using-pull-requests/)
+1. Fork [VAW](https://github.com/thingsym/vaw) from GitHub repository
+2. Create a feature branch: git checkout -b my-new-feature
+3. Commit your changes: git commit -am 'Add some feature'
+4. Push to the branch: git push origin my-new-feature
+5. Create new Pull Request
 
 ## Changelog
 
@@ -863,6 +866,10 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## License
 
-VAW is distributed under GPLv3.
+The VAW is distributed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
-Copyright (c) 2014-2017 thingsym
+## Author
+
+[thingsym](https://github.com/thingsym)
+
+Copyright (c) 2014-2018 thingsym

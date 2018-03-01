@@ -1,10 +1,12 @@
 # VAW (Vagrant Ansible WordPress)
 
-The **VAW (Vagrant Ansible WordPress)** is **Ansible playbooks** for website developer, webmaster and WordPress theme/plugin developer.
+The **VAW (Vagrant Ansible WordPress)** is **Ansible playbooks** for website developer, designer, webmaster and WordPress theme/plugin developer.
 
 Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
 The **VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and clients.
+
+VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/](https://thingsym.github.io/vaw/)
 
 ## Features
 
@@ -685,14 +687,15 @@ As follows editable configuration files.
 
 ## Contribution
 
+### Patches and Bug Fixes
+
 Small patches and bug reports can be submitted a issue tracker in Github. Forking on Github is another good way. You can send a pull request.
 
-If you would like to contribute, here are some notes and guidlines.
-
-* All development happens on the **develop** branch, so it is always the most up-to-date
-* The **master** branch only contains tagged releases
-* If you are going to be submitting a pull request, please submit your pull request to the **develop** branch
-* See about [forking](https://help.github.com/articles/fork-a-repo/) and [pull requests](https://help.github.com/articles/using-pull-requests/)
+1. Fork [VAW](https://github.com/thingsym/vaw) from GitHub repository
+2. Create a feature branch: git checkout -b my-new-feature
+3. Commit your changes: git commit -am 'Add some feature'
+4. Push to the branch: git push origin my-new-feature
+5. Create new Pull Request
 
 ## Changelog
 
@@ -867,6 +870,10 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## License
 
-The VAW is distributed under GPLv3.
+The VAW is distributed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
-Copyright (c) 2014-2017 thingsym
+## Author
+
+[thingsym](https://github.com/thingsym)
+
+Copyright (c) 2014-2018 thingsym
