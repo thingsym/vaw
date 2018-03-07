@@ -22,7 +22,9 @@
   - name: chkconfig php-fpm added (CentOS/RHEL 6)
     command: chkconfig --add php-fpm
     when: is_init_php_fpm.stat.exists
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when: 
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - name: php-fpm start and enabled
   service:

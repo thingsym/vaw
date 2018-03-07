@@ -63,11 +63,15 @@
   # define( 'WP_DEBUG', {{ WP_DEBUG }} );
   # define( 'SAVEQUERIES', {{ WP_SAVEQUERIES }} );
   # PHP
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - name: WordPress config (socket connection)
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbhost={{ db_host }}:{{ mysql_socket }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
 
 - name: WordPress db create
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db create
@@ -84,7 +88,9 @@
   template:
     src: wordpress.multisite.htaccess.j2
     dest: "{{ WP_PATH }}/.htaccess"
-  when: multisite == true and server == "apache"
+  when:
+    - multisite == true
+    - server == "apache"
 
 - name: set WP_DEBUG in wp-config.php
   replace:
@@ -126,7 +132,10 @@
   copy:
     src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
     dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
-  when: wp_site_path != wp_dir and multisite == true and server == "apache"
+  when:
+    - wp_site_path != wp_dir
+    - multisite == true
+    - server == "apache"
 
 - name: themes install
   command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ item }}

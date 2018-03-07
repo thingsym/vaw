@@ -62,13 +62,17 @@
   template:
     src: /vagrant/config/php.conf.j2
     dest: /etc/httpd/conf.d/php.conf
-  when: is_custom_php_conf.stat.exists and server == 'apache'
+  when:
+    - is_custom_php_conf.stat.exists
+    - server == 'apache'
 
 - name: php.conf changed
   template:
     src: php.conf.j2
     dest: /etc/httpd/conf.d/php.conf
-  when: not is_custom_php_conf.stat.exists and server == 'apache'
+  when:
+    - not is_custom_php_conf.stat.exists
+    - server == 'apache'
 
 - include: build-env.yml
 
@@ -121,19 +125,31 @@
 
 - name: php installed via phpenv.sh (mod_php)
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.1.7) }} -m mod_php
-  when: server == "apache" and fastcgi == "none"
+  when:
+    - server == "apache"
+    - fastcgi == "none"
 
 - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.1.7) }} -m php-fpm -s tcp
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 and server == "apache" and fastcgi == "php-fpm"
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
+    - server == "apache"
+    - fastcgi == "php-fpm"
 
 - name: php installed via phpenv.sh (php-fpm / CentOS7 and apache only)
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.1.7) }} -m php-fpm
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 and server == "apache" and fastcgi == "php-fpm"
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
+    - server == "apache"
+    - fastcgi == "php-fpm"
 
 - name: php installed via phpenv.sh (php-fpm)
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.1.7) }} -m php-fpm
-  when: server != "apache" and fastcgi == "php-fpm"
+  when:
+    - server != "apache"
+    - fastcgi == "php-fpm"
 
 - name: php installed via phpenv.sh
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.1.7) }}

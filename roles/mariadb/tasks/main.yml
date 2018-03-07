@@ -20,7 +20,9 @@
       - MariaDB-devel
       - MariaDB-shared
       - MySQL-python
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - block:
   - name: MariaDB 10.1 repository installed (CentOS/RHEL 7)
@@ -43,7 +45,9 @@
       - mariadb-libs
       - mariadb-embedded
       - MySQL-python
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
 
 - name: stat custom my.cnf.j2
   stat:

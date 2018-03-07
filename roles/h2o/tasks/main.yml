@@ -46,7 +46,9 @@
       state: directory
     when: not is_h2o_dir.stat.exists
 
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise'
+  when: 
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_release == 'trusty'
 
 - name: stat custom h2o.conf.j2
   stat:
