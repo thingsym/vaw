@@ -19,11 +19,6 @@ if property["deploy_tools"] then
     it { should be_installed }
   end
 
-  describe package('bundler') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
   describe package('capistrano') do
     let(:disable_sudo) { true }
     it { should be_installed.by('gem') }

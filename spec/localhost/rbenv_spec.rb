@@ -42,8 +42,14 @@ if property["develop_tools"] || property["deploy_tools"] then
     it { should be_directory }
   end
 
-  describe file('/home/vagrant/.rbenv/plugins/rbenv-bundler') do
-    it { should be_directory }
+  describe command('which bundler') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('bundler --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
   end
 
   describe package('libcurl') do
