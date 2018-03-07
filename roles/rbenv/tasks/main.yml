@@ -35,14 +35,6 @@
   become: yes
   become_user: vagrant
 
-- name: git checkout rbenv-gem-rehash
-  git:
-    repo: https://github.com/rbenv/rbenv-gem-rehash.git
-    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash"
-    force: yes
-  become: yes
-  become_user: vagrant
-
 - name: git checkout rbenv-default-gems
   git:
     repo: https://github.com/rbenv/rbenv-default-gems.git

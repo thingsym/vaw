@@ -34,10 +34,6 @@ if property["develop_tools"] || property["deploy_tools"] then
     it { should be_directory }
   end
 
-  describe file('/home/vagrant/.rbenv/plugins/rbenv-gem-rehash') do
-    it { should be_directory }
-  end
-
   describe file('/home/vagrant/.rbenv/plugins/rbenv-default-gems') do
     it { should be_directory }
   end
