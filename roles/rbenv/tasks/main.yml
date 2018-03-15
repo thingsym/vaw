@@ -43,17 +43,6 @@
   become: yes
   become_user: vagrant
 
-- name: build environment
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - cmake
-    - openssl-devel
-    - libyaml-devel
-    - readline-devel
-    - zlib-devel
-
 - name: stat rbenv_default_gems
   stat:
     path: /vagrant/config/default-ruby-gems.j2
@@ -64,6 +53,8 @@
     src: /vagrant/config/default-ruby-gems.j2
     dest: "{{ home_dir }}/.rbenv/default-gems"
   when: is_rbenv_default_gems.stat.exists
+
+- include: build-env.yml
 
 - name: ruby installed via rbenv
   command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}
