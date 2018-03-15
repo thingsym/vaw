@@ -15,7 +15,6 @@
   #   name: "{{ item }}"
   #   state: latest
   with_items:
-    - bundler
     - capistrano
     - capistrano_colors
     - capistrano-ext
