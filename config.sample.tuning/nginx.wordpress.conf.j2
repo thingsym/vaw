@@ -8,7 +8,7 @@ server {
     index index.php index.html index.htm;
     client_max_body_size   100M;
 
-{% if ssl_wp_admin %}
+{% if ssl %}
     listen 443 ssl;
     ssl_certificate       /etc/pki/tls/vaw/crt.pem;
     ssl_certificate_key   /etc/pki/tls/vaw/privkey.pem;
@@ -75,7 +75,7 @@ server {
         root    /usr/share/nginx/html;
     }
 
-{% if ssl_wp_admin %}
+{% if ssl %}
     location ~ /wp-(admin.*\.php|login\.php)$ {
 {% if fastcgi == "php-fpm" %}
         fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
