@@ -19,6 +19,26 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 7
 
+- name: mod_ssl installed
+  package:
+    name: mod_ssl
+    state: latest
+  when: ssl == true
+
+- name: stat ssl.conf
+  stat:
+    path: /etc/httpd/conf.d/ssl.conf
+  register: is_ssl_conf
+  when: ssl == true
+
+- name: delete ssl.conf
+  file:
+    path: /etc/httpd/conf.d/ssl.conf
+    state: absent
+  when:
+    - ssl == true
+    - is_ssl_conf.stat.exists
+
 - name: httpd started and enabled
   service:
     name: httpd
