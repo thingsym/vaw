@@ -7,15 +7,24 @@ if property["ssl_wp_admin"] then
     it { should be_installed }
   end
 
+  describe command('openssl version') do
+    its(:stdout) { should match /#{Regexp.escape('1.0.2k')}/ }
+    its(:exit_status) { should eq 0 }
+  end
+
   describe file("/etc/pki/tls/vaw") do
     it { should be_directory }
   end
 
-  describe file("/etc/pki/tls/vaw/server.key") do
+  describe file("/etc/pki/tls/vaw/privkey.pem") do
     it { should be_file }
   end
 
-  describe file("/etc/pki/tls/vaw/server.crt") do
+  describe file("/etc/pki/tls/vaw/csr.pem") do
+    it { should be_file }
+  end
+
+  describe file("/etc/pki/tls/vaw/crt.pem") do
     it { should be_file }
   end
 
