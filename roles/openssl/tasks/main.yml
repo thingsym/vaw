@@ -1,38 +1,32 @@
 ---
-- name: openssl installed
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - openssl
-    - openssl-devel
-    - mod_ssl
-
-- name: stat ssl_path
+- name: stat /tmp/openssl-1.0.2k
   stat:
-    path: /etc/pki/tls/vaw
-  register: is_ssl_path
+    path: /tmp/openssl-1.0.2k
+  register: is_tmp_openssl_dir
 
-- name: mkdir ssl
-  file:
-    path: /etc/pki/tls/vaw
-    state: directory
-    owner: root
-  when: not is_ssl_path.stat.exists
+- name: include task
+  include: install.yml
+  when: not is_tmp_openssl_dir.stat.exists
 
-- name: generate a key
-  command: openssl genrsa -out /etc/pki/tls/vaw/server.key 2048
-
-- name: Generate a certificate
-  command: openssl req -new -x509 -key /etc/pki/tls/vaw/server.key -out /etc/pki/tls/vaw/server.crt -days 3650 -subj /CN={{ HOSTNAME }}
-
-- name: stat ssl.conf
+- name: stat privkey.pem
   stat:
-    path: /etc/httpd/conf.d/ssl.conf
-  register: is_ssl_conf
+    path: /etc/pki/tls/vaw/privkey.pem
+  register: is_vaw_privkey
 
-- name: delete ssl.conf
-  file:
-    path: /etc/httpd/conf.d/ssl.conf
-    state: absent
-  when: is_ssl_conf.stat.exists
+- block:
+  - name: mkdir ssl
+    file:
+      path: /etc/pki/tls/vaw
+      state: directory
+      owner: root
+
+  - name: generate a key
+    command: openssl genrsa -out /etc/pki/tls/vaw/privkey.pem 2048
+
+  - name: generate a csr
+    command: openssl req -new -sha256 -key /etc/pki/tls/vaw/privkey.pem -subj "/C=JP/ST=Tokyo/L=Minato-ku/O=vaw/OU=vaw/CN={{ HOSTNAME }} CA" -out /etc/pki/tls/vaw/csr.pem
+
+  - name: generate a crt (self Certification Authority)
+    command: openssl x509 -req -sha256 -in /etc/pki/tls/vaw/csr.pem -signkey /etc/pki/tls/vaw/privkey.pem -out /etc/pki/tls/vaw/crt.pem -days 3650
+
+  when: not is_vaw_privkey.stat.exists

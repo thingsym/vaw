@@ -1,13 +1,13 @@
 user: vagrant
 hosts:
-{% if ssl_wp_admin %}
+{% if ssl %}
   "localhost:443":
     listen:
       port: 443
       host: 0.0.0.0
       ssl:
-        certificate-file: /etc/pki/tls/vaw/server.crt
-        key-file: /etc/pki/tls/vaw/server.key
+        certificate-file: /etc/pki/tls/vaw/crt.pem
+        key-file: /etc/pki/tls/vaw/privkey.pem
     paths:
       "/":
         file.dir: {{ DOCUMENT_ROOT }}

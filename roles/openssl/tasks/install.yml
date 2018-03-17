@@ -1,0 +1,62 @@
+---
+- name: gcc installed
+  package:
+    name: gcc
+    state: latest
+
+- name: build environment installed (CentOS/RHEL)
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - zlib-devel
+    - pcre-devel
+  when: ansible_os_family == 'RedHat'
+
+- name: build environment installed (Debian)
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - zlib1g-dev
+    - libpcre3-dev
+  when: ansible_os_family == 'Debian'
+
+- name: get openssl-1.0.2k
+  get_url:
+    url: https://www.openssl.org/source/openssl-1.0.2k.tar.gz
+    dest: /tmp/openssl-1.0.2k.tar.gz
+
+- file:
+    path: /tmp/openssl-1.0.2k
+    state: absent
+
+- name: tar openssl
+  command: tar zxvf /tmp/openssl-1.0.2k.tar.gz
+  args:
+    chdir: /tmp
+
+- name: config and make install
+  command: "{{ item }}"
+  args:
+    chdir: /tmp/openssl-1.0.2k
+  with_items:
+    - ./config shared zlib
+    - make
+    - make test
+    - make install
+
+- name: stat old openssl
+  stat:
+    path: /usr/bin/openssl
+  register: is_openssl_old
+
+- name: mv old openssl
+  command: mv /usr/bin/openssl /usr/bin/openssl.bak
+  when: is_openssl_old.stat.exists
+
+- name: ls /usr/bin/openssl
+  file:
+    src: /usr/local/ssl/bin/openssl
+    dest: /usr/bin/openssl
+    state: link

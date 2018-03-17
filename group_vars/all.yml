@@ -87,7 +87,7 @@ SAVEQUERIES        : true   # true|false
 
 ## Develop & Deploy Settings ##
 
-ssl_wp_admin       : false   # true|false
+ssl                : false   # true|false
 
 # See Supported Versions http://php.net/supported-versions.php
 php_version        : 7.1.7
