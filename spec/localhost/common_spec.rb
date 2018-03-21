@@ -25,11 +25,20 @@ describe service('iptables') do
   it { should_not be_running }
 end
 
-describe package('ntp') do
+describe package('chrony'), :if => os[:release] == '7' do
   it { should be_installed }
 end
 
-describe service('ntpd') do
+describe service('chronyd'), :if => os[:release] == '7' do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe package('ntp'), :if => os[:release] == '6' do
+  it { should be_installed }
+end
+
+describe service('ntpd'), :if => os[:release] == '6' do
   it { should be_enabled }
   it { should be_running }
 end
