@@ -40,7 +40,7 @@
       path: /var/run/h2o
     register: is_h2o_dir
 
-  - name: mkdie /var/run/h2o
+  - name: mkdir /var/run/h2o
     file:
       path: /var/run/h2o
       state: directory
