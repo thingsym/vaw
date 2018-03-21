@@ -7,6 +7,29 @@ describe file('/home/vagrant/.phpenv/') do
   it { should be_grouped_into 'vagrant' }
 end
 
+describe command('which phpenv') do
+  let(:sudo_options) { '-u vagrant -i'}
+  its(:exit_status) { should eq 0 }
+end
+
+describe command('which php') do
+  let(:sudo_options) { '-u vagrant -i'}
+  its(:exit_status) { should eq 0 }
+end
+
+describe command('which php-cgi') do
+  let(:sudo_options) { '-u vagrant -i'}
+  its(:exit_status) { should eq 0 }
+end
+
+describe file('/usr/bin/php') do
+  it { should be_symlink }
+end
+
+describe file('/usr/bin/php-cgi') do
+  it { should be_symlink }
+end
+
 [property["php_version"]].each do |php_version|
   describe command("phpenv versions | grep #{php_version}") do
     let(:sudo_options) { '-u vagrant -i' }
@@ -47,8 +70,22 @@ if property["server"] == 'apache' then
     it { should be_directory }
   end
 
-  describe file('/etc/httpd/conf.d/php.conf') do
-    it { should be_file }
+  if property["fastcgi"] == 'none' then
+    describe file('/etc/httpd/conf.d/php.conf') do
+      it { should be_file }
+    end
+
+    if property["php_version"] =~ /^7/
+      describe file('/etc/httpd/modules/libphp7.so') do
+        it { should be_file }
+      end
+    end
+
+    if property["php_version"] =~ /^5/
+      describe file('/etc/httpd/modules/libphp5.so') do
+        it { should be_file }
+      end
+    end
   end
 
 end
