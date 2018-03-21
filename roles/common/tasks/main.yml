@@ -29,11 +29,13 @@
   lineinfile:
     dest: "{{ home_dir }}/.bash_profile"
     line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+    create: yes
 
 - name: edit PATH on .bashrc
   lineinfile:
     dest: "{{ home_dir }}/.bashrc"
     line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+    create: yes
 
 - include: ssh-config.yml
 - include: reset.yml
