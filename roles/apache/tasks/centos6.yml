@@ -1,7 +1,7 @@
 ---
-  - name: mod_proxy_fcgi installed
-    package:
-      name: mod_proxy_fcgi
+- name: mod_proxy_fcgi installed
+  package:
+    name: mod_proxy_fcgi
 
 - name: stat custom httpd.conf.centos6.j2
   stat:
