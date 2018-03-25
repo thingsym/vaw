@@ -11,4 +11,4 @@ fi
 
 wp db export /vagrant/backup/backup-`date +%Y%m%d%H%M%S`.sql
 
-exit
+exit 0

@@ -14,4 +14,4 @@ rm -f /etc/udev/rules.d/70-persistent-ipoib.rules
 du -sh /var/cache/yum
 yum clean all
 
-exit
+exit 0
