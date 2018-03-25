@@ -19,7 +19,9 @@
       src: hhvm.init.d.j2
       dest: /etc/init.d/hhvm
 
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - block:
   - name: hhvm-repo repository installed (CentOS/RHEL 7)
@@ -38,7 +40,9 @@
   - name: systemd daemon reloaded
     command: systemctl daemon-reload
 
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
 
 - name: stat custom hhvm.server.ini.j2
   stat:

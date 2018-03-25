@@ -13,7 +13,11 @@
 
   - name: plugin deactivate wordpress-importer
     command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
-  when: is_xml_import.stat.exists and is_xml_import.stat.isdir == false and import_db_data == '' and theme_unit_test == false
+  when:
+    - is_xml_import.stat.exists
+    - is_xml_import.stat.isdir == false
+    - import_db_data == ''
+    - theme_unit_test == false
 
 
 - name: stat import_db_data
@@ -28,7 +32,11 @@
   - name: add user admin
     command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
     when: import_admin == true
-  when: is_db_import.stat.exists and is_db_import.stat.isdir == false and import_xml_data == '' and theme_unit_test == false
+  when:
+    - is_db_import.stat.exists
+    - is_db_import.stat.isdir == false
+    - import_xml_data == ''
+    - theme_unit_test == false
 
 - include: backwpup.yml
 
@@ -38,7 +46,11 @@
     dest: "/tmp/theme-unit-test-data.xml"
     force: yes
     validate_certs: no
-  when: theme_unit_test == true and lang != 'ja' and import_xml_data == '' and import_db_data == ''
+  when:
+    - theme_unit_test == true
+    - lang != 'ja'
+    - import_xml_data == ''
+    - import_db_data == ''
 
 - name: get wordpress unit-test-ja data
   get_url:
@@ -46,7 +58,11 @@
     dest: "/tmp/theme-unit-test-data.xml"
     force: yes
     validate_certs: no
-  when: theme_unit_test == true and lang == 'ja' and import_xml_data == '' and import_db_data == ''
+  when:
+    - theme_unit_test == true
+    - lang == 'ja'
+    - import_xml_data == ''
+    - import_db_data == ''
 
 - name: stat theme-unit-test-data.xml
   stat:
@@ -67,7 +83,10 @@
     file:
       path: "/tmp/theme-unit-test-data.xml"
       state: absent
-  when: is_unit_test.stat.exists and import_xml_data == '' and import_db_data == ''
+  when: 
+    - is_unit_test.stat.exists
+    - import_xml_data == ''
+    - import_db_data == ''
 
 
 - name: stat wp-content
@@ -79,7 +98,9 @@
   synchronize:
     src: /vagrant/wp-content
     dest: "{{ WP_PATH }}"
-  when: is_wp_content.stat.exists and is_wp_content.stat.isdir == true
+  when: 
+    - is_wp_content.stat.exists
+    - is_wp_content.stat.isdir == true
 
 
 - name: stat uploads
@@ -91,7 +112,9 @@
   synchronize:
     src: /vagrant/uploads
     dest: "{{ WP_PATH }}/wp-content"
-  when: is_uploads.stat.exists and is_uploads.stat.isdir == true
+  when:
+    - is_uploads.stat.exists
+    - is_uploads.stat.isdir == true
 
 
 - name: replace old url

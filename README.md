@@ -1,10 +1,12 @@
 # VAW (Vagrant Ansible WordPress)
 
-The **VAW (Vagrant Ansible WordPress)** is **Ansible playbooks** for website developer, webmaster and WordPress theme/plugin developer.
+The **VAW (Vagrant Ansible WordPress)** is **Ansible playbooks** for website developer, designer, webmaster and WordPress theme/plugin developer.
 
 Launch the development environment in Vagrant, you can build the website and verify the operation of the website. Of course, you can also develop WordPress themes and plugins.
 
 The **VAW** is also a collaboration tool. You can take advantage of collaboration tool that share the environment with development partners, designers and clients.
+
+VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/](https://thingsym.github.io/vaw/)
 
 ## Features
 
@@ -59,7 +61,7 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 
 * [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
-* [Ansible](https://www.ansible.com) >= 2.1.0.0
+* [Ansible](https://www.ansible.com) >= 2.2.1.0
 
 #### Vagrant plugin (optional)
 
@@ -145,7 +147,7 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'bento/centos-7.3'
+	vm_box                = 'bento/centos-7.4'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -160,7 +162,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	provision_mode        = 'all'       # all|wordpress|box
 
-* `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.3`)
+* `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.4`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
@@ -264,10 +266,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	## Develop & Deploy Settings ##
 
-	ssl_wp_admin       : false   # true|false
+	ssl                : false   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.1.7
+	php_version        : 7.2.1
 	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
@@ -402,8 +404,8 @@ Disable the setting case
 
 #### Develop & Deploy Settings ##
 
-* `ssl_wp_admin` WordPress administration over SSL enabled flag (default: `false` / value: `true` | `false`)
-* `php_version` version of PHP (default: 7.1.7)
+* `ssl` WordPress administration over SSL enabled flag (default: `false` / value: `true` | `false`)
+* `php_version` version of PHP (default: `7.2.1`)
 * `http_protocol` HTTP protocol (default: `http` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
@@ -434,8 +436,8 @@ You can create the same environment as the production environment, when you buil
 * LICENSE (license file)
 * plugins (stores WordPress plugin zip format files)
 * Rakefile (Rakefile of ServerSpec)
-* readme-ja.md
-* readme.md
+* README-ja.md
+* README.md
 * roles (stores Ansible playbook of each role)
 * site.yml (Ansible playbook core file)
 * spec (stores ServerSpec spec file)
@@ -655,7 +657,7 @@ The **VAW** offers a useful scripts. Just run the script on a terminal. Database
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh -v 7.1.7 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 7.2.1 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -680,22 +682,42 @@ As follows editable configuration files.
 * nginx.wordpress.multisite.conf.j2
 * percona.my.cnf.j2
 * php-build.default_configure_options.j2
-* php.conf.j2
 * ssh-config.j2
 
 ## Contribution
 
+### Patches and Bug Fixes
+
 Small patches and bug reports can be submitted a issue tracker in Github. Forking on Github is another good way. You can send a pull request.
 
-If you would like to contribute, here are some notes and guidlines.
-
-* All development happens on the **develop** branch, so it is always the most up-to-date
-* The **master** branch only contains tagged releases
-* If you are going to be submitting a pull request, please submit your pull request to the **develop** branch
-* See about [forking](https://help.github.com/articles/fork-a-repo/) and [pull requests](https://help.github.com/articles/using-pull-requests/)
+1. Fork [VAW](https://github.com/thingsym/vaw) from GitHub repository
+2. Create a feature branch: git checkout -b my-new-feature
+3. Commit your changes: git commit -am 'Add some feature'
+4. Push to the branch: git push origin my-new-feature
+5. Create new Pull Request
 
 ## Changelog
 
+* version 0.5.6 - 2018.03.25
+	* update vm_box
+	* add type option into config.vm.synced_folder
+	* bump up PHP version to 7.2.1
+	* fix mailhog handlers
+	* bump up daemonize version to 1.7.8
+	* improve daemonize installation
+	* remove CityFan repo
+	* add Exit Code into command
+	* add chrony with centos 7
+	* improve phpenv.sh version 0.1.2 for CentOS
+	* add mod_ssl
+	* change setting name from ssl_wp_admin to ssl
+	* fix ssl path
+	* fix self Certification Authority
+	* fix ruby build env
+	* remove rbenv-gem-rehash
+	* fix bundler via rbenv-default-gems
+	* change multiple conditions of the when statement to as a list
+	* change readme file name to upper case
 * version 0.5.5 - 2017.12.05
 	* add documentation
 * version 0.5.4 - 2017.11.19
@@ -709,7 +731,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* change database charset from utf8 to utf8mb4
 	* add MailHog
 * version 0.5.2 - 2017.08.17
-	* bump up PHP version number to 7.1.7
+	* bump up PHP version to 7.1.7
 	* fix phpenv.sh
 	* change setting name from ssl_admin to ssl_wp_admin
 	* enable sync-dir with before-command and after-command
@@ -744,7 +766,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* fix php post_max_size to 32M
 	* remove wp-phpcs ruleset
 	* add custom hhvm.server.ini
-	* bump up Ruby version number to 2.4.1
+	* bump up Ruby version to 2.4.1
 	* add webserver h2o
 	* change hhvm fastcgi connect to UNIX domain socket from TCP
 	* change webserver and fastcgi owner/group nobody
@@ -779,7 +801,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* provision fail only when SELinux is Enforcing
 	* fix dest path of default_configure_options
 	* fix php.conf.j2
-	* bump up node 6.9.1
+	* bump up node version to 6.9.1
 	* fix default-node-packages.j2
 * version 0.4.2 - 2016.10.04
 	* add develop-tools role, fix build environment
@@ -790,7 +812,7 @@ If you would like to contribute, here are some notes and guidlines.
 	* fix inline shell in Vagrantfile
 	* fix nodejs version
 * version 0.4.0 - 2016.08.22
-	* bump up php 7.0.7
+	* bump up php version to 7.0.7
 	* change to package module from yum module
 	* change default box to CentOS 7 from CentOS 6
 	* add synced_folder /vagrant
@@ -867,6 +889,10 @@ If you would like to contribute, here are some notes and guidlines.
 
 ## License
 
-The VAW is distributed under GPLv3.
+The VAW is distributed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
-Copyright (c) 2014-2017 thingsym
+## Author
+
+[thingsym](https://github.com/thingsym)
+
+Copyright (c) 2014-2018 thingsym

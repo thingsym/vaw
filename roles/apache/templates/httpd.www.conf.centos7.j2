@@ -27,7 +27,7 @@
 
 </VirtualHost>
 
-{% if ssl_wp_admin %}
+{% if ssl %}
 <IfModule mod_ssl.c>
 
 Mutex fcntl
@@ -132,8 +132,8 @@ SSLCryptoDevice builtin
 {% endif %}
 
     SSLEngine On
-    SSLCertificateFile /etc/pki/tls/vaw/server.crt
-    SSLCertificateKeyFile /etc/pki/tls/vaw/server.key
+    SSLCertificateFile /etc/pki/tls/vaw/crt.pem
+    SSLCertificateKeyFile /etc/pki/tls/vaw/privkey.pem
 
 </VirtualHost>
 </IfModule>

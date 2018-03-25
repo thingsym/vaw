@@ -1,0 +1,30 @@
+---
+- name: build environment
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gcc
+    - cmake
+
+- name: build environment (CentOS/RHEL)
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - openssl-devel
+    - libyaml-devel
+    - readline-devel
+    - zlib-devel
+  when: ansible_os_family == 'RedHat'
+
+- name: build environment (Debian)
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - libssl-dev
+    - libyaml-dev
+    - libreadline-dev
+    - zlib1g-dev
+  when: ansible_os_family == 'Debian'

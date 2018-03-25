@@ -8,14 +8,18 @@
     dest: /etc/yum.repos.d/percona-release.repo
     regexp: "$releasever"
     replace: "6"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - name: percona-release.repo edited (CentOS/RHEL 7)
   replace:
     dest: /etc/yum.repos.d/percona-release.repo
     regexp: "$releasever"
     replace: "7"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
 
 - name: percona 5.6 installed
   package:
@@ -50,14 +54,18 @@
     name: mysql
     state: restarted
     enabled: yes
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 
 - name: mysql started and enabled (CentOS/RHEL 7)
   service:
     name: mysqld
     state: restarted
     enabled: yes
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 7
 
 - name: set percona root password
   mysql_user:

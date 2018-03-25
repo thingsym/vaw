@@ -40,13 +40,15 @@
       path: /var/run/h2o
     register: is_h2o_dir
 
-  - name: mkdie /var/run/h2o
+  - name: mkdir /var/run/h2o
     file:
       path: /var/run/h2o
       state: directory
     when: not is_h2o_dir.stat.exists
 
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise'
+  when: 
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_release == 'trusty'
 
 - name: stat custom h2o.conf.j2
   stat:

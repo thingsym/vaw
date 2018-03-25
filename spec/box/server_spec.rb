@@ -32,6 +32,12 @@ if property["server"] == 'apache' then
     its(:stdout) { should match(/proxy_fcgi_module/) }
   end
 
+  if property["ssl"] then
+    describe command("httpd -M | grep 'ssl_module'") do
+      its(:stdout) { should match(/ssl_module/) }
+    end
+  end
+
   if os[:release] =~ /^6/ then
     describe package('mod_proxy_fcgi') do
       it { should be_installed }
@@ -141,4 +147,10 @@ end
 
 describe port(80) do
   it { should be_listening }
+end
+
+if property["ssl"] then
+  describe port(443) do
+    it { should be_listening }
+  end
 end

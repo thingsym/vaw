@@ -45,7 +45,7 @@ server {
 }
 
 
-{% if ssl_wp_admin %}
+{% if ssl %}
 server {
     listen       443 ssl;
     root         {{ DOCUMENT_ROOT }};
@@ -58,8 +58,8 @@ server {
     error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;
 
     ssl on;
-    ssl_certificate       /etc/pki/tls/vaw/server.crt;
-    ssl_certificate_key   /etc/pki/tls/vaw/server.key;
+    ssl_certificate       /etc/pki/tls/vaw/crt.pem;
+    ssl_certificate_key   /etc/pki/tls/vaw/privkey.pem;
 
     ssl_session_cache    shared:SSL:1m;
     ssl_session_timeout  5m;

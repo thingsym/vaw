@@ -35,14 +35,6 @@
   become: yes
   become_user: vagrant
 
-- name: git checkout rbenv-gem-rehash
-  git:
-    repo: https://github.com/rbenv/rbenv-gem-rehash.git
-    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-gem-rehash"
-    force: yes
-  become: yes
-  become_user: vagrant
-
 - name: git checkout rbenv-default-gems
   git:
     repo: https://github.com/rbenv/rbenv-default-gems.git
@@ -50,25 +42,6 @@
     force: yes
   become: yes
   become_user: vagrant
-
-- name: git checkout rbenv-bundler
-  git:
-    repo: https://github.com/carsomyr/rbenv-bundler.git
-    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-bundler"
-    force: yes
-  become: yes
-  become_user: vagrant
-
-- name: build environment
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - cmake
-    - openssl-devel
-    - libyaml-devel
-    - readline-devel
-    - zlib-devel
 
 - name: stat rbenv_default_gems
   stat:
@@ -80,6 +53,8 @@
     src: /vagrant/config/default-ruby-gems.j2
     dest: "{{ home_dir }}/.rbenv/default-gems"
   when: is_rbenv_default_gems.stat.exists
+
+- include: build-env.yml
 
 - name: ruby installed via rbenv
   command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}

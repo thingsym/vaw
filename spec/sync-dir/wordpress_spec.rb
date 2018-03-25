@@ -45,7 +45,7 @@ if property["SAVEQUERIES"] then
   end
 end
 
-if property["ssl_wp_admin"] then
+if property["ssl"] then
   describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php") do
     it { should contain("define\( 'FORCE_SSL_ADMIN', true \);") }
   end

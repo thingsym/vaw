@@ -33,7 +33,9 @@
 - include: phpunit.yml
 - include: wp-phpcs.yml
 - include: daemonize.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 6
 - include: mailhog.yml
 - include: opcache-viewer.yml
   tags: sync-dir

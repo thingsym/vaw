@@ -4,15 +4,11 @@
     name: "@Development Tools"
     state: present
 
-- name: yum-utils installed
-  package:
-    name: yum-utils
-    state: present
-
-- name: include task (CentOS/RHEL 6)
-  include: centos6.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6
-
-- name: include task (CentOS/RHEL 7)
-  include: centos7.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
+- name: libraries installed
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - yum-utils
+    - libcurl
+    - libcurl-devel

@@ -4,7 +4,7 @@
 ## Vagrant Settings ##
 
 # Vagrant BOX
-vm_box                = 'bento/centos-7.3'
+vm_box                = 'bento/centos-7.4'
 # vm_box                = 'bento/centos-6.9'
 
 # VAW default Vagrant BOX
@@ -57,8 +57,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 3000, host: 3000, auto_correct: true
   config.vm.network :forwarded_port, guest: 3001, host: 3001, auto_correct: true
 
-  config.vm.synced_folder '.', '/vagrant', :create => 'true'
-  config.vm.synced_folder 'wordpress/', vm_document_root, :create => 'true', :mount_options => ['dmode=755', 'fmode=644']
+  config.vm.synced_folder '.', '/vagrant', :type => "virtualbox", :create => 'true'
+  config.vm.synced_folder 'wordpress/', vm_document_root, :type => "virtualbox", :create => 'true', :mount_options => ['dmode=755', 'fmode=644']
 
   config.ssh.forward_agent = true
 

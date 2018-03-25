@@ -4,6 +4,9 @@
 {% if server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 %}
 --with-apxs2=/usr/bin/apxs
 {% endif %}
+{% if server == "apache" and ansible_os_family == 'Debian' %}
+--with-apxs2=/usr/bin/apxs
+{% endif %}
 --enable-fpm
 --without-pear
 --with-gd
@@ -16,6 +19,7 @@
 --with-zlib-dir=/usr
 --with-kerberos
 --with-openssl
+--with-openssl-dir=/usr
 --with-mcrypt=/usr
 --enable-soap
 --enable-xmlreader
@@ -32,7 +36,12 @@
 --with-mysql=mysqlnd
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
+{% if ansible_os_family == 'RedHat' %}
 --with-mysql-sock=/tmp/mysql.sock
+{% endif %}
+{% if ansible_os_family == 'Debian' %}
+--with-mysql-sock=/var/run/mysqld/mysqld.sock
+{% endif %}
 --with-pdo-sqlite
 --enable-pcntl
 --with-readline
