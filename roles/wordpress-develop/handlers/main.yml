@@ -2,8 +2,7 @@
 - name: daemon reload
   shell: systemctl daemon-reload
 
-- name: mailhog started and enabled
+- name: mailhog started
   service:
     name: mailhog
     state: started
-    enabled: yes
