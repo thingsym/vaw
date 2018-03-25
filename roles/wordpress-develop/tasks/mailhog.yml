@@ -24,7 +24,7 @@
     mode: 0755
   notify:
     - daemon reload
-    - mailhog started and enabled
+    - mailhog started
   when: ansible_service_mgr == 'systemd'
 
 - name: mailhog.init added
@@ -35,5 +35,12 @@
     group: root
     mode: 0755
   notify:
-    - mailhog started and enabled
-  when: ansible_service_mgr != 'systemd'
+    - mailhog started
+  when: ansible_service_mgr == 'upstart'
+
+- name: mailhog enabled
+  service:
+    name: mailhog
+    enabled: yes
+  notify:
+    - mailhog started

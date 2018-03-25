@@ -1,8 +1,0 @@
----
-- name: libcurl installed
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - libcurl
-    - libcurl-devel
