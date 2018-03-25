@@ -59,7 +59,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 * [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
 * [Vagrant](https://www.vagrantup.com) >= 1.8.4
-* [Ansible](https://www.ansible.com) >= 2.1.0.0
+* [Ansible](https://www.ansible.com) >= 2.2.1.0
 
 #### Vagrant plugin (optional)
 
@@ -141,7 +141,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'bento/centos-7.3'
+	vm_box                = 'bento/centos-7.4'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -156,14 +156,14 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	provision_mode        = 'all'       # all|wordpress|box
 
-* `vm_box` (required) Vagrant Box 名 (default: `vaw/centos7-default`)
+* `vm_box` (required) Vagrant Box 名 (default: `bento/centos-7.4`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: `''`)
-* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true `| `false`)
+* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
@@ -259,10 +259,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	## Develop & Deploy Settings ##
 
-	ssl_wp_admin       : false   # true|false
+	ssl                : false   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.1.7
+	php_version        : 7.2.1
 	http_protocol      : http   # http|https
 
 	develop_tools      : false   # true|false
@@ -399,8 +399,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 #### Develop & Deploy Settings ##
 
-* `ssl_wp_admin` WordPress管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.1.7`)
+* `ssl` WordPress管理画面 SSL 化の有効化 (default: `false` / value: `true` | `false`)
+* `php_version` PHPバージョン (default: `7.2.1`)
 * `http_protocol` HTTP プロトコル (default: `http` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
@@ -429,8 +429,8 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 * LICENSE (ライセンスファイル)
 * plugins (zip 形式のプラグインファイルを格納)
 * Rakefile (ServerSpec の Rakefile)
-* readme-ja.md
-* readme.md
+* README-ja.md
+* README.md
 * roles (role 毎の Ansible playbook を格納)
 * site.yml (Ansible playbook 本体ファイル)
 * spec (ServerSpec spec file を格納)
@@ -647,7 +647,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh -v 7.1.7 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 7.2.1 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -672,7 +672,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * nginx.wordpress.multisite.conf.j2
 * percona.my.cnf.j2
 * php-build.default_configure_options.j2
-* php.conf.j2
 * ssh-config.j2
 
 ## 黒い画面が苦手な人も Vagrant Maneger で簡単に環境が立ち上がります
@@ -708,7 +707,7 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 	* change database charset from utf8 to utf8mb4
 	* add MailHog
 * version 0.5.2 - 2017.08.17
-	* bump up PHP version number to 7.1.7
+	* bump up PHP version to 7.1.7
 	* fix phpenv.sh
 	* change setting name from ssl_admin to ssl_wp_admin
 	* enable sync-dir with before-command and after-command
@@ -743,7 +742,7 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 	* fix php post_max_size to 32M
 	* remove wp-phpcs ruleset
 	* add custom hhvm.server.ini
-	* bump up Ruby version number to 2.4.1
+	* bump up Ruby version to 2.4.1
 	* add webserver h2o
 	* change hhvm fastcgi connect to UNIX domain socket from TCP
 	* change webserver and fastcgi owner/group nobody
@@ -778,7 +777,7 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 	* provision fail only when SELinux is Enforcing
 	* fix dest path of default_configure_options
 	* fix php.conf.j2
-	* bump up node 6.9.1
+	* bump up node version to 6.9.1
 	* fix default-node-packages.j2
 * version 0.4.2 - 2016.10.04
 	* add develop-tools role, fix build environment
@@ -789,7 +788,7 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 	* fix inline shell in Vagrantfile
 	* fix nodejs version
 * version 0.4.0 - 2016.08.22
-	* bump up php 7.0.7
+	* bump up php version to 7.0.7
 	* change to package module from yum module
 	* change default box to CentOS 7 from CentOS 6
 	* add synced_folder /vagrant
