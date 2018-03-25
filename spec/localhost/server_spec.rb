@@ -32,8 +32,10 @@ if property["server"] == 'apache' then
     its(:stdout) { should match(/proxy_fcgi_module/) }
   end
 
-  describe command("httpd -M | grep 'ssl_module'") do
-    its(:stdout) { should match(/ssl_module/) }
+  if property["ssl"] then
+    describe command("httpd -M | grep 'ssl_module'") do
+      its(:stdout) { should match(/ssl_module/) }
+    end
   end
 
   if os[:release] =~ /^6/ then
