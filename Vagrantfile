@@ -4,7 +4,7 @@
 ## Vagrant Settings ##
 
 # Vagrant BOX
-vm_box                = 'bento/centos-7.3'
+vm_box                = 'bento/centos-7.4'
 # vm_box                = 'bento/centos-6.9'
 
 # VAW default Vagrant BOX
