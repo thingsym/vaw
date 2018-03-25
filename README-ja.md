@@ -694,6 +694,26 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.6 - 2018.03.25
+	* update vm_box
+	* add type option into config.vm.synced_folder
+	* bump up PHP version to 7.2.1
+	* fix mailhog handlers
+	* bump up daemonize version to 1.7.8
+	* improve daemonize installation
+	* remove CityFan repo
+	* add Exit Code into command
+	* add chrony with centos 7
+	* improve phpenv.sh version 0.1.2 for CentOS
+	* add mod_ssl
+	* change setting name from ssl_wp_admin to ssl
+	* fix ssl path
+	* fix self Certification Authority
+	* fix ruby build env
+	* remove rbenv-gem-rehash
+	* fix bundler via rbenv-default-gems
+	* change multiple conditions of the when statement to as a list
+	* change readme file name to upper case
 * version 0.5.5 - 2017.12.05
 	* add documentation
 * version 0.5.4 - 2017.11.19
