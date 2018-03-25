@@ -7,8 +7,8 @@
 - block:
   - name: get daemonize archive
     get_url:
-      url: https://github.com/bmc/daemonize/archive/release-1.7.7.zip
-      dest: /tmp/daemonize-1.7.7.zip
+      url: https://github.com/bmc/daemonize/archive/release-1.7.8.zip
+      dest: /tmp/daemonize-1.7.8.zip
 
   - name: mkdir /tmp/daemonize
     file:
@@ -17,13 +17,13 @@
 
   - name: unarchive daemonize
     unarchive:
-      src: /tmp/daemonize-1.7.7.zip
+      src: /tmp/daemonize-1.7.8.zip
       dest: /tmp/daemonize
 
   - name: build daemonize
     command: "{{ item }}"
     args:
-      chdir: /tmp/daemonize/daemonize-release-1.7.7
+      chdir: /tmp/daemonize/daemonize-release-1.7.8
     with_items:
       - ./configure --prefix=/usr
       - make
