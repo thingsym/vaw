@@ -14,10 +14,10 @@
     <item>
       <title>Requirements</title>
       <link>http://thingsym.github.io/vaw/getting-started/requirements/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
       
       <guid>http://thingsym.github.io/vaw/getting-started/requirements/</guid>
-      <description>  Oracle VM VirtualBox &amp;gt;= 5.0 Vagrant &amp;gt;= 1.8.4 Ansible &amp;gt;= 2.1.0.0  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
+      <description>  Oracle VM VirtualBox &amp;gt;= 5.0 Vagrant &amp;gt;= 1.8.4 Ansible &amp;gt;= 2.2.1.0  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
     </item>
     
   </channel>

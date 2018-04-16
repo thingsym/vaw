@@ -1,23 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>VAW (Vagrant Ansible WordPress) Documentation</title>
-<link href="/vaw/css/theme.min.css" rel="stylesheet">
-<meta name="generator" content="Hugo 0.30" />
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-</head>
-<body><header>
+<title>Changelog - VAW (Vagrant Ansible WordPress) Documentation</title>
+<meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
+<meta name="generator" content="Hugo 0.38.1" />
+<link href="http://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://thingsym.github.io/vaw/changelog/">
+<link rel="stylesheet" href="http://thingsym.github.io/vaw/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="http://thingsym.github.io/vaw/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="http://thingsym.github.io/vaw/js/functions.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="http://thingsym.github.io/vaw/js/jquery.backtothetop/jquery.backtothetop.min.js"></script></head>
+<body>
+<div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.4</span>
-<a href="https://github.com/thingsym/vaw" class="github"><i class="fa fa-github"></i></a>
-<p class="description">Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</p>
+ <span class="version">Version 0.5.6</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
+<p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
 </header>
-<div class="container">
+
 <div class="content-container">
 <main><h1>Changelog</h1><ul>
+<li>version 0.5.6 - 2018.03.25
+
+<ul>
+<li>update vm_box</li>
+<li>add type option into config.vm.synced_folder</li>
+<li>bump up PHP version to 7.2.1</li>
+<li>fix mailhog handlers</li>
+<li>bump up daemonize version to 1.7.8</li>
+<li>improve daemonize installation</li>
+<li>remove CityFan repo</li>
+<li>add Exit Code into command</li>
+<li>add chrony with centos 7</li>
+<li>improve phpenv.sh version 0.1.2 for CentOS</li>
+<li>add mod_ssl</li>
+<li>change setting name from ssl_wp_admin to ssl</li>
+<li>fix ssl path</li>
+<li>fix self Certification Authority</li>
+<li>fix ruby build env</li>
+<li>remove rbenv-gem-rehash</li>
+<li>fix bundler via rbenv-default-gems</li>
+<li>change multiple conditions of the when statement to as a list</li>
+<li>change readme file name to upper case</li>
+</ul></li>
+<li>version 0.5.5 - 2017.12.05
+
+<ul>
+<li>add documentation</li>
+</ul></li>
 <li>version 0.5.4 - 2017.11.19
 
 <ul>
@@ -37,7 +74,7 @@
 <li>version 0.5.2 - 2017.08.17
 
 <ul>
-<li>bump up PHP version number to 7.1.7</li>
+<li>bump up PHP version to 7.1.7</li>
 <li>fix phpenv.sh</li>
 <li>change setting name from ssl_admin to ssl_wp_admin</li>
 <li>enable sync-dir with before-command and after-command</li>
@@ -78,7 +115,7 @@
 <li>fix php post_max_size to 32M</li>
 <li>remove wp-phpcs ruleset</li>
 <li>add custom hhvm.server.ini</li>
-<li>bump up Ruby version number to 2.4.1</li>
+<li>bump up Ruby version to 2.4.1</li>
 <li>add webserver h2o</li>
 <li>change hhvm fastcgi connect to UNIX domain socket from TCP</li>
 <li>change webserver and fastcgi owner/group nobody</li>
@@ -119,7 +156,7 @@
 <li>provision fail only when SELinux is Enforcing</li>
 <li>fix dest path of default_configure_options</li>
 <li>fix php.conf.j2</li>
-<li>bump up node 6.9.1</li>
+<li>bump up node version to 6.9.1</li>
 <li>fix default-node-packages.j2</li>
 </ul></li>
 <li>version 0.4.2 - 2016.10.04
@@ -139,7 +176,7 @@
 <li>version 0.4.0 - 2016.08.22
 
 <ul>
-<li>bump up php 7.0.7</li>
+<li>bump up php version to 7.0.7</li>
 <li>change to package module from yum module</li>
 <li>change default box to CentOS 7 from CentOS 6</li>
 <li>add synced_folder /vagrant</li>
@@ -260,16 +297,72 @@
 <li>initial release</li>
 </ul></li>
 </ul>
-<div class="navigation">
-<a class="nav nav-prev" href="/vaw/contribution/" title="Contribution"><i class="fa fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
-    <a class="nav nav-next" href="/vaw/license/" title="License">Next - License <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
-<footer></footer>
-</main><div class="sidebar"><nav><ul>
-  <li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li><li class=""><a href="/vaw/about/">About VAW</a></li><li class=""><a href="/vaw/getting-started/">Getting Started</a><ul><li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li></ul></li><li class=""><a href="/vaw/configuration/">Configuration file</a><ul><li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li><li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li></ul></li><li class=""><a href="/vaw/directory-layout/">Directory Layout</a></li><li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a></li><li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a><ul><li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li></ul></li><li class=""><a href="/vaw/specification/">Specification</a></li><li class=""><a href="/vaw/helper-command/">Helper Command</a></li><li class=""><a href="/vaw/custom-config/">Custom Config</a></li><li class=""><a href="/vaw/contribution/">Contribution</a></li><li class=" parent active"><a href="/vaw/changelog/">Changelog</a></li><li class=""><a href="/vaw/license/">License</a></li></ul>
+<div class="edit-meta">Last updated on 9 Apr 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
+<a class="nav nav-prev" href="http://thingsym.github.io/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
+    <a class="nav nav-next" href="http://thingsym.github.io/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>
+</footer>
+</main><div class="sidebar"><nav>
+<ul>
+<li class=""><a href="http://thingsym.github.io/vaw/">Home</a></li>
+<li class=""><a href="http://thingsym.github.io/vaw/about/">About VAW</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+
+<ul>
+<li class=""><a href="http://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
+</ul>
+
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/configuration/">Configuration file</a>
+
+<ul>
+<li class=""><a href="http://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
+<li class=""><a href="http://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
+</ul>
+
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+
+<ul>
+<li class=""><a href="http://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
+</ul>
+
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/specification/">Specification</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/helper-command/">Helper Command</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/custom-config/">Custom Config</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/contribution/">Contribution</a>
+</li>
+<li class=" parent active"><a href="http://thingsym.github.io/vaw/changelog/">Changelog</a>
+</li>
+<li class=""><a href="http://thingsym.github.io/vaw/license/">License</a>
+</li>
+</ul>
 </nav>
+
+
 
 <div class="sidebar-footer"></div>
 </div>
-</div></div>
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
 </body>
 </html>

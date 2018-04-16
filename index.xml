@@ -6,7 +6,7 @@
     <description>Recent content on VAW (Vagrant Ansible WordPress) Documentation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Oct 2017 15:26:15 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Apr 2018 15:26:15 +0000</lastBuildDate>
     
 	<atom:link href="http://thingsym.github.io/vaw/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Vagrantfile</title>
       <link>http://thingsym.github.io/vaw/configuration/vagrantfile/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
       
       <guid>http://thingsym.github.io/vaw/configuration/vagrantfile/</guid>
       <description>Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
@@ -26,16 +26,16 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
     <item>
       <title>Requirements</title>
       <link>http://thingsym.github.io/vaw/getting-started/requirements/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
       
       <guid>http://thingsym.github.io/vaw/getting-started/requirements/</guid>
-      <description>  Oracle VM VirtualBox &amp;gt;= 5.0 Vagrant &amp;gt;= 1.8.4 Ansible &amp;gt;= 2.1.0.0  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
+      <description>  Oracle VM VirtualBox &amp;gt;= 5.0 Vagrant &amp;gt;= 1.8.4 Ansible &amp;gt;= 2.2.1.0  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
     </item>
     
     <item>
       <title>all.yml</title>
       <link>http://thingsym.github.io/vaw/configuration/all-yml/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
       
       <guid>http://thingsym.github.io/vaw/configuration/all-yml/</guid>
       <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
@@ -54,26 +54,6 @@ Let&amp;rsquo;s see how to make Vagrant Box through the process from provisionin
 1. Setting of configuration file We will launch the Vagrant environment for creating Vagrant Box. First of all, Set up the Vagrant configuration file and the provisioning configuration file.
 Set provision_mode in the Vagrant configuration file to box.
 provision_mode = &#39;box&#39; # all|wordpress|box  You can set the provisioning configuration file as you like.</description>
-    </item>
-    
-    <item>
-      <title>_Hello_world</title>
-      <link>http://thingsym.github.io/vaw/hello_world/</link>
-      <pubDate>Tue, 17 Oct 2017 14:00:45 +0000</pubDate>
-      
-      <guid>http://thingsym.github.io/vaw/hello_world/</guid>
-      <description>aaaaaa
-vvvv
-aaa</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://thingsym.github.io/vaw/_header/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://thingsym.github.io/vaw/_header/</guid>
-      <description>VAW (Vagrant Ansible WordPress) VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, webmaster and WordPress theme/plugin developer.</description>
     </item>
     
   </channel>
