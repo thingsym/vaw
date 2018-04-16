@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Custom Config on VAW (Vagrant Ansible WordPress) Documentation</title>
-    <link>http://thingsym.github.io/vaw/custom-config/</link>
+    <link>https://thingsym.github.io/vaw/custom-config/</link>
     <description>Recent content in Custom Config on VAW (Vagrant Ansible WordPress) Documentation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 Apr 2018 15:26:15 +0000</lastBuildDate>
     
-	<atom:link href="http://thingsym.github.io/vaw/custom-config/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://thingsym.github.io/vaw/custom-config/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
