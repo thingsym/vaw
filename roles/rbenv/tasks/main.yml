@@ -7,20 +7,10 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH rbenv on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "export PATH=$HOME/.rbenv/bin:$PATH"
-
 - name: edit PATH rbenv on .bashrc
   lineinfile:
     dest: "{{ home_dir }}/.bashrc"
     line: "export PATH=$HOME/.rbenv/bin:$PATH"
-
-- name: edit rbenv init on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "eval \"$(rbenv init -)\""
 
 - name: edit rbenv init on .bashrc
   lineinfile:

@@ -7,20 +7,10 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH nodenv on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "export PATH=$HOME/.nodenv/bin:$PATH"
-
 - name: edit PATH nodenv on .bashrc
   lineinfile:
     dest: "{{ home_dir }}/.bashrc"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
-
-- name: edit nodenv init on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "eval \"$(nodenv init -)\""
 
 - name: edit nodenv init on .bashrc
   lineinfile:
