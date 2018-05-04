@@ -42,7 +42,7 @@ describe command('phpenv global') do
   its(:stdout) { should match /#{property["php_version"]}/ }
 end
 
-describe file('/home/vagrant/.bashrc') do
+describe file('/home/vagrant/.bashrc_vaw') do
   its(:content) { should match /export PATH=\$HOME\/\.phpenv\/bin:\$PATH/ }
   its(:content) { should match /eval "\$\(phpenv init \-\)"/ }
 end
