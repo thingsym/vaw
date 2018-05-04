@@ -25,11 +25,18 @@
   command: swapon /swapfile
   ignore_errors: yes
 
+- name: edit PATH on .bashrc_vaw
+  lineinfile:
+    dest: "{{ home_dir }}/.bashrc_vaw"
+    line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+    create: yes
+
 - name: edit PATH on .bashrc
   lineinfile:
     dest: "{{ home_dir }}/.bashrc"
-    line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+    line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
     create: yes
+  when: ansible_os_family == 'RedHat'
 
 - include: ssh-config.yml
 - include: reset.yml
