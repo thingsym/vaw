@@ -35,8 +35,10 @@ provision = <<-EOT
   fi
   echo $MAJOR > /etc/yum/vars/releasever
 
-  yum clean all
-  yum -y install epel-release
+  if [ "$MAJOR" = "6" ]; then
+    yum makecache fast
+    yum -y install epel-release
+  fi
 EOT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
