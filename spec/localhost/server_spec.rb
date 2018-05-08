@@ -28,12 +28,12 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
-  describe command("httpd -M | grep 'proxy_fcgi_module'") do
+  describe command("apachectl -M | grep 'proxy_fcgi_module'") do
     its(:stdout) { should match(/proxy_fcgi_module/) }
   end
 
   if property["ssl"] then
-    describe command("httpd -M | grep 'ssl_module'") do
+    describe command("apachectl -M | grep 'ssl_module'") do
       its(:stdout) { should match(/ssl_module/) }
     end
   end
@@ -47,7 +47,7 @@ if property["server"] == 'apache' then
       its(:stdout) { should match(/Prefork/) }
     end
 
-    describe command("httpd -M | grep 'mpm_prefork_module'") do
+    describe command("apachectl -M | grep 'mpm_prefork_module'") do
       its(:stdout) { should match(/mpm_prefork_module/) }
     end
   end
@@ -58,7 +58,7 @@ if property["server"] == 'apache' then
         its(:stdout) { should match(/prefork/) }
       end
 
-      describe command("httpd -M | grep 'mpm_prefork_module'") do
+      describe command("apachectl -M | grep 'mpm_prefork_module'") do
         its(:stdout) { should match(/mpm_prefork_module/) }
       end
     end
@@ -66,12 +66,12 @@ if property["server"] == 'apache' then
 
   if property["fastcgi"] == 'none' then
     if property["php_version"] =~ /^7/ then
-      describe command("httpd -M | grep 'php7_module'") do
+      describe command("apachectl -M | grep 'php7_module'") do
         its(:stdout) { should match(/php7_module/) }
       end
     end
     if property["php_version"] =~ /^5/ then
-      describe command("httpd -M | grep 'php5_module'") do
+      describe command("apachectl -M | grep 'php5_module'") do
         its(:stdout) { should match(/php5_module/) }
       end
     end
