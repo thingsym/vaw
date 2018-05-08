@@ -2,7 +2,7 @@
 - name: git checkout nodenv
   git:
     repo: https://github.com/nodenv/nodenv.git
-    dest: "{{ home_dir }}/.nodenv"
+    dest: "{{ nodenv_dir }}"
     force: yes
   become: yes
   become_user: vagrant
@@ -20,7 +20,7 @@
 - name: git checkout node-build
   git:
     repo: https://github.com/nodenv/node-build.git
-    dest: "{{ home_dir }}/.nodenv/plugins/node-build"
+    dest: "{{ nodenv_dir }}/plugins/node-build"
     force: yes
   become: yes
   become_user: vagrant
@@ -28,7 +28,7 @@
 - name: git checkout nodenv-default-packages
   git:
     repo: https://github.com/nodenv/nodenv-default-packages.git
-    dest: "{{ home_dir }}/.nodenv/plugins/nodenv-default-packages"
+    dest: "{{ nodenv_dir }}/plugins/nodenv-default-packages"
     force: yes
   become: yes
   become_user: vagrant
@@ -41,7 +41,7 @@
 - name: nodenv-default-packages changed
   template:
     src: /vagrant/config/default-node-packages.j2
-    dest: "{{ home_dir }}/.nodenv/default-packages"
+    dest: "{{ nodenv_dir }}/default-packages"
   become: yes
   become_user: vagrant
   when: is_default_node_packages.stat.exists

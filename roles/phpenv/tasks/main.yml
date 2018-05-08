@@ -2,7 +2,7 @@
 - name: git checkout phpenv
   git:
     repo: https://github.com/madumlao/phpenv.git
-    dest: "{{ home_dir }}/.phpenv"
+    dest: "{{ phpenv_dir }}"
     force: yes
     recursive: no
   become: yes
@@ -21,7 +21,7 @@
 - name: git checkout php-build
   git:
     repo: https://github.com/php-build/php-build.git
-    dest: "{{ home_dir }}/.phpenv/plugins/php-build"
+    dest: "{{ phpenv_dir }}/plugins/php-build"
     force: yes
   become: yes
   become_user: vagrant
@@ -29,7 +29,7 @@
 - name: git checkout phpenv-composer
   git:
     repo: https://github.com/ngyuki/phpenv-composer.git
-    dest: "{{ home_dir }}/.phpenv/plugins/phpenv-composer"
+    dest: "{{ phpenv_dir }}/plugins/phpenv-composer"
     force: yes
   become: yes
   become_user: vagrant
@@ -37,7 +37,7 @@
 - name: git checkout phpenv-apache-version
   git:
     repo: https://github.com/thingsym/phpenv-apache-version.git
-    dest: "{{ home_dir }}/.phpenv/plugins/phpenv-apache-version"
+    dest: "{{ phpenv_dir }}/plugins/phpenv-apache-version"
     force: yes
   become: yes
   become_user: vagrant
@@ -53,13 +53,13 @@
 - name: custom default_configure_options changed
   template:
     src: /vagrant/config/php-build.default_configure_options.j2
-    dest: "{{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options"
+    dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
   when: is_custom_default_configure_options.stat.exists
 
 - name: set default_configure_options
   template:
     src: php-build.default_configure_options.j2
-    dest: "{{ home_dir }}/.phpenv/plugins/php-build/share/php-build/default_configure_options"
+    dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
   when: not is_custom_default_configure_options.stat.exists
 
 - name: stat libphp5.so
@@ -129,14 +129,14 @@
 
 - name: create symbolic link
   file:
-    src: "{{ home_dir }}/.phpenv/shims/php"
+    src: "{{ phpenv_dir }}/shims/php"
     dest: /usr/bin/php
     state: link
     force: yes
 
 - name: create symbolic link
   file:
-    src: "{{ home_dir }}/.phpenv/shims/php-cgi"
+    src: "{{ phpenv_dir }}/shims/php-cgi"
     dest: /usr/bin/php-cgi
     state: link
     force: yes
