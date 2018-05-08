@@ -55,10 +55,14 @@ describe command('ansible --version') do
   its(:exit_status) { should eq 0 }
 end
 
-describe file('/home/vagrant/.bash_profile') do
+describe file('/home/vagrant/.bashrc_vaw') do
+  it { should be_file }
+end
+
+describe file('/home/vagrant/.bashrc_vaw') do
   its(:content) { should match /export PATH=\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/sbin:\/sbin:\/usr\/local\/sbin:\$PATH/ }
 end
 
-describe file('/home/vagrant/.bashrc') do
-  its(:content) { should match /export PATH=\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/sbin:\/sbin:\/usr\/local\/sbin:\$PATH/ }
+describe file('/home/vagrant/.bashrc'), :if => os[:family] == 'redhat' do
+  its(:content) { should match /if \[ \-f ~\/\.bashrc_vaw \]; then\n        \. ~\/\.bashrc_vaw\nfi/ }
 end

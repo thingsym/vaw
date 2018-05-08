@@ -8,24 +8,14 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH phpenv on .bash_profile
+- name: edit PATH phpenv on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.phpenv/bin:$PATH"
 
-- name: edit PATH phpenv on .bashrc
+- name: edit phpenv init on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
-    line: "export PATH=$HOME/.phpenv/bin:$PATH"
-
-- name: edit phpenv init on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "eval \"$(phpenv init -)\""
-
-- name: edit phpenv init on .bashrc
-  lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(phpenv init -)\""
 
 - name: git checkout php-build
