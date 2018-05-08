@@ -18,7 +18,7 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
-vbguest_auto_update   = false
+vbguest_auto_update   = true
 
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
