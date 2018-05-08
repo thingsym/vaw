@@ -4,8 +4,8 @@
 ## Vagrant Settings ##
 
 # Vagrant BOX
-vm_box                = 'bento/centos-7.4'
-# vm_box                = 'bento/centos-6.9'
+vm_box                = 'centos/7'
+# vm_box                = 'centos/6'
 
 # VAW default Vagrant BOX
 # vm_box                = 'vaw/centos7-default'
@@ -18,7 +18,7 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
-vbguest_auto_update   = false
+vbguest_auto_update   = true
 
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
@@ -35,8 +35,10 @@ provision = <<-EOT
   fi
   echo $MAJOR > /etc/yum/vars/releasever
 
-  yum clean all
-  yum -y install epel-release
+  if [ "$MAJOR" = "6" ]; then
+    yum makecache fast
+    yum -y install epel-release
+  fi
 EOT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -58,7 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 3001, host: 3001, auto_correct: true
 
   config.vm.synced_folder '.', '/vagrant', :type => "virtualbox", :create => 'true'
-  config.vm.synced_folder 'wordpress/', vm_document_root, :type => "virtualbox", :create => 'true', :mount_options => ['dmode=755', 'fmode=644']
+  config.vm.synced_folder 'wordpress/', vm_document_root, :type => "virtualbox", :create => 'true'
 
   config.ssh.forward_agent = true
 
