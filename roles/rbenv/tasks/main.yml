@@ -47,11 +47,17 @@
 - include: build-env.yml
 
 - name: ruby installed via rbenv
-  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}
+  command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.4.1) }}"
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
 
 - name: rbenv rehash
-  command: sudo -u vagrant -i -- rbenv rehash
+  command: "{{ rbenv_dir }}/bin/rbenv rehash"
+  become: yes
+  become_user: vagrant
 
 - name: rbenv global
-  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.4.1) }}
+  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.4.1) }}"
+  become: yes
+  become_user: vagrant

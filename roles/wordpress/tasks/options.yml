@@ -1,38 +1,52 @@
 ---
 - block:
   - name: set permalink structure
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
+    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
+    become: yes
+    become_user: vagrant
     when:
       - permalink_structure.category == ''
       - permalink_structure.tag == ''
 
   - name: set permalink structure
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
+    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
+    become: yes
+    become_user: vagrant
     when:
       - permalink_structure.category != ''
       - permalink_structure.tag == ''
 
   - name: set permalink structure
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
+    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
+    become: yes
+    become_user: vagrant
     when:
       - permalink_structure.category == ''
       - permalink_structure.tag != ''
 
   - name: set permalink structure
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
+    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
+    become: yes
+    become_user: vagrant
     when:
       - permalink_structure.category != ''
       - permalink_structure.tag != ''
 
   - name: rewrite flush
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} rewrite flush --hard
+    command: wp --path={{ WP_PATH }} rewrite flush --hard
+    become: yes
+    become_user: vagrant
 
   when: permalink_structure.structure != ''
 
 - name: set theme mod
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
+  command: wp --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
+  become: yes
+  become_user: vagrant
   with_dict: "{{ theme_mod | default({}) }}"
 
 - name: update options
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
+  command: wp --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
+  become: yes
+  become_user: vagrant
   with_dict: "{{ options | default({}) }}"

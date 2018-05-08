@@ -1,4 +1,5 @@
 home_dir: /home/vagrant
 share_path: /usr/local/share
+phpenv_dir: /home/vagrant/.phpenv
 wordpress_i18n_repository: http://i18n.svn.wordpress.org/tools/trunk/
 WordPress_Coding_Standards_repository: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git

@@ -47,11 +47,17 @@
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv
-  command: sudo -u vagrant -i -- nodenv install {{ node_version | default('6.9.1') }}
+  command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('6.9.1') }}"
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
 
 - name: nodenv rehash
-  command: sudo -u vagrant -i -- nodenv rehash
+  command: "{{ nodenv_dir }}/bin/nodenv rehash"
+  become: yes
+  become_user: vagrant
 
 - name: nodenv global
-  command: sudo -u vagrant -i -- nodenv global {{ node_version | default('6.9.1') }}
+  command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('6.9.1') }}"
+  become: yes
+  become_user: vagrant

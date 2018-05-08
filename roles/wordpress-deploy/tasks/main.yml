@@ -10,7 +10,7 @@
     - python-pip
 
 - name: gem libraries installed
-  command: sudo -u vagrant -i -- gem install {{ item }}
+  command: gem install {{ item }}
   # gem:
   #   name: "{{ item }}"
   #   state: latest
@@ -23,7 +23,9 @@
     - double-bag-ftps
     - dandelion
     - wordmove
-
+  become: yes
+  become_user: vagrant
+  
 - name: pycrypto uninstalled
   pip:
     name: pycrypto
