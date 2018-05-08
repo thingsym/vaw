@@ -1,6 +1,8 @@
 ---
 - name: PHP_CodeSniffer installed
-  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'squizlabs/php_codesniffer=2.9.*'
+  command: "{{ phpenv_dir }}/shims/composer global require 'squizlabs/php_codesniffer=2.9.*'"
+  become: yes
+  become_user: vagrant
 
 - name: git checkout WordPress-Coding-Standards
   git:
@@ -9,4 +11,6 @@
     force: yes
 
 - name: phpcs config-set wp-phpcs
-  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs
+  command: "{{ phpenv_dir }}/shims/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs"
+  become: yes
+  become_user: vagrant

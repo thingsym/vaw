@@ -8,15 +8,17 @@
     - gettext
 
 - name: gem libraries installed
-  command: sudo -u vagrant -i -- gem install {{ item }}
+  command: gem install {{ item }}
   # gem:
   #   name: "{{ item }}"
   #   state: latest
   with_items:
     - sass
-
+  become: yes
+  become_user: vagrant
+  
 - name: node.js package globally installed
-  command: sudo -u vagrant -i -- npm install -g {{ item }}
+  command: npm install -g {{ item }}
   # npm:
   #   name: "{{ item }}"
   #   global: yes
@@ -27,7 +29,9 @@
     - npm-check-updates
     - stylestats
     - plato
-
+  become: yes
+  become_user: vagrant
+  
 - include: yarn.yml
 - include: wp-i18n.yml
 - include: phpunit.yml

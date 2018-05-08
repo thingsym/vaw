@@ -6,13 +6,19 @@
 
 - block:
   - name: plugin install wordpress-importer
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
 
   - name: import xml data
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
+    command: wp --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
+    become: yes
+    become_user: vagrant
 
   - name: plugin deactivate wordpress-importer
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant
   when:
     - is_xml_import.stat.exists
     - is_xml_import.stat.isdir == false
@@ -27,10 +33,14 @@
 
 - block:
   - name: db data import
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db import {{ import_db_data }}
+    command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
+    become: yes
+    become_user: vagrant
 
   - name: add user admin
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+    command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+    become: yes
+    become_user: vagrant
     when: import_admin == true
   when:
     - is_db_import.stat.exists
@@ -71,13 +81,19 @@
 
 - block:
   - name: plugin install wordpress-importer
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
 
   - name: import theme-unit-test-data.xml
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
+    command: wp --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
+    become: yes
+    become_user: vagrant
 
   - name: plugin deactivate wordpress-importer
-    command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant
 
   - name: delete theme-unit-test-data.xml
     file:
@@ -118,9 +134,13 @@
 
 
 - name: replace old url
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} search-replace {{ replace_old_url }} {{ WP_URL }} --precise --recurse-objects
+  command: wp --path={{ WP_PATH }} search-replace {{ replace_old_url }} {{ WP_URL }} --precise --recurse-objects
+  become: yes
+  become_user: vagrant
   when: replace_old_url != ''
 
 - name: regenerate thumbnails
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} media regenerate --yes
+  command: wp --path={{ WP_PATH }} media regenerate --yes
+  become: yes
+  become_user: vagrant
   when: regenerate_thumbnails == true
