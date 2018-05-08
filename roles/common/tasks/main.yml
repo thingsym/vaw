@@ -11,20 +11,6 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 7
 
-- block:
-  - name: create swap space
-    command: dd if=/dev/zero of=/swapfile bs=1M count=1024
-    ignore_errors: yes
-
-  - name: Make swap
-    command: mkswap /swapfile
-    ignore_errors: yes
-  when: ansible_swaptotal_mb < 1
-
-- name: swapon
-  command: swapon /swapfile
-  ignore_errors: yes
-
 - name: edit PATH on .bashrc_vaw
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
