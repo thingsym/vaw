@@ -38,30 +38,40 @@
   ignore_errors: yes
   when: database != 'mysql'
 
-- name: removed MariaDB
-  package:
-    name: MariaDB*
-    state: absent
-  ignore_errors: yes
+- block:
+  - name: removed MariaDB
+    package:
+      name: MariaDB*
+      state: absent
+    ignore_errors: yes
+
+  - name: removed mariadb
+    package:
+      name: mariadb*
+      state: absent
+    ignore_errors: yes
+
+  - name: delete symbolic links
+    file:
+      path: /etc/systemd/system/mysql.service
+      state: absent
+
+  - name: delete symbolic links
+    file:
+      path: /etc/systemd/system/mysqld.service
+      state: absent
   when: database != 'mariadb'
 
-- name: removed mariadb
-  package:
-    name: mariadb*
-    state: absent
-  ignore_errors: yes
-  when: database != 'mariadb'
+- block:
+  - name: removed Percona
+    package:
+      name: Percona*
+      state: absent
+    ignore_errors: yes
 
-- name: removed Percona
-  package:
-    name: Percona*
-    state: absent
-  ignore_errors: yes
-  when: database != 'percona'
-
-- name: removed Percona
-  package:
-    name: percona*
-    state: absent
-  ignore_errors: yes
+  - name: removed Percona
+    package:
+      name: percona*
+      state: absent
+    ignore_errors: yes
   when: database != 'percona'
