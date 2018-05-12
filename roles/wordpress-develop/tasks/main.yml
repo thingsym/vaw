@@ -17,10 +17,10 @@
   become_user: vagrant
   
 - name: node.js package globally installed
-  command: npm install -g {{ item }}
-  # npm:
-  #   name: "{{ item }}"
-  #   global: yes
+  npm:
+    name: "{{ item }}"
+    global: yes
+    executable: "{{ nodenv_dir }}/shims/npm"
   with_items:
     - grunt-cli
     - grunt-init
