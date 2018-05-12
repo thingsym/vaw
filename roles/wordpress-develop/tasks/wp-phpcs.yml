@@ -11,6 +11,4 @@
     force: yes
 
 - name: phpcs config-set wp-phpcs
-  command: "{{ phpenv_dir }}/shims/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs"
-  become: yes
-  become_user: vagrant
+  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/phpcs --config-set installed_paths {{ share_path }}/wp-phpcs
