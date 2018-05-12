@@ -24,7 +24,7 @@
     - wordmove
   become: yes
   become_user: vagrant
-  
+
 - name: pycrypto uninstalled
   pip:
     name: pycrypto
