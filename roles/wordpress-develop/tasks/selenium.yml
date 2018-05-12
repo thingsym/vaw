@@ -3,10 +3,10 @@
   command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit-selenium=3.*'"
   become: yes
   become_user: vagrant
-  when: php_version | match("^7")
+  when: php_version is match("^7")
 
 - name: PHPUnit Selenium installed (PHP5)
   command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit-selenium=2.*'"
   become: yes
   become_user: vagrant
-  when: php_version | match("^5")
+  when: php_version is match("^7")

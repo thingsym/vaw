@@ -3,10 +3,10 @@
   command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=5.7.*'"
   become: yes
   become_user: vagrant
-  when: php_version | match("^7")
+  when: php_version is match("^7")
 
 - name: PHPUnit installed (PHP5)
   command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=4.8.*'"
   become: yes
   become_user: vagrant
-  when: php_version | match("^5")
+  when: php_version is match("^5")
