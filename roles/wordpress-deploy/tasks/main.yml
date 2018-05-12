@@ -10,10 +10,9 @@
     - python-pip
 
 - name: gem libraries installed
-  command: gem install {{ item }}
-  # gem:
-  #   name: "{{ item }}"
-  #   state: latest
+  gem:
+    name: "{{ item }}"
+    executable: "{{ rbenv_dir }}/shims/gem"
   with_items:
     - capistrano
     - capistrano_colors
