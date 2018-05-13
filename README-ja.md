@@ -57,9 +57,9 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ## Requirements
 
-* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
-* [Vagrant](https://www.vagrantup.com) >= 1.8.4
-* [Ansible](https://www.ansible.com) >= 2.2.1.0
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.2
+* [Vagrant](https://www.vagrantup.com) >= 2.1
+* [Ansible](https://www.ansible.com) >= 2.4
 
 #### Vagrant plugin (optional)
 
