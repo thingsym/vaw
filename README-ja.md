@@ -689,6 +689,25 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.7 - 2018.05.13
+	* change module from command to gem/npm
+	* fix deprecated match filter
+	* remove mount_options
+	* fix vbguest_auto_update
+	* change official Vagrant box to official distributor
+	* change from yum claen all to yum makecache fast, only CentOS6
+	* fix default PHP version to 7.2.1
+	* fix defaults with wordpress task
+	* remove defaults with wp-cli task
+	* remove themes, plugins and import directories
+	* fix reset database tasks
+	* revert SELinux with CentOS7
+	* remove swap space
+	* fix *env path
+	* using 'become' and 'become_user' rather than running sudo
+	* add .bashrc_vaw
+	* remove bash settings into .bash_profile, integrate into .bashrc
+	* move documentation from docs to gh-pages branch
 * version 0.5.6 - 2018.03.25
 	* update vm_box
 	* add type option into config.vm.synced_folder
