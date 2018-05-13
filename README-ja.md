@@ -57,9 +57,9 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ## Requirements
 
-* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
-* [Vagrant](https://www.vagrantup.com) >= 1.8.4
-* [Ansible](https://www.ansible.com) >= 2.2.1.0
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.2
+* [Vagrant](https://www.vagrantup.com) >= 2.1
+* [Ansible](https://www.ansible.com) >= 2.4
 
 #### Vagrant plugin (optional)
 
@@ -141,7 +141,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'bento/centos-7.4'
+	vm_box                = 'centos/7'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -149,21 +149,21 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	public_ip             = ''
 
-	vbguest_auto_update   = false
+	vbguest_auto_update   = true
 
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
 	provision_mode        = 'all'       # all|wordpress|box
 
-* `vm_box` (required) Vagrant Box 名 (default: `bento/centos-7.4`)
+* `vm_box` (required) Vagrant Box 名 (default: `centos/7`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: `''`)
-* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `false` / value: `true` | `false`)
+* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `true` / value: `true` | `false`)
 * `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
@@ -198,7 +198,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	# e.g. latest, nightly, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
-	# 3.5.2 or later to work properly
+	# 3.7 or later to work properly
 	version            : latest
 
 	# e.g. en_US, ja, ...
@@ -212,11 +212,11 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 	multisite          : false   # true|false
 
-	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
+	# default theme|slug|url|zip (local path, /vagrant/themes/*.zip)
 	activate_theme     : ''
 	themes             : []
 
-	# slug|url|zip (local path, /vagrant/plugins/~.zip)
+	# slug|url|zip (local path, /vagrant/plugins/*.zip)
 	activate_plugins   :
 	                        - theme-check
 	                        - log-deprecated-notices
@@ -242,10 +242,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	                      tag         : ''
 
 	# Any one of 4 ways to import
-	import_xml_data    : ''   # local path, /vagrant/import/~.xml
-	import_db_data     : ''   # local path, /vagrant/import/~.sql
+	import_xml_data    : ''   # local path, /vagrant/import/*.xml
+	import_db_data     : ''   # local path, /vagrant/import/*.sql
 	import_backwpup    :
-	                      path          : ''   # local path, /vagrant/import/~.zip
+	                      path          : ''   # local path, /vagrant/import/*.zip
 	                      db_data_file  : ''
 	                      xml_data_file : ''
 	import_admin       : false   # true|false
@@ -297,7 +297,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `version` (required) WordPress 本体のバージョン (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
 	* [Release Archive](https://wordpress.org/download/release-archive/) を参照
-	* バージョン 3.5.2 以降で正常に動作します
+	* バージョン 3.7 以降で正常に動作します
 
 * `lang` (required) WordPress 本体の言語 (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
@@ -312,12 +312,11 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `multisite` マルチサイトの有効化 (default: `false` / value: `true` | `false`)
 * `activate_theme` テーマをインストール・有効化 (default: default theme)
 	* デフォルトテーマ `''`, `theme slug`, `zip file URL`,  `local zip file path` から設定
-	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
+	* ローカルにある zip ファイルパスは `/vagrant/themes/*.zip`
 	* 自動的に有効化します
 * `themes` テーマをインストール (複数可)
 	* YAML 形式のハッシュの配列書式で設定 `theme slug`, `zip file URL`, `local zip file path`
-	* ローカルにある zip ファイルパスは `/vagrant/themes/~.zip`
-	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
+	* ローカルにある zip ファイルパスは `/vagrant/themes/*.zip`
 
 設定例
 
@@ -331,9 +330,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `activate_plugins` プラグインのインストール・有効化 (複数可)
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
-	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
+	* ローカルにある zip ファイルパスは `/vagrant/plagins/*.zip`
 	* 自動的に有効化します
-	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
 設定例
 
@@ -347,12 +345,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `plugins` プラグインのインストール
 	* YAML 形式のハッシュの配列書式で設定 `plagin slug`, `zip file URL`, `local zip file path`
-	* ローカルにある zip ファイルパスは `/vagrant/plagins/~.zip`
-	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
+	* ローカルにある zip ファイルパスは `/vagrant/plagins/*.zip`
 * `theme_mod` theme_mod (theme modification value) の設定
 	* [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod) を参照
 	* YAML 形式のハッシュのネスト書式で設定
-	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
 設定例
 
@@ -366,7 +362,6 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `options` オプションの設定
 	* [update_option()](http://codex.wordpress.org/Function_Reference/update_option) と [Option Reference](http://codex.wordpress.org/Option_Reference) を参照
 	* YAML 形式のハッシュのネスト書式で設定
-	* 設定を無効にする場合は、行頭に `#` を付けてコメントアウトします
 
 設定例
 
@@ -384,10 +379,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	* `structure` Structure Tags で投稿のパーマリンク構造を設定
 	* `category` カテゴリーアーカイブのカテゴリープレフィックスを設定
 	* `tag` タグアーカイブのタグプレフィックスを設定
-* `import_xml_data` WXR 形式のファイルパス `/vagrant/import/~.xml`
-* `import_db_data` SQL ダンプファイルパス `/vagrant/import/~.sql`
+* `import_xml_data` WXR 形式のファイルパス `/vagrant/import/*.xml`
+* `import_db_data` SQL ダンプファイルパス `/vagrant/import/*.sql`
 * `import_backwpup`
-	* `path` アーカイブファイルパス `/vagrant/import/~.zip` (Zip, Tar, Tar GZip, Tar BZip2)
+	* `path` アーカイブファイルパス `/vagrant/import/*.zip` (Zip, Tar, Tar GZip, Tar BZip2)
 	* `db_data_file` DBバックアップファイル名 (データファイルのどちらかひとつからインポート)
 	* `xml_data_file` XML エクスポートファイル名 (データファイルのどちらかひとつからインポート)
 * `import_admin` WordPress 管理者ユーザーの追加 (default: `false` / value: `true` | `false`)
@@ -425,9 +420,9 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 	* all.yml (プロビジョニング設定ファイル)
 * hosts
 	* local (inventory file)
-* import (インポートデータを格納)
+* import (インポートデータを格納、必要ならば)
 * LICENSE (ライセンスファイル)
-* plugins (zip 形式のプラグインファイルを格納)
+* plugins (zip 形式のプラグインファイルを格納、必要ならば)
 * Rakefile (ServerSpec の Rakefile)
 * README-ja.md
 * README.md
@@ -438,7 +433,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 	* localhost
 	* spec_helper.rb
 	* sync-dir
-* themes (zip 形式のテーマファイルを格納)
+* themes (zip 形式のテーマファイルを格納、必要ならば)
 * uploads (WordPress の wp-content にある uploads ディレクトリ)
 * Vagrantfile (Vagrant 設定ファイル)
 * wordpress (Document Root に同期するディレクトリ、無い場合、`vagrant up` 時に自動作成)
@@ -694,6 +689,25 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.7 - 2018.05.13
+	* change module from command to gem/npm
+	* fix deprecated match filter
+	* remove mount_options
+	* fix vbguest_auto_update
+	* change official Vagrant box to official distributor
+	* change from yum claen all to yum makecache fast, only CentOS6
+	* fix default PHP version to 7.2.1
+	* fix defaults with wordpress task
+	* remove defaults with wp-cli task
+	* remove themes, plugins and import directories
+	* fix reset database tasks
+	* revert SELinux with CentOS7
+	* remove swap space
+	* fix *env path
+	* using 'become' and 'become_user' rather than running sudo
+	* add .bashrc_vaw
+	* remove bash settings into .bash_profile, integrate into .bashrc
+	* move documentation from docs to gh-pages branch
 * version 0.5.6 - 2018.03.25
 	* update vm_box
 	* add type option into config.vm.synced_folder

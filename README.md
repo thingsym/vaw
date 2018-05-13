@@ -59,9 +59,9 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 
 ## Requirements
 
-* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.0
-* [Vagrant](https://www.vagrantup.com) >= 1.8.4
-* [Ansible](https://www.ansible.com) >= 2.2.1.0
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.2
+* [Vagrant](https://www.vagrantup.com) >= 2.1
+* [Ansible](https://www.ansible.com) >= 2.4
 
 #### Vagrant plugin (optional)
 
@@ -147,7 +147,7 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'bento/centos-7.4'
+	vm_box                = 'centos/7'
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -155,21 +155,21 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	public_ip             = ''
 
-	vbguest_auto_update   = false
+	vbguest_auto_update   = true
 
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
 	provision_mode        = 'all'       # all|wordpress|box
 
-* `vm_box` (required) name of Vagrant Box (default: `bento/centos-7.4`)
+* `vm_box` (required) name of Vagrant Box (default: `centos/7`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
 	* auto create `wordpress` directory and synchronized
 * `public_ip` IP address of bridged connection (default: `''`)
-* `vbguest_auto_update` update VirtualBox Guest Additions (default: `false` / value: `true` | `false`)
+* `vbguest_auto_update` update VirtualBox Guest Additions (default: `true` / value: `true` | `false`)
 * `ansible_install_mode` (required)  the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
 * `provision_mode` (required) Provisioning mode (default: `all` / value: `all` | `wordpress` | `box`)
@@ -205,7 +205,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	# e.g. latest, nightly, 4.1, 4.1-beta1
 	# see Release Archive - https://wordpress.org/download/release-archive/
-	# 3.5.2 or later to work properly
+	# 3.7 or later to work properly
 	version            : latest
 
 	# e.g. en_US, ja, ...
@@ -219,11 +219,11 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 	multisite          : false   # true|false
 
-	# default theme|slug|url|zip (local path, /vagrant/themes/~.zip)
+	# default theme|slug|url|zip (local path, /vagrant/themes/*.zip)
 	activate_theme     : ''
 	themes             : []
 
-	# slug|url|zip (local path, /vagrant/plugins/~.zip)
+	# slug|url|zip (local path, /vagrant/plugins/*.zip)
 	activate_plugins   :
 	                        - theme-check
 	                        - log-deprecated-notices
@@ -249,10 +249,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	                      tag         : ''
 
 	# Any one of 4 ways to import
-	import_xml_data    : ''   # local path, /vagrant/import/~.xml
-	import_db_data     : ''   # local path, /vagrant/import/~.sql
+	import_xml_data    : ''   # local path, /vagrant/import/*.xml
+	import_db_data     : ''   # local path, /vagrant/import/*.sql
 	import_backwpup    :
-	                      path          : ''   # local path, /vagrant/import/~.zip
+	                      path          : ''   # local path, /vagrant/import/*.zip
 	                      db_data_file  : ''
 	                      xml_data_file : ''
 	import_admin       : false   # true|false
@@ -304,7 +304,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `version` (required) version of WordPress (default: `latest`)
 	* e.g. `latest`, `4.1`, `4.1-beta1`
 	* see [Release Archive](https://wordpress.org/download/release-archive/)
-	* version 3.5.2 or later to work properly
+	* version 3.7 or later to work properly
 * `lang` (required) WordPress in your language (default: `en_US`)
 	* e.g. `en_US`, `ja`, ...
 	* see [wordpress-i18n list](http://svn.automattic.com/wordpress-i18n/)
@@ -318,11 +318,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 * `multisite` Multisite enabled flag (default: `false` / value: `true` | `false`)
 * `activate_theme` install a theme and activated (default: default theme)
 	* set default theme `''`, `theme slug`, `zip file URL` or  `local zip file path`
-	* set `/vagrant/themes/~.zip` by local zip file path
+	* set `/vagrant/themes/*.zip` by local zip file path
 * `themes` install themes
 	* set in YAML arrays of hashes format `theme slug`, `zip file URL` or `local zip file path`
-	* set `/vagrant/themes/~.zip` by local zip file path
-	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+	* set `/vagrant/themes/*.zip` by local zip file path
 
 Configuration example
 
@@ -336,8 +335,7 @@ Disable the setting case
 
 * `activate_plugins` install plagins and activated
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
-	* set `/vagrant/plagins/~.zip` by local zip file path
-	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+	* set `/vagrant/plagins/*.zip` by local zip file path
 
 Configuration example
 
@@ -351,13 +349,11 @@ Disable the setting case
 
 * `plugins` install plagins
 	* set in YAML arrays of hashes format `plagin slug`, `zip file URL` or `local zip file path`
-	* set `/vagrant/plagins/~.zip` by local zip file path
-	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
+	* set `/vagrant/plagins/*.zip` by local zip file path
 
 * `theme_mod` setting theme_mod (theme modification value)
 	* see [set_theme_mod()](http://codex.wordpress.org/Function_Reference/set_theme_mod)
 	* set in YAML nested hash format
-	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
 Configuration example
 
@@ -371,7 +367,6 @@ Disable the setting case
 * `options` setting options
 	* see [update_option()](http://codex.wordpress.org/Function_Reference/update_option) and [Option Reference](http://codex.wordpress.org/Option_Reference)
 	* set in YAML nested hash format
-	* comment out with a `#` at the beginning of a line, if you want to disable the setting.
 
 Configuration example
 
@@ -389,10 +384,10 @@ Disable the setting case
 	* `structure` set the permalink structure using the structure tags
 	* `category` set the prefix of the category archive
 	* `tag` set the prefix of the tag archive
-* `import_xml_data` local WordPress export (WXR) file path `/vagrant/import/~.xml`
-* `import_db_data` local sql dump file path `/vagrant/import/~.sql`
+* `import_xml_data` local WordPress export (WXR) file path `/vagrant/import/*.xml`
+* `import_db_data` local sql dump file path `/vagrant/import/*.sql`
 * `import_backwpup`
-	* `path` Archive file path `/vagrant/import/~.zip` (Zip, Tar, Tar GZip, Tar BZip2)
+	* `path` Archive file path `/vagrant/import/*.zip` (Zip, Tar, Tar GZip, Tar BZip2)
 	* `db_data_file` DB backup file name (Import from one of data files)
 	* `xml_data_file` XML export file name (imported from one of the data files)
 * `import_admin` Add WordPress administrator user (default: `false` / value: `true` | `false`)
@@ -432,9 +427,9 @@ You can create the same environment as the production environment, when you buil
 	* all.yml (provisioning configuration file)
 * hosts
 	* local (inventory file)
-* import (stores import data)
+* import (stores import data, if necessary)
 * LICENSE (license file)
-* plugins (stores WordPress plugin zip format files)
+* plugins (stores WordPress plugin zip format files, if necessary)
 * Rakefile (Rakefile of ServerSpec)
 * README-ja.md
 * README.md
@@ -445,7 +440,7 @@ You can create the same environment as the production environment, when you buil
 	* localhost
 	* spec_helper.rb
 	* sync-dir
-* themes (stores WordPress theme zip format files)
+* themes (stores WordPress theme zip format files, if necessary)
 * uploads (uploads directory in the wp-content)
 * Vagrantfile (Vagrant configuration file)
 * wordpress (synchronize to the Document Root. create automatically at `vagrant up`, if it does not exist.)
@@ -698,6 +693,25 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.7 - 2018.05.13
+	* change module from command to gem/npm
+	* fix deprecated match filter
+	* remove mount_options
+	* fix vbguest_auto_update
+	* change official Vagrant box to official distributor
+	* change from yum claen all to yum makecache fast, only CentOS6
+	* fix default PHP version to 7.2.1
+	* fix defaults with wordpress task
+	* remove defaults with wp-cli task
+	* remove themes, plugins and import directories
+	* fix reset database tasks
+	* revert SELinux with CentOS7
+	* remove swap space
+	* fix *env path
+	* using 'become' and 'become_user' rather than running sudo
+	* add .bashrc_vaw
+	* remove bash settings into .bash_profile, integrate into .bashrc
+	* move documentation from docs to gh-pages branch
 * version 0.5.6 - 2018.03.25
 	* update vm_box
 	* add type option into config.vm.synced_folder
