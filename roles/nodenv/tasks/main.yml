@@ -2,35 +2,25 @@
 - name: git checkout nodenv
   git:
     repo: https://github.com/nodenv/nodenv.git
-    dest: "{{ home_dir }}/.nodenv"
+    dest: "{{ nodenv_dir }}"
     force: yes
   become: yes
   become_user: vagrant
 
-- name: edit PATH nodenv on .bash_profile
+- name: edit PATH nodenv on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
 
-- name: edit PATH nodenv on .bashrc
+- name: edit nodenv init on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
-    line: "export PATH=$HOME/.nodenv/bin:$PATH"
-
-- name: edit nodenv init on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "eval \"$(nodenv init -)\""
-
-- name: edit nodenv init on .bashrc
-  lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(nodenv init -)\""
 
 - name: git checkout node-build
   git:
     repo: https://github.com/nodenv/node-build.git
-    dest: "{{ home_dir }}/.nodenv/plugins/node-build"
+    dest: "{{ nodenv_dir }}/plugins/node-build"
     force: yes
   become: yes
   become_user: vagrant
@@ -38,7 +28,7 @@
 - name: git checkout nodenv-default-packages
   git:
     repo: https://github.com/nodenv/nodenv-default-packages.git
-    dest: "{{ home_dir }}/.nodenv/plugins/nodenv-default-packages"
+    dest: "{{ nodenv_dir }}/plugins/nodenv-default-packages"
     force: yes
   become: yes
   become_user: vagrant
@@ -51,17 +41,23 @@
 - name: nodenv-default-packages changed
   template:
     src: /vagrant/config/default-node-packages.j2
-    dest: "{{ home_dir }}/.nodenv/default-packages"
+    dest: "{{ nodenv_dir }}/default-packages"
   become: yes
   become_user: vagrant
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv
-  command: sudo -u vagrant -i -- nodenv install {{ node_version | default('6.9.1') }}
+  command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('6.9.1') }}"
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
 
 - name: nodenv rehash
-  command: sudo -u vagrant -i -- nodenv rehash
+  command: "{{ nodenv_dir }}/bin/nodenv rehash"
+  become: yes
+  become_user: vagrant
 
 - name: nodenv global
-  command: sudo -u vagrant -i -- nodenv global {{ node_version | default('6.9.1') }}
+  command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('6.9.1') }}"
+  become: yes
+  become_user: vagrant

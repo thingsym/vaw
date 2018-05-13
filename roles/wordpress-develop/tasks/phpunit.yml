@@ -1,8 +1,12 @@
 ---
 - name: PHPUnit installed (PHP7)
-  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit=5.7.*'
-  when: php_version | match("^7")
+  command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=5.7.*'"
+  become: yes
+  become_user: vagrant
+  when: php_version is match("^7")
 
 - name: PHPUnit installed (PHP5)
-  command: sudo -u vagrant -i -- {{ home_dir }}/.phpenv/shims/composer global require 'phpunit/phpunit=4.8.*'
-  when: php_version | match("^5")
+  command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=4.8.*'"
+  become: yes
+  become_user: vagrant
+  when: php_version is match("^5")

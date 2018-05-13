@@ -22,10 +22,14 @@
 
   - block:
     - name: db data import
-      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
+      command: wp --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
+      become: yes
+      become_user: vagrant
 
     - name: add user admin
-      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+      command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+      become: yes
+      become_user: vagrant
       when: import_admin == true
     when: is_db_data_file.stat.exists
 
@@ -36,13 +40,19 @@
 
   - block:
     - name: plugin install wordpress-importer
-      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install wordpress-importer --activate
+      command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+      become: yes
+      become_user: vagrant
 
     - name: import xml data
-      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} import /tmp/backwpup/{{ import_backwpup.xml_data_file }} --authors=create
+      command: wp --path={{ WP_PATH }} import /tmp/backwpup/{{ import_backwpup.xml_data_file }} --authors=create
+      become: yes
+      become_user: vagrant
 
     - name: plugin deactivate wordpress-importer
-      command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin deactivate wordpress-importer
+      command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+      become: yes
+      become_user: vagrant
     when: is_xml_data_file.stat.exists
 
   - name: stat wp-content

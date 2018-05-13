@@ -1,7 +1,9 @@
 ---
 - name: database drop
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db drop --yes
+  command: wp --path={{ WP_PATH }} db drop --yes
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
 
 - name: stat WP_PATH
   stat:
@@ -38,11 +40,15 @@
     login_password: "{{ db_root_password }}"
 
 - name: WordPress latest installed
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --force
+  command: wp --path={{ WP_PATH }} core download --locale={{ lang }} --force
+  become: yes
+  become_user: vagrant
   when: version == "latest"
 
 - name: WordPress version installed
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core download --locale={{ lang }} --version={{ version }} --force
+  command: wp --path={{ WP_PATH }} core download --locale={{ lang }} --version={{ version }} --force
+  become: yes
+  become_user: vagrant
   when: version != "latest"
 
 - name: stat wp-config.php
@@ -57,7 +63,9 @@
   when: is_old_wp_config.stat.exists
 
 - name: WordPress config
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbhost={{ db_host }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
+  command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
+  become: yes
+  become_user: vagrant
   # shell: |
   # sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --extra-php <<-PHP
   # define( 'WP_DEBUG', {{ WP_DEBUG }} );
@@ -68,20 +76,28 @@
     - ansible_distribution_major_version|int == 6
 
 - name: WordPress config (socket connection)
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbhost={{ db_host }}:{{ mysql_socket }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
+  command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }}:{{ mysql_socket }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
+  become: yes
+  become_user: vagrant
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 7
 
 - name: WordPress db create
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} db create
+  command: wp --path={{ WP_PATH }} db create
+  become: yes
+  become_user: vagrant
 
 - name: WordPress core install
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  command: wp --path={{ WP_PATH }} core install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  become: yes
+  become_user: vagrant
   when: multisite == false
 
 - name: WordPress multisite core install
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core multisite-install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  command: wp --path={{ WP_PATH }} core multisite-install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
+  become: yes
+  become_user: vagrant
   when: multisite == true
 
 - name: .htaccess changed
@@ -112,7 +128,9 @@
   when: ssl == true
 
 - name: change wp option for subdirectory install
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
+  command: wp --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
+  become: yes
+  become_user: vagrant
   when: wp_site_path != wp_dir
 
 - name: copy index.php for subdirectory install
@@ -138,28 +156,38 @@
     - server == "apache"
 
 - name: themes install
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ item }}
+  command: wp --path={{ WP_PATH }} theme install {{ item }}
+  become: yes
+  become_user: vagrant
   when: item != ''
   with_items:
     - "{{ themes | default([]) }}"
 
 - name: theme install and activate
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
+  command: wp --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
   when: activate_theme != ''
 
 - name: plugin activate wp-multibyte-patch
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin activate wp-multibyte-patch
+  command: wp --path={{ WP_PATH }} plugin activate wp-multibyte-patch
+  become: yes
+  become_user: vagrant
   when: lang == "ja"
 
 - name: plugins install and activate
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }} --activate
+  command: wp --path={{ WP_PATH }} plugin install {{ item }} --activate
+  become: yes
+  become_user: vagrant
   when: item != ''
   with_items:
     - "{{ activate_plugins | default([]) }}"
 
 - name: plugins install
-  command: sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} plugin install {{ item }}
+  command: wp --path={{ WP_PATH }} plugin install {{ item }}
+  become: yes
+  become_user: vagrant
   when: item != ''
   with_items:
     - "{{ plugins | default([]) }}"

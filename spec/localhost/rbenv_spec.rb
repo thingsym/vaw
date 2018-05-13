@@ -20,12 +20,7 @@ if property["develop_tools"] || property["deploy_tools"] then
     its(:stdout) { should match '2.4.1' }
   end
 
-  describe file('/home/vagrant/.bash_profile') do
-    its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
-    its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
-  end
-
-  describe file('/home/vagrant/.bashrc') do
+  describe file('/home/vagrant/.bashrc_vaw') do
     its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
     its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
   end

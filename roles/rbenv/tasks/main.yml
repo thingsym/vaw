@@ -2,35 +2,25 @@
 - name: git checkout rbenv
   git:
     repo: https://github.com/rbenv/rbenv.git
-    dest: "{{ home_dir }}/.rbenv"
+    dest: "{{ rbenv_dir }}"
     force: yes
   become: yes
   become_user: vagrant
 
-- name: edit PATH rbenv on .bash_profile
+- name: edit PATH rbenv on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.rbenv/bin:$PATH"
 
-- name: edit PATH rbenv on .bashrc
+- name: edit rbenv init on .bashrc_vaw
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
-    line: "export PATH=$HOME/.rbenv/bin:$PATH"
-
-- name: edit rbenv init on .bash_profile
-  lineinfile:
-    dest: "{{ home_dir }}/.bash_profile"
-    line: "eval \"$(rbenv init -)\""
-
-- name: edit rbenv init on .bashrc
-  lineinfile:
-    dest: "{{ home_dir }}/.bashrc"
+    dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(rbenv init -)\""
 
 - name: git checkout ruby-build
   git:
     repo: https://github.com/rbenv/ruby-build.git
-    dest: "{{ home_dir }}/.rbenv/plugins/ruby-build"
+    dest: "{{ rbenv_dir }}/plugins/ruby-build"
     force: yes
   become: yes
   become_user: vagrant
@@ -38,7 +28,7 @@
 - name: git checkout rbenv-default-gems
   git:
     repo: https://github.com/rbenv/rbenv-default-gems.git
-    dest: "{{ home_dir }}/.rbenv/plugins/rbenv-default-gems"
+    dest: "{{ rbenv_dir }}/plugins/rbenv-default-gems"
     force: yes
   become: yes
   become_user: vagrant
@@ -51,17 +41,23 @@
 - name: default-gems changed
   template:
     src: /vagrant/config/default-ruby-gems.j2
-    dest: "{{ home_dir }}/.rbenv/default-gems"
+    dest: "{{ rbenv_dir }}/default-gems"
   when: is_rbenv_default_gems.stat.exists
 
 - include: build-env.yml
 
 - name: ruby installed via rbenv
-  command: sudo -u vagrant -i -- rbenv install {{ ruby_version | default(2.4.1) }}
+  command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.4.1) }}"
   ignore_errors: yes
+  become: yes
+  become_user: vagrant
 
 - name: rbenv rehash
-  command: sudo -u vagrant -i -- rbenv rehash
+  command: "{{ rbenv_dir }}/bin/rbenv rehash"
+  become: yes
+  become_user: vagrant
 
 - name: rbenv global
-  command: sudo -u vagrant -i -- rbenv global {{ ruby_version | default(2.4.1) }}
+  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.4.1) }}"
+  become: yes
+  become_user: vagrant

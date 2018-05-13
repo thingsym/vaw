@@ -1,11 +1,11 @@
 ---
-- name: stat custom ~/.ssh/config
+- name: stat custom /home/vagrant/.ssh/config
   stat:
     path: /vagrant/config/ssh-config.j2
   tags: sync-dir
   register: is_custom_ssh_config
 
-- name: custom ~/.ssh/config changed
+- name: custom /home/vagrant/.ssh/config changed
   template:
     src: /vagrant/config/ssh-config.j2
     dest: /home/vagrant/.ssh/config
