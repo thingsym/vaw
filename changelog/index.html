@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.6</span>
+ <span class="version">Version 0.5.7</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -27,6 +27,28 @@
 
 <div class="content-container">
 <main><h1>Changelog</h1><ul>
+<li>version 0.5.7 - 2018.05.13
+
+<ul>
+<li>change module from command to gem/npm</li>
+<li>fix deprecated match filter</li>
+<li>remove mount_options</li>
+<li>fix vbguest_auto_update</li>
+<li>change official Vagrant box to official distributor</li>
+<li>change from yum claen all to yum makecache fast, only CentOS6</li>
+<li>fix default PHP version to 7.2.1</li>
+<li>fix defaults with wordpress task</li>
+<li>remove defaults with wp-cli task</li>
+<li>remove themes, plugins and import directories</li>
+<li>fix reset database tasks</li>
+<li>revert SELinux with CentOS7</li>
+<li>remove swap space</li>
+<li>fix *env path</li>
+<li>using &lsquo;become&rsquo; and &lsquo;become_user&rsquo; rather than running sudo</li>
+<li>add .bashrc_vaw</li>
+<li>remove bash settings into .bash_profile, integrate into .bashrc</li>
+<li>move documentation from docs to gh-pages branch</li>
+</ul></li>
 <li>version 0.5.6 - 2018.03.25
 
 <ul>
@@ -297,7 +319,7 @@
 <li>initial release</li>
 </ul></li>
 </ul>
-<div class="edit-meta">Last updated on 9 Apr 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
+<div class="edit-meta">Last updated on 20 May 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
 <a class="nav nav-prev" href="https://thingsym.github.io/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
     <a class="nav nav-next" href="https://thingsym.github.io/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
 <footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>

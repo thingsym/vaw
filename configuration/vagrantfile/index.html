@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.6</span>
+ <span class="version">Version 0.5.7</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -39,7 +39,7 @@
 <p>You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to <code>public_ip</code>. In that case, recommended that configure the same IP address to <code>vm_hostname</code>.</p>
 
 <pre><code>## Vagrant Settings ##
-vm_box                = 'bento/centos-7.4'
+vm_box                = 'centos/7'
 vm_box_version        = '&gt;= 0'
 vm_ip                 = '192.168.46.49'
 vm_hostname           = 'vaw.local'
@@ -47,7 +47,7 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
-vbguest_auto_update   = false
+vbguest_auto_update   = true
 
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
@@ -56,7 +56,7 @@ provision_mode        = 'all'       # all|wordpress|box
 </code></pre>
 
 <ul>
-<li><code>vm_box</code> (required) name of Vagrant Box (default: <code>bento/centos-7.4</code>)</li>
+<li><code>vm_box</code> (required) name of Vagrant Box (default: <code>centos/7</code>)</li>
 <li><code>vm_box_version</code> (required) version of Vagrant Box (default: <code>&gt;= 0</code>)</li>
 <li><code>vm_ip</code> (required) private IP address (default: <code>192.168.46.49</code>)</li>
 <li><code>vm_hostname</code> (required) hostname (default: <code>vaw.local</code>)</li>
@@ -66,12 +66,12 @@ provision_mode        = 'all'       # all|wordpress|box
 <li>auto create <code>wordpress</code> directory and synchronized</li>
 </ul></li>
 <li><code>public_ip</code> IP address of bridged connection (default: <code>''</code>)</li>
-<li><code>vbguest_auto_update</code> update VirtualBox Guest Additions (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>vbguest_auto_update</code> update VirtualBox Guest Additions (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>ansible_install_mode</code> (required)  the way to install Ansible (default: <code>:default</code> / value: <code>:default</code> | <code>:pip</code>)</li>
 <li><code>ansible_version</code> version of Ansible to install (default: <code>latest</code>)</li>
 <li><code>provision_mode</code> (required) Provisioning mode (default: <code>all</code> / value: <code>all</code> | <code>wordpress</code> | <code>box</code>)</li>
 </ul>
-<div class="edit-meta">Last updated on 9 Apr 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
+<div class="edit-meta">Last updated on 20 May 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
 <a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/" title="Configuration file"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Configuration file</a>
     <a class="nav nav-next" href="https://thingsym.github.io/vaw/configuration/all-yml/" title="all.yml">Next - all.yml <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
 <footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>

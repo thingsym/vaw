@@ -14,7 +14,7 @@
     <item>
       <title>Vagrantfile</title>
       <link>https://thingsym.github.io/vaw/configuration/vagrantfile/</link>
-      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
+      <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/configuration/vagrantfile/</guid>
       <description>Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
@@ -26,7 +26,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
     <item>
       <title>all.yml</title>
       <link>https://thingsym.github.io/vaw/configuration/all-yml/</link>
-      <pubDate>Mon, 09 Apr 2018 15:26:15 +0000</pubDate>
+      <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid>
       <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
