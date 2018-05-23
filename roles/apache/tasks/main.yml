@@ -35,12 +35,13 @@
   file:
     path: /etc/httpd/conf.d/ssl.conf
     state: absent
+  notify: httpd restarted
   when:
     - ssl == true
     - is_ssl_conf.stat.exists
 
-- name: httpd started and enabled
+- name: httpd enabled
   service:
     name: httpd
-    state: restarted
     enabled: yes
+  notify: httpd restarted

@@ -59,16 +59,18 @@
   template:
     src: /vagrant/config/h2o.conf.j2
     dest: /etc/h2o/h2o.conf
+  notify: h2o restarted
   when: is_custom_h2o_conf.stat.exists
 
 - name: h2o.conf changed
   template:
     src: h2o.conf.j2
     dest: /etc/h2o/h2o.conf
+  notify: h2o restarted
   when: not is_custom_h2o_conf.stat.exists
 
-- name: h2o started and enabled
+- name: h2o enabled
   service:
     name: h2o
-    state: restarted
     enabled: yes
+  notify: h2o restarted

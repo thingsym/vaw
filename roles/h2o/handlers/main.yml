@@ -1,0 +1,5 @@
+---
+- name: h2o restarted
+  service:
+    name: h2o
+    state: restarted
