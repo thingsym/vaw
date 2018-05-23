@@ -4,8 +4,8 @@
     name: "{{ item }}"
     state: latest
   with_items:
-      - httpd
-      - httpd-devel
+    - httpd
+    - httpd-devel
 
 - name: include task (CentOS/RHEL 6)
   include: centos6.yml
