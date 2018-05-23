@@ -13,9 +13,11 @@
     src: /vagrant/config/httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
   when: is_custom_httpd_conf.stat.exists
+  notify: httpd restarted
 
 - name: httpd.conf changed
   template:
     src: httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
   when: not is_custom_httpd_conf.stat.exists
+  notify: httpd restarted

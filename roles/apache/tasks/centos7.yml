@@ -9,12 +9,14 @@
     src: /vagrant/config/httpd.conf.centos7.j2
     dest: /etc/httpd/conf/httpd.conf
   when: is_custom_httpd_conf.stat.exists
+  notify: httpd restarted
 
 - name: httpd.conf changed
   template:
     src: httpd.conf.centos7.j2
     dest: /etc/httpd/conf/httpd.conf
   when: not is_custom_httpd_conf.stat.exists
+  notify: httpd restarted
 
 - name: stat custom httpd.www.conf.centos7.j2
   stat:
@@ -26,9 +28,11 @@
     src: /vagrant/config/httpd.www.conf.centos7.j2
     dest: /etc/httpd/conf.d/www.conf
   when: is_custom_www_conf.stat.exists
+  notify: httpd restarted
 
 - name: www.conf changed
   template:
     src: httpd.www.conf.centos7.j2
     dest: /etc/httpd/conf.d/www.conf
   when: not is_custom_www_conf.stat.exists
+  notify: httpd restarted
