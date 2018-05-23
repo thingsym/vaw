@@ -6,18 +6,18 @@
 - name: stat custom httpd.conf.centos6.j2
   stat:
     path: /vagrant/config/httpd.conf.centos6.j2
-  register: is_custom_httpd_conf
+  register: is_custom_httpd_conf_centos6
 
 - name: custom httpd.conf changed
   template:
     src: /vagrant/config/httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
-  when: is_custom_httpd_conf.stat.exists
   notify: httpd restarted
+  when: is_custom_httpd_conf_centos6.stat.exists
 
 - name: httpd.conf changed
   template:
     src: httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
-  when: not is_custom_httpd_conf.stat.exists
   notify: httpd restarted
+  when: not is_custom_httpd_conf_centos6.stat.exists
