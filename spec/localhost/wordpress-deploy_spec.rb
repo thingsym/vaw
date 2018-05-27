@@ -39,4 +39,9 @@ if property["deploy_tools"] then
     it { should be_installed.by('gem') }
   end
 
+  describe command('dep --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
 end

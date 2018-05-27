@@ -20,3 +20,9 @@
     - wordmove
   become: yes
   become_user: vagrant
+
+- name: Deployer installed
+  command: "{{ phpenv_dir }}/shims/composer global require 'deployer/deployer'"
+  become: yes
+  become_user: vagrant
+
