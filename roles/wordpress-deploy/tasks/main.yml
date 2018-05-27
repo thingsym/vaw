@@ -14,10 +14,6 @@
     name: "{{ item }}"
     executable: "{{ rbenv_dir }}/shims/gem"
   with_items:
-    - capistrano
-    - capistrano_colors
-    - capistrano-ext
-    - railsless-deploy
     - net-sftp
     - double-bag-ftps
     - dandelion

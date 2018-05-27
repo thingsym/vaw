@@ -19,26 +19,6 @@ if property["deploy_tools"] then
     it { should be_installed }
   end
 
-  describe package('capistrano') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('capistrano_colors') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('capistrano-ext') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('railsless-deploy') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
   describe package('net-sftp') do
     let(:disable_sudo) { true }
     it { should be_installed.by('gem') }
