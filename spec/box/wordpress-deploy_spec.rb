@@ -44,4 +44,9 @@ if property["deploy_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe command('git-ftp --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
 end

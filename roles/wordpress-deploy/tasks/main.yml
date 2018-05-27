@@ -26,3 +26,13 @@
   become: yes
   become_user: vagrant
 
+- name: git checkout git-ftp
+  git:
+    repo: https://github.com/git-ftp/git-ftp.git
+    dest: /tmp/git-ftp
+    force: yes
+
+- name: git-ftp installed
+  command: make install
+  args:
+    chdir: /tmp/git-ftp
