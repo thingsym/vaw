@@ -695,6 +695,11 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.8 - 2018.05.27
+	* add deployer and git-ftp
+	* remove capistrano and fabric
+	* add handlers with web server
+	* add option synced_folder_type with Vagrant Settings
 * version 0.5.7 - 2018.05.13
 	* change module from command to gem/npm
 	* fix deprecated match filter
