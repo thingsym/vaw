@@ -99,7 +99,7 @@
     file:
       path: "/tmp/theme-unit-test-data.xml"
       state: absent
-  when: 
+  when:
     - is_unit_test.stat.exists
     - import_xml_data == ''
     - import_db_data == ''
@@ -114,7 +114,7 @@
   synchronize:
     src: /vagrant/wp-content
     dest: "{{ WP_PATH }}"
-  when: 
+  when:
     - is_wp_content.stat.exists
     - is_wp_content.stat.isdir == true
 

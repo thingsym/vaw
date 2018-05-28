@@ -150,6 +150,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	public_ip             = ''
 
 	vbguest_auto_update   = true
+	synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
@@ -164,7 +165,8 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: `''`)
 * `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `true` / value: `true` | `false`)
-* `ansible_install_mode` (required)  Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
+* `synced_folder_type` 共有フォルダの種類 (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
+* `ansible_install_mode` (required) Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
 
@@ -608,9 +610,9 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 
 ### Deploy Tools (Activatable)
 
-* [Capistrano](http://capistranorb.com)
-* [Fabric](http://www.fabfile.org)
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
+* [Deployer](https://deployer.org/)
+* [Git-ftp](https://git-ftp.github.io/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
 ### Other
@@ -689,6 +691,11 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.8 - 2018.05.27
+	* add deployer and git-ftp
+	* remove capistrano and fabric
+	* add handlers with web server
+	* add option synced_folder_type with Vagrant Settings
 * version 0.5.7 - 2018.05.13
 	* change module from command to gem/npm
 	* fix deprecated match filter

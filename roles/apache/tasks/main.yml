@@ -4,12 +4,12 @@
     name: "{{ item }}"
     state: latest
   with_items:
-      - httpd
-      - httpd-devel
+    - httpd
+    - httpd-devel
 
 - name: include task (CentOS/RHEL 6)
   include: centos6.yml
-  when: 
+  when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 6
 
@@ -35,12 +35,13 @@
   file:
     path: /etc/httpd/conf.d/ssl.conf
     state: absent
+  notify: httpd restarted
   when:
     - ssl == true
     - is_ssl_conf.stat.exists
 
-- name: httpd started and enabled
+- name: httpd enabled
   service:
     name: httpd
-    state: restarted
     enabled: yes
+  notify: httpd restarted

@@ -19,26 +19,6 @@ if property["deploy_tools"] then
     it { should be_installed }
   end
 
-  describe package('capistrano') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('capistrano_colors') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('capistrano-ext') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
-  describe package('railsless-deploy') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
   describe package('net-sftp') do
     let(:disable_sudo) { true }
     it { should be_installed.by('gem') }
@@ -59,8 +39,14 @@ if property["deploy_tools"] then
     it { should be_installed.by('gem') }
   end
 
-  describe command('fab --version') do
-   its(:exit_status) { should eq 0 }
+  describe command('dep --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('git-ftp --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
   end
 
 end
