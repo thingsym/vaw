@@ -1,0 +1,60 @@
+---
+- block:
+  - name: mysql repository installed (CentOS/RHEL 6)
+    yum:
+      name: https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rpm
+    when: ansible_distribution_major_version|int == 6
+
+  - name: mysql repository installed (CentOS/RHEL 7)
+    yum:
+      name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+    when: ansible_distribution_major_version|int == 7
+
+  - name: yum-config enable mysql57-community
+    command: yum-config-manager --enable mysql57-community
+
+  - name: mysql 5.7 installed (CentOS/RHEL)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - mysql-community-server
+      - mysql-community-client
+      - mysql-community-common
+      - mysql-community-devel
+      - mysql-community-libs
+      - mysql-utilities
+      - MySQL-python
+  when: ansible_os_family == 'RedHat'
+
+- block:
+  - name: set mysql-apt-config to mysql version 5.7
+    debconf:
+      name: mysql-apt-config
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype | default ('select') }}"
+    with_items:
+      - question: mysql-apt-config/select-server
+        value: mysql-5.7
+      - question: mysql-apt-config/select-tools
+        value: Enabled
+
+  - name: mysql-apt-config installed (Debian)
+    apt:
+      deb: https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+
+  - name: apt-get update
+    command: apt-get update
+
+  - name: mysql 5.7 installed (Debian)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - mysql-community-server
+      - mysql-community-client
+      - mysql-common
+      - mysql-utilities
+      - python-mysqldb
+  when: ansible_os_family == 'Debian'
