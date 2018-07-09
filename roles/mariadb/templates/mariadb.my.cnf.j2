@@ -5,11 +5,16 @@
 # See the examples of server my.cnf files in /usr/share/mysql/
 #
 
-[client]
-default-character-set=utf8mb4
-
 # this is read by the standalone daemon and embedded servers
 [server]
+
+[client]
+port = 3306
+{% if ansible_os_family == "RedHat" %}
+socket = /var/lib/mysql/mysql.sock
+{% elif ansible_os_family == 'Debian' %}
+socket = /var/run/mysqld/mysqld.sock
+{% endif %}
 
 # this is only for the mysqld standalone daemon
 [mysqld]
@@ -18,6 +23,26 @@ innodb_buffer_pool_size = 128M
 
 character-set-server = utf8mb4
 skip-character-set-client-handshake
+
+pid-file = /var/lib/mysql/mysql.pid
+{% if ansible_os_family == "RedHat" %}
+socket = /var/lib/mysql/mysql.sock
+{% elif ansible_os_family == 'Debian' %}
+socket = /var/run/mysqld/mysqld.sock
+{% endif %}
+
+#
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+bind-address = 127.0.0.1
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+# Recommended in standard MySQL setup
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+log-error=/var/log/mysql/mysqld.log
 
 # slow_query_log = 1
 # slow_query_log_file = mysql-slow.log
@@ -56,3 +81,4 @@ skip-character-set-client-handshake
 # If you use the same .cnf file for MariaDB of different versions,
 # use this group for options that older servers don't understand
 [mariadb-10.1]
+

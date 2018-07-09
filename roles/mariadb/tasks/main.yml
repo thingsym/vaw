@@ -1,53 +1,6 @@
 ---
-- block:
-  - name: MariaDB 10.1 repository added (CentOS/RHEL 6)
-    yum_repository:
-      name: mariadb
-      description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos6-amd64
-      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-      gpgcheck: yes
-
-  - name: MariaDB installed (CentOS/RHEL 6)
-    package:
-      name: "{{ item }}"
-      state: latest
-    with_items:
-      - MariaDB-server
-      - MariaDB-client
-      - MariaDB-common
-      - MariaDB-compat
-      - MariaDB-devel
-      - MariaDB-shared
-      - MySQL-python
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
-
-- block:
-  - name: MariaDB 10.1 repository installed (CentOS/RHEL 7)
-    yum_repository:
-      name: mariadb
-      description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos7-amd64
-      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-      gpgcheck: yes
-
-  - name: MariaDB installed (CentOS/RHEL 7)
-    package:
-      name: "{{ item }}"
-      state: latest
-    with_items:
-      - mariadb-server
-      - MariaDB-client
-      - mariadb
-      - mariadb-devel
-      - mariadb-libs
-      - mariadb-embedded
-      - MySQL-python
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
+- name: include task
+  include: "mariadb-{{ mariadb_version | default(10.3) }}.yml"
 
 - name: stat custom my.cnf.j2
   stat:
@@ -66,19 +19,26 @@
     dest: /etc/my.cnf
   when: not is_custom_my_conf.stat.exists
 
+- name: mkdir /var/log/mysql
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+
+- name: mariadb started and enabled
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int != 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'trusty')
+
 - name: mysqld started and enabled
   service:
     name: mysql
     state: restarted
     enabled: yes
-
-- name: set MariaDB root password
-  mysql_user:
-    name: root
-    password: "{{ db_root_password }}"
-    host: localhost
-    state: present
-  ignore_errors: yes
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int == 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty')
 
 - name: set MariaDB root password
   mysql_user:
@@ -86,29 +46,26 @@
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
-    login_user: root
-    login_password: "{{ db_root_password }}"
   with_items:
-    - "{{ ansible_hostname }}"
+    - localhost
     - 127.0.0.1
     - ::1
+  ignore_errors: yes
 
 - name: Delete blank MariaDB users
   mysql_user:
     name: ""
-    host: "{{ item }}"
+    host: localhost
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
-  with_items:
-    - localhost
 
 - name: Drop MariaDB test database
   mysql_db:
-     name: test
-     state: absent
-     login_user: root
-     login_password: "{{ db_root_password }}"
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ db_root_password }}"
 
 - name: create symbolic link
   file:

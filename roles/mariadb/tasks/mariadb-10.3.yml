@@ -1,0 +1,112 @@
+---
+- block:
+  - name: MariaDB 10.3 repository added (CentOS/RHEL 6)
+    yum_repository:
+      name: mariadb
+      description: MariaDB 10.3 centos repository
+      baseurl: http://yum.mariadb.org/10.3/centos6-amd64
+      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+      gpgcheck: yes
+
+  - name: MariaDB installed (CentOS/RHEL 6)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - MariaDB-server
+      - MariaDB-client
+      - MariaDB-shared
+      - MariaDB-devel
+      - MariaDB-common
+      - MariaDB-compat
+      - MySQL-python
+  when:
+    - ansible_distribution == 'CentOS' 
+    - ansible_distribution_major_version|int == 6
+
+- block:
+  - name: MariaDB 10.3 repository installed (CentOS/RHEL 7)
+    yum_repository:
+      name: mariadb
+      description: MariaDB 10.3 centos repository
+      baseurl: http://yum.mariadb.org/10.3/centos7-amd64
+      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+      gpgcheck: yes
+
+  - name: MariaDB 10.3 installed (CentOS/RHEL 7)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - MariaDB-server
+      - MariaDB-client
+      - MariaDB-shared
+      - mariadb-devel
+      - mariadb-libs
+      - mariadb-embedded
+      - MySQL-python
+  when:
+    - ansible_distribution == 'CentOS' 
+    - ansible_distribution_major_version|int == 7
+
+- block:
+  - name: MariaDB apt_key installed (Ubuntu/xenial)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xF1656F24C74CD1D8"
+    when: ansible_distribution_release == 'xenial'
+
+  - name: MariaDB apt_key installed (Ubuntu/trusty)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xcbcb082a1bb943db"
+    when: ansible_distribution_release == 'trusty'
+
+  - name: MariaDB 10.3 repository installed
+    apt_repository:
+      filename: MariaDB
+      repo: 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.3/ubuntu {{ ansible_distribution_release }} main'
+
+  - name: MariaDB 10.3 installed (Ubuntu)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - mariadb-server-10.3
+      - mariadb-client-10.3
+      - mariadb-common
+      - libmariadbd-dev
+      - libmariadbclient18
+      - python-mysqldb
+  when: ansible_distribution == 'Ubuntu'
+
+- block:
+  - name: MariaDB 10.3 apt_key installed (Debian/stretch)
+    apt_key:
+      keyserver: hkp://keyserver.ubuntu.com:80
+      id: "0xF1656F24C74CD1D8"
+    when: ansible_distribution_release == 'stretch'
+
+  - name: MariaDB 10.3 apt_key installed (Debian/jessie)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xcbcb082a1bb943db"
+    when: ansible_distribution_release == 'jessie'
+
+  - name: MariaDB 10.3 repository installed
+    apt_repository:
+      filename: MariaDB
+      repo: 'deb [arch=amd64,i386] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.3/debian {{ ansible_distribution_release }} main'
+
+  - name: MariaDB 10.3 installed (Debian)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - mariadb-server-10.3
+      - mariadb-client-10.3
+      - mariadb-common
+      - libmariadbd-dev
+      - libmariadbclient18
+      - python-mysqldb
+  when: ansible_distribution == 'Debian'
