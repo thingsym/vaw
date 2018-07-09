@@ -1,36 +1,6 @@
 ---
-- name: percona repository installed
-  yum:
-    name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
-
-- name: percona-release.repo edited (CentOS/RHEL 6)
-  replace:
-    dest: /etc/yum.repos.d/percona-release.repo
-    regexp: "$releasever"
-    replace: "6"
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
-
-- name: percona-release.repo edited (CentOS/RHEL 7)
-  replace:
-    dest: /etc/yum.repos.d/percona-release.repo
-    regexp: "$releasever"
-    replace: "7"
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
-
-- name: percona 5.6 installed
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - Percona-Server-server-56
-    - Percona-Server-devel-56
-    - Percona-Server-client-56
-    - Percona-Server-shared-56
-    - MySQL-python
+- name: include task
+  include: "percona-{{ percona_version | default(5.7) }}.yml"
 
 - name: stat custom my.cnf.j2
   stat:
@@ -49,61 +19,88 @@
     dest: /etc/my.cnf
   when: not is_custom_my_conf.stat.exists
 
-- name: mysql started and enabled (CentOS/RHEL 6)
-  service:
-    name: mysql
-    state: restarted
-    enabled: yes
+- name: mkdir /var/log/mysql
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+
+- name: mkdir /var/run/mysqld
+  file:
+    path: /var/run/mysqld
+    state: directory
+    owner: mysql
+    group: mysql
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 6
 
-- name: mysql started and enabled (CentOS/RHEL 7)
+- name: mysql started and enabled
   service:
-    name: mysqld
+    name: mysql
     state: restarted
     enabled: yes
+
+- block:
+  - name: get temporary password from mysqld.log
+    shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $11}'
+    register: mysql_temp_password
+
+  - name: change password validation
+    shell: |
+      mysql -u root -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password_length=4;"
+      mysql -u root -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password_policy=LOW;"
+
+  - name: set percona 5.7 root password from temporary password (CentOS/RHEL)
+    shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET PASSWORD=PASSWORD('{{ db_root_password }}');"
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
+    - percona_version == 5.7
 
-- name: set percona root password
-  mysql_user:
-    name: root
-    password: "{{ db_root_password }}"
-    host: localhost
-    state: present
-  ignore_errors: yes
-
-- name: set percona root password
+- name: set percona 5.7 root password (Debian)
   mysql_user:
     name: root
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
-    login_user: root
-    login_password: "{{ db_root_password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
   with_items:
-    - "{{ ansible_hostname }}"
+    - localhost
     - 127.0.0.1
     - ::1
+  ignore_errors: yes
+  when:
+    - ansible_os_family == 'Debian'
+    - percona_version == 5.7
+  
+- name: set percona 5.6 root password
+  mysql_user:
+    name: root
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+  when: percona_version == 5.6
 
-- name: Delete blank Percona users
+- name: delete blank percona users
   mysql_user:
     name: ""
-    host: "{{ item }}"
+    host: localhost
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
-  with_items:
-    - localhost
 
-- name: Drop Percona test database
+- name: drop percona test database
   mysql_db:
-     name: test
-     state: absent
-     login_user: root
-     login_password: "{{ db_root_password }}"
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ db_root_password }}"
 
 - name: create symbolic link
   file:
