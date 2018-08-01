@@ -1,7 +1,8 @@
 {% if server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 6 %}
 --with-apxs2=/usr/sbin/apxs
-{% endif %}
-{% if server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 %}
+{% elif server == "apache" and ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7 %}
+--with-apxs2=/usr/bin/apxs
+{% elif server == "apache" and ansible_os_family == 'Debian' %}
 --with-apxs2=/usr/bin/apxs
 {% endif %}
 --enable-fpm
@@ -16,6 +17,7 @@
 --with-zlib-dir=/usr
 --with-kerberos
 --with-openssl
+--with-openssl-dir=/usr
 --with-mcrypt=/usr
 --enable-soap
 --enable-xmlreader
@@ -32,7 +34,11 @@
 --with-mysql=mysqlnd
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
+{% if ansible_os_family == 'RedHat' %}
 --with-mysql-sock=/tmp/mysql.sock
+{% elif ansible_os_family == 'Debian' %}
+--with-mysql-sock=/var/run/mysqld/mysqld.sock
+{% endif %}
 --with-pdo-sqlite
 --enable-pcntl
 --with-readline
@@ -41,6 +47,3 @@
 --disable-debug
 --enable-bcmath
 --enable-opcache
---enable-apc
---enable-apc-debug
---enable-apc-filehits
