@@ -1,36 +1,6 @@
 ---
-- name: mysql repository installed (CentOS/RHEL 6)
-  yum:
-    name: https://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
-
-- name: mysql repository installed (CentOS/RHEL 7)
-  yum:
-    name: https://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
-
-- name: yum-config disable mysql57-community
-  command: yum-config-manager --disable mysql57-community
-
-- name: yum-config enable mysql56-community
-  command: yum-config-manager --enable mysql56-community
-
-- name: mysql 5.6 installed
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - mysql-community-server
-    - mysql-community-devel
-    - mysql-community-client
-    - mysql-community-common
-    - mysql-community-libs
-    - mysql-utilities
-    - MySQL-python
+- name: include task
+  include: "mysql-{{ mysql_version | default(5.7) }}.yml"
 
 - name: stat custom my.cnf.j2
   stat:
@@ -49,49 +19,120 @@
     dest: /etc/my.cnf
   when: not is_custom_my_conf.stat.exists
 
-- name: mysqld started and enabled
+- name: mkdir /var/log/mysql
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+
+- name: mysqld started and enabled (CentOS/RHEL)
   service:
     name: mysqld
     state: restarted
     enabled: yes
+  when: ansible_os_family == 'RedHat'
 
-- name: set mysql root password
-  mysql_user:
-    name: root
-    password: "{{ db_root_password }}"
-    host: localhost
-    state: present
-  ignore_errors: yes
+- name: mysql started and enabled (Debian)
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == 'Debian'
 
-- name: set mysql root password
+- block:
+  - name: get temporary password from mysqld.log
+    shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $13}'
+    register: mysql_temp_password
+
+  - name: change password validation
+    shell: |
+      mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password.length=4;"
+      mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password.policy=LOW;"
+
+  - name: set mysql 8.0 root password from temporary password (CentOS/RHEL)
+    shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ db_root_password }}';"
+  when:
+    - ansible_os_family == 'RedHat'
+    - mysql_version == 8.0
+
+- block:
+  - name: get temporary password from mysqld.log
+    shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $11}'
+    register: mysql_temp_password
+
+  - name: change password validation
+    shell: |
+      mysql -u root -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password_length=4;"
+      mysql -u root -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password_policy=LOW;"
+
+  - name: set mysql 5.7 root password from temporary password (CentOS/RHEL)
+    shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET PASSWORD=PASSWORD('{{ db_root_password }}');"
+  when:
+    - ansible_os_family == 'RedHat'
+    - mysql_version == 5.7
+
+- name: set mysql 8.0 root password (Debian)
   mysql_user:
     name: root
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
-    login_user: root
-    login_password: "{{ db_root_password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
   with_items:
-    - "{{ ansible_hostname }}"
+    - localhost
     - 127.0.0.1
     - ::1
+  ignore_errors: yes
+  when:
+    - ansible_os_family == 'Debian'
+    - mysql_version == 8.0
 
-- name: Delete blank MySQL users
+- name: set mysql 5.7 root password (Debian)
+  mysql_user:
+    name: root
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+  ignore_errors: yes
+  when:
+    - ansible_os_family == 'Debian'
+    - mysql_version == 5.7
+
+- name: set mysql 5.6 root password
+  mysql_user:
+    name: root
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+  ignore_errors: yes
+  when: mysql_version == 5.6
+
+- name: delete blank mysql users
   mysql_user:
     name: ""
-    host: "{{ item }}"
+    host: localhost
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
-  with_items:
-    - localhost
 
-- name: Drop MySQL test database
+- name: drop mysql test database
   mysql_db:
-     name: test
-     state: absent
-     login_user: root
-     login_password: "{{ db_root_password }}"
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ db_root_password }}"
 
 - name: create symbolic link
   file:

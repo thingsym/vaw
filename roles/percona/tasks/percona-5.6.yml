@@ -1,0 +1,38 @@
+---
+- block:
+  - name: percona repository installed (CentOS/RHEL)
+    yum:
+      name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
+
+  - name: percona 5.6 installed (CentOS/RHEL)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - Percona-Server-server-56
+      - Percona-Server-client-56
+      - Percona-Server-shared-56
+      - Percona-Server-devel-56
+      - MySQL-python
+  when: ansible_os_family == 'RedHat'
+
+- block:
+  - name: percona-release repository installed (Debian)
+    apt:
+      deb: "https://repo.percona.com/apt/percona-release_0.1-4.{{ ansible_distribution_release }}_all.deb"
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+
+  - name: percona 5.6 installed (Debian)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - percona-server-server-5.6
+      - percona-server-client-5.6
+      - percona-server-common-5.6
+      - libperconaserverclient18.1-dev
+      - python-mysqldb
+  when: ansible_os_family == 'Debian'
