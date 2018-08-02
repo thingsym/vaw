@@ -1,0 +1,75 @@
+---
+- block:
+  - name: MariaDB 5.5 repository added (CentOS/RHEL 6)
+    yum_repository:
+      name: mariadb
+      description: MariaDB 5.5 centos repository
+      baseurl: http://yum.mariadb.org/5.5/centos6-amd64
+      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+      gpgcheck: yes
+
+  - name: MariaDB installed (CentOS/RHEL 6)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - MariaDB-server
+      - MariaDB-client
+      - MariaDB-shared
+      - MariaDB-devel
+      - MariaDB-common
+      - MariaDB-compat
+      - MySQL-python
+  when:
+    - ansible_distribution == 'CentOS' 
+    - ansible_distribution_major_version|int == 6
+
+- block:
+  - name: MariaDB 5.5 repository installed (CentOS/RHEL 7)
+    yum_repository:
+      name: mariadb
+      description: MariaDB 5.5 centos repository
+      baseurl: http://yum.mariadb.org/5.5/centos7-amd64
+      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+      gpgcheck: yes
+
+  - name: MariaDB 5.5 installed (CentOS/RHEL 7)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - MariaDB-server
+      - MariaDB-client
+      - MariaDB-shared
+      - mariadb-devel
+      - mariadb-libs
+      - mariadb-embedded
+      - MySQL-python
+  when:
+    - ansible_distribution == 'CentOS' 
+    - ansible_distribution_major_version|int == 7
+
+- block:
+  - name: MariaDB apt_key installed (Ubuntu/trusty)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xcbcb082a1bb943db"
+    when: ansible_distribution_release == 'trusty'
+
+  - name: MariaDB 5.5 repository installed
+    apt_repository:
+      filename: MariaDB
+      repo: 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/5.5/ubuntu {{ ansible_distribution_release }} main'
+
+  - name: MariaDB 5.5 installed (Ubuntu)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - mariadb-server-5.5
+      - mariadb-client-5.5
+      - mariadb-common
+      - libmariadbd-dev
+      - libmariadbclient18
+      - python-mysqldb
+  when: ansible_distribution == 'Ubuntu'
