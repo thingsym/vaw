@@ -691,6 +691,12 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.5.9 - 2018.08.02
+	* improve phpenv.sh version 0.4.1
+	* fix php-build.default_configure_options
+	* fix httpd.conf for apache mpm_event
+	* add other versions database tasks
+	* bump up MariaDB 10.3, MySQL 5.7, Percona 5.7
 * version 0.5.8 - 2018.05.27
 	* add deployer and git-ftp
 	* remove capistrano and fabric
