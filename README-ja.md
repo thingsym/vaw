@@ -691,6 +691,10 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.6.0 - 2018.09.03
+	* enable ssl and https by default
+	* bump up ruby version 2.5.1
+	* bump up Node version 8.11.4
 * version 0.5.9 - 2018.08.02
 	* improve phpenv.sh version 0.4.1
 	* fix php-build.default_configure_options
