@@ -87,11 +87,11 @@ SAVEQUERIES        : true   # true|false
 
 ## Develop & Deploy Settings ##
 
-ssl                : false   # true|false
+ssl                : true   # true|false
 
 # See Supported Versions http://php.net/supported-versions.php
 php_version        : 7.2.1
-http_protocol      : http   # http|https
+http_protocol      : https   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false

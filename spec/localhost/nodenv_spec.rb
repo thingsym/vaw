@@ -3,7 +3,7 @@ require 'shellwords'
 
 if property["develop_tools"] then
 
-  ['6.9.1'].each do |node_version|
+  ['8.11.4'].each do |node_version|
     describe command("nodenv versions | grep #{node_version}") do
       let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
@@ -12,12 +12,12 @@ if property["develop_tools"] then
 
   describe command('node -v') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '6.9.1' }
+    its(:stdout) { should match '8.11.4' }
   end
 
   describe command('nodenv global') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '6.9.1' }
+    its(:stdout) { should match '8.11.4' }
   end
 
   describe file('/home/vagrant/.bashrc_vaw') do

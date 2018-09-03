@@ -3,7 +3,7 @@ require 'shellwords'
 
 if property["develop_tools"] || property["deploy_tools"] then
 
-  ['2.4.1'].each do |ruby_version|
+  ['2.5.1'].each do |ruby_version|
     describe command("rbenv versions | grep #{ruby_version}") do
       let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(ruby_version)}/) }
@@ -12,12 +12,12 @@ if property["develop_tools"] || property["deploy_tools"] then
 
   describe command('ruby -v') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '2.4.1' }
+    its(:stdout) { should match '2.5.1' }
   end
 
   describe command('rbenv global') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '2.4.1' }
+    its(:stdout) { should match '2.5.1' }
   end
 
   describe file('/home/vagrant/.bashrc_vaw') do
