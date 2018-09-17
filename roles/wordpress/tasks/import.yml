@@ -132,12 +132,13 @@
     - is_uploads.stat.exists
     - is_uploads.stat.isdir == true
 
-
 - name: replace old url
-  command: wp --path={{ WP_PATH }} search-replace {{ replace_old_url }} {{ WP_URL }} --precise --recurse-objects
+  command: wp --path={{ WP_PATH }} search-replace '{{ item }}' '{{ WP_URL }}' --precise --all-tables
   become: yes
   become_user: vagrant
-  when: replace_old_url != ''
+  when: item != ''
+  with_items:
+    - "{{ replace_old_url | default([]) }}"
 
 - name: regenerate thumbnails
   command: wp --path={{ WP_PATH }} media regenerate --yes
