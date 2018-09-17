@@ -260,7 +260,8 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	import_admin       : false   # true|false
 	theme_unit_test    : false   # true|false
 
-	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
+	replace_old_url         : [] # http(s)://example.com, to vm_hostname from old url
+	search_replace_strings  : {}
 	regenerate_thumbnails   : false   # true|false
 
 	WP_DEBUG           : true   # true|false
@@ -395,6 +396,31 @@ Disable the setting case
 * `import_admin` Add WordPress administrator user (default: `false` / value: `true` | `false`)
 * `theme_unit_test` import Theme Unit Test data enabled flag (default: `false` / value: `true` | `false`)
 * `replace_old_url` replace to `vm_hostname` from `old url`
+
+Configuration example
+
+	replace_old_url         :
+	                           - http://example.com
+	                           - http://www.example.com
+	                           - https://example.com
+
+Disable the setting case
+
+	replace_old_url         : []
+
+* `search_replace_strings` Search the database and replace the matched string
+
+Configuration example
+
+	search_replace_strings  :
+	                           'foo': 'bar'
+	                           'abc': 'xyz'
+	                           'Hello, World!': 'Welcome to WordPress!'
+
+Disable the setting case
+
+	search_replace_strings  : {}
+
 * `regenerate_thumbnails` regenerate thumbnails enabled flag (default: `false` / value: `true` | `false`)
 * `WP_DEBUG` debug mode (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` save the database queries (default: `true` / value: `true` | `false`)
