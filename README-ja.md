@@ -717,6 +717,10 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.6.1 - 2018.09.17
+	* separate files
+	* add multiple search-replace
+	* change to multiple search-replace for replace_old_url
 * version 0.6.0 - 2018.09.03
 	* enable ssl and https by default
 	* bump up ruby version 2.5.1
