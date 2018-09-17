@@ -1,0 +1,31 @@
+---
+- name: stat import_xml_data
+  stat:
+    path: "{{ import_xml_data }}"
+  register: is_xml_import
+
+- block:
+  - name: database rest
+    command: wp --path={{ WP_PATH }} db reset --yes
+    become: yes
+    become_user: vagrant
+
+  - name: plugin install wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
+
+  - name: import xml data
+    command: wp --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
+    become: yes
+    become_user: vagrant
+
+  - name: plugin deactivate wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant
+  when:
+    - is_xml_import.stat.exists
+    - is_xml_import.stat.isdir == false
+    - import_db_data == ''
+    - theme_unit_test == false

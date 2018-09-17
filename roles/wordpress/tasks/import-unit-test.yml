@@ -1,0 +1,54 @@
+---
+- name: get wordpress unit-test data
+  get_url:
+    url: "{{ unit_test_url }}"
+    dest: "/tmp/theme-unit-test-data.xml"
+    force: yes
+    validate_certs: no
+  when:
+    - theme_unit_test == true
+    - lang != 'ja'
+    - import_xml_data == ''
+    - import_db_data == ''
+
+- name: get wordpress unit-test-ja data
+  get_url:
+    url: "{{ unit_test_ja_url }}"
+    dest: "/tmp/theme-unit-test-data.xml"
+    force: yes
+    validate_certs: no
+  when:
+    - theme_unit_test == true
+    - lang == 'ja'
+    - import_xml_data == ''
+    - import_db_data == ''
+
+- name: stat theme-unit-test-data.xml
+  stat:
+    path: "/tmp/theme-unit-test-data.xml"
+  register: is_unit_test
+
+- block:
+  - name: plugin install wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
+
+  - name: import theme-unit-test-data.xml
+    command: wp --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
+    become: yes
+    become_user: vagrant
+
+  - name: plugin deactivate wordpress-importer
+    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant
+
+  - name: delete theme-unit-test-data.xml
+    file:
+      path: "/tmp/theme-unit-test-data.xml"
+      state: absent
+  when:
+    - is_unit_test.stat.exists
+    - import_xml_data == ''
+    - import_db_data == ''

@@ -21,6 +21,11 @@
     register: is_db_data_file
 
   - block:
+    - name: database rest
+      command: wp --path={{ WP_PATH }} db reset --yes
+      become: yes
+      become_user: vagrant
+
     - name: db data import
       command: wp --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
       become: yes
@@ -39,6 +44,11 @@
     register: is_xml_data_file
 
   - block:
+    - name: database rest
+      command: wp --path={{ WP_PATH }} db reset --yes
+      become: yes
+      become_user: vagrant
+
     - name: plugin install wordpress-importer
       command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
       become: yes

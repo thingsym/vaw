@@ -1,109 +1,9 @@
 ---
-- name: stat import_xml_data
-  stat:
-    path: "{{ import_xml_data }}"
-  register: is_xml_import
 
-- block:
-  - name: plugin install wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
-    become: yes
-    become_user: vagrant
-
-  - name: import xml data
-    command: wp --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
-    become: yes
-    become_user: vagrant
-
-  - name: plugin deactivate wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
-    become: yes
-    become_user: vagrant
-  when:
-    - is_xml_import.stat.exists
-    - is_xml_import.stat.isdir == false
-    - import_db_data == ''
-    - theme_unit_test == false
-
-
-- name: stat import_db_data
-  stat:
-    path: "{{ import_db_data }}"
-  register: is_db_import
-
-- block:
-  - name: db data import
-    command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
-    become: yes
-    become_user: vagrant
-
-  - name: add user admin
-    command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
-    become: yes
-    become_user: vagrant
-    when: import_admin == true
-  when:
-    - is_db_import.stat.exists
-    - is_db_import.stat.isdir == false
-    - import_xml_data == ''
-    - theme_unit_test == false
-
-- include: backwpup.yml
-
-- name: get wordpress unit-test data
-  get_url:
-    url: "{{ unit_test_url }}"
-    dest: "/tmp/theme-unit-test-data.xml"
-    force: yes
-    validate_certs: no
-  when:
-    - theme_unit_test == true
-    - lang != 'ja'
-    - import_xml_data == ''
-    - import_db_data == ''
-
-- name: get wordpress unit-test-ja data
-  get_url:
-    url: "{{ unit_test_ja_url }}"
-    dest: "/tmp/theme-unit-test-data.xml"
-    force: yes
-    validate_certs: no
-  when:
-    - theme_unit_test == true
-    - lang == 'ja'
-    - import_xml_data == ''
-    - import_db_data == ''
-
-- name: stat theme-unit-test-data.xml
-  stat:
-    path: "/tmp/theme-unit-test-data.xml"
-  register: is_unit_test
-
-- block:
-  - name: plugin install wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
-    become: yes
-    become_user: vagrant
-
-  - name: import theme-unit-test-data.xml
-    command: wp --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
-    become: yes
-    become_user: vagrant
-
-  - name: plugin deactivate wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
-    become: yes
-    become_user: vagrant
-
-  - name: delete theme-unit-test-data.xml
-    file:
-      path: "/tmp/theme-unit-test-data.xml"
-      state: absent
-  when:
-    - is_unit_test.stat.exists
-    - import_xml_data == ''
-    - import_db_data == ''
-
+- include: import-xml.yml
+- include: import-db.yml
+- include: import-backwpup.yml
+- include: import-unit-test.yml
 
 - name: stat wp-content
   stat:
@@ -132,12 +32,19 @@
     - is_uploads.stat.exists
     - is_uploads.stat.isdir == true
 
-
 - name: replace old url
-  command: wp --path={{ WP_PATH }} search-replace {{ replace_old_url }} {{ WP_URL }} --precise --recurse-objects
+  command: wp --path={{ WP_PATH }} search-replace '{{ item }}' '{{ WP_URL }}' --precise --all-tables
   become: yes
   become_user: vagrant
-  when: replace_old_url != ''
+  when: item != ''
+  with_items:
+    - "{{ replace_old_url | default([]) }}"
+
+- name: search tables and replace string
+  command: wp --path={{ WP_PATH }} search-replace '{{ item.key }}' '{{ item.value }}' --precise --all-tables
+  become: yes
+  become_user: vagrant
+  with_dict: "{{ search_replace_strings | default({}) }}"
 
 - name: regenerate thumbnails
   command: wp --path={{ WP_PATH }} media regenerate --yes
