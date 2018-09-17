@@ -140,6 +140,12 @@
   with_items:
     - "{{ replace_old_url | default([]) }}"
 
+- name: search tables and replace string
+  command: wp --path={{ WP_PATH }} search-replace '{{ item.key }}' '{{ item.value }}' --precise --all-tables
+  become: yes
+  become_user: vagrant
+  with_dict: "{{ search_replace_strings | default({}) }}"
+
 - name: regenerate thumbnails
   command: wp --path={{ WP_PATH }} media regenerate --yes
   become: yes
