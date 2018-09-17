@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'shellwords'
 
 describe file('/etc/udev/rules.d/70-persistent-net.rules') do
-  it { should be_directory }
+  it { should be_symlink }
 end
 
 describe file('/etc/sysconfig/network-scripts/ifcfg-eth1') do
