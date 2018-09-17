@@ -1,0 +1,27 @@
+---
+- name: stat import_db_data
+  stat:
+    path: "{{ import_db_data }}"
+  register: is_db_import
+
+- block:
+  - name: database rest
+    command: wp --path={{ WP_PATH }} db reset --yes
+    become: yes
+    become_user: vagrant
+
+  - name: db data import
+    command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
+    become: yes
+    become_user: vagrant
+
+  - name: add user admin
+    command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+    become: yes
+    become_user: vagrant
+    when: import_admin == true
+  when:
+    - is_db_import.stat.exists
+    - is_db_import.stat.isdir == false
+    - import_xml_data == ''
+    - theme_unit_test == false
