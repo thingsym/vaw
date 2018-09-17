@@ -66,11 +66,6 @@
   command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
   become: yes
   become_user: vagrant
-  # shell: |
-  # sudo -u vagrant -i -- {{ WP_CLI }} --path={{ WP_PATH }} core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --extra-php <<-PHP
-  # define( 'WP_DEBUG', {{ WP_DEBUG }} );
-  # define( 'SAVEQUERIES', {{ WP_SAVEQUERIES }} );
-  # PHP
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 6
@@ -127,33 +122,31 @@
     replace: "// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
   when: ssl == true
 
-- name: change wp option for subdirectory install
-  command: wp --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
-  become: yes
-  become_user: vagrant
-  when: wp_site_path != wp_dir
+- block:
+  - name: change wp option for subdirectory install
+    command: wp --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
+    become: yes
+    become_user: vagrant
 
-- name: copy index.php for subdirectory install
-  copy:
-    src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php"
-    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
-  when: wp_site_path != wp_dir
+  - name: copy index.php for subdirectory install
+    copy:
+      src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php"
+      dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
 
-- name: change load path in index.php for subdirectory install
-  replace:
-    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
-    regexp: "'/wp-blog-header.php'"
-    replace: "'{{ wp_dir }}/wp-blog-header.php'"
-  when: wp_site_path != wp_dir
+  - name: change load path in index.php for subdirectory install
+    replace:
+      dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
+      regexp: "'/wp-blog-header.php'"
+      replace: "'{{ wp_dir }}/wp-blog-header.php'"
 
-- name: copy .htaccess for subdirectory install
-  copy:
-    src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
-    dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
-  when:
-    - wp_site_path != wp_dir
-    - multisite == true
-    - server == "apache"
+  - name: copy .htaccess for subdirectory install
+    copy:
+      src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
+      dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
+    when:
+      - multisite == true
+      - server == "apache"
+  when: wp_site_path != wp_dir
 
 - name: themes install
   command: wp --path={{ WP_PATH }} theme install {{ item }}
