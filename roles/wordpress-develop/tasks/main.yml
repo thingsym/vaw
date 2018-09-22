@@ -7,10 +7,11 @@
     - subversion
     - gettext
 
-- name: gem libraries installed
+- name: gem libraries globally installed
   gem:
     name: "{{ item }}"
     executable: "{{ rbenv_dir }}/shims/gem"
+    user_install: false
   with_items:
     - sass
   become: yes
