@@ -3,11 +3,29 @@ require 'shellwords'
 
 if property["develop_tools"] || property["deploy_tools"] then
 
+  describe file('/home/vagrant/.rbenv/') do
+    it { should be_directory }
+    it { should be_owned_by 'vagrant' }
+    it { should be_grouped_into 'vagrant' }
+  end
+
+  describe command('which rbenv') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/bin\/rbenv/) }
+  end
+
   ['2.5.1'].each do |ruby_version|
     describe command("rbenv versions | grep #{ruby_version}") do
       let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(ruby_version)}/) }
     end
+  end
+
+  describe command('which ruby') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/shims\/ruby/) }
   end
 
   describe command('ruby -v') do
@@ -33,9 +51,21 @@ if property["develop_tools"] || property["deploy_tools"] then
     it { should be_directory }
   end
 
+  describe command('which gem') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/shims\/gem/) }
+  end
+
+  describe command('gem --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+  end
+
   describe command('which bundler') do
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/shims\/bundler/) }
   end
 
   describe command('bundler --version') do

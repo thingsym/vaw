@@ -16,29 +16,76 @@ if property["develop_tools"] then
     it { should be_installed.by('gem') }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/grunt --version') do
+  describe command('which grunt') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/grunt/) }
+  end
+
+  describe command('grunt --version') do
+    let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/grunt-init --version') do
+  describe command('grunt-init --version') do
+    let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/gulp --version') do
+  describe command('which gulp') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/gulp/) }
+  end
+
+  describe command('gulp --version') do
+    let(:sudo_options) { '-u vagrant -i' }
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/npm-check-updates --version') do
+  describe command('which ncu') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/ncu/) }
+  end
+
+  command('ncu --version') do
+    let(:sudo_options) { '-u vagrant -i' }
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('/home/vagrant/.nodenv/shims/stylestats --version') do
+  describe command('which npm-check-updates') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/npm-check-updates/) }
+  end
+
+  describe command('npm-check-updates --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+   its(:exit_status) { should eq 0 }
+  end
+
+  describe command('which stylestats') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/stylestats/) }
+  end
+
+  describe command('stylestats --version') do
+    let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
   end
 
-  # describe command('/home/vagrant/.nodenv/shims/plato --version') do
-  #   its(:exit_status) { should eq 0 }
-  # end
+  describe command('which plato') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/plato/) }
+  end
+
+  describe command('plato --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+  end
 
   describe command('yarn --version') do
     let(:sudo_options) { '-u vagrant -i' }
@@ -51,6 +98,12 @@ if property["develop_tools"] then
 
   describe file('/home/vagrant/.bashrc_vaw') do
     its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
+  end
+
+  describe command('which phpunit') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpunit/) }
   end
 
   if property["php_version"] =~ /^7/ then
@@ -67,6 +120,12 @@ if property["develop_tools"] then
       its(:exit_status) { should eq 0 }
       its(:stdout) { should match /^PHPUnit 4\.8/ }
     end
+  end
+
+  describe command('which phpcs') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpcs/) }
   end
 
   describe command('phpcs --version') do
@@ -106,6 +165,12 @@ if property["develop_tools"] then
   describe file('/usr/local/bin/wrk') do
     it { should be_file }
     it { should be_executable }
+  end
+
+  describe command('which phpmd') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpmd/) }
   end
 
   describe command('phpmd --version') do

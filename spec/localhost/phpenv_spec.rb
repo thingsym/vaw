@@ -10,11 +10,13 @@ end
 describe command('which phpenv') do
   let(:sudo_options) { '-u vagrant -i'}
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/bin\/phpenv/) }
 end
 
 describe command('which php') do
   let(:sudo_options) { '-u vagrant -i'}
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/php/) }
 end
 
 describe command('which php-cgi') do
@@ -49,6 +51,12 @@ end
 
 describe file('/home/vagrant/.phpenv/plugins/php-build') do
   it { should be_directory }
+end
+
+describe command('which composer') do
+  let(:sudo_options) { '-u vagrant -i' }
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/composer/) }
 end
 
 describe command('composer --version') do

@@ -3,11 +3,29 @@ require 'shellwords'
 
 if property["develop_tools"] then
 
+  describe file('/home/vagrant/.nodenv/') do
+    it { should be_directory }
+    it { should be_owned_by 'vagrant' }
+    it { should be_grouped_into 'vagrant' }
+  end
+
+  describe command('which nodenv') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/bin\/nodenv/) }
+  end
+
   ['8.11.4'].each do |node_version|
     describe command("nodenv versions | grep #{node_version}") do
       let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
     end
+  end
+
+  describe command('which node') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/node/) }
   end
 
   describe command('node -v') do
@@ -31,6 +49,12 @@ if property["develop_tools"] then
 
   describe file('/home/vagrant/.nodenv/plugins/nodenv-default-packages') do
     it { should be_directory }
+  end
+
+  describe command('which npm') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/npm/) }
   end
 
   describe command('npm -v') do
