@@ -253,7 +253,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	import_admin       : false   # true|false
 	theme_unit_test    : false   # true|false
 
-	replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
+	replace_old_url         : [] # http(s)://example.com, to vm_hostname from old url
+	search_replace_strings  : {}
 	regenerate_thumbnails   : false   # true|false
 
 	WP_DEBUG           : true   # true|false
@@ -390,6 +391,31 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 * `import_admin` WordPress 管理者ユーザーの追加 (default: `false` / value: `true` | `false`)
 * `theme_unit_test` テーマユニットテストデータのインポート有効化 (default: `false` / value: `true` | `false`)
 * `replace_old_url` `old url` から `vm_hostname` に置換
+
+設定例
+
+	replace_old_url         :
+	                           - http://example.com
+	                           - http://www.example.com
+	                           - https://example.com
+
+設定を無効にする場合
+
+	replace_old_url         : []
+
+* `search_replace_strings` データベースを検索してマッチした文字列を置換する
+
+設定例
+
+	search_replace_strings  :
+	                           'foo': 'bar'
+	                           'abc': 'xyz'
+	                           'Hello, World!': 'Welcome to WordPress!'
+
+設定を無効にする場合
+
+	search_replace_strings  : {}
+
 * `regenerate_thumbnails` サムネイル画像の再生成を有効化 (default: `false` / value: `true` | `false`)
 * `WP_DEBUG` デバックモードを有効化 (default: `true` / value: `true` | `false`)
 * `SAVEQUERIES` データベースクエリを保存 (default: `true` / value: `true` | `false`)
@@ -691,6 +717,10 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.6.1 - 2018.09.17
+	* separate files
+	* add multiple search-replace
+	* change to multiple search-replace for replace_old_url
 * version 0.6.0 - 2018.09.03
 	* enable ssl and https by default
 	* bump up ruby version 2.5.1
