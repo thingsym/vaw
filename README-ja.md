@@ -717,6 +717,9 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.6.2 - 2018.09.23
+	* fix tests
+	* fix gem install globally
 * version 0.6.1 - 2018.09.17
 	* separate files
 	* add multiple search-replace
