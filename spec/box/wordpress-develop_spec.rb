@@ -139,6 +139,18 @@ if property["develop_tools"] then
     its(:stdout) { should match /WordPress\-Core/ }
   end
 
+  describe command('which phpcbf') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpcbf/) }
+  end
+
+  describe command('phpcbf --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match /^PHP_CodeSniffer version 2\.9/ }
+  end
+
   describe command('cachetool -V') do
     let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }

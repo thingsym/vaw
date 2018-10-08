@@ -8,19 +8,19 @@ describe file('/home/vagrant/.phpenv/') do
 end
 
 describe command('which phpenv') do
-  let(:sudo_options) { '-u vagrant -i'}
+  let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/bin\/phpenv/) }
 end
 
 describe command('which php') do
-  let(:sudo_options) { '-u vagrant -i'}
+  let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/php/) }
 end
 
 describe command('which php-cgi') do
-  let(:sudo_options) { '-u vagrant -i'}
+  let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }
 end
 
