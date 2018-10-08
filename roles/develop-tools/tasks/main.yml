@@ -12,3 +12,4 @@
     - yum-utils
     - libcurl
     - libcurl-devel
+    - jq

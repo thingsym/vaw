@@ -16,3 +16,7 @@ end
 describe package('libcurl-devel') do
   it { should be_installed }
 end
+
+describe package('jq') do
+  it { should be_installed }
+end
