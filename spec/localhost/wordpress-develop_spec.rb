@@ -190,6 +190,17 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe command('which phpstan') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpstan/) }
+  end
+
+  describe command('phpstan --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
+  end
+
   describe file('/var/www/html/webgrind/index.php') do
     it { should be_file }
   end
