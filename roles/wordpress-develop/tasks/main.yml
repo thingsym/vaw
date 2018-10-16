@@ -47,5 +47,6 @@
 - include: wrk.yml
 - include: selenium.yml
 - include: phpmd.yml
+- include: phpstan.yml
 - include: webgrind.yml
   tags: sync-dir

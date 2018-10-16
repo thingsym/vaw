@@ -639,6 +639,7 @@ After provisioning, you can launch a WordPress development environment.
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
+* [PHPStan](https://github.com/phpstan/phpstan)
 * [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
 * [MailHog](https://github.com/mailhog/MailHog)
