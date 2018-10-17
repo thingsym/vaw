@@ -16,3 +16,18 @@ end
 describe package('libcurl-devel') do
   it { should be_installed }
 end
+
+describe package('jq') do
+  it { should be_installed }
+end
+
+describe command('which peco') do
+  let(:sudo_options) { '-u vagrant -i' }
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/\/usr\/local\/bin\/peco/) }
+end
+
+describe command('peco --version') do
+  let(:disable_sudo) { true }
+  its(:exit_status) { should eq 0 }
+end

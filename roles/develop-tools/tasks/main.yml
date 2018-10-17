@@ -12,3 +12,6 @@
     - yum-utils
     - libcurl
     - libcurl-devel
+    - jq
+
+- include: peco.yml

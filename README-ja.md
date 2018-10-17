@@ -630,6 +630,7 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
+* [PHPStan](https://github.com/phpstan/phpstan)
 * [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
 * [MailHog](https://github.com/mailhog/MailHog)
@@ -717,6 +718,13 @@ Small patches and bug reports can be submitted a issue tracker in Github. Forkin
 
 ## Changelog
 
+* version 0.6.3 - 2018.10.17
+	* optimize vagrant box
+	* add wordpress plugin health-check
+	* add phpstan
+	* add peco
+	* add jq
+	* fix tests
 * version 0.6.2 - 2018.09.23
 	* fix tests
 	* fix gem install globally

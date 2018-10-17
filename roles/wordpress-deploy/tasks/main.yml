@@ -32,6 +32,8 @@
     repo: https://github.com/git-ftp/git-ftp.git
     dest: /tmp/git-ftp
     force: yes
+  become: yes
+  become_user: vagrant
 
 - name: git-ftp installed
   command: make install

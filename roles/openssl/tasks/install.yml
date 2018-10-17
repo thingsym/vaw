@@ -27,7 +27,8 @@
     url: https://www.openssl.org/source/openssl-1.0.2k.tar.gz
     dest: /tmp/openssl-1.0.2k.tar.gz
 
-- file:
+- name: delete /tmp/openssl-1.0.2k
+  file:
     path: /tmp/openssl-1.0.2k
     state: absent
 
@@ -55,7 +56,7 @@
   command: mv /usr/bin/openssl /usr/bin/openssl.bak
   when: is_openssl_old.stat.exists
 
-- name: ls /usr/bin/openssl
+- name: ln /usr/bin/openssl
   file:
     src: /usr/local/ssl/bin/openssl
     dest: /usr/bin/openssl
