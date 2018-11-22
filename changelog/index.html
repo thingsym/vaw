@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Changelog - VAW (Vagrant Ansible WordPress) Documentation</title>
 <meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
-<meta name="generator" content="Hugo 0.38.1" />
+<meta name="generator" content="Hugo 0.51" />
 <link href="https://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
 <link rel="canonical" href="https://thingsym.github.io/vaw/changelog/">
 <link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.7</span>
+ <span class="version">Version 0.6.3</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -27,6 +27,53 @@
 
 <div class="content-container">
 <main><h1>Changelog</h1><ul>
+<li>version 0.6.3 - 2018.10.17
+
+<ul>
+<li>optimize vagrant box</li>
+<li>add wordpress plugin health-check</li>
+<li>add phpstan</li>
+<li>add peco</li>
+<li>add jq</li>
+<li>fix tests</li>
+</ul></li>
+<li>version 0.6.2 - 2018.09.23
+
+<ul>
+<li>fix tests</li>
+<li>fix gem install globally</li>
+</ul></li>
+<li>version 0.6.1 - 2018.09.17
+
+<ul>
+<li>separate files</li>
+<li>add multiple search-replace</li>
+<li>change to multiple search-replace for replace_old_url</li>
+</ul></li>
+<li>version 0.6.0 - 2018.09.03
+
+<ul>
+<li>enable ssl and https by default</li>
+<li>bump up ruby version 2.5.1</li>
+<li>bump up Node version 8.11.4</li>
+</ul></li>
+<li>version 0.5.9 - 2018.08.02
+
+<ul>
+<li>improve phpenv.sh version 0.4.1</li>
+<li>fix php-build.default_configure_options</li>
+<li>fix httpd.conf for apache mpm_event</li>
+<li>add other versions database tasks</li>
+<li>bump up MariaDB 10.3, MySQL 5.7, Percona 5.7</li>
+</ul></li>
+<li>version 0.5.8 - 2018.05.27
+
+<ul>
+<li>add deployer and git-ftp</li>
+<li>remove capistrano and fabric</li>
+<li>add handlers with web server</li>
+<li>add option synced_folder_type with Vagrant Settings</li>
+</ul></li>
 <li>version 0.5.7 - 2018.05.13
 
 <ul>
@@ -319,57 +366,65 @@
 <li>initial release</li>
 </ul></li>
 </ul>
-<div class="edit-meta">Last updated on 20 May 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
-<a class="nav nav-prev" href="https://thingsym.github.io/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
-    <a class="nav nav-next" href="https://thingsym.github.io/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
-<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>
+<div class="edit-meta">Last updated on 22 Nov 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
+<a class="nav nav-next" href="https://thingsym.github.io/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
 </footer>
-</main><div class="sidebar"><nav>
+</main><div class="sidebar">
+<nav>
 <ul>
 <li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
 </ul>
-
+  
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
 <li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
 </ul>
-
+  
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
 </ul>
-
+  
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
 </li>
-<li class=" parent active"><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
+
+<li class="parent active"><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
 </li>
 </ul>
 </nav>
-
 
 
 <div class="sidebar-footer"></div>

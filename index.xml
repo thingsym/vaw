@@ -6,7 +6,7 @@
     <description>Recent content on VAW (Vagrant Ansible WordPress) Documentation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 May 2018 15:26:15 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Nov 2018 10:26:15 +0000</lastBuildDate>
     
 	<atom:link href="https://thingsym.github.io/vaw/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,13 +14,24 @@
     <item>
       <title>Vagrantfile</title>
       <link>https://thingsym.github.io/vaw/configuration/vagrantfile/</link>
-      <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
+      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/configuration/vagrantfile/</guid>
       <description>Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 If you launch multiple environments, change the name of the directory. Should rewrite vm_ip and vm_hostname. Note not to overlap with other environments.
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip.</description>
+    </item>
+    
+    <item>
+      <title>all.yml</title>
+      <link>https://thingsym.github.io/vaw/configuration/all-yml/</link>
+      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
+      
+      <guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid>
+      <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
+In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.
+## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm|hhvm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : &#39;&#39; db_collate : &#39;&#39; # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description>
     </item>
     
     <item>
@@ -33,20 +44,9 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
     </item>
     
     <item>
-      <title>all.yml</title>
-      <link>https://thingsym.github.io/vaw/configuration/all-yml/</link>
-      <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid>
-      <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
-In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.
-## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm|hhvm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : &#39;&#39; db_collate : &#39;&#39; # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description>
-    </item>
-    
-    <item>
       <title>How to make Vagrant Box</title>
       <link>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</guid>
       <description>How to use the provisioning mode?

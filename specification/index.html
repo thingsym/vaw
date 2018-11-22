@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Specification - VAW (Vagrant Ansible WordPress) Documentation</title>
 <meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
-<meta name="generator" content="Hugo 0.38.1" />
+<meta name="generator" content="Hugo 0.51" />
 <link href="https://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
 <link rel="canonical" href="https://thingsym.github.io/vaw/specification/">
 <link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.7</span>
+ <span class="version">Version 0.6.3</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -28,7 +28,7 @@
 <div class="content-container">
 <main><h1>Specification</h1>
 
-<h2 id="server-selectable">Server (Selectable)</h2>
+<h3 id="server-selectable">Server (Selectable)</h3>
 
 <ul>
 <li><a href="http://httpd.apache.org">Apache</a></li>
@@ -36,14 +36,14 @@
 <li><a href="https://h2o.examp1e.net">H2O</a></li>
 </ul>
 
-<h2 id="fastcgi-selectable">FastCGI (Selectable)</h2>
+<h3 id="fastcgi-selectable">FastCGI (Selectable)</h3>
 
 <ul>
 <li><a href="http://php-fpm.org">PHP-FPM</a> (FastCGI Process Manager)</li>
 <li><a href="http://hhvm.com">HHVM</a> (HipHop Virtual Machine)</li>
 </ul>
 
-<h2 id="database-selectable">Database (Selectable)</h2>
+<h3 id="database-selectable">Database (Selectable)</h3>
 
 <ul>
 <li><a href="https://mariadb.org">MariaDB</a></li>
@@ -51,7 +51,7 @@
 <li><a href="http://www.percona.com/software/percona-server">Percona MySQL</a></li>
 </ul>
 
-<h2 id="pre-installing">Pre-installing</h2>
+<h3 id="pre-installing">Pre-installing</h3>
 
 <ul>
 <li><a href="https://wordpress.org">WordPress</a></li>
@@ -64,7 +64,7 @@
 <li><a href="http://git-scm.com">Git</a></li>
 </ul>
 
-<h2 id="develop-tools-activatable">Develop Tools (Activatable)</h2>
+<h3 id="develop-tools-activatable">Develop Tools (Activatable)</h3>
 
 <ul>
 <li><a href="https://subversion.apache.org">Subversion</a></li>
@@ -85,21 +85,22 @@
 <li><a href="https://github.com/wg/wrk">wrk - Modern HTTP benchmarking tool</a></li>
 <li><a href="https://github.com/es-analysis/plato">plato</a></li>
 <li><a href="https://github.com/t32k/stylestats">stylestats</a></li>
+<li><a href="https://github.com/phpstan/phpstan">PHPStan</a></li>
 <li><a href="https://phpmd.org/">PHPMD</a></li>
 <li><a href="https://github.com/jokkedk/webgrind">webgrind</a></li>
 <li><a href="https://github.com/mailhog/MailHog">MailHog</a></li>
 </ul>
 
-<h2 id="deploy-tools-activatable">Deploy Tools (Activatable)</h2>
+<h3 id="deploy-tools-activatable">Deploy Tools (Activatable)</h3>
 
 <ul>
-<li><a href="http://capistranorb.com">Capistrano</a></li>
-<li><a href="http://www.fabfile.org">Fabric</a></li>
 <li><a href="http://scttnlsn.github.io/dandelion/">Dandelion</a></li>
+<li><a href="https://deployer.org/">Deployer</a></li>
+<li><a href="https://git-ftp.github.io/">Git-ftp</a></li>
 <li><a href="https://github.com/welaika/wordmove">Wordmove</a></li>
 </ul>
 
-<h2 id="other">Other</h2>
+<h3 id="other">Other</h3>
 
 <ul>
 <li><a href="https://github.com/sstephenson/rbenv">rbenv</a></li>
@@ -107,7 +108,7 @@
 <li><a href="https://www.ruby-lang.org/">Ruby</a> via <a href="https://github.com/sstephenson/rbenv">rbenv</a></li>
 </ul>
 
-<h2 id="helper-command">Helper command</h2>
+<h3 id="helper-command">Helper command</h3>
 
 <ul>
 <li>after_provision.sh</li>
@@ -116,57 +117,65 @@
 <li>db_backup.sh</li>
 <li>phpenv.sh</li>
 </ul>
-<div class="edit-meta">Last updated on 17 Oct 2017<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/specification/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
-<a class="nav nav-prev" href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/" title="How to make Vagrant Box"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - How to make Vagrant Box</a>
-    <a class="nav nav-next" href="https://thingsym.github.io/vaw/helper-command/" title="Helper Command">Next - Helper Command <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
-<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>
+<div class="edit-meta">Last updated on 22 Nov 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/specification/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/" title="How to make Vagrant Box"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - How to make Vagrant Box</a>
+<a class="nav nav-next" href="https://thingsym.github.io/vaw/helper-command/" title="Helper Command">Next - Helper Command <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
 </footer>
-</main><div class="sidebar"><nav>
+</main><div class="sidebar">
+<nav>
 <ul>
 <li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
 </ul>
-
+  
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
 <li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
 </ul>
-
+  
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
 </ul>
+  
+</li>
 
+<li class="parent active"><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
 </li>
-<li class=" parent active"><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
-</li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
 </li>
 </ul>
 </nav>
-
 
 
 <div class="sidebar-footer"></div>

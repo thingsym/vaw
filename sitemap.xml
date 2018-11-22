@@ -3,22 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://thingsym.github.io/vaw/configuration/vagrantfile/</loc>
-    <lastmod>2018-05-20T15:26:15+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://thingsym.github.io/vaw/about/</loc>
-    <lastmod>2017-10-17T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://thingsym.github.io/vaw/getting-started/requirements/</loc>
-    <lastmod>2018-05-20T15:26:15+00:00</lastmod>
+    <loc>https://thingsym.github.io/vaw/configuration/vagrantfile/</loc>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://thingsym.github.io/vaw/configuration/all-yml/</loc>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://thingsym.github.io/vaw/getting-started/requirements/</loc>
     <lastmod>2018-05-20T15:26:15+00:00</lastmod>
   </url>
   
@@ -34,12 +34,12 @@
   
   <url>
     <loc>https://thingsym.github.io/vaw/directory-layout/</loc>
-    <lastmod>2018-05-20T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</loc>
-    <lastmod>2017-10-17T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
@@ -49,17 +49,17 @@
   
   <url>
     <loc>https://thingsym.github.io/vaw/vagrant-box/</loc>
-    <lastmod>2017-10-17T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://thingsym.github.io/vaw/specification/</loc>
-    <lastmod>2017-10-17T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://thingsym.github.io/vaw/helper-command/</loc>
-    <lastmod>2018-04-09T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
@@ -69,12 +69,12 @@
   
   <url>
     <loc>https://thingsym.github.io/vaw/contribution/</loc>
-    <lastmod>2018-04-09T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://thingsym.github.io/vaw/changelog/</loc>
-    <lastmod>2018-05-20T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>
@@ -84,7 +84,7 @@
   
   <url>
     <loc>https://thingsym.github.io/vaw/</loc>
-    <lastmod>2018-05-20T15:26:15+00:00</lastmod>
+    <lastmod>2018-11-22T10:26:15+00:00</lastmod>
   </url>
   
   <url>

@@ -6,7 +6,7 @@
     <description>Recent content in Vagrant Box on VAW (Vagrant Ansible WordPress) Documentation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Oct 2017 15:26:15 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Nov 2018 10:26:15 +0000</lastBuildDate>
     
 	<atom:link href="https://thingsym.github.io/vaw/vagrant-box/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>How to make Vagrant Box</title>
       <link>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</link>
-      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</guid>
       <description>How to use the provisioning mode?

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>all.yml - VAW (Vagrant Ansible WordPress) Documentation</title>
 <meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
-<meta name="generator" content="Hugo 0.38.1" />
+<meta name="generator" content="Hugo 0.51" />
 <link href="https://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
 <link rel="canonical" href="https://thingsym.github.io/vaw/configuration/all-yml/">
 <link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.5.7</span>
+ <span class="version">Version 0.6.3</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -112,7 +112,8 @@ import_backwpup    :
 import_admin       : false   # true|false
 theme_unit_test    : false   # true|false
 
-replace_old_url         : ''   # http(s)://example.com, to vm_hostname from old url
+replace_old_url         : [] # http(s)://example.com, to vm_hostname from old url
+search_replace_strings  : {}
 regenerate_thumbnails   : false   # true|false
 
 WP_DEBUG           : true   # true|false
@@ -120,11 +121,11 @@ SAVEQUERIES        : true   # true|false
 
 ## Develop &amp; Deploy Settings ##
 
-ssl                : false   # true|false
+ssl                : true   # true|false
 
 # See Supported Versions http://php.net/supported-versions.php
 php_version        : 7.2.1
-http_protocol      : http   # http|https
+http_protocol      : https   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
@@ -303,6 +304,39 @@ WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 <li><code>import_admin</code> Add WordPress administrator user (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>theme_unit_test</code> import Theme Unit Test data enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>replace_old_url</code> replace to <code>vm_hostname</code> from <code>old url</code></li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>replace_old_url         :
+                           - http://example.com
+                           - http://www.example.com
+                           - https://example.com
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>replace_old_url         : []
+</code></pre>
+
+<ul>
+<li><code>search_replace_strings</code> Search the database and replace the matched string</li>
+</ul>
+
+<p>Configuration example</p>
+
+<pre><code>search_replace_strings  :
+                           'foo': 'bar'
+                           'abc': 'xyz'
+                           'Hello, World!': 'Welcome to WordPress!'
+</code></pre>
+
+<p>Disable the setting case</p>
+
+<pre><code>search_replace_strings  : {}
+</code></pre>
+
+<ul>
 <li><code>regenerate_thumbnails</code> regenerate thumbnails enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>WP_DEBUG</code> debug mode (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>SAVEQUERIES</code> save the database queries (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
@@ -311,63 +345,71 @@ WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 <h4 id="develop-deploy-settings">Develop &amp; Deploy Settings</h4>
 
 <ul>
-<li><code>ssl</code> WordPress administration over SSL enabled flag (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>ssl</code> WordPress administration over SSL enabled flag (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>php_version</code> version of PHP (default: <code>7.2.1</code>)</li>
-<li><code>http_protocol</code> HTTP protocol (default: <code>http</code> / value: <code>http</code> | <code>https</code>)</li>
+<li><code>http_protocol</code> HTTP protocol (default: <code>https</code> / value: <code>http</code> | <code>https</code>)</li>
 <li><code>develop_tools</code> activate develop tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>deploy_tools</code> activate deploy tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 </ul>
-<div class="edit-meta">Last updated on 20 May 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/all-yml.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><div class="navigation">
-<a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/vagrantfile/" title="Vagrantfile"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Vagrantfile</a>
-    <a class="nav nav-next" href="https://thingsym.github.io/vaw/directory-layout/" title="Directory Layout">Next - Directory Layout <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
-<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>.</p>
+<div class="edit-meta">Last updated on 22 Nov 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/all-yml.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/vagrantfile/" title="Vagrantfile"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Vagrantfile</a>
+<a class="nav nav-next" href="https://thingsym.github.io/vaw/directory-layout/" title="Directory Layout">Next - Directory Layout <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
 </footer>
-</main><div class="sidebar"><nav>
+</main><div class="sidebar">
+<nav>
 <ul>
 <li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
 </ul>
-
+  
 </li>
-<li class=" parent"><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
 
-<ul>
+<li class="parent"><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+<ul class="sub-menu">
 <li class=""><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
 <li class="active"><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
 </ul>
-
+  
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
 </li>
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
 
-<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+<ul class="">
 <li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
 </ul>
-
+  
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
 </li>
+
 <li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
 </li>
 </ul>
 </nav>
-
 
 
 <div class="sidebar-footer"></div>
