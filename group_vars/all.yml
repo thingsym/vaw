@@ -24,7 +24,7 @@ admin_password     : admin
 admin_email        : hoge@example.com
 
 # e.g. latest, nightly, 4.1, 4.1-beta1
-# see Release Archive - https://wordpress.org/download/release-archive/
+# see Release Archive - https://wordpress.org/download/releases/
 # 3.7 or later to work properly
 version            : latest
 

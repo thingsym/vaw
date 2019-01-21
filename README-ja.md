@@ -61,7 +61,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 * [Vagrant](https://www.vagrantup.com) >= 2.1
 * [Ansible](https://www.ansible.com) >= 2.4
 
-#### Vagrant plugin (optional)
+### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
@@ -630,7 +630,7 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
 * [plato](https://github.com/es-analysis/plato)
 * [stylestats](https://github.com/t32k/stylestats)
-* [PHPStan](https://github.com/phpstan/phpstan)
+* [PHPStan](https://github.com/phpstan/phpstan) (Only PHP7)
 * [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
 * [MailHog](https://github.com/mailhog/MailHog)
