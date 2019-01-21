@@ -1,12 +1,14 @@
 ---
-- name: PHPUnit installed (PHP7)
+- name: PHPUnit installed (PHP7, WP4.6 earlier)
   command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=5.7.*'"
   become: yes
   become_user: vagrant
-  when: php_version is match("^7")
+  when: 
+    - php_version is match("^7")
+    - version < 4.6
 
-- name: PHPUnit installed (PHP5)
-  command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=4.8.*'"
+- name: PHPUnit installed
+  command: "{{ phpenv_dir }}/shims/composer global require 'phpunit/phpunit=4.8.*|5.7.*|6.*'"
   become: yes
   become_user: vagrant
-  when: php_version is match("^5")
+  when: not (php_version is match("^7") and version < 4.6)

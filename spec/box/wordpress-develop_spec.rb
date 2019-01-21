@@ -106,19 +106,15 @@ if property["develop_tools"] then
     its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpunit/) }
   end
 
-  if property["php_version"] =~ /^7/ then
-    describe command('phpunit --version') do
-      let(:disable_sudo) { true }
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /^PHPUnit 5\.7/ }
-    end
+  describe command('phpunit --version') do
+    let(:disable_sudo) { true }
+    its(:exit_status) { should eq 0 }
   end
 
-  if property["php_version"] =~ /^5/ then
+  if property["php_version"] =~ /^7/ and property["version"].is_a?(Numeric) and property["version"] < 4.6 then
     describe command('phpunit --version') do
       let(:disable_sudo) { true }
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /^PHPUnit 4\.8/ }
+      its(:stdout) { should match /^PHPUnit 5\.7/ }
     end
   end
 
