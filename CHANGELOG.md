@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.4] - 2019.01.23
+
+- add CHANGELOG.md
+- fix PHPUnit Selenium
+- fix phpunit install
+
 ## [0.6.3] - 2018.10.17
 
 - optimize vagrant box
