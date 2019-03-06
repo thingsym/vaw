@@ -46,8 +46,6 @@ server {
         #root           {{ DOCUMENT_ROOT }};
 {% if fastcgi == "php-fpm" %}
         fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
-{% elif fastcgi == "hhvm" %}
-        fastcgi_pass   unix:/var/run/hhvm/hhvm.sock;
 {% endif %}
         fastcgi_index   index.php;
         fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -113,8 +111,6 @@ server {
     location ~ /wp-(admin.*\.php|login\.php)$ {
 {% if fastcgi == "php-fpm" %}
         fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
-{% elif fastcgi == "hhvm" %}
-        fastcgi_pass   unix:/var/run/hhvm/hhvm.sock;
 {% endif %}
         fastcgi_index   index.php;
         fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
@@ -126,8 +122,6 @@ server {
         #root           {{ DOCUMENT_ROOT }};
 {% if fastcgi == "php-fpm" %}
         fastcgi_pass    unix:/var/run/php-fpm/php-fcgi.pid;
-{% elif fastcgi == "hhvm" %}
-        fastcgi_pass   unix:/var/run/hhvm/hhvm.sock;
 {% endif %}
         fastcgi_index   index.php;
         fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;

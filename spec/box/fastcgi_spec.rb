@@ -67,47 +67,4 @@ if property["fastcgi"] == 'php-fpm' then
     its(:stdout) { should match /vagrant/ }
   end
 
-elsif property["fastcgi"] == 'hhvm' then
-
-  describe file('/var/log/hhvm/') do
-   it { should be_directory }
-   it { should be_owned_by 'vagrant' }
-   it { should be_grouped_into 'vagrant' }
-  end
-
-  describe yumrepo('hop5'), :if => os[:release] =~ /^6/ do
-    it { should exist }
-  end
-
-  describe package('hhvm') do
-    it { should be_installed }
-  end
-
-  describe service('hhvm') do
-    it { should be_enabled }
-    it { should be_running }
-  end
-
-  describe command("ps -C hhvm -o user") do
-    its(:stdout) { should match /vagrant/ }
-  end
-
-  describe file('/etc/hhvm/server.ini') do
-    it { should be_file }
-  end
-
-  describe file('/etc/init.d/hhvm'), :if => os[:release] =~ /^6/ do
-    it { should be_file }
-  end
-
-  describe file('/usr/lib/systemd/system/hhvm.service'), :if => os[:release] =~ /^7/ do
-    it { should be_file }
-  end
-
-  describe file('/var/run/hhvm/hhvm.sock') do
-    it { should be_socket }
-    it { should be_owned_by 'vagrant' }
-    it { should be_grouped_into 'vagrant' }
-  end
-
 end
