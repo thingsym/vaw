@@ -1076,8 +1076,6 @@ NameVirtualHost *:80
 
 {% if fastcgi == "php-fpm" %}
     ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
-{% elif fastcgi == "hhvm" %}
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
 {% endif %}
 
 </VirtualHost>
@@ -1228,8 +1226,6 @@ SSLCryptoDevice builtin
     DirectoryIndex index.php
 
 {% if fastcgi == "php-fpm" %}
-    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
-{% elif fastcgi == "hhvm" %}
     ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/{{ DOCUMENT_ROOT }}
 {% endif %}
 

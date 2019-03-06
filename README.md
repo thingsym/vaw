@@ -185,7 +185,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	## Server & Database Settings ##
 
 	server             : apache   # apache|nginx|h2o
-	fastcgi            : none     # none|php-fpm|hhvm
+	fastcgi            : none     # none|php-fpm
 
 	database           : mariadb  # mariadb|mysql|percona
 	db_root_password   : admin
@@ -287,7 +287,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 #### Server & Database Settings ##
 
 * `server` (required) name of web server (default: `apache` / value: `apache` | `nginx` | `h2o`)
-* `fastcgi` name of fastCGI (default: `none` / value: `none` | `php-fpm` | `hhvm`)
+* `fastcgi` name of fastCGI (default: `none` / value: `none` | `php-fpm`)
 * `database` (required) name of databese (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
 * `db_root_password` (required) database root password (default: `admin`)
 * `db_host` (required) database host (default: `localhost`)
@@ -600,7 +600,6 @@ After provisioning, you can launch a WordPress development environment.
 ### FastCGI (Selectable)
 
 * [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
-* [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
 
@@ -694,7 +693,6 @@ As follows editable configuration files.
 * default-node-packages.j2
 * default-ruby-gems.j2
 * h2o.conf.j2
-* hhvm.server.ini.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
