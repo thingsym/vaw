@@ -28,5 +28,6 @@
   become_user: vagrant
   when: ansible_os_family == 'RedHat'
 
+- include: kernel.yml
 - include: ssh-config.yml
 - include: reset.yml
