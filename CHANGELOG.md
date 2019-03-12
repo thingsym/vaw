@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.5] - 2019.03.12
+
+- modify kernel parameters
+- remove hhvm
+
 ## [0.6.4] - 2019.01.23
 
 - add CHANGELOG.md

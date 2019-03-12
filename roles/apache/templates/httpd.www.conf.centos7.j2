@@ -19,10 +19,6 @@
     <FilesMatch \.php$>
         SetHandler "proxy:unix:/var/run/php-fpm/php-fcgi.pid|fcgi://localhost:9000"
     </FilesMatch>
-{% elif fastcgi == "hhvm" %}
-    <FilesMatch \.php$>
-        SetHandler "proxy:unix:/var/run/hhvm/hhvm.sock|fcgi://localhost:9000"
-    </FilesMatch>
 {% endif %}
 
 </VirtualHost>
@@ -124,10 +120,6 @@ SSLCryptoDevice builtin
 {% if fastcgi == "php-fpm" %}
     <FilesMatch \.php$>
         SetHandler "proxy:unix:/var/run/php-fpm/php-fcgi.pid|fcgi://localhost"
-    </FilesMatch>
-{% elif fastcgi == "hhvm" %}
-    <FilesMatch \.php$>
-        SetHandler "proxy:unix:/var/run/hhvm/hhvm.sock|fcgi://localhost"
     </FilesMatch>
 {% endif %}
 

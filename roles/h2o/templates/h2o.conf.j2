@@ -37,13 +37,6 @@ file.custom-handler:
   fastcgi.connect:
     port: /var/run/php-fpm/php-fcgi.pid
     type: unix
-{% elif fastcgi == "hhvm" %}
-  fastcgi.connect:
-    port: /var/run/hhvm/hhvm.sock
-    type: unix
-    # host: 127.0.0.1
-    # port: 9000
-    # type: tcp
 {% else %}
   fastcgi.spawn:
     command: "PHP_FCGI_CHILDREN=10 exec /usr/bin/php-cgi"

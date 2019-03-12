@@ -178,7 +178,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	## Server & Database Settings ##
 
 	server             : apache   # apache|nginx|h2o
-	fastcgi            : none     # none|php-fpm|hhvm
+	fastcgi            : none     # none|php-fpm
 
 	database           : mariadb  # mariadb|mysql|percona
 	db_root_password   : admin
@@ -280,7 +280,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Server & Database Settings ##
 
 * `server` (required) ウェブサーバ名 (default: `apache` / value: `apache` | `nginx` | `h2o`)
-* `fastcgi` fastCGI 名 (default: `none` / value: `none` | `php-fpm` | `hhvm`)
+* `fastcgi` fastCGI 名 (default: `none` / value: `none` | `php-fpm`)
 * `database` (required) データベース名 (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
 * `db_root_password` (required) データベースの root パスワード (default: `admin`)
 * `db_host` (required) データベースホスト名 (default: `localhost`)
@@ -591,7 +591,6 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 ### FastCGI (Selectable)
 
 * [PHP-FPM](http://php-fpm.org) (FastCGI Process Manager)
-* [HHVM](http://hhvm.com) (HipHop Virtual Machine)
 
 ### Database (Selectable)
 
@@ -684,7 +683,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * default-node-packages.j2
 * default-ruby-gems.j2
 * h2o.conf.j2
-* hhvm.server.ini.j2
 * httpd.conf.centos6.j2
 * httpd.conf.centos7.j2
 * httpd.www.conf.centos7.j2
