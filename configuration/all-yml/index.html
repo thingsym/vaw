@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>all.yml - VAW (Vagrant Ansible WordPress) Documentation</title>
 <meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
-<meta name="generator" content="Hugo 0.51" />
+<meta name="generator" content="Hugo 0.54.0" />
 <link href="https://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
 <link rel="canonical" href="https://thingsym.github.io/vaw/configuration/all-yml/">
 <link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.6.3</span>
+ <span class="version">Version 0.6.5</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -37,7 +37,7 @@
 <pre><code>## Server &amp; Database Settings ##
 
 server             : apache   # apache|nginx|h2o
-fastcgi            : none     # none|php-fpm|hhvm
+fastcgi            : none     # none|php-fpm
 
 database           : mariadb  # mariadb|mysql|percona
 db_root_password   : admin
@@ -140,7 +140,7 @@ WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 
 <ul>
 <li><code>server</code> (required) name of web server (default: <code>apache</code> / value: <code>apache</code> | <code>nginx</code> | <code>h2o</code>)</li>
-<li><code>fastcgi</code> name of fastCGI (default: <code>none</code> / value: <code>none</code> | <code>php-fpm</code> | <code>hhvm</code>)</li>
+<li><code>fastcgi</code> name of fastCGI (default: <code>none</code> / value: <code>none</code> | <code>php-fpm</code>)</li>
 <li><code>database</code> (required) name of databese (default: <code>mariadb</code> / value: <code>mariadb</code> | <code>mysql</code> | <code>percona</code>)</li>
 <li><code>db_root_password</code> (required) database root password (default: <code>admin</code>)</li>
 <li><code>db_host</code> (required) database host (default: <code>localhost</code>)</li>
@@ -351,7 +351,7 @@ WP_PATH            : '{{ DOCUMENT_ROOT }}{{ wp_dir }}'
 <li><code>develop_tools</code> activate develop tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>deploy_tools</code> activate deploy tools (default: <code>false</code> / value: <code>true</code> | <code>false</code>)</li>
 </ul>
-<div class="edit-meta">Last updated on 22 Nov 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/all-yml.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/vagrantfile/" title="Vagrantfile"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Vagrantfile</a>
+<div class="edit-meta">Last updated on 24 Mar 2019<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/all-yml.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/vagrantfile/" title="Vagrantfile"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Vagrantfile</a>
 <a class="nav nav-next" href="https://thingsym.github.io/vaw/directory-layout/" title="Directory Layout">Next - Directory Layout <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
 </nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
 </footer>

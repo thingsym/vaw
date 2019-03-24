@@ -31,7 +31,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
       <guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid>
       <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
 In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.
-## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm|hhvm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : &#39;&#39; db_collate : &#39;&#39; # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description>
+## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : &#39;&#39; db_collate : &#39;&#39; # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description>
     </item>
     
     <item>
