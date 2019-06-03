@@ -8,25 +8,5 @@
   include: install.yml
   when: not is_tmp_openssl_dir.stat.exists
 
-- name: stat privkey.pem
-  stat:
-    path: /etc/pki/tls/vaw/privkey.pem
-  register: is_vaw_privkey
-
-- block:
-  - name: mkdir ssl
-    file:
-      path: /etc/pki/tls/vaw
-      state: directory
-      owner: root
-
-  - name: generate a key
-    command: openssl genrsa -out /etc/pki/tls/vaw/privkey.pem 2048
-
-  - name: generate a csr
-    command: openssl req -new -sha256 -key /etc/pki/tls/vaw/privkey.pem -subj "/C=JP/ST=Tokyo/L=Minato-ku/O=vaw/OU=vaw/CN={{ HOSTNAME }} CA" -out /etc/pki/tls/vaw/csr.pem
-
-  - name: generate a crt (self Certification Authority)
-    command: openssl x509 -req -sha256 -in /etc/pki/tls/vaw/csr.pem -signkey /etc/pki/tls/vaw/privkey.pem -out /etc/pki/tls/vaw/crt.pem -days 3650
-
-  when: not is_vaw_privkey.stat.exists
+- name: include task
+  include: pki.yml
