@@ -3,11 +3,11 @@ require 'shellwords'
 
 if property["server"] == 'apache' then
 
-  describe package('httpd') do
+  describe package('httpd24u') do
     it { should be_installed }
   end
 
-  describe package('httpd-devel') do
+  describe package('httpd24u-devel') do
     it { should be_installed }
   end
 
@@ -33,6 +33,10 @@ if property["server"] == 'apache' then
   end
 
   if property["ssl"] then
+    describe package('httpd24u-mod_ssl') do
+      it { should be_installed }
+    end
+
     describe command("apachectl -M | grep 'ssl_module'") do
       its(:stdout) { should match(/ssl_module/) }
     end
