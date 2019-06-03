@@ -36,3 +36,34 @@
     dest: /etc/httpd/conf.d/www.conf
   notify: httpd restarted
   when: not is_custom_www_conf_centos7.stat.exists
+- block:
+  - name: disables httpd module mpm_event
+    replace:
+      dest: /etc/httpd/conf.modules.d/00-mpm.conf
+      regexp: "LoadModule mpm_event_module modules/mod_mpm_event.so"
+      replace: "#LoadModule mpm_event_module modules/mod_mpm_event.so"
+    notify: httpd restarted
+
+  - name: enables httpd module mpm_prefork
+    replace:
+      dest: /etc/httpd/conf.modules.d/00-mpm.conf
+      regexp: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+      replace: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+    notify: httpd restarted
+  when: apache_mpm == 'prefork'
+
+- block:
+  - name: disables httpd module mpm_prefork
+    replace:
+      dest: /etc/httpd/conf.modules.d/00-mpm.conf
+      regexp: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+      replace: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+    notify: httpd restarted
+
+  - name: enables httpd module mpm_event
+    replace:
+      dest: /etc/httpd/conf.modules.d/00-mpm.conf
+      regexp: "#LoadModule mpm_event_module modules/mod_mpm_event.so"
+      replace: "LoadModule mpm_event_module modules/mod_mpm_event.so"
+    notify: httpd restarted
+  when: apache_mpm == 'event'

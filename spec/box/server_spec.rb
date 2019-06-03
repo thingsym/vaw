@@ -16,6 +16,22 @@ if property["server"] == 'apache' then
     it { should be_running }
   end
 
+  describe command("apachectl -M | grep 'mpm_prefork_module'"), :if => property["apache_mpm"] == 'prefork' do
+    its(:stdout) { should match(/mpm_prefork_module/) }
+  end
+
+  describe command("apachectl -M | grep 'mpm_event_module'"), :if => property["apache_mpm"] == 'event' do
+    its(:stdout) { should match(/mpm_event_module/) }
+  end
+
+  describe command("apachectl -V | grep -i mpm"), :if => property["apache_mpm"] == 'prefork' do
+    its(:stdout) { should match /prefork/ }
+  end
+
+  describe command("apachectl -V | grep -i mpm"), :if => property["apache_mpm"] == 'event' do
+    its(:stdout) { should match /event/ }
+  end
+
   describe command("ps -C httpd -o user") do
     its(:stdout) { should match /vagrant/ }
   end
