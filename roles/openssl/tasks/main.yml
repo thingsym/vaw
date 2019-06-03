@@ -1,7 +1,7 @@
 ---
-- name: stat /tmp/openssl-1.0.2k
+- name: stat /tmp/openssl-{{ openssl_version }}
   stat:
-    path: /tmp/openssl-1.0.2k
+    path: /tmp/openssl-{{ openssl_version }}
   register: is_tmp_openssl_dir
 
 - name: include task
