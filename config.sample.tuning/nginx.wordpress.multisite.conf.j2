@@ -9,7 +9,7 @@ server {
     client_max_body_size   100M;
 
 {% if ssl %}
-    listen 443 ssl;
+    listen 443 ssl http2;
     ssl_certificate       /etc/pki/tls/vaw/crt.pem;
     ssl_certificate_key   /etc/pki/tls/vaw/privkey.pem;
 {% endif %}

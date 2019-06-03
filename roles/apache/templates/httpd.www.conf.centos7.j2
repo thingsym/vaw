@@ -101,6 +101,7 @@ SSLCryptoDevice builtin
 
 <VirtualHost *:443>
     ServerName {{ HOSTNAME }}
+    Protocols h2 h2c http/1.1
     DocumentRoot {{ DOCUMENT_ROOT }}
 
     <Directory {{ DOCUMENT_ROOT }}>

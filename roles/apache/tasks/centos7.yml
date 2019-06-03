@@ -36,6 +36,13 @@
     dest: /etc/httpd/conf.d/www.conf
   notify: httpd restarted
   when: not is_custom_www_conf_centos7.stat.exists
+
+- name: http2.conf changed
+  template:
+    src: httpd.00-http2.conf.j2
+    dest: /etc/httpd/conf.modules.d/00-http2.conf
+  notify: httpd restarted
+
 - block:
   - name: disables httpd module mpm_event
     replace:

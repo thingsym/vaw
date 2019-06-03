@@ -44,6 +44,10 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
+	describe file('/etc/httpd/conf.modules.d/00-http2.conf'), :if => os[:family] == 'redhat' && os[:release] == '7' do
+    it { should be_file }
+  end
+
   describe command("apachectl -M | grep 'proxy_fcgi_module'") do
     its(:stdout) { should match(/proxy_fcgi_module/) }
   end
@@ -55,6 +59,10 @@ if property["server"] == 'apache' then
 
     describe command("apachectl -M | grep 'ssl_module'") do
       its(:stdout) { should match(/ssl_module/) }
+    end
+
+    describe command("apachectl -M | grep 'http2_module'") do
+      its(:stdout) { should match(/http2_module/) }
     end
   end
 
