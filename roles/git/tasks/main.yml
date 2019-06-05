@@ -1,5 +1,18 @@
 ---
+- block:
+  - name: older git remove
+    package:
+      name: git
+      state: absent
+
+  - name: git v2 or later installed
+    package:
+      name: git2u
+      state: latest
+  when: ansible_os_family == 'RedHat'
+
 - name: git installed
   package:
     name: git
     state: latest
+  when: ansible_os_family == 'Debian'
