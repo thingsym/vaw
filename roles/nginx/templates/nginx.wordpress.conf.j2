@@ -7,7 +7,7 @@ server {
     server_name  {{ HOSTNAME }};
     index        index.php index.html index.htm;
     charset      utf-8;
-    client_max_body_size   100M;
+    client_max_body_size   128M;
 
     access_log  /var/log/nginx/{{ HOSTNAME }}.access.log main;
     error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;
@@ -50,7 +50,7 @@ server {
     server_name  {{ HOSTNAME }};
     index        index.php index.html index.htm;
     charset      utf-8;
-    client_max_body_size   100M;
+    client_max_body_size   128M;
 
     access_log  /var/log/nginx/{{ HOSTNAME }}.access.log main;
     error_log   /var/log/nginx/{{ HOSTNAME }}.error.log;

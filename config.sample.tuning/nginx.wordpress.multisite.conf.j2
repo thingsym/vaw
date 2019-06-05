@@ -6,7 +6,7 @@ server {
     root         {{ DOCUMENT_ROOT }};
     server_name  {{ HOSTNAME }};
     index        index.php index.html index.htm;
-    client_max_body_size   100M;
+    client_max_body_size   128M;
 
 {% if ssl %}
     listen 443 ssl http2;
