@@ -3,17 +3,33 @@ require 'shellwords'
 
 if property["server"] == 'apache' then
 
-  describe package('httpd') do
+  describe package('httpd24u') do
     it { should be_installed }
   end
 
-  describe package('httpd-devel') do
+  describe package('httpd24u-devel') do
     it { should be_installed }
   end
 
   describe service('httpd') do
     it { should be_enabled }
     it { should be_running }
+  end
+
+  describe command("apachectl -M | grep 'mpm_prefork_module'"), :if => property["apache_mpm"] == 'prefork' do
+    its(:stdout) { should match(/mpm_prefork_module/) }
+  end
+
+  describe command("apachectl -M | grep 'mpm_event_module'"), :if => property["apache_mpm"] == 'event' do
+    its(:stdout) { should match(/mpm_event_module/) }
+  end
+
+  describe command("apachectl -V | grep -i mpm"), :if => property["apache_mpm"] == 'prefork' do
+    its(:stdout) { should match /prefork/ }
+  end
+
+  describe command("apachectl -V | grep -i mpm"), :if => property["apache_mpm"] == 'event' do
+    its(:stdout) { should match /event/ }
   end
 
   describe command("ps -C httpd -o user") do
@@ -28,13 +44,25 @@ if property["server"] == 'apache' then
     it { should be_file }
   end
 
+	describe file('/etc/httpd/conf.modules.d/00-http2.conf'), :if => os[:family] == 'redhat' && os[:release] == '7' do
+    it { should be_file }
+  end
+
   describe command("apachectl -M | grep 'proxy_fcgi_module'") do
     its(:stdout) { should match(/proxy_fcgi_module/) }
   end
 
   if property["ssl"] then
+    describe package('httpd24u-mod_ssl') do
+      it { should be_installed }
+    end
+
     describe command("apachectl -M | grep 'ssl_module'") do
       its(:stdout) { should match(/ssl_module/) }
+    end
+
+    describe command("apachectl -M | grep 'http2_module'") do
+      its(:stdout) { should match(/http2_module/) }
     end
   end
 
