@@ -21,7 +21,7 @@
       - MariaDB-compat
       - MySQL-python
   when:
-    - ansible_distribution == 'CentOS' 
+    - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version|int == 6
 
 - block:
@@ -46,7 +46,7 @@
       - mariadb-embedded
       - MySQL-python
   when:
-    - ansible_distribution == 'CentOS' 
+    - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version|int == 7
 
 - block:
