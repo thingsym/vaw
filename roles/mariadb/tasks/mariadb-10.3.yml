@@ -41,7 +41,8 @@
       - MariaDB-server
       - MariaDB-client
       - MariaDB-shared
-      - mariadb-devel
+      - MariaDB-devel
+      - MariaDB-common
       - mariadb-libs
       - mariadb-embedded
       - MySQL-python
