@@ -226,4 +226,8 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
+  describe file('/usr/local/bin/mysqltuner.pl') do
+    it { should be_file }
+    it { should be_executable }
+  end
 end
