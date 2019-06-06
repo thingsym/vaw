@@ -94,18 +94,6 @@ elsif property["database"] == 'mariadb' then
     it { should be_running }
   end
 
-  describe file('/var/lib/mysql/mysql.sock'), :if => os[:family] == 'redhat' do
-    it { should be_socket }
-    it { should be_owned_by 'mysql' }
-    it { should be_grouped_into 'mysql' }
-  end
-
-  describe file('/var/run/mysqld/mysqld.sock'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
-    it { should be_socket }
-    it { should be_owned_by 'mysql' }
-    it { should be_grouped_into 'mysql' }
-  end
-
 elsif property["database"] == 'percona' then
 
   describe command('mysqld -V') do
@@ -156,7 +144,7 @@ if property["database"] == 'mysql' || property["database"] == 'mariadb' || prope
     context mysql_config('socket') do
       its(:value) { should eq '/var/lib/mysql/mysql.sock' }
     end
-  
+
     context mysql_config('character-set-server') do
       its(:value) { should eq 'utf8mb4' }
     end
@@ -165,7 +153,7 @@ if property["database"] == 'mysql' || property["database"] == 'mariadb' || prope
   describe file("/etc/my.cnf") do
     it { should contain("skip-character-set-client-handshake") }
   end
-  
+
   describe file('/var/lib/mysql/mysql.sock'), :if => os[:family] == 'redhat' do
     it { should be_socket }
     it { should be_owned_by 'mysql' }
