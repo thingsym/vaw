@@ -11,7 +11,7 @@
     - name: net.ipv4.tcp_max_syn_backlog
       value: 2048
     - name: net.core.netdev_max_backlog
-      value: 8192
+      value: 4096
     - name: net.ipv4.tcp_tw_reuse
       value: 1
     - name: net.ipv4.tcp_fin_timeout
