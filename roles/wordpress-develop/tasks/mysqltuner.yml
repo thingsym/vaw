@@ -1,0 +1,6 @@
+---
+- name: MySQLTuner installed
+  get_url:
+    url: http://mysqltuner.pl/
+    dest: /usr/local/bin/mysqltuner.pl
+    mode: 0755

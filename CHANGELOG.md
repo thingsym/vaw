@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.6] - 2019.06.11
+
+- improve to add forwarded_port using array
+- fix IUS repository url
+- fix kernel parameter
+- add .editorconfig
+- add mysqltuner.pl
+- bump up git version 2 or later
+- fix client_max_body_size
+- fix http2 config
+- enable switch between prefork and event with apache
+- bump up Apache version 2.4
+- improve version specification with openssl
+
 ## [0.6.5] - 2019.03.12
 
 - modify kernel parameters
@@ -39,7 +53,8 @@
 
 ## [0.5.9] - 2018.08.02
 
-- improve p - fix php-build.default_configure_options
+- improve phpenv.sh version 0.4.1
+- fix php-build.default_configure_options
 - fix httpd.conf for apache mpm_event
 - add other versions database tasks
 - bump up MariaDB 10.3, MySQL 5.7, Percona 5.7

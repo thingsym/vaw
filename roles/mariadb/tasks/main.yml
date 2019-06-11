@@ -33,7 +33,7 @@
     enabled: yes
   when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int != 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'trusty')
 
-- name: mysqld started and enabled
+- name: mysql started and enabled
   service:
     name: mysql
     state: restarted

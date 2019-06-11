@@ -68,22 +68,18 @@ describe file('/home/vagrant/.bashrc'), :if => os[:family] == 'redhat' do
 end
 
 describe 'Linux kernel parameters' do
-  context linux_kernel_parameter('net.core.somaxconn') do 
+  context linux_kernel_parameter('net.core.somaxconn') do
     its(:value) { should eq 2048 }
   end
-
   context linux_kernel_parameter('net.ipv4.tcp_max_syn_backlog') do
     its(:value) { should be 2048 }
   end
-
   context linux_kernel_parameter('net.core.netdev_max_backlog') do
-    its(:value) { should be 8192 }
+    its(:value) { should be 4096 }
   end
-
   context linux_kernel_parameter('net.ipv4.tcp_tw_reuse') do
     its(:value) { should eq 1 }
   end
-
   context linux_kernel_parameter('net.ipv4.tcp_fin_timeout') do
     its(:value) { should eq 10 }
   end

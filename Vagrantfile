@@ -18,6 +18,8 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
+forwarded_port        = [ 3000, 3001 ]
+
 vbguest_auto_update   = true
 synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
@@ -57,8 +59,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :public_network, ip: public_ip
   end
 
-  config.vm.network :forwarded_port, guest: 3000, host: 3000, auto_correct: true
-  config.vm.network :forwarded_port, guest: 3001, host: 3001, auto_correct: true
+  forwarded_port.each{|port|
+    config.vm.network :forwarded_port, guest: port, host: port, auto_correct: true
+  }
 
   config.vm.synced_folder '.', '/vagrant', :type => synced_folder_type, :create => 'true'
   config.vm.synced_folder 'wordpress/', vm_document_root, :type => synced_folder_type, :create => 'true'

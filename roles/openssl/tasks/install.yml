@@ -11,6 +11,7 @@
   with_items:
     - zlib-devel
     - pcre-devel
+    - perl-Test-Harness
   when: ansible_os_family == 'RedHat'
 
 - name: build environment installed (Debian)
@@ -22,30 +23,30 @@
     - libpcre3-dev
   when: ansible_os_family == 'Debian'
 
-- name: get openssl-1.0.2k
+- name: get openssl-{{ openssl_version }}
   get_url:
-    url: https://www.openssl.org/source/openssl-1.0.2k.tar.gz
-    dest: /tmp/openssl-1.0.2k.tar.gz
-
-- name: delete /tmp/openssl-1.0.2k
-  file:
-    path: /tmp/openssl-1.0.2k
-    state: absent
+    url: https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
+    dest: /tmp/openssl-{{ openssl_version }}.tar.gz
 
 - name: tar openssl
-  command: tar zxvf /tmp/openssl-1.0.2k.tar.gz
+  command: tar zxvf /tmp/openssl-{{ openssl_version }}.tar.gz
   args:
     chdir: /tmp
 
 - name: config and make install
   command: "{{ item }}"
   args:
-    chdir: /tmp/openssl-1.0.2k
+    chdir: /tmp/openssl-{{ openssl_version }}
   with_items:
     - ./config shared zlib
     - make
     - make test
     - make install
+
+- name: delete openssl-{{ openssl_version }}.tar.gz
+  file:
+    path: "/tmp/openssl-{{ openssl_version }}.tar.gz"
+    state: absent
 
 - name: stat old openssl
   stat:
@@ -61,3 +62,8 @@
     src: /usr/local/ssl/bin/openssl
     dest: /usr/bin/openssl
     state: link
+
+# - name: openssl-devel installed
+#   package:
+#     name: openssl-devel-{{ openssl_version }}
+#     state: latest

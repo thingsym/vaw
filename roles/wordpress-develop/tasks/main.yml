@@ -50,3 +50,4 @@
 - include: phpstan.yml
 - include: webgrind.yml
   tags: sync-dir
+- include: mysqltuner.yml
