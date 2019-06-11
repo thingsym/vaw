@@ -39,7 +39,8 @@
 
 ## [0.5.9] - 2018.08.02
 
-- improve p - fix php-build.default_configure_options
+- improve phpenv.sh version 0.4.1
+- fix php-build.default_configure_options
 - fix httpd.conf for apache mpm_event
 - add other versions database tasks
 - bump up MariaDB 10.3, MySQL 5.7, Percona 5.7
