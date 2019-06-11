@@ -149,6 +149,8 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	public_ip             = ''
 
+	forwarded_port        = [ 3000, 3001 ]
+
 	vbguest_auto_update   = true
 	synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
@@ -164,7 +166,9 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: `''`)
-* `vbguest_auto_update` VirtualBox Guest Additions をアップデートします (default: `true` / value: `true` | `false`)
+* `forwarded_port` list of ports that you want to transfer (default: `[ 3000, 3001 ]`)
+* `vbguest_auto_update` whether to update VirtualBox Guest Additions (default: `true` / value: `true` | `false`)
+トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` 共有フォルダの種類 (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
 * `ansible_install_mode` (required) Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
