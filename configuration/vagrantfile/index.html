@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.6.5</span>
+ <span class="version">Version 0.6.6</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -47,6 +47,8 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
+forwarded_port        = [ 3000, 3001 ]
+
 vbguest_auto_update   = true
 synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
@@ -67,68 +69,75 @@ provision_mode        = 'all'       # all|wordpress|box
 <li>auto create <code>wordpress</code> directory and synchronized</li>
 </ul></li>
 <li><code>public_ip</code> IP address of bridged connection (default: <code>''</code>)</li>
-<li><code>vbguest_auto_update</code> update VirtualBox Guest Additions (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
+<li><code>forwarded_port</code> list of ports that you want to transfer (default: <code>[ 3000, 3001 ]</code>)</li>
+<li><code>vbguest_auto_update</code> whether to update VirtualBox Guest Additions (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
 <li><code>synced_folder_type</code> the type of synced folder (default: <code>virtualbox</code> / value: <code>virtualbox</code> | <code>nfs</code> | <code>rsync</code> | <code>smb</code>)</li>
 <li><code>ansible_install_mode</code> (required) the way to install Ansible (default: <code>:default</code> / value: <code>:default</code> | <code>:pip</code>)</li>
 <li><code>ansible_version</code> version of Ansible to install (default: <code>latest</code>)</li>
 <li><code>provision_mode</code> (required) Provisioning mode (default: <code>all</code> / value: <code>all</code> | <code>wordpress</code> | <code>box</code>)</li>
 </ul>
-<div class="edit-meta">Last updated on 22 Nov 2018<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/" title="Configuration file"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Configuration file</a>
-<a class="nav nav-next" href="https://thingsym.github.io/vaw/configuration/all-yml/" title="all.yml">Next - all.yml <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
+<div class="edit-meta">
+Last updated on 22 Nov 2018
+
+
+<br>
+Published on 22 Nov 2018
+<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="/vaw/configuration/" title="Configuration file"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Configuration file</a>
+<a class="nav nav-next" href="/vaw/configuration/all-yml/" title="all.yml">Next - all.yml <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
 </footer>
 </main><div class="sidebar">
 <nav>
 <ul>
 <li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
+<li class=""><a href="/vaw/about/">About VAW</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+<li class=""><a href="/vaw/getting-started/">Getting Started</a>
 <ul class="">
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
+<li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li>
 </ul>
   
 </li>
 
-<li class="parent"><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+<li class="parent"><a href="/vaw/configuration/">Configuration file</a>
 <ul class="sub-menu">
-<li class="active"><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
+<li class="active"><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
+<li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li>
 </ul>
   
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
+<li class=""><a href="/vaw/directory-layout/">Directory Layout</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
+<li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+<li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a>
 <ul class="">
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
+<li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
 </ul>
   
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
+<li class=""><a href="/vaw/specification/">Specification</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
+<li class=""><a href="/vaw/helper-command/">Helper Command</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
+<li class=""><a href="/vaw/custom-config/">Custom Config</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
+<li class=""><a href="/vaw/contribution/">Contribution</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
+<li class=""><a href="/vaw/changelog/">Changelog</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
+<li class=""><a href="/vaw/license/">License</a>
 </li>
 </ul>
 </nav>

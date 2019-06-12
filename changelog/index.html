@@ -19,7 +19,7 @@
 <div class="container"><header>
 <h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
 
- <span class="version">Version 0.6.5</span>
+ <span class="version">Version 0.6.6</span>
 <a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
 <p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
 
@@ -27,6 +27,22 @@
 
 <div class="content-container">
 <main><h1>Changelog</h1>
+
+<h2 id="0-6-6-2019-06-11">[0.6.6] - 2019.06.11</h2>
+
+<ul>
+<li>improve to add forwarded_port using array</li>
+<li>fix IUS repository url</li>
+<li>fix kernel parameter</li>
+<li>add .editorconfig</li>
+<li>add mysqltuner.pl</li>
+<li>bump up git version 2 or later</li>
+<li>fix client_max_body_size</li>
+<li>fix http2 config</li>
+<li>enable switch between prefork and event with apache</li>
+<li>bump up Apache version 2.4</li>
+<li>improve version specification with openssl</li>
+</ul>
 
 <h2 id="0-6-5-2019-03-12">[0.6.5] - 2019.03.12</h2>
 
@@ -80,7 +96,8 @@
 <h2 id="0-5-9-2018-08-02">[0.5.9] - 2018.08.02</h2>
 
 <ul>
-<li>improve p - fix php-build.default_configure_options</li>
+<li>improve phpenv.sh version 0.4.1</li>
+<li>fix php-build.default_configure_options</li>
 <li>fix httpd.conf for apache mpm_event</li>
 <li>add other versions database tasks</li>
 <li>bump up MariaDB 10.3, MySQL 5.7, Percona 5.7</li>
@@ -413,62 +430,68 @@
 <ul>
 <li>initial release</li>
 </ul>
-<div class="edit-meta">Last updated on 24 Mar 2019<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
-<a class="nav nav-next" href="https://thingsym.github.io/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://github.com/thingsym/hugo-theme-techdoc">TechDoc</a>. Design by <a href="https://www.thingslabo.com/">Thingsym</a>.</p>
+<div class="edit-meta">
+Last updated on 24 Mar 2019
+
+
+<br>
+Published on 22 Nov 2018
+<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/changelog/_index.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="/vaw/contribution/" title="Contribution"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Contribution</a>
+<a class="nav nav-next" href="/vaw/license/" title="License">Next - License <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
 </footer>
 </main><div class="sidebar">
 <nav>
 <ul>
 <li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
+<li class=""><a href="/vaw/about/">About VAW</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+<li class=""><a href="/vaw/getting-started/">Getting Started</a>
 <ul class="">
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
+<li class=""><a href="/vaw/getting-started/requirements/">Requirements</a></li>
 </ul>
   
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+<li class=""><a href="/vaw/configuration/">Configuration file</a>
 <ul class="">
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
+<li class=""><a href="/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
+<li class=""><a href="/vaw/configuration/all-yml/">all.yml</a></li>
 </ul>
   
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
+<li class=""><a href="/vaw/directory-layout/">Directory Layout</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
+<li class=""><a href="/vaw/provisioning-mode/">Provisioning Mode</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+<li class=""><a href="/vaw/vagrant-box/">Vagrant Box</a>
 <ul class="">
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
+<li class=""><a href="/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
 </ul>
   
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
+<li class=""><a href="/vaw/specification/">Specification</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
+<li class=""><a href="/vaw/helper-command/">Helper Command</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
+<li class=""><a href="/vaw/custom-config/">Custom Config</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
+<li class=""><a href="/vaw/contribution/">Contribution</a>
 </li>
 
-<li class="parent active"><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
+<li class="parent active"><a href="/vaw/changelog/">Changelog</a>
 </li>
 
-<li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
+<li class=""><a href="/vaw/license/">License</a>
 </li>
 </ul>
 </nav>
