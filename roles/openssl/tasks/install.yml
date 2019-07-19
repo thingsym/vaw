@@ -1,69 +1,86 @@
 ---
-- name: gcc installed
-  package:
-    name: gcc
-    state: latest
+- block:
+  - name: openssl installed
+    package:
+      name: openssl
+      state: latest
 
-- name: build environment installed (CentOS/RHEL)
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - zlib-devel
-    - pcre-devel
-    - perl-Test-Harness
-  when: ansible_os_family == 'RedHat'
+  - name: openssl-devel installed
+    package:
+      name: openssl-devel
+      state: latest
+    when: ansible_os_family == 'RedHat'
 
-- name: build environment installed (Debian)
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - zlib1g-dev
-    - libpcre3-dev
-  when: ansible_os_family == 'Debian'
+  - name: libssl-dev installed
+    package:
+      name: libssl-dev
+      state: latest
+    when: ansible_os_family == 'Debian'
+  when: via_install == 'package'
 
-- name: get openssl-{{ openssl_version }}
-  get_url:
-    url: https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
-    dest: /tmp/openssl-{{ openssl_version }}.tar.gz
+- block:
+  - name: gcc installed
+    package:
+      name: gcc
+      state: latest
 
-- name: tar openssl
-  command: tar zxvf /tmp/openssl-{{ openssl_version }}.tar.gz
-  args:
-    chdir: /tmp
+  - name: build environment installed (CentOS/RHEL)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - zlib-devel
+      - pcre-devel
+      - perl-Test-Harness
+    when: ansible_os_family == 'RedHat'
 
-- name: config and make install
-  command: "{{ item }}"
-  args:
-    chdir: /tmp/openssl-{{ openssl_version }}
-  with_items:
-    - ./config shared zlib
-    - make
-    - make test
-    - make install
+  - name: build environment installed (Debian)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - zlib1g-dev
+      - libpcre3-dev
+    when: ansible_os_family == 'Debian'
 
-- name: delete openssl-{{ openssl_version }}.tar.gz
-  file:
-    path: "/tmp/openssl-{{ openssl_version }}.tar.gz"
-    state: absent
+  - name: get openssl-{{ openssl_version }}
+    get_url:
+      url: https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
+      dest: /tmp/openssl-{{ openssl_version }}.tar.gz
 
-- name: stat old openssl
-  stat:
-    path: /usr/bin/openssl
-  register: is_openssl_old
+  - name: tar openssl
+    command: tar zxvf /tmp/openssl-{{ openssl_version }}.tar.gz
+    args:
+      chdir: /tmp
 
-- name: mv old openssl
-  command: mv /usr/bin/openssl /usr/bin/openssl.bak
-  when: is_openssl_old.stat.exists
+  - name: config and make install
+    command: "{{ item }}"
+    args:
+      chdir: /tmp/openssl-{{ openssl_version }}
+    with_items:
+      - ./config shared zlib
+      - make
+      - make test
+      - make install
 
-- name: ln /usr/bin/openssl
-  file:
-    src: /usr/local/ssl/bin/openssl
-    dest: /usr/bin/openssl
-    state: link
+  - name: delete openssl-{{ openssl_version }}.tar.gz
+    file:
+      path: "/tmp/openssl-{{ openssl_version }}.tar.gz"
+      state: absent
 
-# - name: openssl-devel installed
-#   package:
-#     name: openssl-devel-{{ openssl_version }}
-#     state: latest
+  - name: stat old openssl
+    stat:
+      path: /usr/bin/openssl
+    register: is_openssl_old
+
+  - name: mv old openssl
+    command: mv /usr/bin/openssl /usr/bin/openssl.bak
+    when: is_openssl_old.stat.exists
+
+  - name: ln /usr/bin/openssl
+    file:
+      src: /usr/local/ssl/bin/openssl
+      dest: /usr/bin/openssl
+      state: link
+
+  when: via_install == 'source'
