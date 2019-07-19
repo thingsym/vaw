@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.7] - 2019.07.19
+
+- bump up php codesniffer
+- fix httpd.conf
+- add choice of openssl installation, source or package
+
 ## [0.6.6] - 2019.06.11
 
 - improve to add forwarded_port using array

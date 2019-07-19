@@ -1,1 +1,2 @@
-openssl_version: 1.0.2k
+via_install: source
+openssl_version: 1.0.2r
