@@ -100,11 +100,11 @@ KeepAliveTimeout 15
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule prefork.c>
-StartServers       8
-MinSpareServers    5
-MaxSpareServers   20
-ServerLimit      256
-MaxClients       256
+StartServers       3
+MinSpareServers    3
+MaxSpareServers   8
+ServerLimit      50
+MaxClients       50
 MaxRequestsPerChild  4000
 </IfModule>
 
