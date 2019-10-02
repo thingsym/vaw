@@ -2,5 +2,6 @@
 .vagrant
 *.box
 *.retry
+*.cache
 /wordpress
 /vaw-documentation

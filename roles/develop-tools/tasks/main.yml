@@ -15,3 +15,7 @@
     - jq
 
 - include: peco.yml
+
+- name: zstd installed
+  package:
+    name: zstd
