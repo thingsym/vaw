@@ -369,7 +369,7 @@ function install() {
 
     sed -i -e "s/^;opcache.memory_consumption=64/opcache.memory_consumption=128/" $PHP_INI
     sed -i -e "s/^;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=8/" $PHP_INI
-    sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=4000/" $PHP_INI
+    sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=10000/" $PHP_INI
     sed -i -e "s/^;opcache.revalidate_freq=2/opcache.revalidate_freq=60/" $PHP_INI
     sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
     sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=0/" $PHP_INI
@@ -453,10 +453,10 @@ function install() {
     sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_CONF
 
     sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 10/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 10/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 20/" $PHP_FPM_CONF
-    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 500/" $PHP_FPM_CONF
+    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_CONF
+    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_CONF
+    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_CONF
+    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_CONF
     echo "[Info]: edit ${PHP_FPM_CONF} [www]"
   fi
 
@@ -473,10 +473,10 @@ function install() {
     sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_WWW_CONF
 
     sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 10/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 10/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 20/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 500/" $PHP_FPM_WWW_CONF
+    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_WWW_CONF
+    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_WWW_CONF
+    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_WWW_CONF
+    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_WWW_CONF
 
     sed -i -e "s/^;slowlog = log\/\$pool.log.slow/slowlog = \/var\/log\/php-fpm\/log.slow/" $PHP_FPM_WWW_CONF
     sed -i -e "s/^;request_slowlog_timeout = 0/request_slowlog_timeout = 10s/" $PHP_FPM_WWW_CONF
