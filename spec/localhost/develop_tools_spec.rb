@@ -31,3 +31,7 @@ describe command('peco --version') do
   let(:disable_sudo) { true }
   its(:exit_status) { should eq 0 }
 end
+
+describe package('zstd') do
+  it { should be_installed }
+end
