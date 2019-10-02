@@ -13,12 +13,10 @@
 --with-png-dir=/usr
 --enable-exif
 --enable-zip
---with-zlib
---with-zlib-dir=/usr
+--without-libzip
 --with-kerberos
 --with-openssl
 --with-openssl-dir=/usr
---with-mcrypt=/usr
 --enable-soap
 --enable-xmlreader
 --with-xsl
@@ -31,7 +29,6 @@
 --enable-sysvsem
 --enable-sysvshm
 --enable-shmop
---with-mysql=mysqlnd
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
 {% if ansible_os_family == 'RedHat' %}
