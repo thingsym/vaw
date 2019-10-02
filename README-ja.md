@@ -269,7 +269,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	ssl                : true   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.2.1
+	php_version        : 7.3.8
 	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
@@ -427,7 +427,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress管理画面 SSL 化の有効化 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.2.1`)
+* `php_version` PHPバージョン (default: `7.3.8`)
 * `http_protocol` HTTP プロトコル (default: `https` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
