@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.8] - 2019.10.02
+
+- fix php config with phpenv.sh
+- improve kernel parameter
+- bump up php version
+- fix php-build.default_configure_options
+- add Zstandard compression algorithm
+
 ## [0.6.7] - 2019.07.19
 
 - bump up php codesniffer
