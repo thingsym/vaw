@@ -18,7 +18,10 @@ vm_document_root      = '/var/www/html'
 
 public_ip             = ''
 
-forwarded_port        = [ 3000, 3001 ]
+forwarded_port        = [
+  3000,
+  3001
+]
 
 vbguest_auto_update   = true
 synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
