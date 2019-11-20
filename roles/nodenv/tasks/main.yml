@@ -47,7 +47,7 @@
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv
-  command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('8.11.4') }}"
+  command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('12.13.0') }}"
   ignore_errors: yes
   become: yes
   become_user: vagrant
@@ -58,6 +58,6 @@
   become_user: vagrant
 
 - name: nodenv global
-  command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('8.11.4') }}"
+  command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('12.13.0') }}"
   become: yes
   become_user: vagrant
