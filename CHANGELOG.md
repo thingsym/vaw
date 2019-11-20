@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.9] - 2019.11.20
+
+- bump up node version
+- fix php config with phpenv.sh
+- fix IUS repository url
+
 ## [0.6.8] - 2019.10.02
 
 - fix php config with phpenv.sh
