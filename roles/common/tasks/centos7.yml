@@ -35,4 +35,4 @@
 
 - name: IUS repository installed (CentOS/RHEL 7)
   yum:
-    name: https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-15.ius.centos7.noarch.rpm
+    name: https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-2-1.el7.ius.noarch.rpm
