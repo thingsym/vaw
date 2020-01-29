@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.0] - 2020.01.29
+
+- fix IUS repository url
+
 ## [0.6.9] - 2019.11.20
 
 - bump up node version
