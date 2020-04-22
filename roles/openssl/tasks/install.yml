@@ -41,29 +41,36 @@
       state: latest
     when: ansible_os_family == 'Debian'
 
-  - name: get openssl-{{ openssl_version }}
+  - name: get openssl-{{ openssl_full_version }} / new
     get_url:
-      url: https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
-      dest: /tmp/openssl-{{ openssl_version }}.tar.gz
+      url: https://www.openssl.org/source/openssl-{{ openssl_full_version }}.tar.gz
+      dest: /tmp/openssl-{{ openssl_full_version }}.tar.gz
+    when: openssl_release == 'new'
+
+  - name: get openssl-{{ openssl_full_version }} / old
+    get_url:
+      url: https://www.openssl.org/source/old/{{ openssl_version }}/openssl-{{ openssl_full_version }}.tar.gz
+      dest: /tmp/openssl-{{ openssl_full_version }}.tar.gz
+    when: openssl_release == 'old'
 
   - name: tar openssl
-    command: tar zxvf /tmp/openssl-{{ openssl_version }}.tar.gz
+    command: tar zxvf /tmp/openssl-{{ openssl_full_version }}.tar.gz
     args:
       chdir: /tmp
 
   - name: config and make install
     command: "{{ item }}"
     args:
-      chdir: /tmp/openssl-{{ openssl_version }}
+      chdir: /tmp/openssl-{{ openssl_full_version }}
     with_items:
       - ./config shared zlib
       - make
       - make test
       - make install
 
-  - name: delete openssl-{{ openssl_version }}.tar.gz
+  - name: delete openssl-{{ openssl_full_version }}.tar.gz
     file:
-      path: "/tmp/openssl-{{ openssl_version }}.tar.gz"
+      path: "/tmp/openssl-{{ openssl_full_version }}.tar.gz"
       state: absent
 
   - name: stat old openssl

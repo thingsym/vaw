@@ -1,2 +1,5 @@
 via_install: source
-openssl_version: 1.0.2r
+openssl_release: old
+openssl_version: 1.0.2
+openssl_letter: f
+openssl_full_version: "{{ openssl_version }}{{ openssl_letter }}"
