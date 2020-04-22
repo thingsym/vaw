@@ -7,6 +7,7 @@
       - python-devel
       - python-setuptools
       - python-pip
+    state: present
 
 - name: gem libraries globally installed
   gem:

@@ -26,6 +26,7 @@
 - name: ntp installed
   package:
     name: ntp
+    state: latest
 
 - name: ntp started and enabled
   service:

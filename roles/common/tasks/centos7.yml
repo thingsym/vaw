@@ -26,6 +26,7 @@
 - name: chrony installed
   package:
     name: chrony
+    state: latest
 
 - name: chrony started and enabled
   service:

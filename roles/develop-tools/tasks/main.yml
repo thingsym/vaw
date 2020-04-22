@@ -18,3 +18,4 @@
 - name: zstd installed
   package:
     name: zstd
+    state: latest

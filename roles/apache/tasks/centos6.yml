@@ -2,6 +2,7 @@
 - name: mod_proxy_fcgi installed
   package:
     name: mod_proxy_fcgi
+    state: latest
 
 - name: stat custom httpd.conf.centos6.j2
   stat:
