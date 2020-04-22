@@ -10,16 +10,15 @@
 
   - name: MariaDB installed (CentOS/RHEL 6)
     package:
-      name: "{{ item }}"
+      name:
+        - MariaDB-server
+        - MariaDB-client
+        - MariaDB-shared
+        - MariaDB-devel
+        - MariaDB-common
+        - MariaDB-compat
+        - MySQL-python
       state: latest
-    with_items:
-      - MariaDB-server
-      - MariaDB-client
-      - MariaDB-shared
-      - MariaDB-devel
-      - MariaDB-common
-      - MariaDB-compat
-      - MySQL-python
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version|int == 6
@@ -35,17 +34,16 @@
 
   - name: MariaDB 10.2 installed (CentOS/RHEL 7)
     package:
-      name: "{{ item }}"
+      name:
+        - MariaDB-server
+        - MariaDB-client
+        - MariaDB-shared
+        - MariaDB-devel
+        - MariaDB-common
+        - mariadb-libs
+        - mariadb-embedded
+        - MySQL-python
       state: latest
-    with_items:
-      - MariaDB-server
-      - MariaDB-client
-      - MariaDB-shared
-      - MariaDB-devel
-      - MariaDB-common
-      - mariadb-libs
-      - mariadb-embedded
-      - MySQL-python
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version|int == 7
@@ -70,15 +68,14 @@
 
   - name: MariaDB 10.2 installed (Ubuntu)
     package:
-      name: "{{ item }}"
+      name:
+        - mariadb-server-10.2
+        - mariadb-client-10.2
+        - mariadb-common
+        - libmariadbd-dev
+        - libmariadbclient18
+        - python-mysqldb
       state: latest
-    with_items:
-      - mariadb-server-10.2
-      - mariadb-client-10.2
-      - mariadb-common
-      - libmariadbd-dev
-      - libmariadbclient18
-      - python-mysqldb
   when: ansible_distribution == 'Ubuntu'
 
 - block:
@@ -101,13 +98,12 @@
 
   - name: MariaDB 10.2 installed (Debian)
     package:
-      name: "{{ item }}"
+      name:
+        - mariadb-server-10.2
+        - mariadb-client-10.2
+        - mariadb-common
+        - libmariadbd-dev
+        - libmariadbclient18
+        - python-mysqldb
       state: latest
-    with_items:
-      - mariadb-server-10.2
-      - mariadb-client-10.2
-      - mariadb-common
-      - libmariadbd-dev
-      - libmariadbclient18
-      - python-mysqldb
   when: ansible_distribution == 'Debian'

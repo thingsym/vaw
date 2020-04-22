@@ -1,13 +1,13 @@
 ---
 - name: deploy tools installed
   package:
-    name: "{{ item }}"
-  with_items:
-    - sshpass
-    - lftp
-    - python-devel
-    - python-setuptools
-    - python-pip
+    name:
+      - sshpass
+      - lftp
+      - python-devel
+      - python-setuptools
+      - python-pip
+    state: present
 
 - name: gem libraries globally installed
   gem:

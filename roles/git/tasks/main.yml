@@ -7,7 +7,7 @@
 
   - name: git v2 or later installed
     package:
-      name: git2u
+      name: git222
       state: latest
   when: ansible_os_family == 'RedHat'
 

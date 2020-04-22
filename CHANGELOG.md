@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1] - 2020.04.22
+
+- improve openssl role
+- bump up php 7.3.17
+- bump up MariaDB 10.4
+- change loop from with_items to a list of packages
+- fix git2u obsoleted
+
 ## [0.7.0] - 2020.01.29
 
 - fix IUS repository url

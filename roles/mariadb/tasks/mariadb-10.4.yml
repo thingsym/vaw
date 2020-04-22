@@ -1,10 +1,10 @@
 ---
 - block:
-  - name: MariaDB 10.1 repository added (CentOS/RHEL 6)
+  - name: MariaDB 10.4 repository added (CentOS/RHEL 6)
     yum_repository:
       name: mariadb
-      description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos6-amd64
+      description: MariaDB 10.4 centos repository
+      baseurl: http://yum.mariadb.org/10.4/centos6-amd64
       gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
       gpgcheck: yes
 
@@ -24,15 +24,15 @@
     - ansible_distribution_major_version|int == 6
 
 - block:
-  - name: MariaDB 10.1 repository installed (CentOS/RHEL 7)
+  - name: MariaDB 10.4 repository installed (CentOS/RHEL 7)
     yum_repository:
       name: mariadb
-      description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos7-amd64
+      description: MariaDB 10.4 centos repository
+      baseurl: http://yum.mariadb.org/10.4/centos7-amd64
       gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
       gpgcheck: yes
 
-  - name: MariaDB 10.1 installed (CentOS/RHEL 7)
+  - name: MariaDB 10.4 installed (CentOS/RHEL 7)
     package:
       name:
         - MariaDB-server
@@ -61,16 +61,16 @@
       id: "0xcbcb082a1bb943db"
     when: ansible_distribution_release == 'trusty'
 
-  - name: MariaDB 10.1 repository installed
+  - name: MariaDB 10.4 repository installed
     apt_repository:
       filename: MariaDB
-      repo: 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.1/ubuntu {{ ansible_distribution_release }} main'
+      repo: 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.4/ubuntu {{ ansible_distribution_release }} main'
 
-  - name: MariaDB 10.1 installed (Ubuntu)
+  - name: MariaDB 10.4 installed (Ubuntu)
     package:
       name:
-        - mariadb-server-10.1
-        - mariadb-client-10.1
+        - mariadb-server-10.4
+        - mariadb-client-10.4
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
@@ -79,28 +79,28 @@
   when: ansible_distribution == 'Ubuntu'
 
 - block:
-  - name: MariaDB 10.1 apt_key installed (Debian/stretch)
+  - name: MariaDB 10.4 apt_key installed (Debian/stretch)
     apt_key:
       keyserver: hkp://keyserver.ubuntu.com:80
       id: "0xF1656F24C74CD1D8"
     when: ansible_distribution_release == 'stretch'
 
-  - name: MariaDB 10.1 apt_key installed (Debian/jessie)
+  - name: MariaDB 10.4 apt_key installed (Debian/jessie)
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: "0xcbcb082a1bb943db"
     when: ansible_distribution_release == 'jessie'
 
-  - name: MariaDB 10.1 repository installed
+  - name: MariaDB 10.4 repository installed
     apt_repository:
       filename: MariaDB
-      repo: 'deb [arch=amd64,i386] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.1/debian {{ ansible_distribution_release }} main'
+      repo: 'deb [arch=amd64,i386] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.4/debian {{ ansible_distribution_release }} main'
 
-  - name: MariaDB 10.1 installed (Debian)
+  - name: MariaDB 10.4 installed (Debian)
     package:
       name:
-        - mariadb-server-10.1
-        - mariadb-client-10.1
+        - mariadb-server-10.4
+        - mariadb-client-10.4
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
