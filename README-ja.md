@@ -104,6 +104,15 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 初期設定でのウェブサイトへのアクセスは **http://vaw.local/** から、WordPress 管理画面は **http://vaw.local/wp-admin/** にブラウザでアクセスします。
 
+### 7. Vagrant に SSH で接続
+
+	vagrant ssh
+
+Or using ssh config.
+
+	vagrant ssh-config > ssh_config.cache
+	ssh -F ssh_config.cache default
+
 ## Default configuration Variables
 
 初期設定のデータベースと WordPress Admin の ID とパスワードは以下の通りです。プロビジョニング設定ファイルで設定が可能です。
@@ -269,7 +278,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	ssl                : true   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.3.8
+	php_version        : 7.3.17
 	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
@@ -427,7 +436,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress管理画面 SSL 化の有効化 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.3.8`)
+* `php_version` PHPバージョン (default: `7.3.17`)
 * `http_protocol` HTTP プロトコル (default: `https` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)

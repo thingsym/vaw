@@ -107,6 +107,15 @@ After provisioning, you can launch a WordPress development environment.
 
 Access to the website **http://vaw.local/**. Access to the WordPress admin **http://vaw.local/wp-admin/**.
 
+### 7. Access to a Vagrant machine via SSH
+
+	vagrant ssh
+
+Or using ssh config.
+
+	vagrant ssh-config > ssh_config.cache
+	ssh -F ssh_config.cache default
+
 ## Default configuration Variables
 
 ID and password for the initial setting is as follows. Can be set in the provisioning configuration file.
@@ -276,7 +285,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	ssl                : true   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.3.8
+	php_version        : 7.3.17
 	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
@@ -432,7 +441,7 @@ Disable the setting case
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress administration over SSL enabled flag (default: `true` / value: `true` | `false`)
-* `php_version` version of PHP (default: `7.3.8`)
+* `php_version` version of PHP (default: `7.3.17`)
 * `http_protocol` HTTP protocol (default: `https` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
