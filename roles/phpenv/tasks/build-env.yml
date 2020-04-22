@@ -1,16 +1,15 @@
 ---
 - name: build environment
   package:
-    name: "{{ item }}"
+    name:
+      - libxml2-devel
+      - bison-devel
+      - openssl-devel
+      - libjpeg-devel
+      - libpng-devel
+      - libmcrypt-devel
+      - readline-devel
+      - libtidy-devel
+      - libxslt-devel
+      - re2c
     state: latest
-  with_items:
-    - libxml2-devel
-    - bison-devel
-    - openssl-devel
-    - libjpeg-devel
-    - libpng-devel
-    - libmcrypt-devel
-    - readline-devel
-    - libtidy-devel
-    - libxslt-devel
-    - re2c

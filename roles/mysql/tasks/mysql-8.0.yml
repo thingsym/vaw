@@ -15,16 +15,15 @@
 
   - name: mysql 8.0 installed (CentOS/RHEL)
     package:
-      name: "{{ item }}"
-      state: latest
-    with_items:
-      - mysql-community-server
-      - mysql-community-client
-      - mysql-community-common
-      - mysql-community-devel
-      - mysql-community-libs
-      - mysql-utilities
-      - MySQL-python
+      name:
+        - mysql-community-server
+        - mysql-community-client
+        - mysql-community-common
+        - mysql-community-devel
+        - mysql-community-libs
+        - mysql-utilities
+        - MySQL-python
+        state: latest
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -49,12 +48,11 @@
 
   - name: mysql installed (Debian)
     package:
-      name: "{{ item }}"
+      name:
+        - mysql-community-server
+        - mysql-community-client
+        - mysql-common
+        - mysql-utilities
+        - python-mysqldb
       state: latest
-    with_items:
-      - mysql-community-server
-      - mysql-community-client
-      - mysql-common
-      - mysql-utilities
-      - python-mysqldb
   when: ansible_os_family == 'Debian'

@@ -5,14 +5,13 @@
     state: present
 
 - name: libraries installed
-  yum:
-    name: "{{ item }}"
+  package:
+    name:
+      - yum-utils
+      - libcurl
+      - libcurl-devel
+      - jq
     state: latest
-  with_items:
-    - yum-utils
-    - libcurl
-    - libcurl-devel
-    - jq
 
 - include: peco.yml
 

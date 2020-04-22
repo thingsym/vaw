@@ -1,11 +1,10 @@
 ---
 - name: develop tools installed
   package:
-    name: "{{ item }}"
+    name:
+      - subversion
+      - gettext
     state: latest
-  with_items:
-    - subversion
-    - gettext
 
 - name: gem libraries globally installed
   gem:

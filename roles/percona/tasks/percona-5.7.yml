@@ -6,14 +6,13 @@
 
   - name: percona 5.7 installed (CentOS/RHEL)
     package:
-      name: "{{ item }}"
+      name:
+        - Percona-Server-server-57
+        - Percona-Server-client-57
+        - Percona-Server-shared-57
+        - Percona-Server-devel-57
+        - MySQL-python
       state: latest
-    with_items:
-      - Percona-Server-server-57
-      - Percona-Server-client-57
-      - Percona-Server-shared-57
-      - Percona-Server-devel-57
-      - MySQL-python
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -27,12 +26,11 @@
 
   - name: percona 5.7 installed (Debian)
     package:
-      name: "{{ item }}"
+      name:
+        - percona-server-server-5.7
+        - percona-server-client-5.7
+        - percona-server-common-5.7
+        - libperconaserverclient18.1-dev
+        - python-mysqldb
       state: latest
-    with_items:
-      - percona-server-server-5.7
-      - percona-server-client-5.7
-      - percona-server-common-5.7
-      - libperconaserverclient18.1-dev
-      - python-mysqldb
   when: ansible_os_family == 'Debian'

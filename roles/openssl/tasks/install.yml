@@ -26,21 +26,19 @@
 
   - name: build environment installed (CentOS/RHEL)
     package:
-      name: "{{ item }}"
+      name:
+        - zlib-devel
+        - pcre-devel
+        - perl-Test-Harness
       state: latest
-    with_items:
-      - zlib-devel
-      - pcre-devel
-      - perl-Test-Harness
     when: ansible_os_family == 'RedHat'
 
   - name: build environment installed (Debian)
     package:
-      name: "{{ item }}"
+      name:
+        - zlib1g-dev
+        - libpcre3-dev
       state: latest
-    with_items:
-      - zlib1g-dev
-      - libpcre3-dev
     when: ansible_os_family == 'Debian'
 
   - name: get openssl-{{ openssl_version }}

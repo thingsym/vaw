@@ -1,11 +1,10 @@
 ---
 - name: httpd installed
   package:
-    name: "{{ item }}"
+    name:
+      - httpd24u
+      - httpd24u-devel
     state: latest
-  with_items:
-    - httpd24u
-    - httpd24u-devel
 
 - name: include task (CentOS/RHEL 6)
   include: centos6.yml
