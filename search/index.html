@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Search - VAW (Vagrant Ansible WordPress) Documentation</title>
+<meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
+<meta name="generator" content="Hugo 0.69.2" />
+<link href="https://thingsym.github.io/vaw/index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="https://thingsym.github.io/vaw/search/">
+<link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="https://thingsym.github.io/vaw/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://thingsym.github.io/vaw/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:title" content="Search" />
+<meta property="og:description" content="var search = instantsearch({ indexName: &#39;vaw_doc&#39;, searchClient: algoliasearch( &#39;DCXQ40Z7FZ&#39;, &#39;8b1fce019e261aab8b9bb88e518bd3b6&#39; ), routing: true, }); const renderHits = (renderOptions, isFirstRender) = { const { hits } = renderOptions; document.querySelector(&#39;#hits&#39;).innerHTML = ` ${hits .map( item = `${ item.title }${ dayjs(item.lastmod).format(&#34;YYYY/MM/DD&#34;) } - ${ item.description ? item.description : item.content.length  200 ? item.content.substring( 0, 200 ) &#43; &#39;...&#39; : item.content }
+` ) .join(&#39;&#39;)} `; }; const customHits = instantsearch." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://thingsym.github.io/vaw/search/" />
+<meta property="article:published_time" content="2020-05-12T18:49:06+00:00" />
+<meta property="article:modified_time" content="2020-05-12T18:49:06+00:00" /><meta property="og:site_name" content="VAW (Vagrant Ansible WordPress) Documentation" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Search"/>
+<meta name="twitter:description" content="var search = instantsearch({ indexName: &#39;vaw_doc&#39;, searchClient: algoliasearch( &#39;DCXQ40Z7FZ&#39;, &#39;8b1fce019e261aab8b9bb88e518bd3b6&#39; ), routing: true, }); const renderHits = (renderOptions, isFirstRender) = { const { hits } = renderOptions; document.querySelector(&#39;#hits&#39;).innerHTML = ` ${hits .map( item = `${ item.title }${ dayjs(item.lastmod).format(&#34;YYYY/MM/DD&#34;) } - ${ item.description ? item.description : item.content.length  200 ? item.content.substring( 0, 200 ) &#43; &#39;...&#39; : item.content }
+` ) .join(&#39;&#39;)} `; }; const customHits = instantsearch."/>
+<meta itemprop="name" content="Search">
+<meta itemprop="description" content="var search = instantsearch({ indexName: &#39;vaw_doc&#39;, searchClient: algoliasearch( &#39;DCXQ40Z7FZ&#39;, &#39;8b1fce019e261aab8b9bb88e518bd3b6&#39; ), routing: true, }); const renderHits = (renderOptions, isFirstRender) = { const { hits } = renderOptions; document.querySelector(&#39;#hits&#39;).innerHTML = ` ${hits .map( item = `${ item.title }${ dayjs(item.lastmod).format(&#34;YYYY/MM/DD&#34;) } - ${ item.description ? item.description : item.content.length  200 ? item.content.substring( 0, 200 ) &#43; &#39;...&#39; : item.content }
+` ) .join(&#39;&#39;)} `; }; const customHits = instantsearch.">
+<meta itemprop="datePublished" content="2020-05-12T18:49:06&#43;00:00" />
+<meta itemprop="dateModified" content="2020-05-12T18:49:06&#43;00:00" />
+<meta itemprop="wordCount" content="91">
+
+
+
+<meta itemprop="keywords" content="" /></head>
+<body><div class="container"><header>
+<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
+
+ <span class="version">Version 0.7.1</span>
+<a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
+<p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/vaw/search">Search</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Search</h1>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.0.0/dist/algoliasearch-lite.umd.js" integrity="sha256-MfeKq2Aw9VAkaE9Caes2NOxQf6vUa8Av0JqcUXUGkd0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0/dist/instantsearch.production.min.js" integrity="sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
+<div id="searchbox"></div>
+<div id="stats"></div>
+<div id="hits"></div>
+<div id="pagination"></div>
+
+<script>
+var search = instantsearch({
+  indexName: 'vaw_doc',
+  searchClient: algoliasearch(
+    'DCXQ40Z7FZ',
+    '8b1fce019e261aab8b9bb88e518bd3b6'
+  ),
+  routing: true,
+});
+
+const renderHits = (renderOptions, isFirstRender) => {
+  const { hits } = renderOptions;
+
+  document.querySelector('#hits').innerHTML = `
+    ${hits
+      .map(
+        item =>
+          `<div class="ais-Hits-item"><h3><a href="${ item.permalink }">${ item.title }</a></h3><p><span class="lastmod">${ dayjs(item.lastmod).format("YYYY/MM/DD") }</span> - ${ item.description ? item.description : item.content.length > 200 ? item.content.substring( 0, 200 ) + '...' : item.content }</p></div>`
+      )
+      .join('')}
+  `;
+};
+
+const customHits = instantsearch.connectors.connectHits( renderHits );
+
+search.addWidgets([
+  instantsearch.widgets.searchBox({
+    container: '#searchbox',
+    showReset: false,
+  }),
+
+  instantsearch.widgets.stats({
+    container: '#stats',
+  }),
+
+  customHits({
+    container: document.querySelector('#hits'),
+  }),
+
+  instantsearch.widgets.pagination({
+    container: '#pagination',
+    maxPages: 20,
+  })
+]);
+
+search.start();
+
+</script>
+
+
+<div class="edit-meta">
+Last updated on 12 May 2020
+
+
+<br>
+Published on 12 May 2020
+<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/search.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-next" href="https://thingsym.github.io/vaw/about/" title="About VAW">Next - About VAW <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main><div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
+<li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
+  
+</li>
+
+<li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

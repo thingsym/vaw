@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Getting Started on VAW (Vagrant Ansible WordPress) Documentation</title>
@@ -17,7 +17,7 @@
       <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
       
       <guid>https://thingsym.github.io/vaw/getting-started/requirements/</guid>
-      <description>  Oracle VM VirtualBox &amp;gt;= 5.2 Vagrant &amp;gt;= 2.1 Ansible &amp;gt;= 2.4  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
+      <description> Oracle VM VirtualBox &amp;gt;= 5.2 Vagrant &amp;gt;= 2.1 Ansible &amp;gt;= 2.4  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
     </item>
     
   </channel>
