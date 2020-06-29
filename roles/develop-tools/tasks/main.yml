@@ -11,6 +11,7 @@
       - libcurl
       - libcurl-devel
       - jq
+      - tree
     state: latest
 
 - include: peco.yml

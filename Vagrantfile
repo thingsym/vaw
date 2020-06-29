@@ -20,7 +20,8 @@ public_ip             = ''
 
 forwarded_port        = [
   3000,
-  3001
+  3001,
+  8025
 ]
 
 vbguest_auto_update   = true

@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.2] - 2020.06.29
+
+- add tree
+- add forwarded_port for MailHog
+
 ## [0.7.1] - 2020.04.22
 
 - improve openssl role
