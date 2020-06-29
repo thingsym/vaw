@@ -21,6 +21,10 @@ describe package('jq') do
   it { should be_installed }
 end
 
+describe package('tree') do
+  it { should be_installed }
+end
+
 describe command('which peco') do
   let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }
