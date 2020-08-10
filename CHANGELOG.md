@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.3] - 2020.08.10
+
+- add npm-installer.sh
+- support php 7.4
+- bump up ruby 2.7.1
+
 ## [0.7.2] - 2020.06.29
 
 - add tree
