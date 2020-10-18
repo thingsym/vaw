@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.4] - 2020.10.18
+
+- improve npm-installer.sh
+- remove develop tools, migrate to project's local development environment
+
 ## [0.7.3] - 2020.08.10
 
 - add npm-installer.sh
