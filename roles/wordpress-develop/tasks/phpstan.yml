@@ -1,6 +1,0 @@
----
-- name: phpstan installed
-  command: "{{ phpenv_dir }}/shims/composer global require 'phpstan/phpstan=*'"
-  become: yes
-  become_user: vagrant
-  when: php_version is match("^7")
