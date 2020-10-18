@@ -11,11 +11,6 @@ if property["develop_tools"] then
     it { should be_installed }
   end
 
-  describe package('sass') do
-    let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
-  end
-
   describe command('which grunt') do
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
@@ -65,28 +60,6 @@ if property["develop_tools"] then
    its(:exit_status) { should eq 0 }
   end
 
-  describe command('which stylestats') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/stylestats/) }
-  end
-
-  describe command('stylestats --version') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-  end
-
-  describe command('which plato') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/plato/) }
-  end
-
-  describe command('plato --version') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-  end
-
   describe command('yarn --version') do
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
@@ -100,60 +73,9 @@ if property["develop_tools"] then
     its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
   end
 
-  describe command('which phpunit') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpunit/) }
-  end
-
-  describe command('phpunit --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-  end
-
-  if property["php_version"] =~ /^7/ and property["version"].is_a?(Numeric) and property["version"] < 4.6 then
-    describe command('phpunit --version') do
-      let(:disable_sudo) { true }
-      its(:stdout) { should match /^PHPUnit 5\.7/ }
-    end
-  end
-
-  describe command('which phpcs') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpcs/) }
-  end
-
-  describe command('phpcs --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match /^PHP_CodeSniffer version 2\.9/ }
-  end
-
-  describe command('phpcs -i') do
-    let(:disable_sudo) { true }
-    its(:stdout) { should match /WordPress\-Core/ }
-  end
-
-  describe command('which phpcbf') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpcbf/) }
-  end
-
-  describe command('phpcbf --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match /^PHP_CodeSniffer version 2\.9/ }
-  end
-
   describe command('cachetool -V') do
     let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
-  end
-
-  describe file('/home/vagrant/.phpenv/versions/' + property["php_version"] + '/composer/vendor/squizlabs/php_codesniffer') do
-    it { should be_directory }
   end
 
   describe file('/var/www/html/opcache') do
@@ -173,30 +95,6 @@ if property["develop_tools"] then
   describe file('/usr/local/bin/wrk') do
     it { should be_file }
     it { should be_executable }
-  end
-
-  describe command('which phpmd') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpmd/) }
-  end
-
-  describe command('phpmd --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-  end
-
-  if property["php_version"] =~ /^7/ then
-    describe command('which phpstan') do
-      let(:sudo_options) { '-u vagrant -i' }
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/phpstan/) }
-    end
-
-    describe command('phpstan --version') do
-      let(:disable_sudo) { true }
-      its(:exit_status) { should eq 0 }
-    end
   end
 
   describe file('/var/www/html/webgrind/index.php') do

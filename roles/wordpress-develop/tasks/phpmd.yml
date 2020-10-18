@@ -1,5 +1,0 @@
----
-- name: PHPMD installed
-  command: "{{ phpenv_dir }}/shims/composer global require 'phpmd/phpmd=*'"
-  become: yes
-  become_user: vagrant
