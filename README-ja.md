@@ -633,17 +633,11 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 * [Grunt](http://gruntjs.com)
 * [gulp](http://gulpjs.com)
 * [WordPress i18n tools](http://codex.wordpress.org/I18n_for_WordPress_Developers)
+* [npm-check-updates](https://www.npmjs.com/package/npm-check-updates)
 * [Xdebug](http://xdebug.org)
-* [PHPUnit](https://phpunit.de)
-* [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
-* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * Opcache Web Viewer ([Opcache-Status](https://github.com/rlerdorf/opcache-status), [opcache-gui](https://github.com/amnuts/opcache-gui), [ocp.php](https://gist.github.com/ck-on/4959032/))
 * [cachetool](http://gordalina.github.io/cachetool/)
 * [wrk - Modern HTTP benchmarking tool](https://github.com/wg/wrk)
-* [plato](https://github.com/es-analysis/plato)
-* [stylestats](https://github.com/t32k/stylestats)
-* [PHPStan](https://github.com/phpstan/phpstan) (Only PHP7)
-* [PHPMD](https://phpmd.org/)
 * [webgrind](https://github.com/jokkedk/webgrind)
 * [MailHog](https://github.com/mailhog/MailHog)
 
@@ -660,12 +654,30 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 * [ruby-build](https://github.com/sstephenson/ruby-build)
 * [Ruby](https://www.ruby-lang.org/) via [rbenv](https://github.com/sstephenson/rbenv)
 
+### Deprecated Tools (Recommend migrating to project's local development environment)
+
+以下は、package.json または composer.json を使ってプロジェクトごとにローカル開発環境を整えることをおすすめします。
+
+#### Migrate to package.json
+
+* [plato](https://github.com/es-analysis/plato)
+* [stylestats](https://github.com/t32k/stylestats)
+
+#### Migrate to composer.json
+
+* [PHPUnit](https://phpunit.de)
+* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
+* [PHPStan](https://github.com/phpstan/phpstan) (Only PHP7)
+* [PHPMD](https://phpmd.org/)
+* [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
+
 ### Helper command
 
 * after_provision.sh
 * before_provision.sh
 * centos-box.sh
 * db_backup.sh
+* npm-installer.sh
 * phpenv.sh
 
 ## Helper command
