@@ -23,7 +23,7 @@
         - mysql-community-libs
         - mysql-utilities
         - MySQL-python
-        state: latest
+      state: latest
   when: ansible_os_family == 'RedHat'
 
 - block:
