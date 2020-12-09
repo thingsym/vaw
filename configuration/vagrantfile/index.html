@@ -1,70 +1,14 @@
-<!DOCTYPE html>
-<html lang="en-us">
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Vagrantfile - VAW (Vagrant Ansible WordPress) Documentation</title>
-<meta name="description" content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.">
-<meta name="generator" content="Hugo 0.69.2" />
-<link href="https://thingsym.github.io/vaw//index.xml" rel="alternate" type="application/rss+xml">
-<link rel="canonical" href="https://thingsym.github.io/vaw/configuration/vagrantfile/">
-<link rel="stylesheet" href="https://thingsym.github.io/vaw/css/theme.min.css">
-<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-<link rel="stylesheet" href="https://thingsym.github.io/vaw/css/chroma.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
-<script src="https://thingsym.github.io/vaw/js/bundle.js"></script><style>
-:root {}
-</style>
-<meta property="og:title" content="Vagrantfile" />
-<meta property="og:description" content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Vagrantfile - VAW (Vagrant Ansible WordPress) Documentation</title><meta name=description content="VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer."><meta name=generator content="Hugo 0.79.0"><link href=https://thingsym.github.io/vaw//index.xml rel=alternate type=application/rss+xml><link rel=canonical href=https://thingsym.github.io/vaw/configuration/vagrantfile/><link rel=stylesheet href=https://thingsym.github.io/vaw/css/theme.min.css><script src=https://use.fontawesome.com/releases/v5.0.6/js/all.js></script><link rel=stylesheet href=https://thingsym.github.io/vaw/css/chroma.min.css><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script src=https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js></script><script src=https://thingsym.github.io/vaw/js/bundle.js></script><style>:root{}</style><meta property="og:title" content="Vagrantfile"><meta property="og:description" content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 If you launch multiple environments, change the name of the directory. Should rewrite vm_ip and vm_hostname. Note not to overlap with other environments.
-You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://thingsym.github.io/vaw/configuration/vagrantfile/" />
-<meta property="article:published_time" content="2018-11-22T10:26:15+00:00" />
-<meta property="article:modified_time" content="2018-11-22T10:26:15+00:00" /><meta property="og:site_name" content="VAW (Vagrant Ansible WordPress) Documentation" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Vagrantfile"/>
-<meta name="twitter:description" content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
+You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip."><meta property="og:type" content="article"><meta property="og:url" content="https://thingsym.github.io/vaw/configuration/vagrantfile/"><meta property="article:published_time" content="2018-11-22T10:26:15+00:00"><meta property="article:modified_time" content="2018-11-22T10:26:15+00:00"><meta property="og:site_name" content="VAW (Vagrant Ansible WordPress) Documentation"><meta name=twitter:card content="summary"><meta name=twitter:title content="Vagrantfile"><meta name=twitter:description content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 If you launch multiple environments, change the name of the directory. Should rewrite vm_ip and vm_hostname. Note not to overlap with other environments.
-You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip."/>
-<meta itemprop="name" content="Vagrantfile">
-<meta itemprop="description" content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
+You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip."><meta itemprop=name content="Vagrantfile"><meta itemprop=description content="Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 If you launch multiple environments, change the name of the directory. Should rewrite vm_ip and vm_hostname. Note not to overlap with other environments.
-You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip.">
-<meta itemprop="datePublished" content="2018-11-22T10:26:15&#43;00:00" />
-<meta itemprop="dateModified" content="2018-11-22T10:26:15&#43;00:00" />
-<meta itemprop="wordCount" content="273">
-
-
-
-<meta itemprop="keywords" content="" /></head>
-<body><div class="container"><header>
-<h1>VAW (Vagrant Ansible WordPress) Documentation</h1>
-
- <span class="version">Version 0.7.2</span>
-<a href="https://github.com/thingsym/vaw" class="github"><i class="fab fa-github"></i></a>
-<p class="description">VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p>
-
-</header>
-<div class="global-menu">
-<nav>
-<ul>
-<li><a href="/vaw/search">Search</a></li></ul>
-</nav>
-</div>
-<div class="content-container">
-<main><h1>Vagrantfile</h1>
-<h3 id="vagrant-configuration-file-ruby">Vagrant configuration file (Ruby)</h3>
-<p>Vagrant configuration file is <strong>Vagrantfile</strong>.</p>
-<p>Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.</p>
-<p>If you launch multiple environments, change the name of the directory. Should rewrite <code>vm_ip</code> and <code>vm_hostname</code>. Note not to overlap with other environments.</p>
-<p>You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to <code>public_ip</code>. In that case, recommended that configure the same IP address to <code>vm_hostname</code>.</p>
-<pre><code>## Vagrant Settings ##
+You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip."><meta itemprop=datePublished content="2018-11-22T10:26:15+00:00"><meta itemprop=dateModified content="2018-11-22T10:26:15+00:00"><meta itemprop=wordCount content="273"><meta itemprop=keywords content></head><body><div class=container><header><h1>VAW (Vagrant Ansible WordPress) Documentation</h1><span class=version>Version 0.7.4</span>
+<a href=https://github.com/thingsym/vaw class=github><i class="fab fa-github"></i></a><p class=description>VAW (Vagrant Ansible WordPress) is Ansible playbooks for website developer, designer, webmaster and WordPress theme/plugin developer.</p></header><div class=global-menu><nav><ul><li><a href=/vaw/search>Search</a></li></ul></nav></div><div class=content-container><main><h1>Vagrantfile</h1><h3 id=vagrant-configuration-file-ruby>Vagrant configuration file (Ruby)</h3><p>Vagrant configuration file is <strong>Vagrantfile</strong>.</p><p>Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.</p><p>If you launch multiple environments, change the name of the directory. Should rewrite <code>vm_ip</code> and <code>vm_hostname</code>. Note not to overlap with other environments.</p><p>You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to <code>public_ip</code>. In that case, recommended that configure the same IP address to <code>vm_hostname</code>.</p><pre><code>## Vagrant Settings ##
 vm_box                = 'centos/7'
 vm_box_version        = '&gt;= 0'
 vm_ip                 = '192.168.46.49'
@@ -82,119 +26,5 @@ ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # only :pip required
 
 provision_mode        = 'all'       # all|wordpress|box
-</code></pre>
-<ul>
-<li><code>vm_box</code> (required) name of Vagrant Box (default: <code>centos/7</code>)</li>
-<li><code>vm_box_version</code> (required) version of Vagrant Box (default: <code>&gt;= 0</code>)</li>
-<li><code>vm_ip</code> (required) private IP address (default: <code>192.168.46.49</code>)</li>
-<li><code>vm_hostname</code> (required) hostname (default: <code>vaw.local</code>)</li>
-<li><code>vm_document_root</code> (required) document root path (default: <code>/var/www/html</code>)
-<ul>
-<li>auto create <code>wordpress</code> directory and synchronized</li>
-</ul>
-</li>
-<li><code>public_ip</code> IP address of bridged connection (default: <code>''</code>)</li>
-<li><code>forwarded_port</code> list of ports that you want to transfer (default: <code>[ 3000, 3001 ]</code>)</li>
-<li><code>vbguest_auto_update</code> whether to update VirtualBox Guest Additions (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li>
-<li><code>synced_folder_type</code> the type of synced folder (default: <code>virtualbox</code> / value: <code>virtualbox</code> | <code>nfs</code> | <code>rsync</code> | <code>smb</code>)</li>
-<li><code>ansible_install_mode</code> (required) the way to install Ansible (default: <code>:default</code> / value: <code>:default</code> | <code>:pip</code>)</li>
-<li><code>ansible_version</code> version of Ansible to install (default: <code>latest</code>)</li>
-<li><code>provision_mode</code> (required) Provisioning mode (default: <code>all</code> / value: <code>all</code> | <code>wordpress</code> | <code>box</code>)</li>
-</ul>
-<div class="edit-meta">
-Last updated on 22 Nov 2018
-
-
-<br>
-Published on 22 Nov 2018
-<br><a href="https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="https://thingsym.github.io/vaw/configuration/" title="Configuration file"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Configuration file</a>
-<a class="nav nav-next" href="https://thingsym.github.io/vaw/configuration/all-yml/" title="all.yml">Next - all.yml <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
-</footer>
-</main><div class="sidebar">
-
-<nav class="open-menu">
-<ul>
-<li class=""><a href="https://thingsym.github.io/vaw/">Home</a></li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/about/">About VAW</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/">Getting Started</a>
-  
-<ul class="sub-menu">
-<li class=""><a href="https://thingsym.github.io/vaw/getting-started/requirements/">Requirements</a></li>
-</ul>
-  
-</li>
-
-<li class="parent"><a href="https://thingsym.github.io/vaw/configuration/">Configuration file</a>
-  
-<ul class="sub-menu">
-<li class="active"><a href="https://thingsym.github.io/vaw/configuration/vagrantfile/">Vagrantfile</a></li>
-<li class=""><a href="https://thingsym.github.io/vaw/configuration/all-yml/">all.yml</a></li>
-</ul>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/directory-layout/">Directory Layout</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/provisioning-mode/">Provisioning Mode</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/">Vagrant Box</a>
-  
-<ul class="sub-menu">
-<li class=""><a href="https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/">How to make Vagrant Box</a></li>
-</ul>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/specification/">Specification</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/helper-command/">Helper Command</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/custom-config/">Custom Config</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/contribution/">Contribution</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/changelog/">Changelog</a>
-  
-</li>
-
-<li class=""><a href="https://thingsym.github.io/vaw/license/">License</a>
-  
-</li>
-</ul>
-</nav>
-
-
-
-<div class="sidebar-footer"></div>
-</div>
-</div><a href="#" id="backtothetop-fixed" class="backtothetop"
- data-backtothetop-duration="600"
- data-backtothetop-easing="easeOutQuart"
- data-backtothetop-fixed-fadeIn="1000"
- data-backtothetop-fixed-fadeOut="1000"
- data-backtothetop-fixed-bottom="10"
- data-backtothetop-fixed-right="20">
-<span class="fa-layers fa-fw">
-<i class="fas fa-circle"></i>
-<i class="fas fa-arrow-circle-up"></i>
-</span></a>
-</div>
-</body>
-</html>
+</code></pre><ul><li><code>vm_box</code> (required) name of Vagrant Box (default: <code>centos/7</code>)</li><li><code>vm_box_version</code> (required) version of Vagrant Box (default: <code>>= 0</code>)</li><li><code>vm_ip</code> (required) private IP address (default: <code>192.168.46.49</code>)</li><li><code>vm_hostname</code> (required) hostname (default: <code>vaw.local</code>)</li><li><code>vm_document_root</code> (required) document root path (default: <code>/var/www/html</code>)<ul><li>auto create <code>wordpress</code> directory and synchronized</li></ul></li><li><code>public_ip</code> IP address of bridged connection (default: <code>''</code>)</li><li><code>forwarded_port</code> list of ports that you want to transfer (default: <code>[ 3000, 3001 ]</code>)</li><li><code>vbguest_auto_update</code> whether to update VirtualBox Guest Additions (default: <code>true</code> / value: <code>true</code> | <code>false</code>)</li><li><code>synced_folder_type</code> the type of synced folder (default: <code>virtualbox</code> / value: <code>virtualbox</code> | <code>nfs</code> | <code>rsync</code> | <code>smb</code>)</li><li><code>ansible_install_mode</code> (required) the way to install Ansible (default: <code>:default</code> / value: <code>:default</code> | <code>:pip</code>)</li><li><code>ansible_version</code> version of Ansible to install (default: <code>latest</code>)</li><li><code>provision_mode</code> (required) Provisioning mode (default: <code>all</code> / value: <code>all</code> | <code>wordpress</code> | <code>box</code>)</li></ul><div class=edit-meta>Last updated on 22 Nov 2018<br>Published on 22 Nov 2018<br><a href=https://github.com/thingsym/vaw-documentation/edit/master/content/configuration/vagrantfile.md class=edit-page><i class="fas fa-pen-square"></i>Edit on GitHub</a></div><nav class=pagination><a class="nav nav-prev" href=https://thingsym.github.io/vaw/configuration/ title="Configuration file"><i class="fas fa-arrow-left" aria-hidden=true></i>Prev - Configuration file</a>
+<a class="nav nav-next" href=https://thingsym.github.io/vaw/configuration/all-yml/ title=all.yml>Next - all.yml <i class="fas fa-arrow-right" aria-hidden=true></i></a></nav><footer><p class=powered>Powered by <a href=https://gohugo.io>Hugo</a>. Theme by <a href=https://themes.gohugo.io/hugo-theme-techdoc/>TechDoc</a>. Designed by <a href=https://github.com/thingsym/hugo-theme-techdoc>Thingsym</a>.</p></footer></main><div class=sidebar><nav class=open-menu><ul><li><a href=https://thingsym.github.io/vaw/>Home</a></li><li><a href=https://thingsym.github.io/vaw/about/>About VAW</a></li><li><a href=https://thingsym.github.io/vaw/getting-started/>Getting Started</a><ul class=sub-menu><li><a href=https://thingsym.github.io/vaw/getting-started/requirements/>Requirements</a></li></ul></li><li class=parent><a href=https://thingsym.github.io/vaw/configuration/>Configuration file</a><ul class=sub-menu><li class=active><a href=https://thingsym.github.io/vaw/configuration/vagrantfile/>Vagrantfile</a></li><li><a href=https://thingsym.github.io/vaw/configuration/all-yml/>all.yml</a></li></ul></li><li><a href=https://thingsym.github.io/vaw/directory-layout/>Directory Layout</a></li><li><a href=https://thingsym.github.io/vaw/provisioning-mode/>Provisioning Mode</a></li><li><a href=https://thingsym.github.io/vaw/vagrant-box/>Vagrant Box</a><ul class=sub-menu><li><a href=https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/>How to make Vagrant Box</a></li></ul></li><li><a href=https://thingsym.github.io/vaw/specification/>Specification</a></li><li><a href=https://thingsym.github.io/vaw/helper-command/>Helper Command</a></li><li><a href=https://thingsym.github.io/vaw/custom-config/>Custom Config</a></li><li><a href=https://thingsym.github.io/vaw/contribution/>Contribution</a></li><li><a href=https://thingsym.github.io/vaw/changelog/>Changelog</a></li><li><a href=https://thingsym.github.io/vaw/license/>License</a></li></ul></nav><div class=sidebar-footer></div></div></div><a href=# id=backtothetop-fixed class=backtothetop data-backtothetop-duration=600 data-backtothetop-easing=easeOutQuart data-backtothetop-fixed-fadein=1000 data-backtothetop-fixed-fadeout=1000 data-backtothetop-fixed-bottom=10 data-backtothetop-fixed-right=20><span class="fa-layers fa-fw"><i class="fas fa-circle"></i><i class="fas fa-arrow-circle-up"></i></span></a></div></body></html>

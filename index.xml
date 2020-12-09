@@ -1,70 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>VAW (Vagrant Ansible WordPress) Documentation</title>
-    <link>https://thingsym.github.io/vaw/</link>
-    <description>Recent content on VAW (Vagrant Ansible WordPress) Documentation</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 12 May 2020 18:49:06 +0000</lastBuildDate>
-    
-	<atom:link href="https://thingsym.github.io/vaw/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Vagrantfile</title>
-      <link>https://thingsym.github.io/vaw/configuration/vagrantfile/</link>
-      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/configuration/vagrantfile/</guid>
-      <description>Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VAW (Vagrant Ansible WordPress) Documentation</title><link>https://thingsym.github.io/vaw/</link><description>Recent content on VAW (Vagrant Ansible WordPress) Documentation</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Nov 2018 10:26:15 +0000</lastBuildDate><atom:link href="https://thingsym.github.io/vaw/index.xml" rel="self" type="application/rss+xml"/><item><title>Vagrantfile</title><link>https://thingsym.github.io/vaw/configuration/vagrantfile/</link><pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate><guid>https://thingsym.github.io/vaw/configuration/vagrantfile/</guid><description>Vagrant configuration file (Ruby) Vagrant configuration file is Vagrantfile.
 Vagrantfile will set the vagrant Box, private IP address, hostname and the document root.
 If you launch multiple environments, change the name of the directory. Should rewrite vm_ip and vm_hostname. Note not to overlap with other environments.
-You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip.</description>
-    </item>
-    
-    <item>
-      <title>all.yml</title>
-      <link>https://thingsym.github.io/vaw/configuration/all-yml/</link>
-      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid>
-      <description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
+You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to public_ip.</description></item><item><title>all.yml</title><link>https://thingsym.github.io/vaw/configuration/all-yml/</link><pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate><guid>https://thingsym.github.io/vaw/configuration/all-yml/</guid><description>Provisioning configuration file (YAML) Provisioning configuration file is group_vars/all.yml.
 In YAML format, you can set server, database and WordPress environment. And can enable the develop and deploy tools.
-## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : &#39;&#39; db_collate : &#39;&#39; # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description>
-    </item>
-    
-    <item>
-      <title>Requirements</title>
-      <link>https://thingsym.github.io/vaw/getting-started/requirements/</link>
-      <pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/getting-started/requirements/</guid>
-      <description> Oracle VM VirtualBox &amp;gt;= 5.2 Vagrant &amp;gt;= 2.1 Ansible &amp;gt;= 2.4  Vagrant plugin (optional)  vagrant-hostsupdater vagrant-vbguest vagrant-serverspec  </description>
-    </item>
-    
-    <item>
-      <title>How to make Vagrant Box</title>
-      <link>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</link>
-      <pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</guid>
-      <description>How to use the provisioning mode?
+## Server &amp;amp; Database Settings ## server : apache # apache|nginx|h2o fastcgi : none # none|php-fpm database : mariadb # mariadb|mysql|percona db_root_password : admin db_host : localhost db_name : wordpress db_user : admin db_password : admin db_prefix : wp_ db_charset : '' db_collate : '' # utf8mb4_general_ci ## WordPress Settings ## title : VAW (Vagrant Ansible WordPress) admin_user : admin admin_password : admin admin_email : hoge@example.</description></item><item><title>Requirements</title><link>https://thingsym.github.io/vaw/getting-started/requirements/</link><pubDate>Sun, 20 May 2018 15:26:15 +0000</pubDate><guid>https://thingsym.github.io/vaw/getting-started/requirements/</guid><description> Oracle VM VirtualBox &amp;gt;= 5.2 Vagrant &amp;gt;= 2.1 Ansible &amp;gt;= 2.4 Vagrant plugin (optional) vagrant-hostsupdater vagrant-vbguest vagrant-serverspec</description></item><item><title>How to make Vagrant Box</title><link>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</link><pubDate>Thu, 22 Nov 2018 10:26:15 +0000</pubDate><guid>https://thingsym.github.io/vaw/vagrant-box/how-to-make-vagrant-box/</guid><description>How to use the provisioning mode?
 Let&amp;rsquo;s see how to make Vagrant Box through the process from provisioning with Vagrant Box to building WordPress development environment.
 1. Setting of configuration file We will launch the Vagrant environment for creating Vagrant Box. First of all, Set up the Vagrant configuration file and the provisioning configuration file.
 Set provision_mode in the Vagrant configuration file to box.
-provision_mode = &#39;box&#39; # all|wordpress|box  You can set the provisioning configuration file as you like.</description>
-    </item>
-    
-    <item>
-      <title>Search</title>
-      <link>https://thingsym.github.io/vaw/search/</link>
-      <pubDate>Tue, 12 May 2020 18:49:06 +0000</pubDate>
-      
-      <guid>https://thingsym.github.io/vaw/search/</guid>
-      <description>var search = instantsearch({ indexName: &#39;vaw_doc&#39;, searchClient: algoliasearch( &#39;DCXQ40Z7FZ&#39;, &#39;8b1fce019e261aab8b9bb88e518bd3b6&#39; ), routing: true, }); const renderHits = (renderOptions, isFirstRender) = { const { hits } = renderOptions; document.querySelector(&#39;#hits&#39;).innerHTML = ` ${hits .map( item = `${ item.title }${ dayjs(item.lastmod).format(&#34;YYYY/MM/DD&#34;) } - ${ item.description ? item.description : item.content.length  200 ? item.content.substring( 0, 200 ) + &#39;...&#39; : item.content }
-` ) .join(&#39;&#39;)} `; }; const customHits = instantsearch.</description>
-    </item>
-    
-  </channel>
-</rss>
+provision_mode = 'box' # all|wordpress|box You can set the provisioning configuration file as you like.</description></item><item><title>Search</title><link>https://thingsym.github.io/vaw/search/</link><pubDate>Tue, 12 May 2020 18:49:06 +0000</pubDate><guid>https://thingsym.github.io/vaw/search/</guid><description>var search = instantsearch({ indexName: 'vaw_doc', searchClient: algoliasearch( 'DCXQ40Z7FZ', '8b1fce019e261aab8b9bb88e518bd3b6' ), routing: true, }); const renderHits = (renderOptions, isFirstRender) = { const { hits } = renderOptions; document.querySelector('#hits').innerHTML = ` ${hits .map( item = `${ item.title }${ dayjs(item.lastmod).format("YYYY/MM/DD") } - ${ item.description ? item.description : item.content.length 200 ? item.content.substring( 0, 200 ) + '...' : item.content }
+` ) .join('')} `; }; const customHits = instantsearch.</description></item></channel></rss>

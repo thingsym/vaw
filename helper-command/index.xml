@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Helper Command on VAW (Vagrant Ansible WordPress) Documentation</title>
-    <link>https://thingsym.github.io/vaw/helper-command/</link>
-    <description>Recent content in Helper Command on VAW (Vagrant Ansible WordPress) Documentation</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 22 Nov 2018 10:26:15 +0000</lastBuildDate>
-    
-	<atom:link href="https://thingsym.github.io/vaw/helper-command/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Helper Command on VAW (Vagrant Ansible WordPress) Documentation</title><link>https://thingsym.github.io/vaw/helper-command/</link><description>Recent content in Helper Command on VAW (Vagrant Ansible WordPress) Documentation</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Nov 2018 10:26:15 +0000</lastBuildDate><atom:link href="https://thingsym.github.io/vaw/helper-command/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
