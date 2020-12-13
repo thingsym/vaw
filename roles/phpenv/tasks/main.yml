@@ -145,8 +145,3 @@
   command: "{{ phpenv_dir }}/shims/composer config -g repos.packagist composer https://packagist.jp"
   become: yes
   become_user: vagrant
-
-- name: prestissimo installed
-  command: "{{ phpenv_dir }}/shims/composer global require 'hirak/prestissimo=^0.3'"
-  become: yes
-  become_user: vagrant
