@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'shellwords'
 
-describe package('git222'), :if => os[:family] == 'redhat' do
+describe package('git222'), :if => os[:family] == 'redhat' && os[:release] <= '7' do
   it { should be_installed }
 end
 
-describe package('git'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+describe package('git'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
   it { should be_installed }
 end
 
