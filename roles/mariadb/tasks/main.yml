@@ -31,16 +31,23 @@
     name: mariadb
     state: restarted
     enabled: yes
-  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int != 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'trusty')
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int > 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'trusty')
+
+# 5.5
+# - name: mysql started and enabled
+#   service:
+#     name: mysql
+#     state: restarted
+#     enabled: yes
 
 - name: mysql started and enabled
   service:
     name: mysql
     state: restarted
     enabled: yes
-  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int == 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty')
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int <= 6) or (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty')
 
-- name: set MariaDB root password
+- name: set MariaDB root password (v10.3 or earlier)
   mysql_user:
     name: root
     password: "{{ db_root_password }}"
@@ -51,11 +58,38 @@
     - 127.0.0.1
     - ::1
   ignore_errors: yes
+  when: mariadb_version < 10.4
+
+- block:
+  - name: set MariaDB root password (v10.4 or later)
+    mysql_user:
+      name: root
+      password: "{{ db_root_password }}"
+      host: "{{ item }}"
+      state: present
+      login_unix_socket: /var/lib/mysql/mysql.sock
+    with_items:
+      - localhost
+    ignore_errors: yes
+
+  - name: set MariaDB root password (host)
+    mysql_user:
+      name: root
+      password: "{{ db_root_password }}"
+      host: "{{ item }}"
+      state: present
+      login_user: root
+      login_password: "{{ db_root_password }}"
+    with_items:
+      - 127.0.0.1
+      - ::1
+    ignore_errors: yes
+  when: mariadb_version >= 10.4
 
 - name: Delete blank MariaDB users
   mysql_user:
     name: ""
-    host: localhost
+    host_all: true
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"

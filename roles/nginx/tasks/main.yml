@@ -13,9 +13,17 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version|int == 7
 
+- name: nginx repository installed (CentOS/RHEL 8)
+  yum:
+    name: http://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.18.0-1.el8.ngx.x86_64.rpm
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int == 8
+
 - name: nginx installed
   package:
     name: nginx
+    state: latest
 
 - name: stat custom nginx.conf.j2
   stat:

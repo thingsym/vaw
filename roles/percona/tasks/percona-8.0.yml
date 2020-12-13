@@ -7,16 +7,13 @@
   - name: percona-release
     command: percona-release setup -y ps80
 
-  - name: percona-release
-    command: percona-release setup -y ps57
-
-  - name: percona 5.7 installed (CentOS/RHEL)
+  - name: percona 8.0 installed (CentOS/RHEL)
     package:
       name:
-        - Percona-Server-server-57
-        - Percona-Server-client-57
-        - Percona-Server-shared-57
-        - Percona-Server-devel-57
+        - Percona-Server-server
+        - Percona-Server-client
+        - Percona-Server-shared
+        - Percona-Server-devel
       state: latest
 
   - name: python-PyMySQL installed (CentOS/RHEL 7 or 6)
@@ -40,16 +37,19 @@
     apt:
       deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
 
+  - name: percona-release
+    command: percona-release enable-only ps-80 release
+
   - name: apt-get update
     apt:
       update_cache: yes
 
-  - name: percona 5.7 installed (Debian)
+  - name: percona 8.0 installed (Debian)
     package:
       name:
-        - percona-server-server-5.7
-        - percona-server-client-5.7
-        - percona-server-common-5.7
+        - percona-server-server
+        - percona-server-client
+        - percona-server-common
         - libperconaserverclient20-dev
         - python-mysqldb
       state: latest

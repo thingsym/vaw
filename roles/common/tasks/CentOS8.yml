@@ -1,0 +1,32 @@
+---
+- name: disable selinux
+  selinux:
+    state: disabled
+
+- name: is_getenforce
+  command: /usr/sbin/getenforce
+  register: is_getenforce
+
+- name: SELinux is turned off
+  fail:
+    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"
+  when: is_getenforce.stdout == 'Enforcing'
+
+- name: firewalld stoped and disabled (CentOS/RHEL 8)
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: chrony installed
+  package:
+    name: chrony
+
+- name: chrony started and enabled
+  service:
+    name: chronyd
+    state: restarted
+    enabled: yes
+
+- name: PowerTools enabled (CentOS/RHEL 8)
+  command: dnf config-manager --set-enabled PowerTools

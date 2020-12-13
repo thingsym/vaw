@@ -10,6 +10,11 @@
       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
     when: ansible_distribution_major_version|int == 7
 
+  - name: mysql repository installed (CentOS/RHEL 8)
+    yum:
+      name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+    when: ansible_distribution_major_version|int == 8
+
   - name: yum-config disable mysql57-community
     command: yum-config-manager --disable mysql57-community
 
@@ -42,6 +47,28 @@
       - question: mysql-apt-config/select-tools
         value: Enabled
 
+  - name: set mysql-apt-config to mysql version 5.7 (only focal)
+    debconf:
+      name: mysql-apt-config
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype | default ('select') }}"
+    with_items:
+      - question: mysql-apt-config/select-server
+        value: mysql-5.7
+    when: ansible_distribution_release == 'focal'
+
+  - name: set mysql-apt-config to mysql version 5.7 (only bionic)
+    debconf:
+      name: mysql-apt-config
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype | default ('select') }}"
+    with_items:
+      - question: mysql-apt-config/select-server
+        value: mysql-5.7
+    when: ansible_distribution_release == 'bionic'
+
   - name: set mysql-apt-config to mysql version 5.7 (only xenial)
     debconf:
       name: mysql-apt-config
@@ -66,7 +93,6 @@
         - mysql-community-server
         - mysql-community-client
         - mysql-common
-        - mysql-utilities
         - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'
