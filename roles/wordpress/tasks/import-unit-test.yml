@@ -35,7 +35,7 @@
     become_user: vagrant
 
   - name: import theme-unit-test-data.xml
-    command: wp --path={{ WP_PATH }} import --authors=create /tmp/theme-unit-test-data.xml --authors=create
+    command: wp --path={{ WP_PATH }} import /tmp/theme-unit-test-data.xml --authors=create
     become: yes
     become_user: vagrant
 
