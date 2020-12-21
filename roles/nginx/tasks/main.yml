@@ -39,7 +39,7 @@
     dest: /etc/nginx/nginx.conf
   notify: nginx restarted
   when:
-    - is_custom_nginx_conf.stat.exists 
+    - is_custom_nginx_conf.stat.exists
     - multisite == false
 
 - name: nginx.conf changed
@@ -71,7 +71,7 @@
     dest: /etc/nginx/nginx.conf
   notify: nginx restarted
   when:
-    - not is_custom_nginx_multisite_conf.stat.exists 
+    - not is_custom_nginx_multisite_conf.stat.exists
     - multisite == true
 
 - name: stat custom nginx.wordpress.conf.j2
