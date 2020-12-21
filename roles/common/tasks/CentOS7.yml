@@ -36,3 +36,4 @@
 - name: IUS repository installed (CentOS/RHEL 7)
   yum:
     name: https://repo.ius.io/ius-release-el7.rpm
+    disable_gpg_check: yes

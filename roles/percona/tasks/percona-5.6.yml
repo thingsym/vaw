@@ -3,6 +3,7 @@
   - name: percona repository installed (CentOS/RHEL)
     yum:
       name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
+      disable_gpg_check: yes
 
   - name: percona 5.6 installed (CentOS/RHEL)
     package:

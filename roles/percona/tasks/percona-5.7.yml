@@ -3,6 +3,7 @@
   - name: percona repository installed (CentOS/RHEL)
     yum:
       name: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+      disable_gpg_check: yes
 
   - name: percona-release
     command: percona-release setup -y ps80

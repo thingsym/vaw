@@ -31,6 +31,7 @@
   - name: remi repository installed (CentOS/RHEL 7)
     yum:
       name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+      disable_gpg_check: yes
 
   - name: install libzip via remi for php7.4
     yum:
