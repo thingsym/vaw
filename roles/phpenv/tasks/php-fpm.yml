@@ -1,6 +1,6 @@
 ---
-- name: php-fpm start and enabled
+- name: php-fpm enabled
   service:
     name: php-fpm
-    state: restarted
     enabled: yes
+  notify: php-fpm restarted
