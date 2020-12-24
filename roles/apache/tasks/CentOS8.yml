@@ -10,7 +10,7 @@
   package:
     name: mod_ssl
     state: latest
-    when: ssl == true
+  when: ssl == true
 
 - name: stat custom httpd.conf.centos8.j2
   stat:
