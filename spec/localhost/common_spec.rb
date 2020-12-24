@@ -60,7 +60,7 @@ describe yumrepo('ius'), :if => os[:family] == 'redhat' && os[:release] <= '7' d
   it { should exist }
 end
 
-describe yumrepo('PowerTools'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+describe yumrepo('powertools'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
   it { should exist }
 end
 

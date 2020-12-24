@@ -28,5 +28,10 @@
     state: restarted
     enabled: yes
 
-- name: PowerTools enabled (CentOS/RHEL 8)
-  command: dnf config-manager --set-enabled PowerTools
+- name: dnf-plugins-core installed
+  dnf:
+    name: dnf-plugins-core
+    state: latest
+
+- name: powertools enabled (CentOS/RHEL 8)
+  command: dnf config-manager --set-enabled powertools
