@@ -8,7 +8,7 @@ if property["ssl"] then
   end
 
   describe command('openssl version') do
-    its(:stdout) { should match /#{Regexp.escape('1.0.2f')}/ }
+    its(:stdout) { should match /#{Regexp.escape('1.1.1g')}/ }
     its(:exit_status) { should eq 0 }
   end
 

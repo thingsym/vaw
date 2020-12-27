@@ -1,22 +1,8 @@
 ---
-- block:
-  - name: openssl installed
-    package:
-      name: openssl
-      state: latest
-
-  - name: openssl-devel installed
-    package:
-      name: openssl-devel
-      state: latest
-    when: ansible_os_family == 'RedHat'
-
-  - name: libssl-dev installed
-    package:
-      name: libssl-dev
-      state: latest
-    when: ansible_os_family == 'Debian'
-  when: via_install == 'package'
+- name: stat /tmp/openssl-{{ openssl_full_version }}
+  stat:
+    path: /tmp/openssl-{{ openssl_full_version }}
+  register: is_tmp_openssl_dir
 
 - block:
   - name: gcc installed
@@ -88,4 +74,4 @@
       dest: /usr/bin/openssl
       state: link
 
-  when: via_install == 'source'
+  when: not is_tmp_openssl_dir.stat.exists

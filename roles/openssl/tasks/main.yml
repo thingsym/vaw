@@ -1,12 +1,11 @@
 ---
-- name: stat /tmp/openssl-{{ openssl_full_version }}
-  stat:
-    path: /tmp/openssl-{{ openssl_full_version }}
-  register: is_tmp_openssl_dir
+- name: include task
+  include: install-source.yml
+  when: openssl_install == 'source'
 
 - name: include task
-  include: install.yml
-  when: not is_tmp_openssl_dir.stat.exists
+  include: install-package.yml
+  when: openssl_install == 'package'
 
 - name: include task
   include: pki.yml
