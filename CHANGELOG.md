@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.5] - 2020.12.28
+
+* remove default Vagrant BOX
+* fix tasks for Debian
+* replace yarn from wordpress-develop to nodenv
+* fix phpenv task
+* fix openssl task
+* fix conditional statement
+* add disable gpg_check, fix Failed to validate GPG signature
+* remove deployer and git-ftp
+* support CentOS 8
+* improve loading include task with ansible_distribution and ansible_distribution_major_version
+* remove prestissimo for Composer 2.0
+
 ## [0.7.4] - 2020.10.18
 
 - improve npm-installer.sh
