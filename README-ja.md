@@ -496,16 +496,25 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 ## Vagrant Box
 
 VAW は、Vagrant のプロバイダ VirtualBox をサポートしています。
-OS とアーキテクチャは、centos-7.x x86_64 系 と centos-6.x x86_64 系 Vagrant Box に対応しています。Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
+
+OS とアーキテクチャは、CentOS x86_64 系 Vagrant Box に対応しています。
+
+* CentOS 8
+* CentOS 7
+* CentOS 6 (非推奨 サポート終了日 2020-11-30)
+
+Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
+
+**Note: プロビジョニング済みの Box `vaw/centos*-default` と `vaw/centos*-full` は非推奨になりました。今後はディストリビューションのBoxを使うことをおすすめします。**
 
 VAW では、あらかじめ CentOS 7 と CentOS 6 用に 2 つずつ Box を用意しています。デフォルト設定のプロビジョニング済みの Box `vaw/centos*-default` と デフォルト設定に Develop ツールと Deploy ツールを有効化したプロビジョニング済みの Box `vaw/centos*-full`。真っさらな状態からのプロビジョニングと比べて短時間で環境が立ち上がります。
 
-### CentOS 7
+### CentOS 7 (非推奨)
 
 * [vaw/centos7-default](https://atlas.hashicorp.com/vaw/boxes/centos7-default)
 * [vaw/centos7-full](https://atlas.hashicorp.com/vaw/boxes/centos7-full)
 
-### CentOS 6
+### CentOS 6 (非推奨)
 
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
@@ -644,8 +653,6 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 ### Deploy Tools (Activatable)
 
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
-* [Deployer](https://deployer.org/)
-* [Git-ftp](https://git-ftp.github.io/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
 ### Other
