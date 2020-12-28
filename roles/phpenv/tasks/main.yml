@@ -98,19 +98,23 @@
     - server == "apache"
     - fastcgi == "none"
 
-- name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm -s tcp
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
-    - server == "apache"
-    - fastcgi == "php-fpm"
+- block:
+  - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm -s tcp
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version|int == 6
 
-- name: php installed via phpenv.sh (php-fpm / CentOS7 and apache only)
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm
+  - name: php installed via phpenv.sh (php-fpm / CentOS7 or later and apache only)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version|int >= 7
+
+  - name: php installed via phpenv.sh (php-fpm / Debian and apache)
+    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm
+    when: ansible_os_family == 'Debian'
   when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
     - server == "apache"
     - fastcgi == "php-fpm"
 
@@ -143,10 +147,5 @@
 
 - name: packagist.jp repository added
   command: "{{ phpenv_dir }}/shims/composer config -g repos.packagist composer https://packagist.jp"
-  become: yes
-  become_user: vagrant
-
-- name: prestissimo installed
-  command: "{{ phpenv_dir }}/shims/composer global require 'hirak/prestissimo=^0.3'"
   become: yes
   become_user: vagrant

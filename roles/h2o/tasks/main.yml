@@ -26,7 +26,8 @@
       state: present
 
   - name: apt-get update
-    command: apt-get update
+    apt:
+      update_cache: yes
 
   - name: h2o installed
     package:

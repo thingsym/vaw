@@ -51,20 +51,4 @@ if property["deploy_tools"] then
     its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/shims\/wordmove/) }
   end
 
-  describe command('which dep') do
-    let(:sudo_options) { '-u vagrant -i' }
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/\/home\/vagrant\/\.phpenv\/shims\/dep/) }
-  end
-
-  describe command('dep --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-  end
-
-  describe command('git-ftp --version') do
-    let(:disable_sudo) { true }
-    its(:exit_status) { should eq 0 }
-  end
-
 end

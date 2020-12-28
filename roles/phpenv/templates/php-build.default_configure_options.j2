@@ -34,7 +34,7 @@
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
 {% if ansible_os_family == 'RedHat' %}
---with-mysql-sock=/tmp/mysql.sock
+--with-mysql-sock=/var/lib/mysql/mysql.sock
 {% elif ansible_os_family == 'Debian' %}
 --with-mysql-sock=/var/run/mysqld/mysqld.sock
 {% endif %}

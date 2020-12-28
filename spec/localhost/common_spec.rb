@@ -12,42 +12,55 @@ describe user('vagrant') do
   it { should exist }
 end
 
-describe package('libselinux-python') do
+describe command('ansible --version') do
+  its(:exit_status) { should eq 0 }
+end
+
+describe package('libselinux-python'), :if => os[:family] == 'redhat' && os[:release] <= '7' do
   it { should be_installed }
 end
 
-describe selinux do
+describe selinux, :if => os[:family] == 'redhat' do
   it { should_not be_enforcing }
 end
 
-describe service('iptables') do
+describe service('iptables'), :if => os[:family] == 'redhat' && os[:release] == '6' do
   it { should_not be_enabled }
   it { should_not be_running }
 end
 
-describe package('chrony'), :if => os[:release] == '7' do
+describe service('firewalld'), :if => os[:family] == 'redhat' && os[:release] == '7' do
+  it { should_not be_enabled }
+  it { should_not be_running }
+end
+
+describe package('chrony'), :if => os[:family] == 'redhat' && os[:release] == '7' do
   it { should be_installed }
 end
 
-describe service('chronyd'), :if => os[:release] == '7' do
+describe service('chronyd'), :if => os[:family] == 'redhat' && os[:release] == '7' do
   it { should be_enabled }
   it { should be_running }
 end
 
-describe package('ntp'), :if => os[:release] == '6' do
+describe package('ntp'), :if => ( os[:family] == 'redhat' && os[:release] == '6' ) || os[:family] == 'debian' || os[:family] == 'ubuntu' do
   it { should be_installed }
 end
 
-describe service('ntpd'), :if => os[:release] == '6' do
+describe service('ntpd'), :if => os[:family] == 'redhat' && os[:release] == '6' do
   it { should be_enabled }
   it { should be_running }
 end
 
-describe yumrepo('epel') do
+describe yumrepo('epel'), :if => os[:family] == 'redhat' do
   it { should exist }
 end
 
-describe yumrepo('ius') do
+describe yumrepo('ius'), :if => os[:family] == 'redhat' && os[:release] <= '7' do
+  it { should exist }
+end
+
+describe yumrepo('powertools'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
   it { should exist }
 end
 

@@ -3,27 +3,37 @@
   - name: mysql repository installed (CentOS/RHEL 6)
     yum:
       name: https://dev.mysql.com/get/mysql80-community-release-el6-1.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 6
 
   - name: mysql repository installed (CentOS/RHEL 7)
     yum:
       name: https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 7
+
+  - name: mysql repository installed (CentOS/RHEL 8)
+    yum:
+      name: https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+      disable_gpg_check: yes
+    when: ansible_distribution_major_version|int == 8
 
   - name: yum-config enable mysql80-community
     command: yum-config-manager --enable mysql80-community
 
+    # INFO: Unable to find a match: mysql-community-server
   - name: mysql 8.0 installed (CentOS/RHEL)
     package:
       name:
-        - mysql-community-server
-        - mysql-community-client
-        - mysql-community-common
-        - mysql-community-devel
-        - mysql-community-libs
-        - mysql-utilities
-        - MySQL-python
-        state: latest
+        - mysql-server
+        # - mysql-community-client
+        - mysql-common
+        - mysql-devel
+        - mysql-libs
+        # - mysql-utilities
+        - python3-PyMySQL
+        # - python2-PyMySQL
+      state: latest
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -43,6 +53,9 @@
     apt:
       deb: https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 
+  - name: apt-key update
+    command: apt-key adv --keyserver keys.gnupg.net --recv-keys 8C718D3B5072E1F5
+
   - name: apt-get update
     command: apt-get update
 
@@ -52,7 +65,6 @@
         - mysql-community-server
         - mysql-community-client
         - mysql-common
-        - mysql-utilities
         - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'

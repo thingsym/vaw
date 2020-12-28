@@ -1,8 +1,20 @@
 ---
+- name: httpd installed
+  package:
+    name:
+      - httpd24u
+      - httpd24u-devel
+    state: latest
+
+- name: mod_ssl installed
+  package:
+    name: httpd24u-mod_ssl
+    state: latest
+  when: ssl == true
+
 - name: mod_proxy_fcgi installed
   package:
     name: mod_proxy_fcgi
-    state: latest
 
 - name: stat custom httpd.conf.centos6.j2
   stat:

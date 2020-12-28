@@ -1,18 +1,6 @@
 ---
-- name: Development Tools installed
-  package:
-    name: "@Development Tools"
-    state: present
-
-- name: libraries installed
-  package:
-    name:
-      - yum-utils
-      - libcurl
-      - libcurl-devel
-      - jq
-      - tree
-    state: latest
+- name: include task
+  include: '{{ ansible_os_family }}.yml'
 
 - include: peco.yml
 

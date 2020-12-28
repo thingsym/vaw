@@ -1,0 +1,18 @@
+---
+- name: build-essential installed
+  package:
+    name: build-essential
+    state: latest
+
+- name: libraries installed
+  package:
+    name:
+      - patch
+      - pkg-config
+      - curl
+      - software-properties-common
+      - python-pip
+      - debconf-utils
+      - jq
+      - tree
+    state: latest

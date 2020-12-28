@@ -1,7 +1,23 @@
 require 'spec_helper'
 require 'shellwords'
 
+describe package('patch') do
+  it { should be_installed }
+end
+
 describe package('yum-utils'), :if => os[:family] == 'redhat' do
+  it { should be_installed }
+end
+
+describe package('python3-pip'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+  it { should be_installed }
+end
+
+describe package('python2-pip'), :if => os[:family] == 'redhat' && os[:release] == '7' do
+  it { should be_installed }
+end
+
+describe package('python-pip'), :if => os[:family] == 'redhat' && os[:release] == '6' do
   it { should be_installed }
 end
 
@@ -9,15 +25,19 @@ describe package('curl') do
   it { should be_installed }
 end
 
-describe package('libcurl') do
+describe package('libcurl'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libcurl-devel') do
+describe package('libcurl-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
 describe package('jq') do
+  it { should be_installed }
+end
+
+describe package('tree') do
   it { should be_installed }
 end
 

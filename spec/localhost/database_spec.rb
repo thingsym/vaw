@@ -72,7 +72,6 @@ elsif property["database"] == 'mariadb' then
 
   describe package('mariadb-server-10.4'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
-    it { should be_installed.with_version '10.4' }
   end
 
   describe command('apt-cache policy | grep mariadb'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
@@ -92,6 +91,12 @@ elsif property["database"] == 'mariadb' then
   describe service('mysql'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
     it { should be_enabled }
     it { should be_running }
+  end
+
+  describe file('/var/lib/mysql/mysql.sock'), :if => os[:family] == 'redhat' do
+    it { should be_socket }
+    it { should be_owned_by 'mysql' }
+    it { should be_grouped_into 'mysql' }
   end
 
 elsif property["database"] == 'percona' then
@@ -178,7 +183,11 @@ if property["database"] == 'mysql' || property["database"] == 'mariadb' || prope
     its(:stdout) { should match /mysqld is alive/ }
   end
 
-  describe package('MySQL-python'), :if => os[:family] == 'redhat' do
+  describe package('MySQL-python'), :if => os[:family] == 'redhat' && (os[:release] <= '7') do
+    it { should be_installed }
+  end
+
+  describe package('python3-PyMySQL'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
     it { should be_installed }
   end
 

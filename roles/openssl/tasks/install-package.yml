@@ -1,0 +1,17 @@
+---
+- name: openssl installed
+  package:
+    name: openssl
+    state: latest
+
+- name: openssl-devel installed
+  package:
+    name: openssl-devel
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+- name: libssl-dev installed
+  package:
+    name: libssl-dev
+    state: latest
+  when: ansible_os_family == 'Debian'

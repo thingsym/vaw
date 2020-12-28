@@ -25,6 +25,14 @@
   become: yes
   become_user: vagrant
 
+- name: git checkout rbenv-update
+  git:
+    repo: https://github.com/rkh/rbenv-update.git
+    dest: "{{ rbenv_dir }}/plugins/rbenv-update"
+    force: yes
+  become: yes
+  become_user: vagrant
+
 - name: git checkout rbenv-default-gems
   git:
     repo: https://github.com/rbenv/rbenv-default-gems.git
@@ -52,12 +60,12 @@
   become: yes
   become_user: vagrant
 
-- name: rbenv rehash
-  command: "{{ rbenv_dir }}/bin/rbenv rehash"
+- name: rbenv global
+  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.1) }}"
   become: yes
   become_user: vagrant
 
-- name: rbenv global
-  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.1) }}"
+- name: rbenv rehash
+  command: "{{ rbenv_dir }}/bin/rbenv rehash"
   become: yes
   become_user: vagrant

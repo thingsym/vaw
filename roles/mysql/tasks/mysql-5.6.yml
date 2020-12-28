@@ -3,12 +3,20 @@
   - name: mysql repository installed (CentOS/RHEL 6)
     yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 6
 
   - name: mysql repository installed (CentOS/RHEL 7)
     yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 7
+
+  - name: mysql repository installed (CentOS/RHEL 8)
+    yum:
+      name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+      disable_gpg_check: yes
+    when: ansible_distribution_major_version|int == 8
 
   - name: yum-config disable mysql57-community
     command: yum-config-manager --disable mysql57-community
@@ -24,7 +32,6 @@
         - mysql-community-common
         - mysql-community-devel
         - mysql-community-libs
-        - mysql-utilities
         - MySQL-python
       state: latest
   when: ansible_os_family == 'RedHat'
@@ -41,6 +48,28 @@
         value: mysql-5.6
       - question: mysql-apt-config/select-tools
         value: Enabled
+
+  - name: set mysql-apt-config to mysql version 5.7 (only focal)
+    debconf:
+      name: mysql-apt-config
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype | default ('select') }}"
+    with_items:
+      - question: mysql-apt-config/select-server
+        value: mysql-5.7
+    when: ansible_distribution_release == 'focal'
+
+  - name: set mysql-apt-config to mysql version 5.7 (only bionic)
+    debconf:
+      name: mysql-apt-config
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype | default ('select') }}"
+    with_items:
+      - question: mysql-apt-config/select-server
+        value: mysql-5.7
+    when: ansible_distribution_release == 'bionic'
 
   - name: set mysql-apt-config to mysql version 5.7 (only xenial)
     debconf:
@@ -66,7 +95,6 @@
         - mysql-community-server
         - mysql-community-client
         - mysql-common
-        - mysql-utilities
         - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'

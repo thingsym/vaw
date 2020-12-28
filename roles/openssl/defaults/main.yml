@@ -1,5 +1,6 @@
-via_install: source
+openssl_install: package    # source|package|none
+
 openssl_release: old
-openssl_version: 1.0.2
-openssl_letter: f
+openssl_version: 1.1.1
+openssl_letter: g
 openssl_full_version: "{{ openssl_version }}{{ openssl_letter }}"

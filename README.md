@@ -503,8 +503,15 @@ The VAW will be built in the directory structure of the following minimum unit.
 
 ## Vagrant Box
 
-The VAW supports VirtualBox for providers of Vagrant.
-Operating system and architecture supported centos-7.x x86_64 and centos-6.x x86_64 Vagrant Box. To download Vagrant Box, you can search from [Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox).
+The VAW supports VirtualBox for providers of Vagrant. Operating system supported CentOS Boxes. OS architecture supported x86_64. Details are as follows:
+
+* CentOS 8
+* CentOS 7
+* CentOS 6 (Deprecated ended 2020-11-30)
+
+To download Vagrant Box, you can search from [Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox).
+
+**Note: The `vaw/centos*-default` and `vaw/centos*-full` Boxs has been deprecated. From now on, we recommend using the distribution box.**
 
 By default, the Vagrantfile uses the `vaw/centos*-default` Box which has already provisioned default settings.
 
@@ -512,12 +519,12 @@ In addition, you can use the `vaw/centos*-full` Box which has already provisione
 
 You can build the environment in a short period of time compared with provisioning from the pure vagrant Box.
 
-### CentOS 7
+### CentOS 7 (Deprecated)
 
 * [vaw/centos7-default](https://atlas.hashicorp.com/vaw/boxes/centos7-default)
 * [vaw/centos7-full](https://atlas.hashicorp.com/vaw/boxes/centos7-full)
 
-### CentOS 6
+### CentOS 6 (Deprecated)
 
 * [vaw/centos6-default](https://atlas.hashicorp.com/vaw/boxes/centos6-default)
 * [vaw/centos6-full](https://atlas.hashicorp.com/vaw/boxes/centos6-full)
@@ -653,8 +660,6 @@ After provisioning, you can launch a WordPress development environment.
 ### Deploy Tools (Activatable)
 
 * [Dandelion](http://scttnlsn.github.io/dandelion/)
-* [Deployer](https://deployer.org/)
-* [Git-ftp](https://git-ftp.github.io/)
 * [Wordmove](https://github.com/welaika/wordmove)
 
 ### Other

@@ -15,3 +15,12 @@
   become: yes
   become_user: vagrant
   when: ansible_os_family == 'RedHat'
+
+- name: edit PATH on .profile
+  lineinfile:
+    dest: "{{ home_dir }}/.profile"
+    line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
+    create: yes
+  become: yes
+  become_user: vagrant
+  when: ansible_os_family == 'Debian'

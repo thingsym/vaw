@@ -26,7 +26,6 @@
 - name: ntp installed
   package:
     name: ntp
-    state: latest
 
 - name: ntp started and enabled
   service:
@@ -37,3 +36,4 @@
 - name: IUS repository installed (CentOS/RHEL 6)
   yum:
     name: https://repo.ius.io/ius-release-el6.rpm
+    disable_gpg_check: yes

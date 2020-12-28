@@ -2,7 +2,14 @@
 - block:
   - name: percona repository installed (CentOS/RHEL)
     yum:
-      name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
+      name: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+      disable_gpg_check: yes
+
+  - name: percona-release
+    command: percona-release setup -y ps80
+
+  - name: percona-release
+    command: percona-release setup -y ps57
 
   - name: percona 5.7 installed (CentOS/RHEL)
     package:
@@ -11,8 +18,22 @@
         - Percona-Server-client-57
         - Percona-Server-shared-57
         - Percona-Server-devel-57
+      state: latest
+
+  - name: python-PyMySQL installed (CentOS/RHEL 7 or 6)
+    package:
+      name:
         - MySQL-python
       state: latest
+    when: ansible_distribution_major_version|int <= 7
+
+  - name: python-PyMySQL installed (CentOS/RHEL 8)
+    package:
+      name:
+        - python3-PyMySQL
+      state: latest
+    when: ansible_distribution_major_version|int >= 8
+
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -30,7 +51,7 @@
         - percona-server-server-5.7
         - percona-server-client-5.7
         - percona-server-common-5.7
-        - libperconaserverclient18.1-dev
+        - libperconaserverclient20-dev
         - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'

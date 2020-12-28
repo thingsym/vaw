@@ -3,12 +3,24 @@
   - name: mysql repository installed (CentOS/RHEL 6)
     yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 6
 
   - name: mysql repository installed (CentOS/RHEL 7)
     yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+      disable_gpg_check: yes
     when: ansible_distribution_major_version|int == 7
+
+  - name: mysql repository installed (CentOS/RHEL 8)
+    yum:
+      name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+      disable_gpg_check: yes
+    when: ansible_distribution_major_version|int == 8
+
+  - name: yum module disable
+    command: yum -y module disable mysql mariadb
+    when: ansible_distribution_major_version|int == 8
 
   - name: yum-config enable mysql57-community
     command: yum-config-manager --enable mysql57-community
@@ -21,9 +33,21 @@
         - mysql-community-common
         - mysql-community-devel
         - mysql-community-libs
-        - mysql-utilities
+      state: latest
+
+  - name: python-PyMySQL installed (CentOS/RHEL 7 or 6)
+    package:
+      name:
         - MySQL-python
       state: latest
+    when: ansible_distribution_major_version|int == 6 or ansible_distribution_major_version|int == 7
+
+  - name: python-PyMySQL installed (CentOS/RHEL 8)
+    package:
+      name:
+        - python3-PyMySQL
+      state: latest
+    when: ansible_distribution_major_version|int == 8
   when: ansible_os_family == 'RedHat'
 
 - block:
@@ -43,6 +67,9 @@
     apt:
       deb: https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 
+  - name: apt-key update
+    command: apt-key adv --keyserver keys.gnupg.net --recv-keys 8C718D3B5072E1F5
+
   - name: apt-get update
     command: apt-get update
 
@@ -52,7 +79,6 @@
         - mysql-community-server
         - mysql-community-client
         - mysql-common
-        - mysql-utilities
         - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'

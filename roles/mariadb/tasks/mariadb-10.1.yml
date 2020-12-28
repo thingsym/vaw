@@ -1,14 +1,14 @@
 ---
 - block:
-  - name: MariaDB 10.1 repository added (CentOS/RHEL 6)
+  - name: MariaDB 10.1 repository added
     yum_repository:
       name: mariadb
       description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos6-amd64
+      baseurl: "http://yum.mariadb.org/10.1/centos{{ ansible_distribution_major_version }}-amd64"
       gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
       gpgcheck: yes
 
-  - name: MariaDB installed (CentOS/RHEL 6)
+  - name: MariaDB installed (CentOS/RHEL 6 or 7)
     package:
       name:
         - MariaDB-server
@@ -16,39 +16,50 @@
         - MariaDB-shared
         - MariaDB-devel
         - MariaDB-common
-        - MariaDB-compat
         - MySQL-python
       state: latest
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version|int == 6
+    when: ansible_distribution_major_version|int <= 7
+
+  - block:
+    - name: boost-program-options installed
+      dnf:
+        name: boost-program-options
+        state: latest
+
+    - name: MariaDB 10.1 installed (CentOS/RHEL 8)
+      dnf:
+        name:
+          - MariaDB-server
+          - MariaDB-client
+          - MariaDB-shared
+          - MariaDB-devel
+          - MariaDB-common
+        disablerepo: AppStream
+        state: latest
+
+    - name: python-PyMySQL installed (CentOS/RHEL 8)
+      dnf:
+        name:
+          - python2-PyMySQL
+          - python3-PyMySQL
+        state: latest
+    when: ansible_distribution_major_version|int >= 8
+
+  when: ansible_distribution == 'CentOS'
 
 - block:
-  - name: MariaDB 10.1 repository installed (CentOS/RHEL 7)
-    yum_repository:
-      name: mariadb
-      description: MariaDB 10.1 centos repository
-      baseurl: http://yum.mariadb.org/10.1/centos7-amd64
-      gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-      gpgcheck: yes
+  - name: MariaDB apt_key installed (Ubuntu/focal)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xF1656F24C74CD1D8"
+    when: ansible_distribution_release == 'focal'
 
-  - name: MariaDB 10.1 installed (CentOS/RHEL 7)
-    package:
-      name:
-        - MariaDB-server
-        - MariaDB-client
-        - MariaDB-shared
-        - MariaDB-devel
-        - MariaDB-common
-        - mariadb-libs
-        - mariadb-embedded
-        - MySQL-python
-      state: latest
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_major_version|int == 7
+  - name: MariaDB apt_key installed (Ubuntu/bionic)
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xF1656F24C74CD1D8"
+    when: ansible_distribution_release == 'bionic'
 
-- block:
   - name: MariaDB apt_key installed (Ubuntu/xenial)
     apt_key:
       keyserver: keyserver.ubuntu.com
@@ -79,13 +90,19 @@
   when: ansible_distribution == 'Ubuntu'
 
 - block:
-  - name: MariaDB 10.1 apt_key installed (Debian/stretch)
+  - name: MariaDB apt_key installed (Debian/buster)
+    apt_key:
+      keyserver: hkp://keyserver.ubuntu.com:80
+      id: "0xF1656F24C74CD1D8"
+    when: ansible_distribution_release == 'buster'
+
+  - name: MariaDB apt_key installed (Debian/stretch)
     apt_key:
       keyserver: hkp://keyserver.ubuntu.com:80
       id: "0xF1656F24C74CD1D8"
     when: ansible_distribution_release == 'stretch'
 
-  - name: MariaDB 10.1 apt_key installed (Debian/jessie)
+  - name: MariaDB apt_key installed (Debian/jessie)
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: "0xcbcb082a1bb943db"
