@@ -7,6 +7,14 @@
   ignore_errors: yes
   when: server != 'apache'
 
+- name: apache2 stopped
+  service:
+    name: apache2
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+  when: server != 'apache'
+
 - name: nginx stopped
   service:
     name: nginx

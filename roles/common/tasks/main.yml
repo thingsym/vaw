@@ -3,6 +3,7 @@
   include: '{{ ansible_os_family }}.yml'
 
 - include: dotfiles.yml
+- include: swap.yml
 - include: kernel.yml
 - include: ssh-config.yml
 - include: reset.yml
