@@ -61,3 +61,6 @@
   command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('12.13.0') }}"
   become: yes
   become_user: vagrant
+
+- name: include task
+  include: yarn.yml

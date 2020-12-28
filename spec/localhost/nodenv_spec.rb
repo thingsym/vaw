@@ -62,3 +62,8 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 end
+
+describe command('yarn --version') do
+  let(:sudo_options) { '-u vagrant -i' }
+  its(:exit_status) { should eq 0 }
+end
