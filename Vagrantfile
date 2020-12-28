@@ -4,8 +4,9 @@
 ## Vagrant Settings ##
 
 # Vagrant BOX
+# vm_box                = 'centos/8'
 vm_box                = 'centos/7'
-# vm_box                = 'centos/6'
+# vm_box                = 'centos/6' # Deprecated ended 2020-11-30
 
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
