@@ -38,7 +38,6 @@
   - name: python-PyMySQL installed (CentOS/RHEL 7 or 6)
     package:
       name:
-        - mysql-utilities
         - MySQL-python
       state: latest
     when: ansible_distribution_major_version|int == 6 or ansible_distribution_major_version|int == 7
