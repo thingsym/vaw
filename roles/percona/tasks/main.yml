@@ -34,7 +34,7 @@
     group: mysql
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
+    - ansible_distribution_major_version is version('6', '==')
 
 - name: mysql started and enabled
   service:
@@ -56,7 +56,7 @@
     shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET PASSWORD=PASSWORD('{{ db_root_password }}');"
   when:
     - ansible_os_family == 'RedHat'
-    - percona_version == 5.7
+    - percona_version is version('5.7', '==')
 
 - name: set percona 5.7 root password (Debian)
   mysql_user:
@@ -73,7 +73,7 @@
   ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
-    - percona_version == 5.7
+    - percona_version is version('5.7', '==')
 
 - name: set percona 5.6 root password
   mysql_user:
@@ -85,7 +85,7 @@
     - localhost
     - 127.0.0.1
     - ::1
-  when: percona_version == 5.6
+  when: percona_version is version('5.6', '==')
 
 - name: delete blank percona users
   mysql_user:

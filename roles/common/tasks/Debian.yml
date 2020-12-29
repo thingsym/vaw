@@ -3,7 +3,7 @@
   package:
     name: sysv-rc-conf
     state: latest
-  when: ansible_distribution_release == 'trusty'
+  when: ansible_distribution_major_version is version('14', '==')
 
 - name: apt-transport-https installed
   package:
