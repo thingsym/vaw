@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.6] - 2021.01.11
+
+* deprecated centos 8 box
+* using the version function to check the version
+
 ## [0.7.5] - 2020.12.28
 
 * remove default Vagrant BOX
