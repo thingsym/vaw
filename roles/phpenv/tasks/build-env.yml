@@ -76,6 +76,16 @@
       - libtool
       - libtool-doc
       - autoconf
+      - libzip5
+      - libzip-dev
+      - libsqlite3-0
+      - libsqlite3-dev
+      - libkrb5-3
+      - libkrb5-dev
+      - libgssapi-krb5-2
+      - libonig5
+      - libonig-dev
+
     state: latest
   when: ansible_os_family == 'Debian'
 

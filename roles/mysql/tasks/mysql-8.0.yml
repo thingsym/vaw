@@ -21,18 +21,15 @@
   - name: yum-config enable mysql80-community
     command: yum-config-manager --enable mysql80-community
 
-    # INFO: Unable to find a match: mysql-community-server
   - name: mysql 8.0 installed (CentOS/RHEL)
     package:
       name:
-        - mysql-server
-        # - mysql-community-client
-        - mysql-common
-        - mysql-devel
-        - mysql-libs
-        # - mysql-utilities
-        - python3-PyMySQL
-        # - python2-PyMySQL
+        - mysql-community-server
+        - mysql-community-client
+        - mysql-community-common
+        - mysql-community-devel
+        - mysql-community-libs
+        - MySQL-python
       state: latest
   when: ansible_os_family == 'RedHat'
 
@@ -65,6 +62,27 @@
         - mysql-community-server
         - mysql-community-client
         - mysql-common
-        - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '<=')
+
+- name: python3-mysqldb installed
+  package:
+    name: python3-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('20', '>=')
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when: ansible_distribution == 'Debian'

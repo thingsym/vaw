@@ -41,7 +41,23 @@
   when: ansible_os_family == 'Debian'
 
 - block:
-  - name: get temporary password from mysqld.log - mysql 5.7
+  - name: get temporary password from mysqld.log
+    shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $13}'
+    register: mysql_temp_password
+
+  - name: change password validation
+    shell: |
+      mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password.length=4;"
+      mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET GLOBAL validate_password.policy=LOW;"
+
+  - name: set mysql 8.0 root password from temporary password (CentOS/RHEL)
+    shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ db_root_password }}';"
+  when:
+    - ansible_os_family == 'RedHat'
+    - mysql_version == 8.0
+
+- block:
+  - name: get temporary password from mysqld.log
     shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $11}'
     register: mysql_temp_password
 
@@ -56,19 +72,22 @@
     - ansible_os_family == 'RedHat'
     - mysql_version is version('5.7', '==')
 
-- name: set mysql 8.0 root password (CentOS/RHEL)
+- name: set mysql 8.0 root password (Debian)
   mysql_user:
     name: root
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
-    login_unix_socket: /var/lib/mysql/mysql.sock
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
   with_items:
     - localhost
+    - 127.0.0.1
+    - ::1
   ignore_errors: yes
   when:
-    - ansible_os_family == 'RedHat'
-    - mysql_version is version('8.0', '==')
+    - ansible_os_family == 'Debian'
+    - mysql_version == 8.0
 
 - name: set mysql 5.7 root password (Debian)
   mysql_user:
@@ -76,6 +95,8 @@
     password: "{{ db_root_password }}"
     host: "{{ item }}"
     state: present
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
   with_items:
     - localhost
     - 127.0.0.1
