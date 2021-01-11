@@ -103,13 +103,13 @@
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm -s tcp
     when:
       - ansible_os_family == 'RedHat'
-      - ansible_distribution_major_version|int == 6
+      - ansible_distribution_major_version is version('6', '==')
 
   - name: php installed via phpenv.sh (php-fpm / CentOS7 or later and apache only)
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm
     when:
       - ansible_os_family == 'RedHat'
-      - ansible_distribution_major_version|int >= 7
+      - ansible_distribution_major_version is version('7', '>=')
 
   - name: php installed via phpenv.sh (php-fpm / Debian and apache)
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m php-fpm

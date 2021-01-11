@@ -22,14 +22,14 @@
       name:
         - MySQL-python
       state: latest
-    when: ansible_distribution_major_version|int <= 7
+    when: ansible_distribution_major_version is version('7', '<=')
 
   - name: python-PyMySQL installed (CentOS/RHEL 8)
     package:
       name:
         - python3-PyMySQL
       state: latest
-    when: ansible_distribution_major_version|int >= 8
+    when: ansible_distribution_major_version is version('8', '>=')
 
   when: ansible_os_family == 'RedHat'
 

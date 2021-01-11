@@ -42,7 +42,7 @@
         enablerepo: remi
         state: latest
     when:
-      - ansible_distribution_major_version|int == 7
+      - ansible_distribution_major_version is version('7', '==')
 
   - name: install latest libzip
     yum:
@@ -51,7 +51,7 @@
         - libzip-devel
       state: latest
     when:
-      - ansible_distribution_major_version|int == 8
+      - ansible_distribution_major_version is version('8', '==')
 
   when:
     - ansible_os_family == 'RedHat'
@@ -86,4 +86,4 @@
     state: latest
   when:
     - ansible_os_family == 'Debian'
-    - ansible_distribution_release != 'trusty'
+    - ansible_distribution_major_version is version('16', '>=')

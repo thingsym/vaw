@@ -5,7 +5,7 @@
     disable_gpg_check: yes
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
+    - ansible_distribution_major_version is version('6', '==')
 
 - name: nginx repository installed (CentOS/RHEL 7)
   yum:
@@ -13,7 +13,7 @@
     disable_gpg_check: yes
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
+    - ansible_distribution_major_version is version('7', '==')
 
 - name: nginx repository installed (CentOS/RHEL 8)
   yum:
@@ -21,7 +21,7 @@
     disable_gpg_check: yes
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 8
+    - ansible_distribution_major_version is version('8', '==')
 
 - name: nginx installed
   package:

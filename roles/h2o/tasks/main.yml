@@ -49,7 +49,7 @@
 
   when:
     - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_release == 'trusty'
+    - ansible_distribution_major_version is version('14', '==')
 
 - name: stat custom h2o.j2
   stat:

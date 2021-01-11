@@ -68,7 +68,7 @@
   become_user: vagrant
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 6
+    - ansible_distribution_major_version is version('6', '==')
 
 - name: WordPress config (socket connection)
   command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }}:{{ mysql_socket }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
@@ -76,7 +76,7 @@
   become_user: vagrant
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int == 7
+    - ansible_distribution_major_version is version('7', '==')
 
 - name: WordPress db create
   command: wp --path={{ WP_PATH }} db create

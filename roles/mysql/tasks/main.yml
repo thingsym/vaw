@@ -54,7 +54,7 @@
     shell: mysql -uroot -p'{{ mysql_temp_password.stdout }}' --connect-expired-password -e "SET PASSWORD=PASSWORD('{{ db_root_password }}');"
   when:
     - ansible_os_family == 'RedHat'
-    - mysql_version == 5.7
+    - mysql_version is version('5.7', '==')
 
 - name: set mysql 8.0 root password (CentOS/RHEL)
   mysql_user:
@@ -68,7 +68,7 @@
   ignore_errors: yes
   when:
     - ansible_os_family == 'RedHat'
-    - mysql_version == 8.0
+    - mysql_version is version('8.0', '==')
 
 - name: set mysql 5.7 root password (Debian)
   mysql_user:
@@ -83,7 +83,7 @@
   ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
-    - mysql_version <= 5.7
+    - mysql_version is version('5.7', '<=')
 
 - block:
   - name: set mysql 8.0 root password (Debian)
@@ -111,7 +111,7 @@
     ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
-    - mysql_version >= 8.0
+    - mysql_version is version('8.0', '>=')
 
 - name: delete blank mysql users
   mysql_user:
