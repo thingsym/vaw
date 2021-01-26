@@ -5,7 +5,7 @@ describe package('git222'), :if => os[:family] == 'redhat' && os[:release] <= '7
   it { should be_installed }
 end
 
-describe package('git'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+describe package('git'), :if => (os[:family] == 'redhat' && os[:release] >= '8') || os[:family] == 'debian' || os[:family] == 'ubuntu' do
   it { should be_installed }
 end
 

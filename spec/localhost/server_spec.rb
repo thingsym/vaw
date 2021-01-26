@@ -50,6 +50,10 @@ if property["server"] == 'apache' then
     it { should be_running }
   end
 
+  describe command("httpd -V | grep 'Server MPM'"), :if => os[:family] == 'redhat' do
+    its(:stdout) { should match(/Prefork/) }
+  end
+
   describe command("apachectl -M | grep 'mpm_prefork_module'"), :if => property["apache_mpm"] == 'prefork' do
     its(:stdout) { should match(/mpm_prefork_module/) }
   end
@@ -68,6 +72,10 @@ if property["server"] == 'apache' then
 
   describe command("ps -C httpd -o user"), :if => os[:family] == 'redhat' do
     its(:stdout) { should match /vagrant/ }
+  end
+
+  describe command("apachectl -M | grep 'rewrite_module'") do
+    its(:stdout) { should match(/rewrite_module/) }
   end
 
   describe file('/etc/httpd/conf/httpd.conf'), :if => os[:family] == 'redhat' do
@@ -147,13 +155,21 @@ elsif property["server"] == 'nginx' then
     it { should be_file }
   end
 
-  describe file('/etc/nginx/conf.d/www.conf') do
-    it { should be_file }
-  end
-
-  # describe command("nginx -V") do
-  #   its(:stdout) { should match /http_v2_module/ }
+  # if property["ssl"] then
+  #   describe command("nginx -V") do
+  #     its(:stdout) { should match /http_v2_module/ }
+  #   end
   # end
+
+  if property["multisite"] then
+    describe file('/etc/nginx/conf.d/wordpress-multisite.conf') do
+      it { should be_file }
+    end
+  else
+    describe file('/etc/nginx/conf.d/wordpress.conf') do
+      it { should be_file }
+    end
+  end
 
 elsif property["server"] == 'h2o' then
 
@@ -188,35 +204,14 @@ elsif property["server"] == 'h2o' then
     it { should be_directory }
   end
 
-elsif property["server"] == 'litespeed' then
-
-  describe yumrepo('litespeed'), :if => os[:family] == 'redhat' do
-    it { should exist }
-  end
-
-  describe yumrepo('litespeed-update'), :if => os[:family] == 'redhat' do
-    it { should exist }
-  end
-
-  describe package('openlitespeed') do
-    it { should be_installed }
-  end
-
-  describe service('lsws') do
-    it { should be_enabled }
-    # it { should be_running }
-  end
-
 end
 
-if property["server"] != 'none' && property["server"] != 'litespeed' then
-  describe port(80) do
-    it { should be_listening }
-  end
+describe port(80) do
+  it { should be_listening }
+end
 
-  if property["ssl"] then
-    describe port(443) do
-      it { should be_listening }
-    end
+if property["ssl"] then
+  describe port(443) do
+    it { should be_listening }
   end
 end

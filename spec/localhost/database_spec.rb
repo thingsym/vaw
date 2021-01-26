@@ -11,9 +11,13 @@ if property["database"] == 'mysql' then
     its(:stdout) { should match /#{Regexp.escape('5.7')}/ }
   end
 
-  describe package('mysql-community-server') do
+  describe package('mysql-community-server'), :if => os[:family] == 'redhat' do
     it { should be_installed }
     it { should be_installed.with_version '5.7' }
+  end
+
+  describe package('mysql-community-server'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
   end
 
   describe yumrepo('mysql57-community'), :if => os[:family] == 'redhat' do
@@ -93,12 +97,6 @@ elsif property["database"] == 'mariadb' then
     it { should be_running }
   end
 
-  describe file('/var/lib/mysql/mysql.sock'), :if => os[:family] == 'redhat' do
-    it { should be_socket }
-    it { should be_owned_by 'mysql' }
-    it { should be_grouped_into 'mysql' }
-  end
-
 elsif property["database"] == 'percona' then
 
   describe command('mysqld -V') do
@@ -126,7 +124,6 @@ elsif property["database"] == 'percona' then
 
   describe package('percona-server-server-5.7'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
-    it { should be_installed.with_version '5.7' }
   end
 
   describe command('apt-cache policy | grep percona'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
@@ -141,13 +138,19 @@ elsif property["database"] == 'percona' then
 end
 
 if property["database"] == 'mysql' || property["database"] == 'mariadb' || property["database"] == 'percona' then
-  describe file('/etc/my.cnf') do
+  describe file('/etc/my.cnf'), :if => os[:family] == 'redhat' do
     it { should be_file }
+    it { should contain("skip-character-set-client-handshake") }
+  end
+
+  describe file('/etc/mysql/my.cnf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_file }
+    it { should contain("skip-character-set-client-handshake") }
   end
 
   describe 'MySQL config parameters' do
     context mysql_config('socket') do
-      its(:value) { should eq '/var/lib/mysql/mysql.sock' }
+      its(:value) { should eq '/tmp/mysql.sock' }
     end
 
     context mysql_config('character-set-server') do
@@ -155,17 +158,7 @@ if property["database"] == 'mysql' || property["database"] == 'mariadb' || prope
     end
   end
 
-  describe file("/etc/my.cnf") do
-    it { should contain("skip-character-set-client-handshake") }
-  end
-
-  describe file('/var/lib/mysql/mysql.sock'), :if => os[:family] == 'redhat' do
-    it { should be_socket }
-    it { should be_owned_by 'mysql' }
-    it { should be_grouped_into 'mysql' }
-  end
-
-  describe file('/var/run/mysqld/mysqld.sock'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  describe file('/tmp/mysql.sock') do
     it { should be_socket }
     it { should be_owned_by 'mysql' }
     it { should be_grouped_into 'mysql' }
@@ -183,15 +176,22 @@ if property["database"] == 'mysql' || property["database"] == 'mariadb' || prope
     its(:stdout) { should match /mysqld is alive/ }
   end
 
-  describe package('MySQL-python'), :if => os[:family] == 'redhat' && (os[:release] <= '7') do
+  describe package('MySQL-python'), :if => os[:family] == 'redhat' && (os[:release] == '6' || os[:release] == '7') do
     it { should be_installed }
   end
 
-  describe package('python3-PyMySQL'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+  describe package('python2-PyMySQL'), :if => os[:family] == 'redhat' && (os[:release] == '8') do
+    it { should be_installed }
+  end
+  describe package('python3-PyMySQL'), :if => os[:family] == 'redhat' && (os[:release] == '8') do
     it { should be_installed }
   end
 
   describe package('python-mysqldb'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('python3-mysqldb'), :if => os[:family] == 'ubuntu' && os[:release] == '20.04' do
     it { should be_installed }
   end
 
