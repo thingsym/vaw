@@ -10,11 +10,7 @@
 
 [client]
 port = 3306
-{% if ansible_os_family == "RedHat" %}
-socket = /var/lib/mysql/mysql.sock
-{% elif ansible_os_family == 'Debian' %}
-socket = /var/run/mysqld/mysqld.sock
-{% endif %}
+socket = /tmp/mysql.sock
 
 # this is only for the mysqld standalone daemon
 [mysqld]
@@ -25,11 +21,7 @@ character-set-server = utf8mb4
 skip-character-set-client-handshake
 
 pid-file = /var/lib/mysql/mysql.pid
-{% if ansible_os_family == "RedHat" %}
-socket = /var/lib/mysql/mysql.sock
-{% elif ansible_os_family == 'Debian' %}
-socket = /var/run/mysqld/mysqld.sock
-{% endif %}
+socket = /tmp/mysql.sock
 
 #
 # Instead of skip-networking the default is now to listen only on
