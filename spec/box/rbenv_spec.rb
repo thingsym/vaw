@@ -73,14 +73,6 @@ if property["develop_tools"] || property["deploy_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
-  describe package('libcurl') do
-    it { should be_installed }
-  end
-
-  describe package('libcurl-devel') do
-    it { should be_installed }
-  end
-
   describe package('gcc') do
     it { should be_installed }
   end
@@ -89,19 +81,43 @@ if property["develop_tools"] || property["deploy_tools"] then
     it { should be_installed }
   end
 
-  describe package('openssl-devel') do
+  describe package('libcurl'), :if => os[:family] == 'redhat' do
     it { should be_installed }
   end
 
-  describe package('libyaml-devel') do
+  describe package('libcurl-devel'), :if => os[:family] == 'redhat' do
     it { should be_installed }
   end
 
-  describe package('readline-devel') do
+  describe package('openssl-devel'), :if => os[:family] == 'redhat' do
     it { should be_installed }
   end
 
-  describe package('zlib-devel') do
+  describe package('libyaml-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('readline-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('zlib-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('libssl-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libyaml-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libreadline-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('zlib1g-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
   end
 

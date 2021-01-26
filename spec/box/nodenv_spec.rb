@@ -15,27 +15,27 @@ if property["develop_tools"] then
     its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/bin\/nodenv/) }
   end
 
-  ['12.13.0'].each do |node_version|
-    describe command("nodenv versions | grep #{node_version}") do
-      let(:sudo_options) { '-u vagrant -i' }
-      its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
-    end
-  end
-
   describe command('which node') do
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/\/home\/vagrant\/\.nodenv\/shims\/node/) }
   end
 
+  ['14.15.3'].each do |node_version|
+    describe command("nodenv versions | grep #{node_version}") do
+      let(:sudo_options) { '-u vagrant -i' }
+      its(:stdout) { should match(/#{Regexp.escape(node_version)}/) }
+    end
+  end
+
   describe command('node -v') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '12.13.0' }
+    its(:stdout) { should match '14.15.3' }
   end
 
   describe command('nodenv global') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '12.13.0' }
+    its(:stdout) { should match '14.15.3' }
   end
 
   describe file('/home/vagrant/.bashrc_vaw') do
@@ -61,9 +61,10 @@ if property["develop_tools"] then
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
   end
-end
 
-describe command('yarn --version') do
-  let(:sudo_options) { '-u vagrant -i' }
-  its(:exit_status) { should eq 0 }
+  describe command('yarn --version') do
+    let(:sudo_options) { '-u vagrant -i' }
+    its(:exit_status) { should eq 0 }
+  end
+
 end

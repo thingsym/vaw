@@ -7,8 +7,18 @@ if property["ssl"] then
     it { should be_installed }
   end
 
-  describe command('openssl version') do
-    its(:stdout) { should match /#{Regexp.escape('1.1.1g')}/ }
+  describe command('openssl version'), :if => os[:family] == 'redhat' do
+    its(:stdout) { should match /#{Regexp.escape('1.1.1k')}/ }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('openssl version'), :if => os[:family] == 'debian' do
+    its(:stdout) { should match /#{Regexp.escape('1.1.1d')}/ }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command('openssl version'), :if => os[:family] == 'ubuntu' do
+    its(:stdout) { should match /#{Regexp.escape('1.1.1i')}/ }
     its(:exit_status) { should eq 0 }
   end
 
