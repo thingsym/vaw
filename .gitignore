@@ -4,4 +4,4 @@
 *.retry
 *.cache
 /wordpress
-/vaw-documentation
+ssh_config.cache
