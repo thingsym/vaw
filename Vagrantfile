@@ -18,6 +18,7 @@ public_ip             = ''
 forwarded_port        = [
   3000,
   3001,
+  1025,
   8025
 ]
 
