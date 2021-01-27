@@ -1,23 +1,39 @@
 ---
 - name: include task
-  include: "mariadb-{{ mariadb_version | default(10.3) }}.yml"
+  include: "mariadb-{{ mariadb_version | default(10.4) }}.yml"
 
 - name: stat custom my.cnf.j2
   stat:
     path: /vagrant/config/mariadb.my.cnf.j2
   register: is_custom_my_conf
 
-- name: custom my.cnf changed
-  template:
-    src: /vagrant/config/mariadb.my.cnf.j2
-    dest: /etc/my.cnf
-  when: is_custom_my_conf.stat.exists
+- block:
+  - name: custom my.cnf changed
+    template:
+      src: /vagrant/config/mariadb.my.cnf.j2
+      dest: /etc/my.cnf
+    when: is_custom_my_conf.stat.exists
 
-- name: my.cnf changed
-  template:
-    src: mariadb.my.cnf.j2
-    dest: /etc/my.cnf
-  when: not is_custom_my_conf.stat.exists
+  - name: my.cnf changed
+    template:
+      src: mariadb.my.cnf.j2
+      dest: /etc/my.cnf
+    when: not is_custom_my_conf.stat.exists
+  when: ansible_os_family == 'RedHat'
+
+- block:
+  - name: custom my.cnf changed
+    template:
+      src: /vagrant/config/mariadb.my.cnf.j2
+      dest: /etc/mysql/my.cnf
+    when: is_custom_my_conf.stat.exists
+
+  - name: my.cnf changed
+    template:
+      src: mariadb.my.cnf.j2
+      dest: /etc/mysql/my.cnf
+    when: not is_custom_my_conf.stat.exists
+  when: ansible_os_family == 'Debian'
 
 - name: mkdir /var/log/mysql
   file:
@@ -31,14 +47,7 @@
     name: mariadb
     state: restarted
     enabled: yes
-  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version is version('6', '>')) or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version('16', '<='))
-
-# 5.5
-# - name: mysql started and enabled
-#   service:
-#     name: mysql
-#     state: restarted
-#     enabled: yes
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version is version('6', '>')) or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version('16', '>=') or ansible_distribution == 'Debian')
 
 - name: mysql started and enabled
   service:
@@ -57,52 +66,36 @@
     - localhost
     - 127.0.0.1
     - ::1
-  ignore_errors: yes
   when: mariadb_version is version('10.4', '<')
 
-- block:
-  - name: set MariaDB root password (v10.4 or later)
-    mysql_user:
-      name: root
-      password: "{{ db_root_password }}"
-      host: "{{ item }}"
-      state: present
-      login_unix_socket: /var/lib/mysql/mysql.sock
-    with_items:
-      - localhost
-    ignore_errors: yes
-
-  - name: set MariaDB root password (host)
-    mysql_user:
-      name: root
-      password: "{{ db_root_password }}"
-      host: "{{ item }}"
-      state: present
-      login_user: root
-      login_password: "{{ db_root_password }}"
-    with_items:
-      - 127.0.0.1
-      - ::1
-    ignore_errors: yes
+- name: set MariaDB root password (v10.4 or later)
+  mysql_user:
+    name: root
+    password: "{{ db_root_password }}"
+    host: "{{ item }}"
+    state: present
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
   when: mariadb_version is version('10.4', '>=')
 
-- name: Delete blank MariaDB users
+- name: delete blank MariaDB users
   mysql_user:
     name: ""
     host_all: true
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
 
-- name: Drop MariaDB test database
+- name: drop MariaDB test database
   mysql_db:
     name: test
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
-
-- name: create symbolic link
-  file:
-    src: /var/lib/mysql/mysql.sock
-    dest: /tmp/mysql.sock
-    state: link
+    login_unix_socket: /tmp/mysql.sock

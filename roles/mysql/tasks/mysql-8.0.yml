@@ -61,7 +61,6 @@
       name:
         - mysql-community-server
         - mysql-community-client
-        - mysql-common
       state: latest
   when: ansible_os_family == 'Debian'
 

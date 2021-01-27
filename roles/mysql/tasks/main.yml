@@ -2,6 +2,18 @@
 - name: include task
   include: "mysql-{{ mysql_version | default(5.7) }}.yml"
 
+- name: stat mysql dir
+  stat:
+    path: /etc/mysql
+  register: is_mysql_dir
+
+- name: mkdir mysql
+  file:
+    path: /etc/mysql
+    state: directory
+    owner: mysql
+  when: not is_mysql_dir.stat.exists
+
 - name: stat custom my.cnf.j2
   stat:
     path: /vagrant/config/mysql.my.cnf.j2
@@ -10,13 +22,13 @@
 - name: custom my.cnf changed
   template:
     src: /vagrant/config/mysql.my.cnf.j2
-    dest: /etc/my.cnf
+    dest: /etc/mysql/my.cnf
   when: is_custom_my_conf.stat.exists
 
 - name: my.cnf changed
   template:
     src: mysql.my.cnf.j2
-    dest: /etc/my.cnf
+    dest: /etc/mysql/my.cnf
   when: not is_custom_my_conf.stat.exists
 
 - name: mkdir /var/log/mysql
@@ -79,12 +91,13 @@
     host: "{{ item }}"
     state: present
     check_implicit_admin: yes
-    priv: "*.*:ALL,GRANT"
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
   with_items:
     - localhost
     - 127.0.0.1
     - ::1
-  ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
     - mysql_version == 8.0
@@ -96,12 +109,13 @@
     host: "{{ item }}"
     state: present
     check_implicit_admin: yes
-    priv: "*.*:ALL,GRANT"
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
   with_items:
     - localhost
     - 127.0.0.1
     - ::1
-  ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
     - mysql_version is version('5.7', '<=')
@@ -113,12 +127,13 @@
       password: "{{ db_root_password }}"
       host: "{{ item }}"
       state: present
-      login_unix_socket: /var/run/mysqld/mysqld.sock
+      login_user: root
+      login_password: "{{ db_root_password }}"
+      login_unix_socket: /tmp/mysql.sock
     with_items:
       - localhost
-    ignore_errors: yes
 
-  - name: set MariaDB root password (host)
+  - name: set mysql root password (host)
     mysql_user:
       name: root
       password: "{{ db_root_password }}"
@@ -126,10 +141,10 @@
       state: present
       login_user: root
       login_password: "{{ db_root_password }}"
+      login_unix_socket: /tmp/mysql.sock
     with_items:
       - 127.0.0.1
       - ::1
-    ignore_errors: yes
   when:
     - ansible_os_family == 'Debian'
     - mysql_version is version('8.0', '>=')
@@ -141,6 +156,7 @@
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
 
 - name: drop mysql test database
   mysql_db:
@@ -148,9 +164,4 @@
     state: absent
     login_user: root
     login_password: "{{ db_root_password }}"
-
-- name: create symbolic link
-  file:
-    src: /var/lib/mysql/mysql.sock
-    dest: /tmp/mysql.sock
-    state: link
+    login_unix_socket: /tmp/mysql.sock
