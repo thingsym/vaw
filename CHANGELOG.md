@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.0] - 2021.01.27
+
+* edit README
+* add box, support Debian and Ubuntu
+* bump up php version to 7.4.14
+* change phpenv repo
+* add port 1025 to forwarded_port
+* bump up node version to 14.15.3
+* add checking database for wordpress
+* change database connect via TCP/IP
+* impove database tasks
+* change database unix domain socket path to /tmp/mysql.sock
+* add test case for Debian
+* fix tasks for Debian
+
 ## [0.7.6] - 2021.01.11
 
 * deprecated centos 8 box
