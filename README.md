@@ -10,11 +10,11 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ## Features
 
-### 1. Build Server and Database environment
+### 1. Build OS, Server and Database environment
 
-The **VAW** will build server from **Apache**, **nginx** or **H2O**, and build database from **MariaDB**, **MySQL** or **Percona MySQL**.
+The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or  **nginx** or **H2O**, and build database from **MariaDB** or  **MySQL** or **Percona MySQL**.
 
-On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager) or **HHVM** (HipHop Virtual Machine).
+On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager).
 
 By default, the server and the databese is installed in the default settings. Also you can edit configuration files.
 
@@ -59,9 +59,9 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 
 ## Requirements
 
-* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.2
-* [Vagrant](https://www.vagrantup.com) >= 2.1
-* [Ansible](https://www.ansible.com) >= 2.4
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 6.1
+* [Vagrant](https://www.vagrantup.com) >= 2.2
+* [Ansible](https://www.ansible.com) >= 2.9
 
 ### Vagrant plugin (optional)
 
@@ -164,7 +164,12 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	public_ip             = ''
 
-	forwarded_port        = [ 3000, 3001 ]
+	forwarded_port        = [
+		3000,
+		3001,
+		1025,
+		8025
+	]
 
 	vbguest_auto_update   = true
 	synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
@@ -181,7 +186,11 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `vm_document_root` (required) document root path (default: `/var/www/html`)
 	* auto create `wordpress` directory and synchronized
 * `public_ip` IP address of bridged connection (default: `''`)
-* `forwarded_port` list of ports that you want to transfer (default: `[ 3000, 3001 ]`)
+* `forwarded_port` list of ports that you want to transfer (default: `[ 3000, 3001, 1025, 8025 ]`)
+	* 3000: Browsersync auto-detected port
+	* 3001: Browsersync ui port
+	* 1025: MailHog SMTP default port
+	* 8025: MailHog HTTP default port
 * `vbguest_auto_update` whether to update VirtualBox Guest Additions (default: `true` / value: `true` | `false`)
 トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` the type of synced folder (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
@@ -285,7 +294,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	ssl                : true   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.3.17
+	php_version        : 7.4.14
 	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
@@ -441,7 +450,7 @@ Disable the setting case
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress administration over SSL enabled flag (default: `true` / value: `true` | `false`)
-* `php_version` version of PHP (default: `7.3.17`)
+* `php_version` version of PHP (default: `7.4.14`)
 * `http_protocol` HTTP protocol (default: `https` / value: `http` | `https`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
@@ -503,11 +512,25 @@ The VAW will be built in the directory structure of the following minimum unit.
 
 ## Vagrant Box
 
-The VAW supports VirtualBox for providers of Vagrant. Operating system supported CentOS Boxes. OS architecture supported x86_64. Details are as follows:
+The VAW supports VirtualBox for providers of Vagrant. Operating system supported CentOS, Debian and Ubuntu Boxes. OS architecture supported x86_64. Details are as follows:
 
-* CentOS 8
-* CentOS 7
+### CentOS
+
+* CentOS 8 (Deprecated ended 2021-12-31)
+* CentOS 7 (Main support)
 * CentOS 6 (Deprecated ended 2020-11-30)
+
+### Debian
+
+* Debian 10.0 (Main support)
+* Debian 9.0 (Main support)
+* Debian 8.0 (Deprecated ended 2020-06-30)
+
+### Ubuntu
+
+* Ubuntu 18.04 (In preparation)
+* Ubuntu 16.04 (Main support)
+* Ubuntu 14.04 (Deprecated ended 2019-04-25)
 
 To download Vagrant Box, you can search from [Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox).
 
@@ -759,4 +782,4 @@ The VAW is distributed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
 [thingsym](https://github.com/thingsym)
 
-Copyright (c) 2014-2018 thingsym
+Copyright (c) 2014-2021 thingsym
