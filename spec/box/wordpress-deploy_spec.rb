@@ -21,17 +21,14 @@ if property["deploy_tools"] then
 
   describe package('net-sftp') do
     let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
   end
 
   describe package('double-bag-ftps') do
     let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
   end
 
   describe package('dandelion') do
     let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
   end
 
   describe command('which dandelion') do
@@ -42,7 +39,6 @@ if property["deploy_tools"] then
 
   describe package('wordmove') do
     let(:disable_sudo) { true }
-    it { should be_installed.by('gem') }
   end
 
   describe command('which wordmove') do

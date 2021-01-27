@@ -20,15 +20,18 @@
   become_user: vagrant
 
 - include: wp-i18n.yml
+
 - include: daemonize.yml
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version is version('6', '==')
+
 - include: mailhog.yml
-- include: opcache-viewer.yml
-  tags: sync-dir
 - include: cachetool.yml
 - include: wrk.yml
-- include: webgrind.yml
-  tags: sync-dir
 - include: mysqltuner.yml
+
+- block:
+  - include: opcache-viewer.yml
+  - include: webgrind.yml
+  tags: sync-dir

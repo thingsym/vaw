@@ -9,6 +9,14 @@ describe package('yum-utils'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
+describe package('build-essential'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('software-properties-common'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
 describe package('python3-pip'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
   it { should be_installed }
 end
@@ -18,6 +26,30 @@ describe package('python2-pip'), :if => os[:family] == 'redhat' && os[:release] 
 end
 
 describe package('python-pip'), :if => os[:family] == 'redhat' && os[:release] == '6' do
+  it { should be_installed }
+end
+
+describe package('python3-pip'), :if => os[:family] == 'ubuntu' && os[:release] == '20.04' do
+  it { should be_installed }
+end
+
+describe package('python-pip'), :if => os[:family] == 'ubuntu' && os[:release] == '18.04' do
+  it { should be_installed }
+end
+
+describe package('python-pip'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+  it { should be_installed }
+end
+
+describe package('python-pip'), :if => os[:family] == 'debian' do
+  it { should be_installed }
+end
+
+describe package('pkg-config'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('debconf-utils'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
   it { should be_installed }
 end
 

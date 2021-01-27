@@ -37,7 +37,7 @@
         disablerepo: AppStream
         state: latest
 
-    - name: python-PyMySQL installed (CentOS/RHEL 8)
+    - name: python3-PyMySQL installed (CentOS/RHEL 8)
       dnf:
         name:
           - python2-PyMySQL
@@ -79,6 +79,27 @@
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
-        - python-mysqldb
       state: latest
   when: ansible_distribution == 'Ubuntu'
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '<=')
+
+- name: python3-mysqldb installed
+  package:
+    name: python3-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('20', '>=')
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when: ansible_distribution == 'Debian'

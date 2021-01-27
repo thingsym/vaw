@@ -12,44 +12,7 @@
       value: 2048
     - name: net.core.netdev_max_backlog
       value: 4096
-
-    - name: net.ipv4.ip_local_port_range
-      value: 1024 65535
     - name: net.ipv4.tcp_tw_reuse
       value: 1
     - name: net.ipv4.tcp_fin_timeout
       value: 10
-    - name: net.ipv4.tcp_keepalive_time
-      value: 10
-    - name: net.ipv4.tcp_keepalive_probes
-      value: 2
-    - name: net.ipv4.tcp_keepalive_intvl
-      value: 3
-
-    - name: net.ipv4.tcp_window_scaling
-      value: 1
-    - name: net.core.rmem_max
-      value: 16777216
-    - name: net.core.wmem_max
-      value: 16777216
-    - name: net.ipv4.tcp_rmem
-      value: 4096 349520 16777216
-    - name: net.ipv4.tcp_wmem
-      value: 4096 65536 16777216
-
-    - name: net.ipv4.tcp_no_metrics_save
-      value: 1
-    - name: net.ipv4.conf.all.rp_filter
-      value: 1
-    - name: net.ipv4.tcp_rfc1337
-      value: 1
-    - name: net.ipv4.tcp_syncookies
-      value: 1
-    - name: vm.overcommit_memory
-      value: 2
-    - name: vm.overcommit_ratio
-      value: 99
-    - name: kernel.panic
-      value: 30
-    - name: vm.panic_on_oom
-      value: 1

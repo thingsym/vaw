@@ -42,7 +42,6 @@ if property["fastcgi"] == 'php-fpm' then
   end
 
   describe command('php-fpm -v') do
-    let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
   end
 

@@ -27,7 +27,7 @@
       state: latest
     when: ansible_distribution_major_version is version('7', '<=')
 
-  - name: python-PyMySQL installed (CentOS/RHEL 8)
+  - name: python3-PyMySQL installed (CentOS/RHEL 8)
     package:
       name:
         - python3-PyMySQL
@@ -52,6 +52,27 @@
         - percona-server-client-5.7
         - percona-server-common-5.7
         - libperconaserverclient20-dev
-        - python-mysqldb
       state: latest
   when: ansible_os_family == 'Debian'
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '<=')
+
+- name: python3-mysqldb installed
+  package:
+    name: python3-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('20', '>=')
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when: ansible_distribution == 'Debian'

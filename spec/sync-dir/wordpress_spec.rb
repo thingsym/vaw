@@ -6,7 +6,7 @@ if property["import_admin"] then
     its(:stdout) { should match /#{property["db_name"]}/ }
   end
 elsif property["import_db_data"] or property["import_backwpup"]["db_data_file"] then
-  # nothing
+  # Nothing to do
 else
   describe command("mysqlshow -u #{property["db_user"]} -p#{property["db_password"]} #{property["db_name"]}") do
     its(:stdout) { should match /#{property["db_name"]}/ }
@@ -30,7 +30,7 @@ describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php"), :if => os[:release] == '7' do
-  it { should contain("define\( 'DB_HOST', '#{property["db_host"]}:/var/lib/mysql/mysql.sock' \);") }
+  it { should contain("define\( 'DB_HOST', '#{property["db_host"]}' \);") }
 end
 
 if property["WP_DEBUG"] then
