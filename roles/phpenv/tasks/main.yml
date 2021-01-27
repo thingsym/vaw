@@ -1,7 +1,7 @@
 ---
 - name: git checkout phpenv
   git:
-    repo: https://github.com/madumlao/phpenv.git
+    repo: https://github.com/phpenv/phpenv.git
     dest: "{{ phpenv_dir }}"
     force: yes
     recursive: no
