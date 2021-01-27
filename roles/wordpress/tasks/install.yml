@@ -15,6 +15,21 @@
     login_unix_socket: /tmp/mysql.sock
   when: ansible_distribution == 'Debian'
 
+- name: Setup MySQL user for WordPress
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    host: "{{ item }}"
+    priv: "{{ db_name }}.*:ALL"
+    state: present
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+
 - name: stat WP_PATH
   stat:
     path: "{{ WP_PATH }}"
@@ -38,16 +53,6 @@
     state: directory
     recurse: yes
   when: not is_site_path.stat.exists
-
-- name: Setup MySQL user for WordPress
-  mysql_user:
-    name: "{{ db_user }}"
-    password: "{{ db_password }}"
-    host: localhost
-    priv: "{{ db_name }}.*:ALL"
-    state: present
-    login_user: root
-    login_password: "{{ db_root_password }}"
 
 - name: WordPress latest installed
   command: wp --path={{ WP_PATH }} core download --locale={{ lang }} --force
@@ -76,17 +81,6 @@
   command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
   become: yes
   become_user: vagrant
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version is version('6', '==')
-
-- name: WordPress config (socket connection)
-  command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }}:{{ mysql_socket }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
-  become: yes
-  become_user: vagrant
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version is version('7', '==')
 
 - name: WordPress db create
   command: wp --path={{ WP_PATH }} db create

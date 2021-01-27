@@ -8,7 +8,7 @@ fastcgi            : none     # none|php-fpm
 database           : mariadb  # mariadb|mysql|percona
 db_root_password   : admin
 
-db_host            : localhost
+db_host            : 127.0.0.1
 db_name            : wordpress
 db_user            : admin
 db_password        : admin
