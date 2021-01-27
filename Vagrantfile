@@ -26,7 +26,7 @@ vbguest_auto_update   = true
 synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
 ansible_install_mode  = :default    # :default|:pip
-ansible_version       = 'latest'    # only :pip required
+ansible_version       = 'latest'    # requires :pip in ansible_install_mode
 
 provision_mode        = 'all'       # all|wordpress|box
 
