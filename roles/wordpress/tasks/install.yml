@@ -82,10 +82,18 @@
   become: yes
   become_user: vagrant
 
+- name: WordPress db check
+  command: wp --path={{ WP_PATH }} db check
+  ignore_errors: yes
+  become: yes
+  become_user: vagrant
+  register: db_check
+
 - name: WordPress db create
   command: wp --path={{ WP_PATH }} db create
   become: yes
   become_user: vagrant
+  when: db_check.rc != 0
 
 - name: WordPress core install
   command: wp --path={{ WP_PATH }} core install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
