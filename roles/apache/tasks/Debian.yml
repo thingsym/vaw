@@ -1,0 +1,237 @@
+---
+- block:
+  - name: apache2 repository installed (Debian)
+    apt_repository:
+      repo: ppa:ondrej/apache2
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('20', '==')
+
+- block:
+  - name: apache2 repository installed (Debian)
+    apt_repository:
+      repo: ppa:ondrej/apache2
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '==')
+
+- block:
+  - name: apache2 repository installed (Debian)
+    apt_repository:
+      repo: ppa:ondrej/apache2
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('16', '==')
+
+- name: apache2 installed
+  package:
+    name:
+      - apache2
+      - apache2-dev
+    state: latest
+
+- name: stat custom apache2.conf.j2
+  stat:
+    path: /vagrant/config/apache2.conf.j2
+  register: is_custom_apache2_conf
+
+- name: custom apache2.conf changed
+  template:
+    src: /vagrant/config/apache2.conf.j2
+    dest: /etc/apache2/apache2.conf
+  notify: apache2 restarted
+  when: is_custom_apache2_conf.stat.exists
+
+- name: apache2.conf changed
+  template:
+    src: apache2.conf.j2
+    dest: /etc/apache2/apache2.conf
+  notify: apache2 restarted
+  when: not is_custom_apache2_conf.stat.exists
+
+- name: stat custom apache2.envvars.j2
+  stat:
+    path: /vagrant/config/apache2.envvars.j2
+  register: is_custom_apache2_envvars
+
+- name: custom apache2 envvars changed
+  template:
+    src: /vagrant/config/apache2.envvars.j2
+    dest: /etc/apache2/envvars
+  notify: apache2 restarted
+  when: is_custom_apache2_envvars.stat.exists
+
+- name: apache2 envvars changed
+  template:
+    src: apache2.envvars.j2
+    dest: /etc/apache2/envvars
+  notify: apache2 restarted
+  when: not is_custom_apache2_envvars.stat.exists
+
+- name: edit charset on charset.conf
+  lineinfile:
+    dest: /etc/apache2/conf-available/charset.conf
+    line: "AddDefaultCharset UTF-8"
+  notify: apache2 restarted
+
+- name: stat custom 000-default.conf
+  stat:
+    path: /vagrant/config/apache2.000-default.conf.j2
+  register: is_custom_apache2_000_default
+
+- name: custom 000-default.conf changed
+  template:
+    src: /vagrant/config/apache2.000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify: apache2 restarted
+  when: is_custom_apache2_000_default.stat.exists
+
+- name: 000-default.conf changed
+  template:
+    src: apache2.000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify: apache2 restarted
+  when: not is_custom_apache2_000_default.stat.exists
+
+- block:
+  - name: stat custom default-ssl.conf
+    stat:
+      path: /vagrant/config/apache2.default-ssl.conf.j2
+    register: is_custom_apache2_default_ssl
+
+  - name: custom default-ssl.conf changed
+    template:
+      src: /vagrant/config/apache2.default-ssl.conf.j2
+      dest: /etc/apache2/sites-available/default-ssl.conf
+    notify: apache2 restarted
+    when: is_custom_apache2_default_ssl.stat.exists
+
+  - name: default-ssl.conf changed
+    template:
+      src: apache2.default-ssl.conf.j2
+      dest: /etc/apache2/sites-available/default-ssl.conf
+    notify: apache2 restarted
+    when: not is_custom_apache2_default_ssl.stat.exists
+  when: ssl == true
+
+- block:
+  - block:
+    - name: disables Apache2 module mpm_event
+      command: sudo a2dismod mpm_event
+      notify: apache2 restarted
+
+    - name: enables Apache2 module mpm_prefork
+      command: sudo a2enmod mpm_prefork
+      notify: apache2 restarted
+    when: apache_mpm == 'prefork'
+
+  - block:
+    - name: disables Apache2 module mpm_prefork
+      command: sudo a2dismod mpm_prefork
+      notify: apache2 restarted
+
+    - name: enables Apache2 module mpm_event
+      command: sudo a2enmod mpm_event
+      notify: apache2 restarted
+    when: apache_mpm == 'event'
+
+  - block:
+    - name: enables Apache2 module rewrite
+      command: sudo a2enmod rewrite
+      notify: apache2 restarted
+
+    - name: enables Apache2 module default-ssl
+      command: sudo a2ensite default-ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module ssl
+      command: sudo a2enmod ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module http2
+      command: sudo a2enmod http2
+      notify: apache2 restarted
+    when: ssl == true
+
+  - name: enables Apache2 module proxy_fcgi
+    command: sudo a2enmod proxy_fcgi
+    notify: apache2 restarted
+  when: ansible_distribution == 'Debian'
+
+- block:
+  - block:
+    - name: disables Apache2 module mpm_event
+      apache2_module:
+        name: mpm_event
+        state: absent
+      notify: apache2 restarted
+
+    - name: enables Apache2 module mpm_prefork
+      apache2_module:
+        name: mpm_prefork
+        state: present
+      notify: apache2 restarted
+    when: apache_mpm == 'prefork'
+
+  - block:
+    - name: disables Apache2 module mpm_prefork
+      apache2_module:
+        name: mpm_prefork
+        state: absent
+      notify: apache2 restarted
+
+    - name: enables Apache2 module mpm_event
+      apache2_module:
+        name: mpm_event
+        state: present
+      notify: apache2 restarted
+    when: apache_mpm == 'event'
+
+  - block:
+    - name: enables Apache2 module rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+      notify: apache2 restarted
+
+    - name: enables Apache2 module default-ssl
+      command: sudo a2ensite default-ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module ssl
+      apache2_module:
+        name: ssl
+        state: present
+      notify: apache2 restarted
+
+    - name: enables Apache2 module http2
+      apache2_module:
+        name: http2
+        state: present
+      notify: apache2 restarted
+    when: ssl == true
+
+  - name: enables Apache2 module proxy_fcgi
+    apache2_module:
+      name: proxy_fcgi
+      state: present
+    notify: apache2 restarted
+  when: ansible_distribution == 'Ubuntu'
+
+- name: apache2 enabled
+  service:
+    name: apache2
+    enabled: yes
+  notify: apache2 restarted

@@ -1,3 +1,3 @@
 home_dir: /home/vagrant
 nodenv_dir: /home/vagrant/.nodenv
-node_version: 12.13.0
+node_version: 14.15.3

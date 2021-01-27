@@ -3,17 +3,55 @@ require 'shellwords'
 
 if property["server"] == 'apache' then
 
-  describe package('httpd24u') do
+  describe package('httpd24u'), :if => os[:family] == 'redhat' && (os[:release] <= '7') do
     it { should be_installed }
   end
 
-  describe package('httpd24u-devel') do
+  describe package('httpd24u-devel'), :if => os[:family] == 'redhat' && (os[:release] <= '7') do
     it { should be_installed }
   end
 
-  describe service('httpd') do
+  describe package('httpd'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+    it { should be_installed }
+  end
+
+  describe package('httpd-devel'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+    it { should be_installed }
+  end
+
+  describe command("apachectl -M | grep 'proxy_fcgi_module'") do
+    its(:stdout) { should match(/proxy_fcgi_module/) }
+  end
+
+  describe package('mod_proxy_fcgi'), :if => os[:family] == 'redhat' && os[:release] == '6' do
+    it { should be_installed }
+  end
+
+  if property["ssl"] then
+    describe package('httpd24u-mod_ssl'), :if => os[:family] == 'redhat' && (os[:release] <= '7') do
+      it { should be_installed }
+    end
+
+    describe package('mod_ssl'), :if => os[:family] == 'redhat' && os[:release] >= '8' do
+      it { should be_installed }
+    end
+
+    describe command("apachectl -M | grep 'ssl_module'") do
+      its(:stdout) { should match(/ssl_module/) }
+    end
+
+    describe command("apachectl -M | grep 'http2_module'") do
+      its(:stdout) { should match(/http2_module/) }
+    end
+  end
+
+  describe service('httpd'), :if => os[:family] == 'redhat' do
     it { should be_enabled }
     it { should be_running }
+  end
+
+  describe command("httpd -V | grep 'Server MPM'"), :if => os[:family] == 'redhat' do
+    its(:stdout) { should match(/Prefork/) }
   end
 
   describe command("apachectl -M | grep 'mpm_prefork_module'"), :if => property["apache_mpm"] == 'prefork' do
@@ -32,64 +70,53 @@ if property["server"] == 'apache' then
     its(:stdout) { should match /event/ }
   end
 
-  describe command("ps -C httpd -o user") do
+  describe command("ps -C httpd -o user"), :if => os[:family] == 'redhat' do
     its(:stdout) { should match /vagrant/ }
   end
 
-  describe file('/etc/httpd/conf/httpd.conf') do
+  describe command("apachectl -M | grep 'rewrite_module'") do
+    its(:stdout) { should match(/rewrite_module/) }
+  end
+
+  describe file('/etc/httpd/conf/httpd.conf'), :if => os[:family] == 'redhat' do
     it { should be_file }
   end
 
-  describe file('/etc/httpd/conf.d/www.conf'), :if => os[:release] == '7' do
+  describe file('/etc/httpd/conf.d/www.conf'), :if => os[:family] == 'redhat' && os[:release] == '7' do
     it { should be_file }
   end
 
-	describe file('/etc/httpd/conf.modules.d/00-http2.conf'), :if => os[:family] == 'redhat' && os[:release] == '7' do
+  describe file('/etc/httpd/conf.modules.d/00-http2.conf'), :if => os[:family] == 'redhat' && os[:release] == '7' do
     it { should be_file }
   end
 
-  describe command("apachectl -M | grep 'proxy_fcgi_module'") do
-    its(:stdout) { should match(/proxy_fcgi_module/) }
+  describe package('apache2'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
   end
 
-  if property["ssl"] then
-    describe package('httpd24u-mod_ssl') do
-      it { should be_installed }
-    end
-
-    describe command("apachectl -M | grep 'ssl_module'") do
-      its(:stdout) { should match(/ssl_module/) }
-    end
-
-    describe command("apachectl -M | grep 'http2_module'") do
-      its(:stdout) { should match(/http2_module/) }
-    end
+  describe package('apache2-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
   end
 
-  if os[:release] =~ /^6/ then
-    describe package('mod_proxy_fcgi') do
-      it { should be_installed }
-    end
-
-    describe command("httpd -V | grep 'Server MPM'") do
-      its(:stdout) { should match(/Prefork/) }
-    end
-
-    describe command("apachectl -M | grep 'mpm_prefork_module'") do
-      its(:stdout) { should match(/mpm_prefork_module/) }
-    end
+  describe service('apache2'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_enabled }
+    it { should be_running }
   end
 
-  if os[:release] =~ /^7/ then
-    if property["fastcgi"] == 'none' then
-      describe command("httpd -V | grep 'Server MPM'") do
-        its(:stdout) { should match(/prefork/) }
-      end
+  describe command("ps -C apache2 -o user"), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    its(:stdout) { should match /vagrant/ }
+  end
 
-      describe command("apachectl -M | grep 'mpm_prefork_module'") do
-        its(:stdout) { should match(/mpm_prefork_module/) }
-      end
-    end
+  describe file('/etc/apache2/apache2.conf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_file }
+  end
+
+  describe file('/etc/apache2/sites-available/000-default.conf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_file }
+  end
+
+  describe file('/etc/apache2/sites-available/default-ssl.conf'), :if => ( os[:family] == 'debian' || os[:family] == 'ubuntu' ) && property["ssl"] do
+    it { should be_file }
   end
 
   if property["fastcgi"] == 'none' then
@@ -107,7 +134,7 @@ if property["server"] == 'apache' then
 
 elsif property["server"] == 'nginx' then
 
-  describe yumrepo('nginx') do
+  describe yumrepo('nginx'), :if => os[:family] == 'redhat' && os[:release] <= '7' do
     it { should exist }
   end
 
@@ -127,6 +154,12 @@ elsif property["server"] == 'nginx' then
   describe file('/etc/nginx/nginx.conf') do
     it { should be_file }
   end
+
+  # if property["ssl"] then
+  #   describe command("nginx -V") do
+  #     its(:stdout) { should match /http_v2_module/ }
+  #   end
+  # end
 
   if property["multisite"] then
     describe file('/etc/nginx/conf.d/wordpress-multisite.conf') do
@@ -157,7 +190,7 @@ elsif property["server"] == 'h2o' then
     its(:stdout) { should match /vagrant/ }
   end
 
-  if property["fastcgi"] == 'none' then
+  if property["fastcgi"] == 'php-fpm' then
     describe command("ps -C php-cgi -o user") do
       its(:stdout) { should match /vagrant/ }
     end

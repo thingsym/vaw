@@ -39,6 +39,11 @@ end
   end
 end
 
+describe command('php -v | grep PHP') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match /#{property["php_version"]}/ }
+end
+
 describe command('phpenv global') do
   let(:sudo_options) { '-u vagrant -i' }
   its(:stdout) { should match /#{property["php_version"]}/ }
@@ -50,6 +55,10 @@ describe file('/home/vagrant/.bashrc_vaw') do
 end
 
 describe file('/home/vagrant/.phpenv/plugins/php-build') do
+  it { should be_directory }
+end
+
+describe file('/home/vagrant/.phpenv/plugins/phpenv-composer') do
   it { should be_directory }
 end
 
@@ -70,19 +79,47 @@ if property["server"] == 'apache' then
     it { should be_directory }
   end
 
+  describe file("/var/lib/apache2/module/enabled_by_admin"), :if => os[:family] == 'debian' do
+    it { should be_directory }
+  end
+
   if property["fastcgi"] == 'none' then
-    describe file('/etc/httpd/conf.d/php.conf') do
+    describe file('/etc/httpd/conf.d/php.conf'), :if => os[:family] == 'redhat' do
       it { should be_file }
     end
 
     if property["php_version"] =~ /^7/
-      describe file('/etc/httpd/modules/libphp7.so') do
+      describe file('/etc/httpd/modules/libphp7.so'), :if => os[:family] == 'redhat' do
+        it { should be_file }
+      end
+
+      describe file('/etc/apache2/mods-available/php7.load'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+        it { should be_file }
+      end
+
+      describe file('/etc/apache2/mods-available/php7.conf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+        it { should be_file }
+      end
+
+      describe file('/usr/lib/apache2/modules/libphp7.so'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
         it { should be_file }
       end
     end
 
     if property["php_version"] =~ /^5/
-      describe file('/etc/httpd/modules/libphp5.so') do
+      describe file('/etc/httpd/modules/libphp5.so'), :if => os[:family] == 'redhat' do
+        it { should be_file }
+      end
+
+      describe file('/etc/apache2/mods-available/php5.load'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+        it { should be_file }
+      end
+
+      describe file('/etc/apache2/mods-available/php5.conf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+        it { should be_file }
+      end
+
+      describe file('/usr/lib/apache2/modules/libphp5.so'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
         it { should be_file }
       end
     end
@@ -97,11 +134,6 @@ end
 describe file('/var/log/php.log') do
   it { should be_file }
   it { should be_mode 666 }
-end
-
-describe command('php -v | grep PHP') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match /#{property["php_version"]}/ }
 end
 
 describe 'PHP config parameters' do
@@ -163,58 +195,126 @@ describe 'PHP config parameters' do
 
 end
 
-describe package('patch') do
+describe package('patch'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libxml2-devel') do
+describe package('libxml2-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('bison') do
+describe package('bison'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('bison-devel') do
+describe package('bison-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('re2c') do
+describe package('re2c'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('openssl-devel') do
+describe package('openssl-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libcurl') do
+describe package('libcurl'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libcurl-devel') do
+describe package('libcurl-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-# describe package('libjpeg-devel') do
+# describe package('libjpeg-devel'), :if => os[:family] == 'redhat' do
 #   it { should be_installed }
 # end
 
-describe package('libpng-devel') do
+describe package('libpng-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libmcrypt-devel') do
+describe package('libmcrypt-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('readline-devel') do
+describe package('readline-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libtidy-devel') do
+describe package('libtidy-devel'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('libxslt-devel') do
+describe package('libxslt-devel'), :if => os[:family] == 'redhat' do
+  it { should be_installed }
+end
+
+describe package('libxml2-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('bison'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libbison-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libssl-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libcurl4-openssl-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libjpeg-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+# describe package('libpng-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+#   it { should be_installed }
+# end
+
+describe package('libmcrypt-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libreadline-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libtidy-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+# describe package('libxslt-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+#    it { should be_installed }
+#  end
+
+describe package('re2c'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libmagic-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libtool'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libtool-doc'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('autoconf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('libtool-bin'), :if => os[:family] == 'ubuntu' && os[:release] >= '16.04' do
   it { should be_installed }
 end

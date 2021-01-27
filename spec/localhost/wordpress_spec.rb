@@ -30,7 +30,7 @@ describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-
 end
 
 describe file("/var/www/html#{property["wp_site_path"]}#{property["wp_dir"]}/wp-config.php"), :if => os[:release] == '7' do
-  it { should contain("define\( 'DB_HOST', '#{property["db_host"]}:/var/lib/mysql/mysql.sock' \);") }
+  it { should contain("define\( 'DB_HOST', '#{property["db_host"]}' \);") }
 end
 
 if property["WP_DEBUG"] then

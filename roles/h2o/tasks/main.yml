@@ -21,7 +21,7 @@
 
   - name: tatsushid repository installed (Debian)
     apt_repository:
-      repo: "deb http://dl.bintray.com/tatsushid/h2o-deb {{ ansible_distribution_release }}-backports main"
+      repo: "deb https://dl.bintray.com/tatsushid/h2o-deb {{ ansible_distribution_release }}-backports main"
       filename: 'bintray-tatsushid-h2o'
       state: present
 

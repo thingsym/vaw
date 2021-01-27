@@ -29,6 +29,7 @@ http {
     access_log  /var/log/nginx/access.log main;
 
     sendfile        off;
+    #tcp_nopush     on;
 
     keepalive_timeout  10;
 

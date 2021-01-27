@@ -37,7 +37,7 @@
         disablerepo: AppStream
         state: latest
 
-    - name: python-PyMySQL installed (CentOS/RHEL 8)
+    - name: python3-PyMySQL installed (CentOS/RHEL 8)
       dnf:
         name:
           - python2-PyMySQL
@@ -48,23 +48,11 @@
   when: ansible_distribution == 'CentOS'
 
 - block:
-  - name: MariaDB apt_key installed (Ubuntu/focal)
+  - name: MariaDB apt_key installed (Ubuntu/xenial or later)
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: "0xF1656F24C74CD1D8"
-    when: ansible_distribution_major_version is version('20', '==')
-
-  - name: MariaDB apt_key installed (Ubuntu/bionic)
-    apt_key:
-      keyserver: keyserver.ubuntu.com
-      id: "0xF1656F24C74CD1D8"
-    when: ansible_distribution_major_version is version('18', '==')
-
-  - name: MariaDB apt_key installed (Ubuntu/xenial)
-    apt_key:
-      keyserver: keyserver.ubuntu.com
-      id: "0xF1656F24C74CD1D8"
-    when: ansible_distribution_major_version is version('16', '==')
+    when: ansible_distribution_major_version is version('16', '>=')
 
   - name: MariaDB apt_key installed (Ubuntu/trusty)
     apt_key:
@@ -85,22 +73,15 @@
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
-        - python-mysqldb
       state: latest
   when: ansible_distribution == 'Ubuntu'
 
 - block:
-  - name: MariaDB apt_key installed (Debian/buster)
+  - name: MariaDB apt_key installed (Debian/stretch or later)
     apt_key:
       keyserver: hkp://keyserver.ubuntu.com:80
       id: "0xF1656F24C74CD1D8"
-    when: ansible_distribution_major_version is version('10', '==')
-
-  - name: MariaDB apt_key installed (Debian/stretch)
-    apt_key:
-      keyserver: hkp://keyserver.ubuntu.com:80
-      id: "0xF1656F24C74CD1D8"
-    when: ansible_distribution_major_version is version('9', '==')
+    when: ansible_distribution_major_version is version('9', '>=')
 
   - name: MariaDB apt_key installed (Debian/jessie)
     apt_key:
@@ -121,6 +102,27 @@
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
-        - python-mysqldb
       state: latest
+  when: ansible_distribution == 'Debian'
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '<=')
+
+- name: python3-mysqldb installed
+  package:
+    name: python3-mysqldb
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('20', '>=')
+
+- name: python-mysqldb installed
+  package:
+    name: python-mysqldb
+    state: latest
   when: ansible_distribution == 'Debian'

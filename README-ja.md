@@ -10,11 +10,11 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ## Features
 
-### 1. サーバ、データベース環境の構築
+### 1. OS、サーバ、データベース環境の構築
 
-サーバは、**Apache**、**nginx**、**H2O** から、データベースは、**MariaDB**、**MySQL**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
+OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**、**nginx**、**H2O** から、データベースは、**MariaDB**、**MySQL**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
 
-すべてのウェブサーバで、FastCGI 構成が可能で **PHP-FPM** (FastCGI Process Manager) と **HHVM** (HipHop Virtual Machine) から、PHP実行環境を構築します。
+すべてのウェブサーバで、FastCGI 構成が可能で **PHP-FPM** (FastCGI Process Manager) から、PHP実行環境を構築します。
 
 サーバ、データベースは基本、素の設定でインストールされますが、設定ファイルの編集でチューニングも可能。
 
@@ -57,9 +57,9 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ## Requirements
 
-* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 5.2
-* [Vagrant](https://www.vagrantup.com) >= 2.1
-* [Ansible](https://www.ansible.com) >= 2.4
+* [Oracle VM VirtualBox](https://www.virtualbox.org) >= 6.1
+* [Vagrant](https://www.vagrantup.com) >= 2.2
+* [Ansible](https://www.ansible.com) >= 2.9
 
 ### Vagrant plugin (optional)
 
@@ -158,7 +158,12 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	public_ip             = ''
 
-	forwarded_port        = [ 3000, 3001 ]
+	forwarded_port        = [
+		3000,
+		3001,
+		1025,
+		8025
+	]
 
 	vbguest_auto_update   = true
 	synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
@@ -175,7 +180,11 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vm_document_root` (required) ドキュメントルート (default: `/var/www/html`)
 	* `wordpress` ディレクトリを自動的に作成して同期します
 * `public_ip` bridge 接続する IP アドレス (default: `''`)
-* `forwarded_port` list of ports that you want to transfer (default: `[ 3000, 3001 ]`)
+* `forwarded_port` list of ports that you want to transfer (default: `[ 3000, 3001, 1025, 8025 ]`)
+	* 3000: Browsersync auto-detected port
+	* 3001: Browsersync ui port
+	* 1025: MailHog SMTP default port
+	* 8025: MailHog HTTP default port
 * `vbguest_auto_update` whether to update VirtualBox Guest Additions (default: `true` / value: `true` | `false`)
 トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` 共有フォルダの種類 (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
@@ -278,7 +287,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	ssl                : true   # true|false
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.3.17
+	php_version        : 7.4.14
 	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
@@ -436,7 +445,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress管理画面 SSL 化の有効化 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.3.17`)
+* `php_version` PHPバージョン (default: `7.4.14`)
 * `http_protocol` HTTP プロトコル (default: `https` / value: `http` | `https`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
@@ -497,11 +506,25 @@ VAW は、以下の最小単位のディレクトリ構成でも環境が立ち�
 
 VAW は、Vagrant のプロバイダ VirtualBox をサポートしています。
 
-OS とアーキテクチャは、CentOS x86_64 系 Vagrant Box に対応しています。
+OS とアーキテクチャは、CentOS、Debian、Ubuntu の x86_64 系 Vagrant Box に対応しています。
 
-* CentOS 8
+### CentOS
+
+* CentOS 8 (非推奨 サポート終了日 2021-12-31)
 * CentOS 7
 * CentOS 6 (非推奨 サポート終了日 2020-11-30)
+
+### Debian
+
+* Debian 10.0
+* Debian 9.0
+* Debian 8.0 (非推奨 サポート終了日 2020-06-30)
+
+### Ubuntu
+
+* Ubuntu 18.04 (調整中)
+* Ubuntu 16.04
+* Ubuntu 14.04 (非推奨 サポート終了日 2019-04-25)
 
 Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
 
@@ -758,4 +781,4 @@ The VAW is distributed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
 [thingsym](https://github.com/thingsym)
 
-Copyright (c) 2014-2018 thingsym
+Copyright (c) 2014-2021 thingsym

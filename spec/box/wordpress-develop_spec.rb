@@ -73,20 +73,6 @@ if property["develop_tools"] then
     its(:exit_status) { should eq 0 }
   end
 
-  describe file('/var/www/html/opcache') do
-    it { should be_directory }
-  end
-
-  describe file('/var/www/html/opcache/opcache.php') do
-    it { should be_file }
-  end
-  describe file('/var/www/html/opcache/op.php') do
-    it { should be_file }
-  end
-  describe file('/var/www/html/opcache/ocp.php') do
-    it { should be_file }
-  end
-
   describe file('/usr/local/bin/wrk') do
     it { should be_file }
     it { should be_executable }
