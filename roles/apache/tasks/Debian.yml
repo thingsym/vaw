@@ -127,62 +127,108 @@
   when: ssl == true
 
 - block:
-  - name: enables Apache2 module default-ssl
-    command: sudo a2ensite default-ssl
-    notify: apache2 restarted
+  - block:
+    - name: disables Apache2 module mpm_event
+      command: sudo a2dismod mpm_event
+      notify: apache2 restarted
 
-  - name: enables Apache2 module ssl
-    apache2_module:
-      name: ssl
-      state: present
-    notify: apache2 restarted
+    - name: enables Apache2 module mpm_prefork
+      command: sudo a2enmod mpm_prefork
+      notify: apache2 restarted
+    when: apache_mpm == 'prefork'
 
-  - name: enables Apache2 module http2
-    apache2_module:
-      name: http2
-      state: present
-      ignore_configcheck: yes
-    notify: apache2 restarted
-  when: ssl == true
+  - block:
+    - name: disables Apache2 module mpm_prefork
+      command: sudo a2dismod mpm_prefork
+      notify: apache2 restarted
 
-- name: enables Apache2 module proxy_fcgi
-  apache2_module:
-    name: proxy_fcgi
-    state: present
-    ignore_configcheck: yes
-  notify: apache2 restarted
+    - name: enables Apache2 module mpm_event
+      command: sudo a2enmod mpm_event
+      notify: apache2 restarted
+    when: apache_mpm == 'event'
+
+  - block:
+    - name: enables Apache2 module rewrite
+      command: sudo a2enmod rewrite
+      notify: apache2 restarted
+
+    - name: enables Apache2 module default-ssl
+      command: sudo a2ensite default-ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module ssl
+      command: sudo a2enmod ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module http2
+      command: sudo a2enmod http2
+      notify: apache2 restarted
+    when: ssl == true
+
+  - name: enables Apache2 module proxy_fcgi
+    command: sudo a2enmod proxy_fcgi
+    notify: apache2 restarted
+  when: ansible_distribution == 'Debian'
 
 - block:
-  - name: disables Apache2 module mpm_event
-    apache2_module:
-      name: mpm_event
-      state: absent
-      ignore_configcheck: yes
-    notify: apache2 restarted
+  - block:
+    - name: disables Apache2 module mpm_event
+      apache2_module:
+        name: mpm_event
+        state: absent
+      notify: apache2 restarted
 
-  - name: enables Apache2 module mpm_prefork
+    - name: enables Apache2 module mpm_prefork
+      apache2_module:
+        name: mpm_prefork
+        state: present
+      notify: apache2 restarted
+    when: apache_mpm == 'prefork'
+
+  - block:
+    - name: disables Apache2 module mpm_prefork
+      apache2_module:
+        name: mpm_prefork
+        state: absent
+      notify: apache2 restarted
+
+    - name: enables Apache2 module mpm_event
+      apache2_module:
+        name: mpm_event
+        state: present
+      notify: apache2 restarted
+    when: apache_mpm == 'event'
+
+  - block:
+    - name: enables Apache2 module rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+      notify: apache2 restarted
+
+    - name: enables Apache2 module default-ssl
+      command: sudo a2ensite default-ssl
+      notify: apache2 restarted
+
+    - name: enables Apache2 module ssl
+      apache2_module:
+        name: ssl
+        state: present
+      notify: apache2 restarted
+
+    - name: enables Apache2 module http2
+      apache2_module:
+        name: http2
+        state: present
+      notify: apache2 restarted
+    when: ssl == true
+
+  - name: enables Apache2 module proxy_fcgi
     apache2_module:
-      name: mpm_prefork
+      name: proxy_fcgi
       state: present
-      ignore_configcheck: yes
     notify: apache2 restarted
-  when: apache_mpm == 'prefork'
-
-- block:
-  - name: disables Apache2 module mpm_prefork
-    apache2_module:
-      name: mpm_prefork
-      state: absent
-      ignore_configcheck: yes
-    notify: apache2 restarted
-
-  - name: enables Apache2 module mpm_event
-    apache2_module:
-      name: mpm_event
-      state: present
-      ignore_configcheck: yes
-    notify: apache2 restarted
-  when: apache_mpm == 'event'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: apache2 enabled
   service:

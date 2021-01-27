@@ -92,6 +92,15 @@
     state: touch
     mode: 0666
 
+- name: mkdir enabled_by_admin for Debian
+  file:
+    path: /var/lib/apache2/module/enabled_by_admin
+    state: directory
+    owner: root
+  when:
+    - ansible_distribution == 'Debian'
+    - server == "apache"
+
 - name: php installed via phpenv.sh (mod_php)
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.3.17) }} -m mod_php
   when:

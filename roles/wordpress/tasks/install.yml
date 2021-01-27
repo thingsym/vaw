@@ -5,6 +5,16 @@
   become: yes
   become_user: vagrant
 
+- name: remove MySQL user for WordPress
+  mysql_user:
+    name: "{{ db_user }}"
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ db_root_password }}"
+    login_unix_socket: /tmp/mysql.sock
+  when: ansible_distribution == 'Debian'
+
 - name: stat WP_PATH
   stat:
     path: "{{ WP_PATH }}"

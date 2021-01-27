@@ -3,7 +3,6 @@
   package:
     name:
       - libxml2-devel
-      - bison
       - bison-devel
       - openssl-devel
       - libjpeg-devel
@@ -13,9 +12,7 @@
       - libtidy-devel
       - libxslt-devel
       - re2c
-      - sqlite
       - sqlite-devel
-      - oniguruma
       - oniguruma-devel
     state: latest
   when: ansible_os_family == 'RedHat'
@@ -30,14 +27,12 @@
     - name: remove old libzip for php7.4
       yum:
         name:
-          - libzip
           - libzip-devel
         state: removed
 
     - name: install libzip via remi for php7.4
       yum:
         name:
-          - libzip-last
           - libzip-last-devel
         enablerepo: remi
         state: latest
@@ -47,7 +42,6 @@
   - name: install latest libzip
     yum:
       name:
-        - libzip
         - libzip-devel
       state: latest
     when:
@@ -61,7 +55,6 @@
   package:
     name:
       - libxml2-dev
-      - bison
       - libbison-dev
       - libssl-dev
       - libcurl4-openssl-dev
@@ -76,16 +69,11 @@
       - libtool
       - libtool-doc
       - autoconf
-      - libzip5
       - libzip-dev
-      - libsqlite3-0
       - libsqlite3-dev
-      - libkrb5-3
       - libkrb5-dev
       - libgssapi-krb5-2
-      - libonig5
       - libonig-dev
-
     state: latest
   when: ansible_os_family == 'Debian'
 
