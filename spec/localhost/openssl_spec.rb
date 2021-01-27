@@ -8,7 +8,7 @@ if property["ssl"] then
   end
 
   describe command('openssl version'), :if => os[:family] == 'redhat' do
-    its(:stdout) { should match /#{Regexp.escape('1.1.1k')}/ }
+    its(:stdout) { should match /#{Regexp.escape('1.0.2k')}/ }
     its(:exit_status) { should eq 0 }
   end
 
