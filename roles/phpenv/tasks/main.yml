@@ -153,8 +153,3 @@
     dest: /usr/bin/php-cgi
     state: link
     force: yes
-
-- name: packagist.jp repository added
-  command: "{{ phpenv_dir }}/shims/composer config -g repos.packagist composer https://packagist.jp"
-  become: yes
-  become_user: vagrant
