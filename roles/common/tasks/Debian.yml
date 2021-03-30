@@ -1,4 +1,9 @@
 ---
+- name: all packages updated
+  apt:
+    name: '*'
+    state: latest
+
 - name: sysv-rc-conf installed
   package:
     name: sysv-rc-conf
