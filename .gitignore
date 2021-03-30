@@ -4,4 +4,6 @@
 *.retry
 *.cache
 /wordpress
+/mkcert
+
 ssh_config.cache
