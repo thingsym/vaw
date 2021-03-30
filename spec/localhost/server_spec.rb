@@ -51,7 +51,7 @@ if property["server"] == 'apache' then
   end
 
   describe command("httpd -V | grep 'Server MPM'"), :if => os[:family] == 'redhat' do
-    its(:stdout) { should match(/Prefork/) }
+    its(:stdout) { should match(/prefork/) }
   end
 
   describe command("apachectl -M | grep 'mpm_prefork_module'"), :if => property["apache_mpm"] == 'prefork' do
