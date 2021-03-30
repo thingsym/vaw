@@ -6,4 +6,5 @@
 - include_tasks: swap.yml
 - include_tasks: kernel.yml
 - include_tasks: ssh-config.yml
+- include_tasks: purge.yml
 - include_tasks: reset.yml
