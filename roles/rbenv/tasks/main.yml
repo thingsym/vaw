@@ -52,7 +52,7 @@
     dest: "{{ rbenv_dir }}/default-gems"
   when: is_rbenv_default_gems.stat.exists
 
-- include: build-env.yml
+- include_tasks: build-env.yml
 
 - name: ruby installed via rbenv
   command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.1) }}"

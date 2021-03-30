@@ -1,9 +1,9 @@
 ---
 - name: include task
-  include: '{{ ansible_os_family }}.yml'
+  include_tasks: '{{ ansible_os_family }}.yml'
 
-- include: dotfiles.yml
-- include: swap.yml
-- include: kernel.yml
-- include: ssh-config.yml
-- include: reset.yml
+- include_tasks: dotfiles.yml
+- include_tasks: swap.yml
+- include_tasks: kernel.yml
+- include_tasks: ssh-config.yml
+- include_tasks: reset.yml

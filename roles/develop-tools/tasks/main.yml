@@ -1,8 +1,8 @@
 ---
 - name: include task
-  include: '{{ ansible_os_family }}.yml'
+  include_tasks: '{{ ansible_os_family }}.yml'
 
-- include: peco.yml
+- include_tasks: peco.yml
 
 - name: zstd installed
   package:

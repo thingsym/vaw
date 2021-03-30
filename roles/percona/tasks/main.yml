@@ -1,6 +1,6 @@
 ---
 - name: include task
-  include: "percona-{{ percona_version | default(5.7) }}.yml"
+  include_tasks: "percona-{{ percona_version | default(5.7) }}.yml"
 
 - name: stat mysql dir
   stat:

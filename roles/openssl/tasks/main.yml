@@ -1,11 +1,11 @@
 ---
 - name: include task
-  include: install-source.yml
+  include_tasks: install-source.yml
   when: openssl_install == 'source'
 
 - name: include task
-  include: install-package.yml
+  include_tasks: install-package.yml
   when: openssl_install == 'package'
 
 - name: include task
-  include: pki.yml
+  include_tasks: pki.yml
