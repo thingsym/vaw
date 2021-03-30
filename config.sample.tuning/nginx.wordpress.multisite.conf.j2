@@ -10,8 +10,8 @@ server {
 
 {% if ssl %}
     listen 443 ssl http2;
-    ssl_certificate       /etc/pki/tls/vaw/crt.pem;
-    ssl_certificate_key   /etc/pki/tls/vaw/privkey.pem;
+    ssl_certificate       /vagrant/mkcert/cert.pem;
+    ssl_certificate_key   /vagrant/mkcert/privkey.pem;
 {% endif %}
 
     # add_header X-Frame-Options "SAMEORIGIN";
