@@ -176,12 +176,14 @@
       apache2_module:
         name: mpm_event
         state: absent
+        ignore_configcheck: true
       notify: apache2 restarted
 
     - name: enables Apache2 module mpm_prefork
       apache2_module:
         name: mpm_prefork
         state: present
+        ignore_configcheck: true
       notify: apache2 restarted
     when: apache_mpm == 'prefork'
 
@@ -190,12 +192,14 @@
       apache2_module:
         name: mpm_prefork
         state: absent
+        ignore_configcheck: true
       notify: apache2 restarted
 
     - name: enables Apache2 module mpm_event
       apache2_module:
         name: mpm_event
         state: present
+        ignore_configcheck: true
       notify: apache2 restarted
     when: apache_mpm == 'event'
 
