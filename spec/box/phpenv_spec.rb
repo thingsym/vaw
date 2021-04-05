@@ -212,19 +212,7 @@ if property["php_version"] != 0 then
     it { should be_installed }
   end
 
-  describe package('re2c'), :if => os[:family] == 'redhat' do
-    it { should be_installed }
-  end
-
   describe package('openssl-devel'), :if => os[:family] == 'redhat' do
-    it { should be_installed }
-  end
-
-  describe package('libcurl'), :if => os[:family] == 'redhat' do
-    it { should be_installed }
-  end
-
-  describe package('libcurl-devel'), :if => os[:family] == 'redhat' do
     it { should be_installed }
   end
 
@@ -252,6 +240,30 @@ if property["php_version"] != 0 then
     it { should be_installed }
   end
 
+  describe package('re2c'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('sqlite-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('oniguruma-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('libcurl'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe package('libcurl-devel'), :if => os[:family] == 'redhat' do
+    it { should be_installed }
+  end
+
+  describe file('/usr/local/libzip'), :if => os[:family] == 'redhat' do
+    it { should be_directory }
+  end
+
   describe package('libxml2-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
   end
@@ -276,9 +288,9 @@ if property["php_version"] != 0 then
     it { should be_installed }
   end
 
-  # describe package('libpng-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
-  #   it { should be_installed }
-  # end
+  describe package('libpng-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
 
   describe package('libmcrypt-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
@@ -313,6 +325,26 @@ if property["php_version"] != 0 then
   end
 
   describe package('autoconf'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libzip-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libsqlite3-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libkrb5-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libgssapi-krb5-2'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+    it { should be_installed }
+  end
+
+  describe package('libonig-dev'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
     it { should be_installed }
   end
 
