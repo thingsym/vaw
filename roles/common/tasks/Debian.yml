@@ -3,6 +3,8 @@
   apt:
     name: '*'
     state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
 
 - name: sysv-rc-conf installed
   package:
