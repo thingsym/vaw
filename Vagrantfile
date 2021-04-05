@@ -37,6 +37,12 @@ ansible_version       = 'latest'    # requires :pip in ansible_install_mode
 
 provision_mode        = 'all'       # all|wordpress|box
 
+vagrant_plugins       = [
+	'vagrant-hostsupdater',
+	'vagrant-vbguest',
+	'vagrant-serverspec'
+]
+
 ## That's all, stop setting. ##
 
 provision = <<-EOT
@@ -52,6 +58,10 @@ provision = <<-EOT
     yum -y install epel-release
   fi
 EOT
+
+vagrant_plugins.each{|plugin|
+  system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+}
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
