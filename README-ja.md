@@ -61,6 +61,10 @@ OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**
 * [Vagrant](https://www.vagrantup.com) >= 2.2
 * [Ansible](https://www.ansible.com) >= 2.9
 
+#### Optional
+
+* [mkcert](https://github.com/FiloSottile/mkcert)
+
 ### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
@@ -173,6 +177,12 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 
 	provision_mode        = 'all'       # all|wordpress|box
 
+	vagrant_plugins       = [
+		'vagrant-hostsupdater',
+		'vagrant-vbguest',
+		'vagrant-serverspec'
+	]
+
 * `vm_box` (required) Vagrant Box 名 (default: `centos/7`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
@@ -191,6 +201,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `ansible_install_mode` (required) Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
+* `vagrant_plugins` install vagrant plugins
 
 ### プロビジョニング設定ファイル (YAML)
 
@@ -473,6 +484,7 @@ VAW のディレクトリ構成は以下の通りです。本ディレクトリ�
 * import (インポートデータを格納、必要ならば)
 * LICENSE (ライセンスファイル)
 * plugins (zip 形式のプラグインファイルを格納、必要ならば)
+* mkcert (SSL certificate ファイルを格納)
 * Rakefile (ServerSpec の Rakefile)
 * README-ja.md
 * README.md
@@ -751,12 +763,25 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php-build.default_configure_options.j2
 * ssh-config.j2
 
-## 黒い画面が苦手な人も Vagrant Maneger で簡単に環境が立ち上がります
+## Alternative vagrant ssh connection
 
-デザイナーやウェブサイト運営者など普段ターミナルに馴染みがない方や黒い画面が苦手だなぁと思っている方は Vagrant Maneger の導入をお薦めします。インストールすると、メニューバーにアイコンのメニューが追加されます。後はダウンロードした VAW をブックマークに登録して、メニューから `UP` を選ぶだけで環境が立ち上ります。Vagrant で操作する基本コマンドもほとんど用意されていて、コマンドを打つことから解放されたい方はどうぞ。
+```
+vagrant ssh-config > ssh_config.cache
+ssh -F ssh_config.cache default
+```
 
-[Vagrant Maneger のインストールはこちらから](http://vagrantmanager.com)
+## Generate SSL certificate files using mkcert
 
+Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
+
+```
+cd /PATH/TO/vaw-x.x.x
+mkcert -install
+mkdir mkcert
+cd mkcert
+mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
+```
+ <vm_hostname>
 ## Contribution
 
 ### Patches and Bug Fixes
