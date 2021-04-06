@@ -73,6 +73,14 @@ describe package('tree') do
   it { should be_installed }
 end
 
+describe package('ca-certificates'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe package('gnupg-agent'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
 describe command('which peco') do
   let(:sudo_options) { '-u vagrant -i' }
   its(:exit_status) { should eq 0 }

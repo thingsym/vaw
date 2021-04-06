@@ -1,0 +1,16 @@
+---
+- block:
+  - name: purged package
+    package:
+      name:
+        - apport
+        - apport-symptoms
+        - fwupd
+        - nano
+        - netplan.io
+        - popularity-contest
+        - unattended-upgrades
+        - update-manager-core
+      state: absent
+  when:
+    - ansible_os_family == 'Debian'

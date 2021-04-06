@@ -1,4 +1,11 @@
 ---
+- name: all packages updated
+  apt:
+    name: '*'
+    state: latest
+  when:
+    - ansible_distribution == 'Ubuntu'
+
 - name: sysv-rc-conf installed
   package:
     name: sysv-rc-conf

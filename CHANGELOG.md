@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.8.1] - 2021.04.05
+
+* add vagrant plugins install command
+* change tar extract to unarchive module
+* change libzip installation via source
+* add ignore_configcheck
+* add purged package task
+* add all packages update task
+* remove openssl role, replace to mkcert
+* fix ssl certificate file path for mkcert
+* change include task from include to include_tasks
+* add develop tools
+* fix mysql sock path
+* add FUNDING.yml
+* remove packagist.jp repository
+* add fail message for centos8
+
 ## [0.8.0] - 2021.01.27
 
 * edit README

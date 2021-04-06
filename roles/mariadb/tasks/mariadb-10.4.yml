@@ -26,6 +26,10 @@
         name: boost-program-options
         state: latest
 
+    - name: it not been implemented yet.
+      fail:
+        msg: Not enough packages are available.
+
     - name: MariaDB 10.4 installed (CentOS/RHEL 8)
       dnf:
         name:

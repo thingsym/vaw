@@ -1,6 +1,6 @@
 ---
 - name: include task
-  include: "mysql-{{ mysql_version | default(5.7) }}.yml"
+  include_tasks: "mysql-{{ mysql_version | default(5.7) }}.yml"
 
 - name: stat mysql dir
   stat:

@@ -19,19 +19,19 @@
   become: yes
   become_user: vagrant
 
-- include: wp-i18n.yml
+- include_tasks: wp-i18n.yml
 
-- include: daemonize.yml
+- include_tasks: daemonize.yml
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version is version('6', '==')
 
-- include: mailhog.yml
-- include: cachetool.yml
-- include: wrk.yml
-- include: mysqltuner.yml
+- include_tasks: mailhog.yml
+- include_tasks: cachetool.yml
+- include_tasks: wrk.yml
+- include_tasks: mysqltuner.yml
 
 - block:
-  - include: opcache-viewer.yml
-  - include: webgrind.yml
+  - include_tasks: opcache-viewer.yml
+  - include_tasks: webgrind.yml
   tags: sync-dir

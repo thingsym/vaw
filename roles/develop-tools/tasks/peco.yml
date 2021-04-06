@@ -4,15 +4,10 @@
     url: https://github.com/peco/peco/releases/download/v0.5.3/peco_linux_amd64.tar.gz
     dest: /tmp/peco_linux_amd64.tar.gz
 
-- name: delete /tmp/peco_linux_amd64
-  file:
-    path: /tmp/peco_linux_amd64
-    state: absent
-
-- name: tar peco_linux_amd64
-  command: tar zxvf /tmp/peco_linux_amd64.tar.gz
-  args:
-    chdir: /tmp
+- name: peco_linux_amd64 unarchived
+  unarchive:
+    src: /tmp/peco_linux_amd64.tar.gz
+    dest: /tmp
 
 - name: copy peco to /usr/local/bin
   copy:

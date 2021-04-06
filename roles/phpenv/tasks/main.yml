@@ -43,7 +43,7 @@
   become_user: vagrant
   when: server == 'apache'
 
-- include: build-env.yml
+- include_tasks: build-env.yml
 
 - name: stat custom php-build.default_configure_options.j2
   stat:
@@ -137,7 +137,7 @@
   command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.14) }}
   when: not ( ( server == "apache" and fastcgi == "none" ) or fastcgi == "php-fpm" )
 
-- include: php-fpm.yml
+- include_tasks: php-fpm.yml
   when: fastcgi == "php-fpm"
 
 - name: create symbolic link
@@ -153,8 +153,3 @@
     dest: /usr/bin/php-cgi
     state: link
     force: yes
-
-- name: packagist.jp repository added
-  command: "{{ phpenv_dir }}/shims/composer config -g repos.packagist composer https://packagist.jp"
-  become: yes
-  become_user: vagrant

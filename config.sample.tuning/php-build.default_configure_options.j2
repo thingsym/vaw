@@ -33,9 +33,6 @@
 --enable-shmop
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
-{% if ansible_os_family == 'RedHat' %}
---with-mysql-sock=/tmp/mysql.sock
-{% elif ansible_os_family == 'Debian' %}
 --with-mysql-sock=/tmp/mysql.sock
 {% endif %}
 --with-pdo-sqlite

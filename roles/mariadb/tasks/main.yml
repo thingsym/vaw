@@ -1,6 +1,6 @@
 ---
 - name: include task
-  include: "mariadb-{{ mariadb_version | default(10.4) }}.yml"
+  include_tasks: "mariadb-{{ mariadb_version | default(10.4) }}.yml"
 
 - name: stat custom my.cnf.j2
   stat:

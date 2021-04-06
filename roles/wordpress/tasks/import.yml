@@ -1,9 +1,9 @@
 ---
 
-- include: import-xml.yml
-- include: import-db.yml
-- include: import-backwpup.yml
-- include: import-unit-test.yml
+- include_tasks: import-xml.yml
+- include_tasks: import-db.yml
+- include_tasks: import-backwpup.yml
+- include_tasks: import-unit-test.yml
 
 - name: stat wp-content
   stat:

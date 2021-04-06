@@ -18,6 +18,10 @@
         name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
         disable_gpg_check: yes
 
+    - name: it not been implemented yet.
+      fail:
+        msg: Not enough packages are available.
+
     - name: yum module disable
       command: yum -y module disable mysql mariadb
     when: ansible_distribution_major_version is version('8', '==')
