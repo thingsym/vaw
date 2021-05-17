@@ -81,20 +81,21 @@ OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**
 
 [www.vagrantup.com](https://www.vagrantup.com) から環境にあった Vagrant をダウンロードしてインストールします。
 
-### 3. Vagrant plugin をインストール
-
-必要に応じてターミナル上で Vagrant plugin をインストールします。
-
-	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-vbguest
-	vagrant plugin install vagrant-serverspec
-
-
-### 4. VAW の Ansible playbooks をダウンロード
+### 3. VAW の Ansible playbooks をダウンロード
 
 以下のリンクから Vagrantfile と Ansible playbooks 一式をダウンロードします。
 
 [Zip 形式で VAW をダウンロード](https://github.com/thingsym/vaw/archive/master.zip)
+
+### 4. mkcert を使ってSSL証明書を生成します
+
+ mkcert のインストールは、以下のページを参考ください。 [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
+
+	cd vaw-x.x.x
+	mkcert -install
+	mkdir mkcert
+	cd mkcert
+	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
 
 ### 5. 仮想環境を立ち上げます
 
@@ -763,25 +764,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * php-build.default_configure_options.j2
 * ssh-config.j2
 
-## Alternative vagrant ssh connection
-
-```
-vagrant ssh-config > ssh_config.cache
-ssh -F ssh_config.cache default
-```
-
-## Generate SSL certificate files using mkcert
-
-Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
-
-```
-cd /PATH/TO/vaw-x.x.x
-mkcert -install
-mkdir mkcert
-cd mkcert
-mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
-```
- <vm_hostname>
 ## Contribution
 
 ### Patches and Bug Fixes

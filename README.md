@@ -12,7 +12,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ### 1. Build OS, Server and Database environment
 
-The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or  **nginx** or **H2O**, and build database from **MariaDB** or  **MySQL** or **Percona MySQL**.
+The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or **nginx** or **H2O**, and build database from **MariaDB** or **MySQL** or **Percona MySQL**.
 
 On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager).
 
@@ -84,20 +84,21 @@ Download the VirtualBox form [www.virtualbox.org](https://www.virtualbox.org) an
 
 Download the Vagrant form [www.vagrantup.com](https://www.vagrantup.com) and install.
 
-### 3. Install Vagrant plugin
-
-Install the Vagrant plugin on the terminal as necessary.
-
-	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-vbguest
-	vagrant plugin install vagrant-serverspec
-
-
-### 4. Download Ansible playbooks of the VAW
+### 3. Download Ansible playbooks of the VAW
 
 Download a Vagrantfile and Ansible playbooks from the following link.
 
-[Download Zip format file](https://github.com/thingsym/vaw/archive/master.zip)
+[Releases page](https://github.com/thingsym/vaw/releases)
+
+### 4. Generate SSL certificate files using mkcert
+
+Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
+
+	cd vaw-x.x.x
+	mkcert -install
+	mkdir mkcert
+	cd mkcert
+	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
 
 ### 5. Launch a virtual environment
 
@@ -769,25 +770,6 @@ As follows editable configuration files.
 * percona.my.cnf.j2
 * php-build.default_configure_options.j2
 * ssh-config.j2
-
-## Alternative vagrant ssh connection
-
-```
-vagrant ssh-config > ssh_config.cache
-ssh -F ssh_config.cache default
-```
-
-## Generate SSL certificate files using mkcert
-
-Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
-
-```
-cd /PATH/TO/vaw-x.x.x
-mkcert -install
-mkdir mkcert
-cd mkcert
-mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
-```
 
 ## Contribution
 
