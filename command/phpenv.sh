@@ -3,7 +3,7 @@
 set -e
 
 version() {
-  echo "$(basename $0) version 0.4.2"
+  echo "$(basename $0) version 0.4.3"
 }
 
 usage() {
@@ -360,16 +360,19 @@ function install() {
     sed -i -e "s/^display_errors = Off/display_errors = On/" $PHP_INI
     sed -i -e "s/^display_startup_errors = Off/display_startup_errors = On/" $PHP_INI
     sed -i -e "s/^track_errors = Off/track_errors = On/" $PHP_INI
-    sed -i -e "s/^post_max_size = 8M/post_max_size = 32M/" $PHP_INI
+    sed -i -e "s/^post_max_size = 8M/post_max_size = 64M/" $PHP_INI
     sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
     sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
     sed -i -e "s/^;mbstring.internal_encoding =/mbstring.internal_encoding = UTF-8/" $PHP_INI
     sed -i -e "s/^;date.timezone =/date.timezone = UTC/" $PHP_INI
     sed -i -e 's/^;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/' $PHP_INI
+    sed -i -e 's/^zend.exception_ignore_args = On/zend.exception_ignore_args = Off/' $PHP_INI
+    sed -i -e 's/^mysqlnd.collect_memory_statistics = Off/mysqlnd.collect_memory_statistics = On/' $PHP_INI
 
     sed -i -e "s/^;opcache.memory_consumption=64/opcache.memory_consumption=128/" $PHP_INI
     sed -i -e "s/^;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=8/" $PHP_INI
     sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=10000/" $PHP_INI
+    sed -i -e "s/^;opcache.validate_timestamps=1/opcache.validate_timestamps=1/" $PHP_INI
     sed -i -e "s/^;opcache.revalidate_freq=2/opcache.revalidate_freq=60/" $PHP_INI
     sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
     sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=0/" $PHP_INI
