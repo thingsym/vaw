@@ -3,7 +3,7 @@
 set -e
 
 version() {
-  echo "$(basename $0) version 0.4.3"
+  echo "$(basename $0) version 0.4.4"
 }
 
 usage() {
@@ -356,32 +356,37 @@ function install() {
   fi
 
   if [ -f "$PHP_INI" ]; then
-    sed -i -e "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/" $PHP_INI
-    sed -i -e "s/^display_errors = Off/display_errors = On/" $PHP_INI
-    sed -i -e "s/^display_startup_errors = Off/display_startup_errors = On/" $PHP_INI
-    sed -i -e "s/^track_errors = Off/track_errors = On/" $PHP_INI
-    sed -i -e "s/^post_max_size = 8M/post_max_size = 64M/" $PHP_INI
-    sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
-    sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
-    sed -i -e "s/^;mbstring.internal_encoding =/mbstring.internal_encoding = UTF-8/" $PHP_INI
-    sed -i -e "s/^;date.timezone =/date.timezone = UTC/" $PHP_INI
-    sed -i -e 's/^;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/' $PHP_INI
-    sed -i -e 's/^zend.exception_ignore_args = On/zend.exception_ignore_args = Off/' $PHP_INI
-    sed -i -e 's/^mysqlnd.collect_memory_statistics = Off/mysqlnd.collect_memory_statistics = On/' $PHP_INI
+    if [ -f /vagrant/config/php.ini ]; then
+      sudo cp /vagrant/config/php.ini $PHP_INI
+      echo "[Info]: copy /vagrant/config/php.ini to ${PHP_INI}"
+    else
+      sed -i -e "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/" $PHP_INI
+      sed -i -e "s/^display_errors = Off/display_errors = On/" $PHP_INI
+      sed -i -e "s/^display_startup_errors = Off/display_startup_errors = On/" $PHP_INI
+      sed -i -e "s/^track_errors = Off/track_errors = On/" $PHP_INI
+      sed -i -e "s/^post_max_size = 8M/post_max_size = 64M/" $PHP_INI
+      sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
+      sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
+      sed -i -e "s/^;mbstring.internal_encoding =/mbstring.internal_encoding = UTF-8/" $PHP_INI
+      sed -i -e "s/^;date.timezone =/date.timezone = UTC/" $PHP_INI
+      sed -i -e 's/^;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/' $PHP_INI
+      sed -i -e 's/^zend.exception_ignore_args = On/zend.exception_ignore_args = Off/' $PHP_INI
+      sed -i -e 's/^mysqlnd.collect_memory_statistics = Off/mysqlnd.collect_memory_statistics = On/' $PHP_INI
 
-    sed -i -e "s/^;opcache.memory_consumption=64/opcache.memory_consumption=128/" $PHP_INI
-    sed -i -e "s/^;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=8/" $PHP_INI
-    sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=10000/" $PHP_INI
-    sed -i -e "s/^;opcache.validate_timestamps=1/opcache.validate_timestamps=1/" $PHP_INI
-    sed -i -e "s/^;opcache.revalidate_freq=2/opcache.revalidate_freq=60/" $PHP_INI
-    sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
-    sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=0/" $PHP_INI
-    sed -i -e "s/^;opcache.enable=0/opcache.enable=0/" $PHP_INI
-    sed -i -e "s/^;opcache.enable_cli=1/opcache.enable_cli=0/" $PHP_INI
-    sed -i -e "s/^;opcache.enable=1/opcache.enable=0/" $PHP_INI
+      sed -i -e "s/^;opcache.memory_consumption=64/opcache.memory_consumption=128/" $PHP_INI
+      sed -i -e "s/^;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=8/" $PHP_INI
+      sed -i -e "s/^;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=10000/" $PHP_INI
+      sed -i -e "s/^;opcache.validate_timestamps=1/opcache.validate_timestamps=1/" $PHP_INI
+      sed -i -e "s/^;opcache.revalidate_freq=2/opcache.revalidate_freq=60/" $PHP_INI
+      sed -i -e "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" $PHP_INI
+      sed -i -e "s/^;opcache.enable_cli=0/opcache.enable_cli=0/" $PHP_INI
+      sed -i -e "s/^;opcache.enable=0/opcache.enable=0/" $PHP_INI
+      sed -i -e "s/^;opcache.enable_cli=1/opcache.enable_cli=0/" $PHP_INI
+      sed -i -e "s/^;opcache.enable=1/opcache.enable=0/" $PHP_INI
 
-    sed -i -e "s/^;sendmail_path =/sendmail_path = \/usr\/local\/bin\/mhsendmail/" $PHP_INI
-    echo "[Info]: edit ${PHP_INI}"
+      sed -i -e "s/^;sendmail_path =/sendmail_path = \/usr\/local\/bin\/mhsendmail/" $PHP_INI
+      echo "[Info]: edit ${PHP_INI}"
+    fi
   fi
 
   if [ ! -d /var/run/php-fpm ]; then
@@ -439,52 +444,62 @@ function install() {
   fi
 
   if [ -f "${PHP_FPM_CONF}.default" ]; then
-    sudo cp $PHP_FPM_CONF.default $PHP_FPM_CONF
-    echo "[Info]: add ${PHP_FPM_CONF}"
+    if [ -f /vagrant/config/php-fpm.conf ]; then
+      sudo cp /vagrant/config/php-fpm.conf $PHP_FPM_CONF
+      echo "[Info]: copy /vagrant/config/php-fpm.conf to ${PHP_FPM_CONF}"
+    else
+      sudo cp $PHP_FPM_CONF.default $PHP_FPM_CONF
+      echo "[Info]: add ${PHP_FPM_CONF}"
 
-    sed -i -e "s/^;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/" $PHP_FPM_CONF
-    sed -i -e "s/^;error_log = log\/php-fpm.log/error_log = \/var\/log\/php-fpm\/error.log/" $PHP_FPM_CONF
-    sed -i -e "s/^;daemonize = yes/daemonize = yes/" $PHP_FPM_CONF
-    echo "[Info]: edit ${PHP_FPM_CONF} [global]"
+      sed -i -e "s/^;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/" $PHP_FPM_CONF
+      sed -i -e "s/^;error_log = log\/php-fpm.log/error_log = \/var\/log\/php-fpm\/error.log/" $PHP_FPM_CONF
+      sed -i -e "s/^;daemonize = yes/daemonize = yes/" $PHP_FPM_CONF
+      echo "[Info]: edit ${PHP_FPM_CONF} [global]"
 
-    sed -i -e "s/^user = nobody/user = vagrant/" $PHP_FPM_CONF
-    sed -i -e "s/^group = nobody/group = vagrant/" $PHP_FPM_CONF
-    sed -i -e "s/^;listen.owner = nobody/listen.owner = vagrant/" $PHP_FPM_CONF
-    sed -i -e "s/^;listen.group = nobody/listen.group = vagrant/" $PHP_FPM_CONF
-    sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
-    sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_CONF
-    sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_CONF
+      sed -i -e "s/^user = nobody/user = vagrant/" $PHP_FPM_CONF
+      sed -i -e "s/^group = nobody/group = vagrant/" $PHP_FPM_CONF
+      sed -i -e "s/^;listen.owner = nobody/listen.owner = vagrant/" $PHP_FPM_CONF
+      sed -i -e "s/^;listen.group = nobody/listen.group = vagrant/" $PHP_FPM_CONF
+      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_CONF
+      sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_CONF
+      sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_CONF
 
-    sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_CONF
-    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_CONF
-    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_CONF
-    echo "[Info]: edit ${PHP_FPM_CONF} [www]"
+      sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_CONF
+      sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_CONF
+      sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_CONF
+      sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_CONF
+      sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_CONF
+      echo "[Info]: edit ${PHP_FPM_CONF} [www]"
+    fi
   fi
 
   if [ -f "${PHP_FPM_WWW_CONF}.default" ]; then
-    sudo cp ${PHP_FPM_WWW_CONF}.default $PHP_FPM_WWW_CONF
-    echo "[Info]: add ${PHP_FPM_WWW_CONF}"
+    if [ -f /vagrant/config/php-fpm.www.conf ]; then
+      sudo cp /vagrant/config/php-fpm.www.conf $PHP_FPM_WWW_CONF
+      echo "[Info]: copy /vagrant/config/php-fpm.www.conf to ${PHP_FPM_WWW_CONF}"
+    else
+      sudo cp ${PHP_FPM_WWW_CONF}.default $PHP_FPM_WWW_CONF
+      echo "[Info]: add ${PHP_FPM_WWW_CONF}"
 
-    sed -i -e "s/^user = nobody/user = vagrant/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^group = nobody/group = vagrant/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;listen.owner = nobody/listen.owner = vagrant/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;listen.group = nobody/listen.group = vagrant/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^user = nobody/user = vagrant/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^group = nobody/group = vagrant/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;listen.owner = nobody/listen.owner = vagrant/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;listen.group = nobody/listen.group = vagrant/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm\/php-fcgi.pid/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;listen.mode = 0660/listen.mode = 0660/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;listen.allowed_clients = 127.0.0.1/listen.allowed_clients = 127.0.0.1/" $PHP_FPM_WWW_CONF
 
-    sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^pm.max_children = 5/pm.max_children = 25/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^pm.start_servers = 2/pm.start_servers = 5/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^pm.min_spare_servers = 1/pm.min_spare_servers = 5/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^pm.max_spare_servers = 3/pm.max_spare_servers = 10/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;pm.max_requests = 500/pm.max_requests = 1000/" $PHP_FPM_WWW_CONF
 
-    sed -i -e "s/^;slowlog = log\/\$pool.log.slow/slowlog = \/var\/log\/php-fpm\/log.slow/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;request_slowlog_timeout = 0/request_slowlog_timeout = 10s/" $PHP_FPM_WWW_CONF
-    sed -i -e "s/^;catch_workers_output = yes/catch_workers_output = yes/" $PHP_FPM_WWW_CONF
-    echo "[Info]: edit ${PHP_FPM_WWW_CONF}"
+      sed -i -e "s/^;slowlog = log\/\$pool.log.slow/slowlog = \/var\/log\/php-fpm\/log.slow/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;request_slowlog_timeout = 0/request_slowlog_timeout = 10s/" $PHP_FPM_WWW_CONF
+      sed -i -e "s/^;catch_workers_output = yes/catch_workers_output = yes/" $PHP_FPM_WWW_CONF
+      echo "[Info]: edit ${PHP_FPM_WWW_CONF}"
+    fi
   fi
 
   if [ "$PHP_FPM_ACTIVE" -eq 0 ]; then
