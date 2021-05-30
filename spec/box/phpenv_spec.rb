@@ -260,7 +260,7 @@ if property["php_version"] != 0 then
     it { should be_installed }
   end
 
-  describe file('/usr/local/libzip'), :if => os[:family] == 'redhat' do
+  describe file('/usr/local/libzip'), :if => os[:family] == 'redhat' && os[:release] == '7.4' do
     it { should be_directory }
   end
 

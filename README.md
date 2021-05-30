@@ -12,7 +12,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ### 1. Build OS, Server and Database environment
 
-The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or  **nginx** or **H2O**, and build database from **MariaDB** or  **MySQL** or **Percona MySQL**.
+The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or **nginx** or **H2O**, and build database from **MariaDB** or **MySQL** or **Percona MySQL**.
 
 On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager).
 
@@ -63,6 +63,10 @@ You can install the develop tools or the deploy tools by usage. See Specificatio
 * [Vagrant](https://www.vagrantup.com) >= 2.2
 * [Ansible](https://www.ansible.com) >= 2.9
 
+#### Optional
+
+* [mkcert](https://github.com/FiloSottile/mkcert)
+
 ### Vagrant plugin (optional)
 
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater)
@@ -80,20 +84,21 @@ Download the VirtualBox form [www.virtualbox.org](https://www.virtualbox.org) an
 
 Download the Vagrant form [www.vagrantup.com](https://www.vagrantup.com) and install.
 
-### 3. Install Vagrant plugin
-
-Install the Vagrant plugin on the terminal as necessary.
-
-	vagrant plugin install vagrant-hostsupdater
-	vagrant plugin install vagrant-vbguest
-	vagrant plugin install vagrant-serverspec
-
-
-### 4. Download Ansible playbooks of the VAW
+### 3. Download Ansible playbooks of the VAW
 
 Download a Vagrantfile and Ansible playbooks from the following link.
 
-[Download Zip format file](https://github.com/thingsym/vaw/archive/master.zip)
+[Releases page](https://github.com/thingsym/vaw/releases)
+
+### 4. Generate SSL certificate files using mkcert
+
+Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
+
+	cd vaw-x.x.x
+	mkcert -install
+	mkdir mkcert
+	cd mkcert
+	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
 
 ### 5. Launch a virtual environment
 
@@ -179,6 +184,12 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	provision_mode        = 'all'       # all|wordpress|box
 
+	vagrant_plugins       = [
+		'vagrant-hostsupdater',
+		'vagrant-vbguest',
+		'vagrant-serverspec'
+	]
+
 * `vm_box` (required) name of Vagrant Box (default: `centos/7`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
@@ -197,6 +208,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 * `ansible_install_mode` (required) the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
 * `provision_mode` (required) Provisioning mode (default: `all` / value: `all` | `wordpress` | `box`)
+* `vagrant_plugins` install vagrant plugins
 
 ### Provisioning configuration file (YAML)
 
@@ -480,6 +492,7 @@ You can create the same environment as the production environment, when you buil
 * import (stores import data, if necessary)
 * LICENSE (license file)
 * plugins (stores WordPress plugin zip format files, if necessary)
+* mkcert (stores SSL certificate files)
 * Rakefile (Rakefile of ServerSpec)
 * README-ja.md
 * README.md
@@ -756,6 +769,9 @@ As follows editable configuration files.
 * nginx.wordpress.multisite.conf.j2
 * percona.my.cnf.j2
 * php-build.default_configure_options.j2
+* php-fpm.conf (for phpenv.sh)
+* php-fpm.www.conf (for phpenv.sh)
+* php.ini (for phpenv.sh)
 * ssh-config.j2
 
 ## Contribution
