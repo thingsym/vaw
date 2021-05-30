@@ -762,6 +762,9 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * nginx.wordpress.multisite.conf.j2
 * percona.my.cnf.j2
 * php-build.default_configure_options.j2
+* php-fpm.conf (for phpenv.sh)
+* php-fpm.www.conf (for phpenv.sh)
+* php.ini (for phpenv.sh)
 * ssh-config.j2
 
 ## Contribution
