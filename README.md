@@ -108,6 +108,9 @@ Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/F
 If you don't have a Box at first, begins from the download of Box.
 After provisioning, you can launch a WordPress development environment.
 
+Note: Passwordless for Vagrant::Hostsupdater. See [Suppressing prompts for elevating privileges
+](https://github.com/agiledivider/vagrant-hostsupdater#suppressing-prompts-for-elevating-privileges)
+
 ### 6. Access to the website and the WordPress Admin
 
 Access to the website **http://vaw.local/**. Access to the WordPress admin **http://vaw.local/wp-admin/**.
@@ -304,10 +307,10 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	## Develop & Deploy Settings ##
 
 	ssl                : true   # true|false
+	http_protocol      : https   # http|https
 
 	# See Supported Versions http://php.net/supported-versions.php
 	php_version        : 7.4.14
-	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -462,8 +465,8 @@ Disable the setting case
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress administration over SSL enabled flag (default: `true` / value: `true` | `false`)
-* `php_version` version of PHP (default: `7.4.14`)
 * `http_protocol` HTTP protocol (default: `https` / value: `http` | `https`)
+* `php_version` version of PHP (default: `7.4.14`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
 

@@ -105,6 +105,9 @@ OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**
 初回で Box がない場合、Box のダウンロードから始まります。
 プロビジョニングが完了したら、WordPress開発環境が立ち上がります。
 
+Note: Passwordless for Vagrant::Hostsupdater. See [Suppressing prompts for elevating privileges
+](https://github.com/agiledivider/vagrant-hostsupdater#suppressing-prompts-for-elevating-privileges)
+
 ### 6. ウェブサイトと WordPress 管理画面にアクセス
 
 初期設定でのウェブサイトへのアクセスは **http://vaw.local/** から、WordPress 管理画面は **http://vaw.local/wp-admin/** にブラウザでアクセスします。
@@ -297,10 +300,10 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	## Develop & Deploy Settings ##
 
 	ssl                : true   # true|false
+	http_protocol      : https   # http|https
 
 	# See Supported Versions http://php.net/supported-versions.php
 	php_version        : 7.4.14
-	http_protocol      : https   # http|https
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -457,8 +460,8 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 #### Develop & Deploy Settings ##
 
 * `ssl` WordPress管理画面 SSL 化の有効化 (default: `true` / value: `true` | `false`)
-* `php_version` PHPバージョン (default: `7.4.14`)
 * `http_protocol` HTTP プロトコル (default: `https` / value: `http` | `https`)
+* `php_version` PHPバージョン (default: `7.4.14`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
 
