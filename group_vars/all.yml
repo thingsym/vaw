@@ -90,10 +90,10 @@ SAVEQUERIES        : true   # true|false
 ## Develop & Deploy Settings ##
 
 ssl                : true   # true|false
+http_protocol      : https   # http|https
 
 # See Supported Versions http://php.net/supported-versions.php
 php_version        : 7.4.14
-http_protocol      : https   # http|https
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false
