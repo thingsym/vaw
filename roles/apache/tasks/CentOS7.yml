@@ -60,15 +60,15 @@
   - name: disables httpd module mpm_event
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
-      regexp: "LoadModule mpm_event_module modules/mod_mpm_event.so"
-      replace: "#LoadModule mpm_event_module modules/mod_mpm_event.so"
+      regexp: "^LoadModule mpm_event_module modules/mod_mpm_event.so\n"
+      replace: "#LoadModule mpm_event_module modules/mod_mpm_event.so\n"
     notify: httpd restarted
 
   - name: enables httpd module mpm_prefork
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
-      regexp: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
-      replace: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+      regexp: "^#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
+      replace: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
     notify: httpd restarted
   when: apache_mpm == 'prefork'
 
@@ -76,14 +76,14 @@
   - name: disables httpd module mpm_prefork
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
-      regexp: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
-      replace: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+      regexp: "^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
+      replace: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
     notify: httpd restarted
 
   - name: enables httpd module mpm_event
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
-      regexp: "#LoadModule mpm_event_module modules/mod_mpm_event.so"
-      replace: "LoadModule mpm_event_module modules/mod_mpm_event.so"
+      regexp: "^#LoadModule mpm_event_module modules/mod_mpm_event.so\n"
+      replace: "LoadModule mpm_event_module modules/mod_mpm_event.so\n"
     notify: httpd restarted
   when: apache_mpm == 'event'

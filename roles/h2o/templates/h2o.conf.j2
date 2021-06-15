@@ -6,8 +6,8 @@ hosts:
       port: 443
       host: 0.0.0.0
       ssl:
-        certificate-file: /vagrant/mkcert/cert.pem
-        key-file: /vagrant/mkcert/privkey.pem
+        certificate-file: /etc/mkcert/cert.pem
+        key-file: /etc/mkcert/privkey.pem
     paths:
       "/":
         file.dir: {{ DOCUMENT_ROOT }}
