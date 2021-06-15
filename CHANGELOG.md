@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.8.3] - 2021.06.15
+
+* fix regexp with replace module
+* change certificate file placement from host shared folder to guest
+
 ## [0.8.2] - 2021.05.30
 
 * add custom config files for phpenv.sh
