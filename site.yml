@@ -10,6 +10,7 @@
     - { role: common,              tags: [common] }
     - { role: develop-tools,       tags: [develop-tools] }
     - { role: git,                 tags: [git] }
+    - { role: mkcert,              tags: [mkcert] }
     - { role: mysql,               tags: [mysql],                when: "database == 'mysql'" }
     - { role: mariadb,             tags: [mariadb],              when: "database == 'mariadb'" }
     - { role: percona,             tags: [percona],              when: "database == 'percona'" }

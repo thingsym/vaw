@@ -1,0 +1,35 @@
+---
+- name: mkdir mkcert
+  file:
+    path: /etc/mkcert
+    state: directory
+
+- name: stat cert.pem
+  stat:
+    path: /vagrant/mkcert/cert.pem
+  register: is_cert
+
+- name: copy cert.pem
+  copy:
+    src: /vagrant/mkcert/cert.pem
+    dest: /etc/mkcert/cert.pem
+    owner: vagrant
+    group: vagrant
+  when:
+    - ssl == true
+    - is_cert.stat.exists
+
+- name: stat privkey.pem
+  stat:
+    path: /vagrant/mkcert/privkey.pem
+  register: is_privkey
+
+- name: copy privkey.pem
+  copy:
+    src: /vagrant/mkcert/privkey.pem
+    dest: /etc/mkcert/privkey.pem
+    owner: vagrant
+    group: vagrant
+  when:
+    - ssl == true
+    - is_privkey.stat.exists
