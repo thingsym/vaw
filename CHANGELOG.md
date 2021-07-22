@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4] - 2021.07.22
+
+* bump up ruby 2.7.2
+* fix .ansible-lint
+* lint playbooks and improve roles
+* support PHP8
+
 ## [0.8.3] - 2021.06.15
 
 * fix regexp with replace module
