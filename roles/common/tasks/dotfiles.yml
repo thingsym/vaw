@@ -4,6 +4,7 @@
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
     create: yes
+    mode: 0644
   become: yes
   become_user: vagrant
 
@@ -12,6 +13,7 @@
     dest: "{{ home_dir }}/.bashrc"
     line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
     create: yes
+    mode: 0644
   become: yes
   become_user: vagrant
   when: ansible_os_family == 'RedHat'
@@ -21,6 +23,7 @@
     dest: "{{ home_dir }}/.profile"
     line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
     create: yes
+    mode: 0644
   become: yes
   become_user: vagrant
   when: ansible_os_family == 'Debian'

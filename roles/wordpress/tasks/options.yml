@@ -5,39 +5,39 @@
     become: yes
     become_user: vagrant
     when:
-      - permalink_structure.category == ''
-      - permalink_structure.tag == ''
+      - not permalink_structure.category
+      - not permalink_structure.tag
 
   - name: set permalink structure
     command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
     become: yes
     become_user: vagrant
     when:
-      - permalink_structure.category != ''
-      - permalink_structure.tag == ''
+      - permalink_structure.category
+      - not permalink_structure.tag
 
   - name: set permalink structure
     command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
     become: yes
     become_user: vagrant
     when:
-      - permalink_structure.category == ''
-      - permalink_structure.tag != ''
+      - not permalink_structure.category
+      - permalink_structure.tag
 
   - name: set permalink structure
     command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
     become: yes
     become_user: vagrant
     when:
-      - permalink_structure.category != ''
-      - permalink_structure.tag != ''
+      - permalink_structure.category
+      - permalink_structure.tag
 
   - name: rewrite flush
     command: wp --path={{ WP_PATH }} rewrite flush --hard
     become: yes
     become_user: vagrant
 
-  when: permalink_structure.structure != ''
+  when: permalink_structure.structure
 
 - name: set theme mod
   command: wp --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}

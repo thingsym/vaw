@@ -19,9 +19,9 @@
     command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
     become: yes
     become_user: vagrant
-    when: import_admin == true
+    when: import_admin
   when:
     - is_db_import.stat.exists
-    - is_db_import.stat.isdir == false
-    - import_xml_data == ''
-    - theme_unit_test == false
+    - not is_db_import.stat.isdir
+    - not import_xml_data
+    - not theme_unit_test

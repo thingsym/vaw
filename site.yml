@@ -20,8 +20,8 @@
     - { role: phpenv,              tags: [phpenv] }
     - { role: wp-cli,              tags: [wp-cli] }
     - { role: wordpress,           tags: [wordpress, sync-dir] }
-    - { role: rbenv,               tags: [rbenv],                when: "develop_tools == true or deploy_tools == true" }
-    - { role: nodenv,              tags: [nodenv],               when: "develop_tools == true" }
-    - { role: wordpress-develop,   tags: [wordpress-develop],    when: "develop_tools == true" }
-    - { role: wordpress-deploy,    tags: [wordpress-deploy],     when: "deploy_tools == true" }
+    - { role: rbenv,               tags: [rbenv],                when: "develop_tools or deploy_tools" }
+    - { role: nodenv,              tags: [nodenv],               when: "develop_tools" }
+    - { role: wordpress-develop,   tags: [wordpress-develop],    when: "develop_tools" }
+    - { role: wordpress-deploy,    tags: [wordpress-deploy],     when: "deploy_tools" }
     - { role: after-command,       tags: [after-command] }

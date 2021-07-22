@@ -3,6 +3,7 @@
   file:
     path: /etc/mkcert
     state: directory
+    mode: 0755
 
 - name: stat cert.pem
   stat:
@@ -15,8 +16,9 @@
     dest: /etc/mkcert/cert.pem
     owner: vagrant
     group: vagrant
+    mode: 0644
   when:
-    - ssl == true
+    - ssl
     - is_cert.stat.exists
 
 - name: stat privkey.pem
@@ -30,6 +32,7 @@
     dest: /etc/mkcert/privkey.pem
     owner: vagrant
     group: vagrant
+    mode: 0644
   when:
-    - ssl == true
+    - ssl
     - is_privkey.stat.exists

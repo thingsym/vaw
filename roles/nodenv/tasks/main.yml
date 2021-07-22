@@ -3,6 +3,7 @@
   git:
     repo: https://github.com/nodenv/nodenv.git
     dest: "{{ nodenv_dir }}"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -11,16 +12,19 @@
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
+    mode: 0644
 
 - name: edit nodenv init on .bashrc_vaw
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(nodenv init -)\""
+    mode: 0644
 
 - name: git checkout node-build
   git:
     repo: https://github.com/nodenv/node-build.git
     dest: "{{ nodenv_dir }}/plugins/node-build"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -29,6 +33,7 @@
   git:
     repo: https://github.com/nodenv/nodenv-default-packages.git
     dest: "{{ nodenv_dir }}/plugins/nodenv-default-packages"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -42,6 +47,7 @@
   template:
     src: /vagrant/config/default-node-packages.j2
     dest: "{{ nodenv_dir }}/default-packages"
+    mode: 0644
   when: is_default_node_packages.stat.exists
 
 - name: nodejs installed via nodenv

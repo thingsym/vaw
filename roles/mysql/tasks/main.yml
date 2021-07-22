@@ -12,6 +12,7 @@
     path: /etc/mysql
     state: directory
     owner: mysql
+    mode: 0755
   when: not is_mysql_dir.stat.exists
 
 - name: stat custom my.cnf.j2
@@ -23,12 +24,14 @@
   template:
     src: /vagrant/config/mysql.my.cnf.j2
     dest: /etc/mysql/my.cnf
+    mode: 0644
   when: is_custom_my_conf.stat.exists
 
 - name: my.cnf changed
   template:
     src: mysql.my.cnf.j2
     dest: /etc/mysql/my.cnf
+    mode: 0644
   when: not is_custom_my_conf.stat.exists
 
 - name: mkdir /var/log/mysql
@@ -37,6 +40,7 @@
     state: directory
     owner: mysql
     group: mysql
+    mode: 0755
 
 - name: mysqld started and enabled (CentOS/RHEL)
   service:
@@ -67,6 +71,7 @@
   when:
     - ansible_os_family == 'RedHat'
     - mysql_version == 8.0
+  no_log: True
 
 - block:
   - name: get temporary password from mysqld.log
@@ -83,6 +88,7 @@
   when:
     - ansible_os_family == 'RedHat'
     - mysql_version is version('5.7', '==')
+  no_log: True
 
 - name: set mysql 8.0 root password (Debian)
   mysql_user:
@@ -101,6 +107,7 @@
   when:
     - ansible_os_family == 'Debian'
     - mysql_version == 8.0
+  no_log: True
 
 - name: set mysql 5.7 root password (Debian)
   mysql_user:
@@ -119,6 +126,7 @@
   when:
     - ansible_os_family == 'Debian'
     - mysql_version is version('5.7', '<=')
+  no_log: True
 
 - block:
   - name: set mysql 8.0 root password (Debian)
@@ -132,6 +140,7 @@
       login_unix_socket: /tmp/mysql.sock
     with_items:
       - localhost
+    no_log: True
 
   - name: set mysql root password (host)
     mysql_user:
@@ -145,6 +154,7 @@
     with_items:
       - 127.0.0.1
       - ::1
+    no_log: True
   when:
     - ansible_os_family == 'Debian'
     - mysql_version is version('8.0', '>=')

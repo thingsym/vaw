@@ -6,10 +6,10 @@
     force: yes
     validate_certs: no
   when:
-    - theme_unit_test == true
+    - theme_unit_test
     - lang != 'ja'
-    - import_xml_data == ''
-    - import_db_data == ''
+    - not import_xml_data
+    - not import_db_data
 
 - name: get wordpress unit-test-ja data
   get_url:
@@ -18,10 +18,10 @@
     force: yes
     validate_certs: no
   when:
-    - theme_unit_test == true
+    - theme_unit_test
     - lang == 'ja'
-    - import_xml_data == ''
-    - import_db_data == ''
+    - not import_xml_data
+    - not import_db_data
 
 - name: stat theme-unit-test-data.xml
   stat:

@@ -99,20 +99,20 @@
   command: wp --path={{ WP_PATH }} core install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
   become: yes
   become_user: vagrant
-  when: multisite == false
+  when: not multisite
 
 - name: WordPress multisite core install
   command: wp --path={{ WP_PATH }} core multisite-install --url={{ WP_URL }} --title='{{ title }}' --admin_user={{ admin_user }} --admin_password={{ admin_password }} --admin_email={{ admin_email }}
   become: yes
   become_user: vagrant
-  when: multisite == true
+  when: multisite
 
 - name: .htaccess changed
   template:
     src: wordpress.multisite.htaccess.j2
     dest: "{{ WP_PATH }}/.htaccess"
   when:
-    - multisite == true
+    - multisite
     - server == "apache"
 
 - name: set WP_DEBUG in wp-config.php
@@ -132,7 +132,7 @@
     dest: "{{ WP_PATH }}/wp-config.php"
     regexp: '\n/\* That'
     replace: "// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
-  when: ssl == true
+  when: ssl
 
 - block:
   - name: change wp option for subdirectory install
@@ -156,7 +156,7 @@
       src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
       dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
     when:
-      - multisite == true
+      - multisite
       - server == "apache"
   when: wp_site_path != wp_dir
 
@@ -164,16 +164,16 @@
   command: wp --path={{ WP_PATH }} theme install {{ item }}
   become: yes
   become_user: vagrant
-  when: item != ''
   with_items:
     - "{{ themes | default([]) }}"
+  when: themes
 
 - name: theme install and activate
   command: wp --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
   ignore_errors: yes
   become: yes
   become_user: vagrant
-  when: activate_theme != ''
+  when: activate_theme
 
 - name: plugin activate wp-multibyte-patch
   command: wp --path={{ WP_PATH }} plugin activate wp-multibyte-patch
@@ -185,14 +185,14 @@
   command: wp --path={{ WP_PATH }} plugin install {{ item }} --activate
   become: yes
   become_user: vagrant
-  when: item != ''
   with_items:
     - "{{ activate_plugins | default([]) }}"
+  when: activate_plugins
 
 - name: plugins install
   command: wp --path={{ WP_PATH }} plugin install {{ item }}
   become: yes
   become_user: vagrant
-  when: item != ''
   with_items:
     - "{{ plugins | default([]) }}"
+  when: plugins

@@ -28,6 +28,7 @@
     lineinfile:
       dest: "{{ home_dir }}/.bashrc_vaw"
       line: export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/libzip/lib64/pkgconfig"
+      mode: 0644
 
   when:
     - ansible_distribution_major_version is version('7', '==')

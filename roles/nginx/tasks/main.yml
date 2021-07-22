@@ -37,19 +37,21 @@
   template:
     src: /vagrant/config/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    mode: 0644
   notify: nginx restarted
   when:
     - is_custom_nginx_conf.stat.exists
-    - multisite == false
+    - not multisite
 
 - name: nginx.conf changed
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    mode: 0644
   notify: nginx restarted
   when:
     - not is_custom_nginx_conf.stat.exists
-    - multisite == false
+    - not multisite
 
 - name: stat custom nginx.multisite.conf.j2
   stat:
@@ -63,7 +65,7 @@
   notify: nginx restarted
   when:
     - is_custom_nginx_multisite_conf.stat.exists
-    - multisite == true
+    - multisite
 
 - name: nginx.conf changed (multisite)
   template:
@@ -72,7 +74,7 @@
   notify: nginx restarted
   when:
     - not is_custom_nginx_multisite_conf.stat.exists
-    - multisite == true
+    - multisite
 
 - name: stat custom nginx.wordpress.conf.j2
   stat:
@@ -86,7 +88,7 @@
   notify: nginx restarted
   when:
     - is_custom_nginx_wordpress_conf.stat.exists
-    - multisite == false
+    - not multisite
 
 - name: wordpress.conf changed
   template:
@@ -95,7 +97,7 @@
   notify: nginx restarted
   when:
     - not is_custom_nginx_wordpress_conf.stat.exists
-    - multisite == false
+    - not multisite
 
 - name: stat custom nginx.wordpress.multisite.conf.j2
   stat:
@@ -106,19 +108,21 @@
   template:
     src: /vagrant/config/nginx.wordpress.multisite.conf.j2
     dest: /etc/nginx/conf.d/wordpress-multisite.conf
+    mode: 0644
   notify: nginx restarted
   when:
     - is_custom_nginx_wordpress_multisite_conf.stat.exists
-    - multisite == true
+    - multisite
 
 - name: wordpress-multisite.conf changed
   template:
     src: nginx.wordpress.multisite.conf.j2
     dest: /etc/nginx/conf.d/wordpress-multisite.conf
+    mode: 0644
   notify: nginx restarted
   when:
     - not is_custom_nginx_wordpress_multisite_conf.stat.exists
-    - multisite == true
+    - multisite
 
 - name: nginx enabled
   service:

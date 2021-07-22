@@ -12,12 +12,14 @@
     template:
       src: /vagrant/config/mariadb.my.cnf.j2
       dest: /etc/my.cnf
+      mode: 0644
     when: is_custom_my_conf.stat.exists
 
   - name: my.cnf changed
     template:
       src: mariadb.my.cnf.j2
       dest: /etc/my.cnf
+      mode: 0644
     when: not is_custom_my_conf.stat.exists
   when: ansible_os_family == 'RedHat'
 
@@ -26,12 +28,14 @@
     template:
       src: /vagrant/config/mariadb.my.cnf.j2
       dest: /etc/mysql/my.cnf
+      mode: 0644
     when: is_custom_my_conf.stat.exists
 
   - name: my.cnf changed
     template:
       src: mariadb.my.cnf.j2
       dest: /etc/mysql/my.cnf
+      mode: 0644
     when: not is_custom_my_conf.stat.exists
   when: ansible_os_family == 'Debian'
 
@@ -41,6 +45,7 @@
     state: directory
     owner: mysql
     group: mysql
+    mode: 0755
 
 - name: mariadb started and enabled
   service:
@@ -67,6 +72,7 @@
     - 127.0.0.1
     - ::1
   when: mariadb_version is version('10.4', '<')
+  no_log: True
 
 - name: set MariaDB root password (v10.4 or later)
   mysql_user:
@@ -82,6 +88,7 @@
     - 127.0.0.1
     - ::1
   when: mariadb_version is version('10.4', '>=')
+  no_log: True
 
 - name: delete blank MariaDB users
   mysql_user:
