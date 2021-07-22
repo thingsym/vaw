@@ -8,15 +8,15 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH nodenv on .bashrc_vaw
+- name: edit PATH nodenv on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
     mode: 0644
 
-- name: edit nodenv init on .bashrc_vaw
+- name: edit nodenv init on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(nodenv init -)\""
     mode: 0644
 

@@ -64,7 +64,7 @@ if property["develop_tools"] then
     it { should be_file }
   end
 
-  describe file('/home/vagrant/.bashrc_vaw') do
+  describe file('/home/vagrant/.bashrc_alias') do
     its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
   end
 

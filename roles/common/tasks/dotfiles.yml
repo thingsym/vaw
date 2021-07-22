@@ -1,7 +1,7 @@
 ---
-- name: edit PATH on .bashrc_vaw
+- name: edit PATH on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
     create: yes
     mode: 0644
@@ -11,7 +11,7 @@
 - name: edit PATH on .bashrc
   lineinfile:
     dest: "{{ home_dir }}/.bashrc"
-    line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
+    line: "if [ -f ~/.bashrc_alias ]; then\n        . ~/.bashrc_alias\nfi"
     create: yes
     mode: 0644
   become: yes
@@ -21,7 +21,7 @@
 - name: edit PATH on .profile
   lineinfile:
     dest: "{{ home_dir }}/.profile"
-    line: "if [ -f ~/.bashrc_vaw ]; then\n        . ~/.bashrc_vaw\nfi"
+    line: "if [ -f ~/.bashrc_alias ]; then\n        . ~/.bashrc_alias\nfi"
     create: yes
     mode: 0644
   become: yes
