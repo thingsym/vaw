@@ -1,14 +1,5 @@
 skip_list:
-  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern
-  - '201'  # Trailing whitespace
-  - '204'  # Lines should be no longer than 160 chars
-  - '208'  # File permissions unset or incorrect
-  - '301'  # Commands should not change things if nothing needs doing
-  - '303'  # Using command rather than module
-  - '305'  # Use shell only when shell functionality is required
-  - '401'  # Git checkouts must contain explicit version
-  - '403'  # Package installs should not use latest
-  - '502'  # All tasks should be named
-  - '601'  # Don't compare to literal True/False
-  - '602'  # Don't compare to empty string
+  - command-instead-of-module  # Using command rather than module
+  - no-changed-when  # Commands should not change things if nothing needs doing
+  - package-latest  # Package installs should not use latest
   - experimental  # all rules tagged as experimental
