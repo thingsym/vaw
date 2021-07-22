@@ -10,6 +10,13 @@
     path: /vagrant/mkcert/cert.pem
   register: is_cert
 
+- name: Not Found cert.pem
+  fail:
+    msg: "Not Found cert.pem"
+  when:
+    - ssl
+    - not is_cert.stat.exists
+
 - name: copy cert.pem
   copy:
     src: /vagrant/mkcert/cert.pem
@@ -25,6 +32,13 @@
   stat:
     path: /vagrant/mkcert/privkey.pem
   register: is_privkey
+
+- name: Not Found privkey.pem
+  fail:
+    msg: "Not Found privkey.pem"
+  when:
+    - ssl
+    - not is_privkey.stat.exists
 
 - name: copy privkey.pem
   copy:
