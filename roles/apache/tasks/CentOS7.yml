@@ -10,7 +10,7 @@
   package:
     name: httpd24u-mod_ssl
     state: latest
-  when: ssl == true
+  when: ssl
 
 - name: stat custom httpd.conf.centos7.j2
   stat:
@@ -21,6 +21,7 @@
   template:
     src: /vagrant/config/httpd.conf.centos7.j2
     dest: /etc/httpd/conf/httpd.conf
+    mode: 0644
   notify: httpd restarted
   when: is_custom_httpd_conf_centos7.stat.exists
 
@@ -28,6 +29,7 @@
   template:
     src: httpd.conf.centos7.j2
     dest: /etc/httpd/conf/httpd.conf
+    mode: 0644
   notify: httpd restarted
   when: not is_custom_httpd_conf_centos7.stat.exists
 
@@ -40,6 +42,7 @@
   template:
     src: /vagrant/config/httpd.www.conf.centos7.j2
     dest: /etc/httpd/conf.d/www.conf
+    mode: 0644
   notify: httpd restarted
   when: is_custom_www_conf_centos7.stat.exists
 
@@ -47,6 +50,7 @@
   template:
     src: httpd.www.conf.centos7.j2
     dest: /etc/httpd/conf.d/www.conf
+    mode: 0644
   notify: httpd restarted
   when: not is_custom_www_conf_centos7.stat.exists
 
@@ -54,6 +58,7 @@
   template:
     src: httpd.00-http2.conf.j2
     dest: /etc/httpd/conf.modules.d/00-http2.conf
+    mode: 0644
   notify: httpd restarted
 
 - block:

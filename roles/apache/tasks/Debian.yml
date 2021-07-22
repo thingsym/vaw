@@ -51,6 +51,7 @@
   template:
     src: /vagrant/config/apache2.conf.j2
     dest: /etc/apache2/apache2.conf
+    mode: 0644
   notify: apache2 restarted
   when: is_custom_apache2_conf.stat.exists
 
@@ -58,6 +59,7 @@
   template:
     src: apache2.conf.j2
     dest: /etc/apache2/apache2.conf
+    mode: 0644
   notify: apache2 restarted
   when: not is_custom_apache2_conf.stat.exists
 
@@ -70,6 +72,7 @@
   template:
     src: /vagrant/config/apache2.envvars.j2
     dest: /etc/apache2/envvars
+    mode: 0644
   notify: apache2 restarted
   when: is_custom_apache2_envvars.stat.exists
 
@@ -77,6 +80,7 @@
   template:
     src: apache2.envvars.j2
     dest: /etc/apache2/envvars
+    mode: 0644
   notify: apache2 restarted
   when: not is_custom_apache2_envvars.stat.exists
 
@@ -84,6 +88,7 @@
   lineinfile:
     dest: /etc/apache2/conf-available/charset.conf
     line: "AddDefaultCharset UTF-8"
+    mode: 0644
   notify: apache2 restarted
 
 - name: stat custom 000-default.conf
@@ -95,6 +100,7 @@
   template:
     src: /vagrant/config/apache2.000-default.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
+    mode: 0644
   notify: apache2 restarted
   when: is_custom_apache2_000_default.stat.exists
 
@@ -102,6 +108,7 @@
   template:
     src: apache2.000-default.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
+    mode: 0644
   notify: apache2 restarted
   when: not is_custom_apache2_000_default.stat.exists
 
@@ -115,6 +122,7 @@
     template:
       src: /vagrant/config/apache2.default-ssl.conf.j2
       dest: /etc/apache2/sites-available/default-ssl.conf
+      mode: 0644
     notify: apache2 restarted
     when: is_custom_apache2_default_ssl.stat.exists
 
@@ -122,9 +130,10 @@
     template:
       src: apache2.default-ssl.conf.j2
       dest: /etc/apache2/sites-available/default-ssl.conf
+      mode: 0644
     notify: apache2 restarted
     when: not is_custom_apache2_default_ssl.stat.exists
-  when: ssl == true
+  when: ssl
 
 - block:
   - block:
@@ -163,7 +172,7 @@
     - name: enables Apache2 module http2
       command: sudo a2enmod http2
       notify: apache2 restarted
-    when: ssl == true
+    when: ssl
 
   - name: enables Apache2 module proxy_fcgi
     command: sudo a2enmod proxy_fcgi
@@ -225,7 +234,7 @@
         name: http2
         state: present
       notify: apache2 restarted
-    when: ssl == true
+    when: ssl
 
   - name: enables Apache2 module proxy_fcgi
     apache2_module:

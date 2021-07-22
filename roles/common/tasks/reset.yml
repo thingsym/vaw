@@ -13,6 +13,7 @@
     state: stopped
     enabled: no
   ignore_errors: yes
+  changed_when: False
   when: server != 'apache'
 
 - name: nginx stopped
@@ -21,6 +22,7 @@
     state: stopped
     enabled: no
   ignore_errors: yes
+  changed_when: False
   when: server != 'nginx'
 
 - name: h2o stopped

@@ -3,6 +3,7 @@
   git:
     repo: https://github.com/phpenv/phpenv.git
     dest: "{{ phpenv_dir }}"
+    version: "master"
     force: yes
     recursive: no
   become: yes
@@ -12,16 +13,19 @@
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.phpenv/bin:$PATH"
+    mode: 0644
 
 - name: edit phpenv init on .bashrc_vaw
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(phpenv init -)\""
+    mode: 0644
 
 - name: git checkout php-build
   git:
     repo: https://github.com/php-build/php-build.git
     dest: "{{ phpenv_dir }}/plugins/php-build"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -30,6 +34,7 @@
   git:
     repo: https://github.com/ngyuki/phpenv-composer.git
     dest: "{{ phpenv_dir }}/plugins/phpenv-composer"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -38,6 +43,7 @@
   git:
     repo: https://github.com/thingsym/phpenv-apache-version.git
     dest: "{{ phpenv_dir }}/plugins/phpenv-apache-version"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -54,12 +60,14 @@
   template:
     src: /vagrant/config/php-build.default_configure_options.j2
     dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
+    mode: 0644
   when: is_custom_default_configure_options.stat.exists
 
 - name: set default_configure_options
   template:
     src: php-build.default_configure_options.j2
     dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
+    mode: 0644
   when: not is_custom_default_configure_options.stat.exists
 
 - name: stat libphp5.so
@@ -72,6 +80,7 @@
     path: /usr/lib64/httpd/modules/libphp5.so
     owner: vagrant
     group: vagrant
+    mode: 0644
   when: is_libphp5_path.stat.exists
 
 - name: stat libphp7.so
@@ -84,6 +93,7 @@
     path: /usr/lib64/httpd/modules/libphp7.so
     owner: vagrant
     group: vagrant
+    mode: 0644
   when: is_libphp7_path.stat.exists
 
 - name: touch php.log
@@ -97,6 +107,7 @@
     path: /var/lib/apache2/module/enabled_by_admin
     state: directory
     owner: root
+    mode: 0755
   when:
     - ansible_distribution == 'Debian'
     - server == "apache"

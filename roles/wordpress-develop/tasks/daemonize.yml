@@ -1,6 +1,6 @@
 ---
 - name: check installed daemonize
-  shell: type daemonize
+  command: type daemonize
   register: daemonize_installed
   failed_when: false
 

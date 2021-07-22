@@ -6,7 +6,7 @@
   stat:
     path: /etc/httpd/conf.d/ssl.conf
   register: is_ssl_conf
-  when: ssl == true
+  when: ssl
 
 - name: delete ssl.conf
   file:
@@ -14,7 +14,7 @@
     state: absent
   notify: httpd restarted
   when:
-    - ssl == true
+    - ssl
     - is_ssl_conf.stat.exists
 
 - name: httpd enabled

@@ -10,7 +10,7 @@
   package:
     name: httpd24u-mod_ssl
     state: latest
-  when: ssl == true
+  when: ssl
 
 - name: mod_proxy_fcgi installed
   package:
@@ -25,6 +25,7 @@
   template:
     src: /vagrant/config/httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
+    mode: 0644
   notify: httpd restarted
   when: is_custom_httpd_conf_centos6.stat.exists
 
@@ -32,5 +33,6 @@
   template:
     src: httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
+    mode: 0644
   notify: httpd restarted
   when: not is_custom_httpd_conf_centos6.stat.exists

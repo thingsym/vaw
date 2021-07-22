@@ -3,4 +3,5 @@
   git:
     repo: https://github.com/jokkedk/webgrind.git
     dest: "{{ DOCUMENT_ROOT }}/webgrind"
+    version: "master"
     force: yes

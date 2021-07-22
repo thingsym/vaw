@@ -16,7 +16,7 @@
     dest: "{{ WP_PATH }}"
   when:
     - is_wp_content.stat.exists
-    - is_wp_content.stat.isdir == true
+    - is_wp_content.stat.isdir
 
 
 - name: stat uploads
@@ -30,13 +30,12 @@
     dest: "{{ WP_PATH }}/wp-content"
   when:
     - is_uploads.stat.exists
-    - is_uploads.stat.isdir == true
+    - is_uploads.stat.isdir
 
 - name: replace old url
   command: wp --path={{ WP_PATH }} search-replace '{{ item }}' '{{ WP_URL }}' --precise --all-tables
   become: yes
   become_user: vagrant
-  when: item != ''
   with_items:
     - "{{ replace_old_url | default([]) }}"
 
@@ -50,4 +49,4 @@
   command: wp --path={{ WP_PATH }} media regenerate --yes
   become: yes
   become_user: vagrant
-  when: regenerate_thumbnails == true
+  when: regenerate_thumbnails

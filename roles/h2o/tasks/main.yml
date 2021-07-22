@@ -45,6 +45,7 @@
     file:
       path: /var/run/h2o
       state: directory
+      mode: 0755
     when: not is_h2o_dir.stat.exists
 
   when:
@@ -60,6 +61,7 @@
   template:
     src: /vagrant/config/h2o.conf.j2
     dest: /etc/h2o/h2o.conf
+    mode: 0644
   notify: h2o restarted
   when: is_custom_h2o_conf.stat.exists
 
@@ -67,6 +69,7 @@
   template:
     src: h2o.conf.j2
     dest: /etc/h2o/h2o.conf
+    mode: 0644
   notify: h2o restarted
   when: not is_custom_h2o_conf.stat.exists
 

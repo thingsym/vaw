@@ -3,7 +3,7 @@
 set -e
 
 version() {
-  echo "$(basename $0) version 0.4.4"
+  echo "$(basename $0) version 0.5.0"
 }
 
 usage() {
@@ -192,13 +192,21 @@ function global() {
         if [[ $PHP_VERSION =~ ^5 ]]; then
           sed -i -e "s/^#LoadModule php5_module/LoadModule php5_module/" $APACHE_PHP_CONF
           sed -i -e "s/^LoadModule php7_module/#LoadModule php7_module/" $APACHE_PHP_CONF
+          sed -i -e "s/^LoadModule php_module/#LoadModule php_module/" $APACHE_PHP_CONF
           echo "[Info]: edit ${APACHE_PHP_CONF}"
           sudo chown vagrant:vagrant /etc/httpd/modules/libphp5.so
         elif [[ $PHP_VERSION =~ ^7 ]]; then
           sed -i -e "s/^LoadModule php5_module/#LoadModule php5_module/" $APACHE_PHP_CONF
           sed -i -e "s/^#LoadModule php7_module/LoadModule php7_module/" $APACHE_PHP_CONF
+          sed -i -e "s/^LoadModule php_module/#LoadModule php_module/" $APACHE_PHP_CONF
           echo "[Info]: edit ${APACHE_PHP_CONF}"
           sudo chown vagrant:vagrant /etc/httpd/modules/libphp7.so
+        elif [[ $PHP_VERSION =~ ^8 ]]; then
+          sed -i -e "s/^LoadModule php5_module/#LoadModule php5_module/" $APACHE_PHP_CONF
+          sed -i -e "s/^LoadModule php7_module/#LoadModule php7_module/" $APACHE_PHP_CONF
+          sed -i -e "s/^#LoadModule php_module/LoadModule php_module/" $APACHE_PHP_CONF
+          echo "[Info]: edit ${APACHE_PHP_CONF}"
+          sudo chown vagrant:vagrant /etc/httpd/modules/libphp.so
         fi
 
         sudo chown root:root /etc/httpd/conf.d/
@@ -206,6 +214,7 @@ function global() {
         sudo chown vagrant:vagrant /etc/httpd/conf.d/
         sed -i -e "s/^LoadModule php5_module/#LoadModule php5_module/" $APACHE_PHP_CONF
         sed -i -e "s/^LoadModule php7_module/#LoadModule php7_module/" $APACHE_PHP_CONF
+        sed -i -e "s/^LoadModule php_module/#LoadModule php_module/" $APACHE_PHP_CONF
         echo "[Info]: edit ${APACHE_PHP_CONF}"
         sudo chown root:root /etc/httpd/conf.d/
       fi
@@ -215,10 +224,16 @@ function global() {
       if [ "$MODE" = "mod_php" ]; then
         if [[ $PHP_VERSION =~ ^5 ]]; then
           [ -f /etc/apache2/mods-available/php7.load ] && sudo a2dismod php7
+          [ -f /etc/apache2/mods-available/php.load ] && sudo a2dismod php
           [ -f /etc/apache2/mods-available/php5.load ] && sudo a2enmod php5
         elif [[ $PHP_VERSION =~ ^7 ]]; then
           [ -f /etc/apache2/mods-available/php5.load ] && sudo a2dismod php5
+          [ -f /etc/apache2/mods-available/php.load ] && sudo a2dismod php
           [ -f /etc/apache2/mods-available/php7.load ] && sudo a2enmod php7
+        elif [[ $PHP_VERSION =~ ^8 ]]; then
+          [ -f /etc/apache2/mods-available/php5.load ] && sudo a2dismod php5
+          [ -f /etc/apache2/mods-available/php7.load ] && sudo a2dismod php7
+          [ -f /etc/apache2/mods-available/php.load ] && sudo a2enmod php
         fi
       fi
     fi
@@ -317,7 +332,7 @@ function install() {
   $HOME/.phpenv/bin/phpenv install ${PHP_VERSION}
 
   if [ "$DISTR" = "centos" ] && [ -d /etc/httpd/conf.d ] && [ ! -f "$APACHE_PHP_CONF" ]; then
-    echo -e "<IfModule prefork.c>\n#LoadModule php5_module modules/libphp5.so\n#LoadModule php7_module modules/libphp7.so\n</IfModule>\n\n<FilesMatch \.php$>\nSetHandler application/x-httpd-php\n</FilesMatch>\n\nDirectoryIndex index.php" > $APACHE_PHP_CONF
+    echo -e "<IfModule prefork.c>\n#LoadModule php5_module modules/libphp5.so\n#LoadModule php7_module modules/libphp7.so\n#LoadModule php_module modules/libphp.so\n</IfModule>\n\n<FilesMatch \.php$>\nSetHandler application/x-httpd-php\n</FilesMatch>\n\nDirectoryIndex index.php" > $APACHE_PHP_CONF
     echo "[Info]: add ${APACHE_PHP_CONF}"
   elif ( [ "$DISTR" = "debian" ] || [ "$DISTR" = "ubuntu" ] ) && [ -d /etc/apache2/mods-available ] && [ ! -f "$APACHE_PHP_CONF" ]; then
     echo -e "<FilesMatch \.php$>\nSetHandler application/x-httpd-php\n</FilesMatch>\n\nDirectoryIndex index.php" > $APACHE_PHP_CONF
@@ -335,6 +350,11 @@ function install() {
       echo "[Info]: copy /etc/httpd/modules/libphp7.so to /home/vagrant/.phpenv/versions/${PHP_VERSION}/"
     fi
 
+    if [ -f /etc/httpd/modules/libphp.so ] && [[ $PHP_VERSION =~ ^8 ]]; then
+      cp /etc/httpd/modules/libphp.so /home/vagrant/.phpenv/versions/${PHP_VERSION}/libphp.so
+      echo "[Info]: copy /etc/httpd/modules/libphp.so to /home/vagrant/.phpenv/versions/${PHP_VERSION}/"
+    fi
+
     sudo chown root:root /etc/httpd/modules
     sudo chown root:root /etc/httpd/conf.d
   elif [ -d /usr/lib/apache2/modules ]; then
@@ -346,6 +366,11 @@ function install() {
     if [ -f /usr/lib/apache2/modules/libphp7.so ] && [[ $PHP_VERSION =~ ^7 ]]; then
       cp /usr/lib/apache2/modules/libphp7.so /home/vagrant/.phpenv/versions/${PHP_VERSION}/libphp7.so
       echo "[Info]: copy /usr/lib/apache2/modules/libphp7.so to /home/vagrant/.phpenv/versions/${PHP_VERSION}/"
+    fi
+
+    if [ -f /usr/lib/apache2/modules/libphp.so ] && [[ $PHP_VERSION =~ ^8 ]]; then
+      cp /usr/lib/apache2/modules/libphp.so /home/vagrant/.phpenv/versions/${PHP_VERSION}/libphp.so
+      echo "[Info]: copy /usr/lib/apache2/modules/libphp.so to /home/vagrant/.phpenv/versions/${PHP_VERSION}/"
     fi
 
     sudo chown root:root /usr/lib/apache2/modules
@@ -367,7 +392,6 @@ function install() {
       sed -i -e "s/^post_max_size = 8M/post_max_size = 64M/" $PHP_INI
       sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = 32M/" $PHP_INI
       sed -i -e "s/^;mbstring.language = Japanese/mbstring.language = neutral/" $PHP_INI
-      sed -i -e "s/^;mbstring.internal_encoding =/mbstring.internal_encoding = UTF-8/" $PHP_INI
       sed -i -e "s/^;date.timezone =/date.timezone = UTC/" $PHP_INI
       sed -i -e 's/^;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/' $PHP_INI
       sed -i -e 's/^zend.exception_ignore_args = On/zend.exception_ignore_args = Off/' $PHP_INI
@@ -559,6 +583,8 @@ function gather_conf() {
       APACHE_PHP_CONF="/etc/apache2/mods-available/php5.conf"
     elif [[ $PHP_VERSION =~ ^7 ]]; then
       APACHE_PHP_CONF="/etc/apache2/mods-available/php7.conf"
+    elif [[ $PHP_VERSION =~ ^8 ]]; then
+      APACHE_PHP_CONF="/etc/apache2/mods-available/php.conf"
     fi
   fi
 

@@ -35,7 +35,7 @@
       command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
       become: yes
       become_user: vagrant
-      when: import_admin == true
+      when: import_admin
     when: is_db_data_file.stat.exists
 
   - name: stat xml_data_file
@@ -74,10 +74,13 @@
     synchronize:
       src: /tmp/backwpup/wp-content
       dest: "{{ WP_PATH }}"
-    when: is_backwpup_wp_content.stat.exists and is_backwpup_wp_content.stat.isdir == true
+    when:
+      - is_backwpup_wp_content.stat.exists
+      - is_backwpup_wp_content.stat.isdir
 
-  - file:
-      path: /tmp/backwpup
+  - name: rmdir /tmp/backwpup
+    file:
+      path: "/tmp/backwpup"
       state: absent
 
   when: is_import_backwpup.stat.exists

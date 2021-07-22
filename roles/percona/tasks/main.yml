@@ -12,6 +12,7 @@
     path: /etc/mysql
     state: directory
     owner: mysql
+    mode: 0755
   when: not is_mysql_dir.stat.exists
 
 - name: stat custom my.cnf.j2
@@ -23,12 +24,14 @@
   template:
     src: /vagrant/config/percona.my.cnf.j2
     dest: /etc/mysql/my.cnf
+    mode: 0644
   when: is_custom_my_conf.stat.exists
 
 - name: my.cnf changed
   template:
     src: percona.my.cnf.j2
     dest: /etc/mysql/my.cnf
+    mode: 0644
   when: not is_custom_my_conf.stat.exists
 
 - name: mkdir /var/log/mysql
@@ -37,6 +40,7 @@
     state: directory
     owner: mysql
     group: mysql
+    mode: 0755
 
 - name: mkdir /var/run/mysqld
   file:
@@ -44,13 +48,14 @@
     state: directory
     owner: mysql
     group: mysql
+    mode: 0755
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version is version('6', '==')
 
 - name: mysql started and enabled
   service:
-    name: mysql
+    name: mysqld
     state: restarted
     enabled: yes
 
@@ -69,6 +74,7 @@
   when:
     - ansible_os_family == 'RedHat'
     - percona_version is version('5.7', '==')
+  no_log: True
 
 - name: set percona root password (Debian)
   mysql_user:
@@ -85,6 +91,7 @@
     - ::1
   when:
     - ansible_os_family == 'Debian'
+  no_log: True
 
 - name: delete blank percona users
   mysql_user:

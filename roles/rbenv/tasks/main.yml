@@ -3,6 +3,7 @@
   git:
     repo: https://github.com/rbenv/rbenv.git
     dest: "{{ rbenv_dir }}"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -11,16 +12,19 @@
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "export PATH=$HOME/.rbenv/bin:$PATH"
+    mode: 0644
 
 - name: edit rbenv init on .bashrc_vaw
   lineinfile:
     dest: "{{ home_dir }}/.bashrc_vaw"
     line: "eval \"$(rbenv init -)\""
+    mode: 0644
 
 - name: git checkout ruby-build
   git:
     repo: https://github.com/rbenv/ruby-build.git
     dest: "{{ rbenv_dir }}/plugins/ruby-build"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -29,6 +33,7 @@
   git:
     repo: https://github.com/rkh/rbenv-update.git
     dest: "{{ rbenv_dir }}/plugins/rbenv-update"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -37,6 +42,7 @@
   git:
     repo: https://github.com/rbenv/rbenv-default-gems.git
     dest: "{{ rbenv_dir }}/plugins/rbenv-default-gems"
+    version: "master"
     force: yes
   become: yes
   become_user: vagrant
@@ -50,6 +56,7 @@
   template:
     src: /vagrant/config/default-ruby-gems.j2
     dest: "{{ rbenv_dir }}/default-gems"
+    mode: 0644
   when: is_rbenv_default_gems.stat.exists
 
 - include_tasks: build-env.yml

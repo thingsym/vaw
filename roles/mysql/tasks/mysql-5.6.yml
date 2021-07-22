@@ -87,7 +87,8 @@
       deb: https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 
   - name: apt-get update
-    command: apt-get update
+    apt:
+      update_cache: yes
 
   - name: mysql installed (Debian)
     package:

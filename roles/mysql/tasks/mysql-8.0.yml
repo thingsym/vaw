@@ -54,7 +54,8 @@
     command: apt-key adv --keyserver keys.gnupg.net --recv-keys 8C718D3B5072E1F5
 
   - name: apt-get update
-    command: apt-get update
+    apt:
+      update_cache: yes
 
   - name: mysql installed (Debian)
     package:
