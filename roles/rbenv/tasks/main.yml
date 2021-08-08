@@ -62,13 +62,13 @@
 - include_tasks: build-env.yml
 
 - name: ruby installed via rbenv
-  command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.1) }}"
+  command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.2) }}"
   ignore_errors: yes
   become: yes
   become_user: vagrant
 
 - name: rbenv global
-  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.1) }}"
+  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.2) }}"
   become: yes
   become_user: vagrant
 
