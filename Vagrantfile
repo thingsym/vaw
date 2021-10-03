@@ -7,6 +7,7 @@
 # vm_box                = 'centos/8' # Deprecated ended 2021-12-31
 vm_box                = 'centos/7'
 # vm_box                = 'centos/6' # Deprecated ended 2020-11-30
+# vm_box                = 'debian/bullseye64'  # Debian 11.0
 # vm_box                = 'debian/buster64'  # Debian 10.0
 # vm_box                = 'debian/stretch64' # Debian 9.0 # Note: Ansible version 2.2.x installed, so install via pip instead.
 # vm_box                = 'debian/jessie64'  # Debian 8.0 # Deprecated ended 2020-06-30
