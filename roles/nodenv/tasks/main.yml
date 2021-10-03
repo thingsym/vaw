@@ -38,6 +38,12 @@
   become: yes
   become_user: vagrant
 
+- name: touch default-packages
+  file:
+    path: "{{ nodenv_dir }}/default-packages"
+    mode: 0644
+    state: touch
+
 - name: stat default_node_packages
   stat:
     path: /vagrant/config/default-node-packages.j2
