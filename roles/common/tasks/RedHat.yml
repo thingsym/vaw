@@ -1,4 +1,7 @@
 ---
+- name: include task (CentOS/RHEL)
+  include_tasks: selinux.yml
+
 - name: all packages updated
   yum:
     name: '*'

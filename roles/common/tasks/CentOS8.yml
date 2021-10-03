@@ -1,17 +1,4 @@
 ---
-- name: disable selinux
-  selinux:
-    state: disabled
-
-- name: is_getenforce
-  command: /usr/sbin/getenforce
-  register: is_getenforce
-
-- name: SELinux is turned off
-  fail:
-    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"
-  when: is_getenforce.stdout == 'Enforcing'
-
 - name: firewalld stoped and disabled (CentOS/RHEL 8)
   service:
     name: firewalld
@@ -33,5 +20,11 @@
     name: dnf-plugins-core
     state: latest
 
+- name: stat PowerTools.repo
+  stat:
+    path: '/etc/yum.repos.d/CentOS-Linux-PowerTools.repo'
+  register: is_powertools_repo
+
 - name: powertools enabled (CentOS/RHEL 8)
   command: dnf config-manager --set-enabled powertools
+  when: is_docker_ce_repo.stat.exists
