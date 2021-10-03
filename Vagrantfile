@@ -8,13 +8,13 @@
 vm_box                = 'centos/7'
 # vm_box                = 'centos/6' # Deprecated ended 2020-11-30
 # vm_box                = 'debian/bullseye64'  # Debian 11.0
-# vm_box                = 'debian/buster64'  # Debian 10.0
-# vm_box                = 'debian/stretch64' # Debian 9.0 # Note: Ansible version 2.2.x installed, so install via pip instead.
-# vm_box                = 'debian/jessie64'  # Debian 8.0 # Deprecated ended 2020-06-30
-# vm_box                = 'ubuntu/focal64'  # Ubuntu 20.04 # Note: Currently there is no ansible repository, so install via pip instead.
-# vm_box                = 'ubuntu/bionic64' # Ubuntu 18.04
-# vm_box                = 'ubuntu/xenial64' # Ubuntu 16.04
-# vm_box                = 'ubuntu/trusty64' # Ubuntu 14.04 # Deprecated ended 2019-04-25
+# vm_box                = 'debian/buster64'    # Debian 10.0
+# vm_box                = 'debian/stretch64'   # Debian 9.0 # Note: Ansible version 2.2.x installed, so install via pip instead.
+# vm_box                = 'debian/jessie64'    # Debian 8.0 # Deprecated ended 2020-06-30
+# vm_box                = 'ubuntu/focal64'     # Ubuntu 20.04
+# vm_box                = 'ubuntu/bionic64'    # Ubuntu 18.04
+# vm_box                = 'ubuntu/xenial64'    # Ubuntu 16.04
+# vm_box                = 'ubuntu/trusty64'    # Ubuntu 14.04
 
 vm_box_version        = '>= 0'
 vm_ip                 = '192.168.46.49'
