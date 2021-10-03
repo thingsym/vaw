@@ -14,43 +14,23 @@
   when: ansible_os_family == 'RedHat'
 
 - block:
-  - name: GPG key added (Debian)
-    apt_key:
-      url: https://bintray.com/user/downloadSubjectPublicKey?username=bintray
-      state: present
-
-  - name: tatsushid repository installed (Debian)
-    apt_repository:
-      repo: "deb https://dl.bintray.com/tatsushid/h2o-deb {{ ansible_distribution_release }}-backports main"
-      filename: 'bintray-tatsushid-h2o'
-      state: present
-
-  - name: apt-get update
-    apt:
-      update_cache: yes
-
   - name: h2o installed
     package:
       name: h2o
       state: latest
   when: ansible_os_family == 'Debian'
 
-- block:
-  - name: stat /var/run/h2o
-    stat:
-      path: /var/run/h2o
-    register: is_h2o_dir
+- name: stat /var/run/h2o
+  stat:
+    path: /var/run/h2o
+  register: is_h2o_dir
 
-  - name: mkdir /var/run/h2o
-    file:
-      path: /var/run/h2o
-      state: directory
-      mode: 0755
-    when: not is_h2o_dir.stat.exists
-
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version is version('14', '==')
+- name: mkdir /var/run/h2o
+  file:
+    path: /var/run/h2o
+    state: directory
+    mode: 0755
+  when: not is_h2o_dir.stat.exists
 
 - name: stat custom h2o.j2
   stat:
