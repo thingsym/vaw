@@ -9,15 +9,15 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH phpenv on .bashrc_vaw
+- name: edit PATH phpenv on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.phpenv/bin:$PATH"
     mode: 0644
 
-- name: edit phpenv init on .bashrc_vaw
+- name: edit phpenv init on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(phpenv init -)\""
     mode: 0644
 

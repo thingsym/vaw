@@ -8,15 +8,15 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH nodenv on .bashrc_vaw
+- name: edit PATH nodenv on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
     mode: 0644
 
-- name: edit nodenv init on .bashrc_vaw
+- name: edit nodenv init on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(nodenv init -)\""
     mode: 0644
 
@@ -38,6 +38,12 @@
   become: yes
   become_user: vagrant
 
+- name: touch default-packages
+  file:
+    path: "{{ nodenv_dir }}/default-packages"
+    mode: 0644
+    state: touch
+
 - name: stat default_node_packages
   stat:
     path: /vagrant/config/default-node-packages.j2
@@ -50,21 +56,31 @@
     mode: 0644
   when: is_default_node_packages.stat.exists
 
-- name: nodejs installed via nodenv
-  command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('14.15.3') }}"
-  ignore_errors: yes
-  become: yes
-  become_user: vagrant
+- name: stat nodenv
+  stat:
+    path: "{{ nodenv_dir }}/bin/nodenv"
+  register: is_nodenv
 
-- name: nodenv global
-  command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('14.15.3') }}"
-  become: yes
-  become_user: vagrant
+- block:
+  - name: nodejs installed via nodenv
+    command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('14.15.3') }}"
+    become: yes
+    become_user: vagrant
+    register: nodenv_result
+    failed_when:
+      - nodenv_result.rc != 0
+      - nodenv_result.rc != 1
 
-- name: nodenv rehash
-  command: "{{ nodenv_dir }}/bin/nodenv rehash"
-  become: yes
-  become_user: vagrant
+  - name: nodenv global
+    command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('14.15.3') }}"
+    become: yes
+    become_user: vagrant
+
+  - name: nodenv rehash
+    command: "{{ nodenv_dir }}/bin/nodenv rehash"
+    become: yes
+    become_user: vagrant
+  when: is_nodenv.stat.exists
 
 - name: include task
   include_tasks: yarn.yml

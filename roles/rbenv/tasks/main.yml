@@ -8,15 +8,15 @@
   become: yes
   become_user: vagrant
 
-- name: edit PATH rbenv on .bashrc_vaw
+- name: edit PATH rbenv on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.rbenv/bin:$PATH"
     mode: 0644
 
-- name: edit rbenv init on .bashrc_vaw
+- name: edit rbenv init on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(rbenv init -)\""
     mode: 0644
 
@@ -61,18 +61,28 @@
 
 - include_tasks: build-env.yml
 
-- name: ruby installed via rbenv
-  command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.1) }}"
-  ignore_errors: yes
-  become: yes
-  become_user: vagrant
+- name: stat rbenv
+  stat:
+    path: "{{ rbenv_dir }}/bin/rbenv"
+  register: is_rbenv
 
-- name: rbenv global
-  command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.1) }}"
-  become: yes
-  become_user: vagrant
+- block:
+  - name: ruby installed via rbenv
+    command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.2) }}"
+    become: yes
+    become_user: vagrant
+    register: rbenv_result
+    failed_when:
+      - rbenv_result.rc != 0
+      - rbenv_result.rc != 1
 
-- name: rbenv rehash
-  command: "{{ rbenv_dir }}/bin/rbenv rehash"
-  become: yes
-  become_user: vagrant
+  - name: rbenv global
+    command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.2) }}"
+    become: yes
+    become_user: vagrant
+
+  - name: rbenv rehash
+    command: "{{ rbenv_dir }}/bin/rbenv rehash"
+    become: yes
+    become_user: vagrant
+  when: is_rbenv.stat.exists

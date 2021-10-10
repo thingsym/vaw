@@ -38,7 +38,7 @@ if property["develop_tools"] then
     its(:stdout) { should match '14.15.3' }
   end
 
-  describe file('/home/vagrant/.bashrc_vaw') do
+  describe file('/home/vagrant/.bashrc_alias') do
     its(:content) { should match /export PATH=\$HOME\/\.nodenv\/bin:\$PATH/ }
     its(:content) { should match /eval "\$\(nodenv init \-\)"/ }
   end
@@ -49,6 +49,11 @@ if property["develop_tools"] then
 
   describe file('/home/vagrant/.nodenv/plugins/nodenv-default-packages') do
     it { should be_directory }
+  end
+
+  describe file('/home/vagrant/.nodenv/default-packages') do
+    it { should be_file }
+    it { should be_mode 644 }
   end
 
   describe command('which npm') do

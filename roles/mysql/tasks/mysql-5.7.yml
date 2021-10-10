@@ -69,10 +69,10 @@
 
   - name: mysql-apt-config installed (Debian)
     apt:
-      deb: https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+      deb: https://dev.mysql.com/get/mysql-apt-config_0.8.18-1_all.deb
 
   - name: apt-key update
-    command: apt-key adv --keyserver keys.gnupg.net --recv-keys 8C718D3B5072E1F5
+    command: apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
 
   - name: apt-get update
     apt:

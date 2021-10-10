@@ -2,7 +2,6 @@
 - name: stat custom /home/vagrant/.ssh/config
   stat:
     path: /vagrant/config/ssh-config.j2
-  tags: sync-dir
   register: is_custom_ssh_config
 
 - name: custom /home/vagrant/.ssh/config changed
@@ -12,5 +11,4 @@
     owner: vagrant
     group: vagrant
     mode: 0600
-  tags: sync-dir
   when: is_custom_ssh_config.stat.exists

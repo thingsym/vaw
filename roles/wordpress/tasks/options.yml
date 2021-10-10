@@ -44,9 +44,13 @@
   become: yes
   become_user: vagrant
   with_dict: "{{ theme_mod | default({}) }}"
+  when:
+    - theme_mod
 
 - name: update options
   command: wp --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
   become: yes
   become_user: vagrant
   with_dict: "{{ options | default({}) }}"
+  when:
+    - options

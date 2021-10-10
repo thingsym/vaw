@@ -1,9 +1,17 @@
 ---
-- name: database drop
-  command: wp --path={{ WP_PATH }} db drop --yes
-  ignore_errors: yes
+- name: WordPress db check
+  command: wp --path={{ WP_PATH }} db check
   become: yes
   become_user: vagrant
+  register: db_check
+  failed_when: false
+  changed_when: false
+
+- name: database drop
+  command: wp --path={{ WP_PATH }} db drop --yes
+  become: yes
+  become_user: vagrant
+  when: db_check.rc == 0
 
 - name: remove MySQL user for WordPress
   mysql_user:
@@ -29,6 +37,7 @@
     - localhost
     - 127.0.0.1
     - ::1
+  no_log: True
 
 - name: stat WP_PATH
   stat:
@@ -77,17 +86,24 @@
     state: absent
   when: is_old_wp_config.stat.exists
 
+- name: stat wp-config.php
+  stat:
+    path: "{{ WP_PATH }}/wp-config.php"
+  register: is_old_wp_config
+
 - name: WordPress config
   command: wp --path={{ WP_PATH }} core config --dbhost={{ db_host }} --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --locale={{ lang }} --dbprefix={{ db_prefix }} --dbcharset={{ db_charset }} --dbcollate={{ db_collate }}
   become: yes
   become_user: vagrant
+  when: not is_old_wp_config.stat.exists
 
 - name: WordPress db check
   command: wp --path={{ WP_PATH }} db check
-  ignore_errors: yes
   become: yes
   become_user: vagrant
   register: db_check
+  failed_when: false
+  changed_when: false
 
 - name: WordPress db create
   command: wp --path={{ WP_PATH }} db create
@@ -111,6 +127,7 @@
   template:
     src: wordpress.multisite.htaccess.j2
     dest: "{{ WP_PATH }}/.htaccess"
+    mode: 0644
   when:
     - multisite
     - server == "apache"
@@ -144,6 +161,7 @@
     copy:
       src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/index.php"
       dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/index.php"
+      mode: 0644
 
   - name: change load path in index.php for subdirectory install
     replace:
@@ -155,6 +173,7 @@
     copy:
       src: "{{ DOCUMENT_ROOT }}{{ wp_dir }}/.htaccess"
       dest: "{{ DOCUMENT_ROOT }}{{ wp_site_path }}/.htaccess"
+      mode: 0644
     when:
       - multisite
       - server == "apache"
@@ -166,14 +185,15 @@
   become_user: vagrant
   with_items:
     - "{{ themes | default([]) }}"
-  when: themes
+  when:
+    - "themes"
 
 - name: theme install and activate
   command: wp --path={{ WP_PATH }} theme install {{ activate_theme }} --activate
-  ignore_errors: yes
   become: yes
   become_user: vagrant
-  when: activate_theme
+  when:
+    - "activate_theme"
 
 - name: plugin activate wp-multibyte-patch
   command: wp --path={{ WP_PATH }} plugin activate wp-multibyte-patch
@@ -187,7 +207,7 @@
   become_user: vagrant
   with_items:
     - "{{ activate_plugins | default([]) }}"
-  when: activate_plugins
+  when: "activate_plugins"
 
 - name: plugins install
   command: wp --path={{ WP_PATH }} plugin install {{ item }}
@@ -195,4 +215,4 @@
   become_user: vagrant
   with_items:
     - "{{ plugins | default([]) }}"
-  when: plugins
+  when: "plugins"

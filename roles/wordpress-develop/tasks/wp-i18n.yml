@@ -5,8 +5,8 @@
     dest: "{{ share_path }}/wp-i18n"
     force: yes
 
-- name: edit alias wp-i18n on .bashrc_vaw
+- name: edit alias wp-i18n on .bashrc_alias
   lineinfile:
-    dest: "{{ home_dir }}/.bashrc_vaw"
+    dest: "{{ home_dir }}/.bashrc_alias"
     line: "alias makepot.php=\"/usr/bin/php {{ share_path }}/wp-i18n/makepot.php\""
 

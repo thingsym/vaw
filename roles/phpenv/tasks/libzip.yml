@@ -24,9 +24,9 @@
       - make
       - make install
 
-  - name: edit PKG_CONFIG_PATH on .bashrc_vaw
+  - name: edit PKG_CONFIG_PATH on .bashrc_alias
     lineinfile:
-      dest: "{{ home_dir }}/.bashrc_vaw"
+      dest: "{{ home_dir }}/.bashrc_alias"
       line: export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/libzip/lib64/pkgconfig"
       mode: 0644
 

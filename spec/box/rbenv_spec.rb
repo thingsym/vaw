@@ -15,7 +15,7 @@ if property["develop_tools"] || property["deploy_tools"] then
     its(:stdout) { should match(/\/home\/vagrant\/\.rbenv\/bin\/rbenv/) }
   end
 
-  ['2.7.1'].each do |ruby_version|
+  ['2.7.2'].each do |ruby_version|
     describe command("rbenv versions | grep #{ruby_version}") do
       let(:sudo_options) { '-u vagrant -i' }
       its(:stdout) { should match(/#{Regexp.escape(ruby_version)}/) }
@@ -30,15 +30,15 @@ if property["develop_tools"] || property["deploy_tools"] then
 
   describe command('ruby -v') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '2.7.1' }
+    its(:stdout) { should match '2.7.2' }
   end
 
   describe command('rbenv global') do
     let(:sudo_options) { '-u vagrant -i' }
-    its(:stdout) { should match '2.7.1' }
+    its(:stdout) { should match '2.7.2' }
   end
 
-  describe file('/home/vagrant/.bashrc_vaw') do
+  describe file('/home/vagrant/.bashrc_alias') do
     its(:content) { should match /export PATH=\$HOME\/\.rbenv\/bin:\$PATH/ }
     its(:content) { should match /eval "\$\(rbenv init \-\)"/ }
   end

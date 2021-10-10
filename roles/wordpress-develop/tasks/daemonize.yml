@@ -3,6 +3,7 @@
   command: type daemonize
   register: daemonize_installed
   failed_when: false
+  changed_when: false
 
 - block:
   - name: get daemonize archive
@@ -14,6 +15,7 @@
     file:
       path: /tmp/daemonize
       state: directory
+      mode: 0755
 
   - name: unarchive daemonize
     unarchive:

@@ -7,18 +7,23 @@
     force: yes
   become: yes
 
+- name: stat wrk Makefile
+  stat:
+    path: "{{ home_dir }}/wrk/Makefile"
+  register: is_wrk_makefile
+
 - name: make wrk
   command: make
   args:
     chdir: "{{ home_dir }}/wrk"
-  become: yes
+  when:
+    - is_wrk_makefile.stat.exists
 
 - name: copy wrk
   copy:
     src: "{{ home_dir }}/wrk/wrk"
     dest: /usr/local/bin
     mode: 0755
-  become: yes
 
 - name: delete wrk dir
   file:

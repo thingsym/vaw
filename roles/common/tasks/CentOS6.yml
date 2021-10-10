@@ -1,22 +1,4 @@
 ---
-- name: libselinux-python installed
-  package:
-    name: libselinux-python
-    state: latest
-
-- name: disable selinux
-  selinux:
-    state: disabled
-
-- name: is_getenforce
-  command: /usr/sbin/getenforce
-  register: is_getenforce
-
-- name: SELinux is turned off
-  fail:
-    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"
-  when: is_getenforce.stdout == 'Enforcing'
-
 - name: iptables stoped and disabled
   service:
     name: iptables

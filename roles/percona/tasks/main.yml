@@ -53,11 +53,19 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version is version('6', '==')
 
-- name: mysql started and enabled
+- name: mysqld started and enabled (CentOS/RHEL)
   service:
     name: mysqld
     state: restarted
     enabled: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: mysql started and enabled (Debian)
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == 'Debian'
 
 - block:
   - name: get temporary password from mysqld.log
