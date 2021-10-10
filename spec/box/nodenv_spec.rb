@@ -51,6 +51,11 @@ if property["develop_tools"] then
     it { should be_directory }
   end
 
+  describe file('/home/vagrant/.nodenv/default-packages') do
+    it { should be_file }
+    it { should be_mode 644 }
+  end
+
   describe command('which npm') do
     let(:sudo_options) { '-u vagrant -i' }
     its(:exit_status) { should eq 0 }
