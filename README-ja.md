@@ -538,9 +538,10 @@ OS とアーキテクチャは、CentOS、Debian、Ubuntu の x86_64 系 Vagrant
 
 ### Ubuntu
 
-* Ubuntu 18.04 (調整中)
+* Ubuntu 20.04
+* Ubuntu 18.04
 * Ubuntu 16.04
-* Ubuntu 14.04 (非推奨 サポート終了日 2019-04-25)
+* Ubuntu 14.04
 
 Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
 

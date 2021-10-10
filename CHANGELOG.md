@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.8.5] - 2021.10.10
+
+* fix ansible-lint conf
+* improve roles using ansible-lint
+* fix .editorconfig
+* add ansible_install flag
+* add debian/bullseye64 box
+* add checking stat
+* remove become and become_user with after-command and before commnad
+* fix workflow
+* remove tatsushid repository for Debian, using default repository
+* fix mysql role for mysql 8.0
+* bump up mysql-apt
+* add default-packages with nodenv
+* split roles file into common roles
+* fix ruby_version
+* rename bashrc alias
+
 ## [0.8.4] - 2021.07.22
 
 * bump up ruby 2.7.2
