@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.6] - 2022.04.19
+
+* add .yamllint for ansible-lint
+* fix updating npm with ncu
+* fix a bug that SSH auth does not pass for ubuntu/focal64, ubuntu/bionic64
+* change function name
+* add Trouble shooting to README
+* fix script provision for os distribute
+
 ## [0.8.5] - 2021.10.10
 
 * fix ansible-lint conf
