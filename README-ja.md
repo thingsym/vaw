@@ -806,7 +806,7 @@ vagrant ssh
 #### Debian or Ubuntu
 
 ```
-sudo apt-get install linux-image-amd64 linux-headers-amd64
+sudo apt-get -y install linux-image-amd64 linux-headers-amd64
 ```
 
 #### CentOS
