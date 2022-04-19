@@ -1,4 +1,6 @@
 skip_list:
+  - no-changed-when  # Commands should not change things if nothing needs doing
   - package-latest  # Package installs should not use latest
+  - fqcn-builtins
   - experimental  # all rules tagged as experimental
   - yaml  # Violations reported by yamllint
