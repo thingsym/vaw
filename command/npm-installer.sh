@@ -97,7 +97,7 @@ elif [ $1 = 'update' ]; then
 elif [ $1 = 'update_with_ncu' ]; then
 	move_to_tmp_dir
 	update_package_json_with_ncu
-	npm_update
+	npm_install
 	move_to_current_dir
 elif [ $1 = 'move_tmp' ]; then
 	move_to_tmp_dir
