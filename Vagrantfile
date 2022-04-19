@@ -47,16 +47,53 @@ vagrant_plugins       = [
 ## That's all, stop setting. ##
 
 provision = <<-EOT
+  set -e
   if [ -e /etc/os-release ]; then
+    DISTR=$(awk '/PRETTY_NAME=/' /etc/os-release | sed 's/PRETTY_NAME=//' | sed 's/"//g' | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
+    if [ -e /etc/redhat-release ]; then
+      VERSION=$(awk '{print $4}' /etc/redhat-release)
+    elif [ "$DISTR" = "debian" ] && [ -e /etc/debian_version ]; then
+      VERSION=$(awk '{print $1}' /etc/debian_version)
+    else
+      VERSION=$(awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' | sed 's/"//g')
+    fi
     MAJOR=$(awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' | sed 's/"//g' | sed -E 's/\.[0-9]{2}//g')
+    if [ -e /etc/lsb-release ]; then
+      RELEASE=$(awk '/DISTRIB_CODENAME=/' /etc/lsb-release | sed 's/DISTRIB_CODENAME=//' | sed 's/"//g' | tr '[:upper:]' '[:lower:]')
+    else
+      RELEASE=$(awk '/PRETTY_NAME=/' /etc/os-release | sed 's/"//g' | awk '{print $4}' | sed 's/[()]//g' | tr '[:upper:]' '[:lower:]')
+    fi
   elif [ -e /etc/redhat-release ]; then
+    DISTR=$(awk '{print $1}' /etc/redhat-release | tr '[:upper:]' '[:lower:]')
+    VERSION=$(awk '{print $3}' /etc/redhat-release)
     MAJOR=$(awk '{print $3}' /etc/redhat-release | sed -E 's/\.[0-9]+//g')
+    RELEASE=$(awk '{print $4}' /etc/redhat-release | sed 's/[()]//g' | tr '[:upper:]' '[:lower:]')
   fi
-  echo $MAJOR > /etc/yum/vars/releasever
+  ARCH=$(uname -m)
+  BITS=$(uname -m | sed 's/x86_//;s/amd//;s/i[3-6]86/32/')
 
-  if [ "$MAJOR" = "6" ]; then
+  echo '[OS Info]'
+  echo 'DISTRIBUTE:' $DISTR
+  echo 'ARCHITECTURE:' $ARCH
+  echo 'BITS:' $BITS
+  echo 'RELEASE:' $RELEASE
+  echo 'VERSION:' $VERSION
+  echo 'MAJOR:' $MAJOR
+
+  if [ "$DISTR" = "centos" ] && [ "$MAJOR" = "6" ]; then
     yum makecache fast
     yum -y install epel-release
+  fi
+
+  if [ "$DISTR" = "debian" ]; then
+    apt-get -y install dirmngr
+    echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' > /etc/apt/sources.list.d/ansible.list
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367
+
+    if [ "$RELEASE" = "jessie" ]; then
+      echo 'deb http://ftp.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
+      apt-get update
+    fi
   fi
 EOT
 
