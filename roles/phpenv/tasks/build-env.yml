@@ -17,19 +17,9 @@
     state: latest
   when: ansible_os_family == 'RedHat'
 
-- name: libzip-devel installed
-  package:
-    name:
-      - libzip-devel
-    state: latest
-  when:
-    - ansible_os_family == 'RedHat'
-    - php_version is not match("^7.4")
-
 - include_tasks: libzip.yml
   when:
     - ansible_os_family == 'RedHat'
-    - php_version is match("^7.4")
 
 - name: build environment (Debian)
   package:

@@ -7,18 +7,19 @@
 
   - name: get libzip
     get_url:
-      url: https://libzip.org/download/libzip-1.7.3.tar.gz
-      dest: /tmp/libzip-1.7.3.tar.gz
+      url: https://libzip.org/download/libzip-1.8.0.tar.gz
+      dest: /tmp/libzip-1.8.0.tar.gz
+      timeout: 60
 
   - name: libzip unarchived
     unarchive:
-      src: /tmp/libzip-1.7.3.tar.gz
+      src: /tmp/libzip-1.8.0.tar.gz
       dest: /tmp
 
   - name: config and make install
     command: "{{ item }}"
     args:
-      chdir: /tmp/libzip-1.7.3
+      chdir: /tmp/libzip-1.8.0
     with_items:
       - cmake3 -DCMAKE_INSTALL_PREFIX=/usr/local/libzip
       - make
@@ -32,12 +33,12 @@
 
   when:
     - ansible_distribution_major_version is version('7', '==')
+    - php_version　is version('7.4', '>=')
 
-- name: latest libzip installed
-  yum:
+- name: libzip-devel installed
+  package:
     name:
-      - libzip
       - libzip-devel
     state: latest
   when:
-    - ansible_distribution_major_version is version('8', '==')
+    - php_version is version('7.4', '<')
