@@ -33,7 +33,7 @@
 
   when:
     - ansible_distribution_major_version is version('7', '==')
-    - php_version　is version('7.4', '>=')
+    - php_version is version('7.4', '>=')
 
 - name: libzip-devel installed
   package:
