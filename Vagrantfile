@@ -32,6 +32,8 @@ forwarded_port        = [
 vbguest_auto_update   = true
 synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
+backup_database       = false
+
 ansible_install       = true
 ansible_install_mode  = :default    # :default|:pip
 ansible_version       = 'latest'    # requires :pip in ansible_install_mode
@@ -189,6 +191,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.provision :serverspec do |spec|
         spec.pattern = "spec/localhost/*_spec.rb"
       end
+    end
+  end
+
+  if backup_database
+    config.trigger.before [:destroy, :halt] do |trigger|
+      trigger.name = "Backup database"
+      trigger.warn = "Dumping database"
+      trigger.run_remote = { inline: "sudo -u vagrant -i -- /vagrant/command/db_backup.sh" }
     end
   end
 
