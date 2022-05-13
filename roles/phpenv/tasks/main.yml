@@ -118,7 +118,8 @@
     - server == "apache"
     - fastcgi == "none"
 
-- block:
+- name: apache php-fpm
+  block:
   - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
     command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.14) }} -m php-fpm -s tcp
     when:

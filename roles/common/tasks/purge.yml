@@ -1,15 +1,14 @@
 ---
-- block:
-  - name: purged package
-    package:
-      name:
-        - apport
-        - apport-symptoms
-        - fwupd
-        - nano
-        - popularity-contest
-        - unattended-upgrades
-        - update-manager-core
-      state: absent
+- name: purged package
+  package:
+    name:
+      - apport
+      - apport-symptoms
+      - fwupd
+      - nano
+      - popularity-contest
+      - unattended-upgrades
+      - update-manager-core
+    state: absent
   when:
     - ansible_os_family == 'Debian'

@@ -7,7 +7,8 @@
     path: /vagrant/config/mariadb.my.cnf.j2
   register: is_custom_my_conf
 
-- block:
+- name: RedHat
+  block:
   - name: custom my.cnf changed
     template:
       src: /vagrant/config/mariadb.my.cnf.j2
@@ -23,7 +24,8 @@
     when: not is_custom_my_conf.stat.exists
   when: ansible_os_family == 'RedHat'
 
-- block:
+- name: Debian
+  block:
   - name: custom my.cnf changed
     template:
       src: /vagrant/config/mariadb.my.cnf.j2

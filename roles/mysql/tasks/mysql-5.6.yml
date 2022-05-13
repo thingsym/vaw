@@ -1,5 +1,6 @@
 ---
-- block:
+- name: RedHat
+  block:
   - name: mysql repository installed (CentOS/RHEL 6)
     yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rpm
@@ -36,7 +37,8 @@
       state: latest
   when: ansible_os_family == 'RedHat'
 
-- block:
+- name: Debian
+  block:
   - name: set mysql-apt-config to mysql version 5.6
     debconf:
       name: mysql-apt-config

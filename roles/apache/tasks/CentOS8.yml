@@ -61,7 +61,8 @@
     mode: 0644
   notify: httpd restarted
 
-- block:
+- name: enables httpd module mpm_prefork
+  block:
   - name: disables httpd module mpm_event
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
@@ -77,7 +78,8 @@
     notify: httpd restarted
   when: apache_mpm == 'prefork'
 
-- block:
+- name: enables httpd module mpm_event
+  block:
   - name: disables httpd module mpm_prefork
     replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf

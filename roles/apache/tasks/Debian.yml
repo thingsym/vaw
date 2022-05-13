@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Ubuntu version 20
+  block:
   - name: apache2 repository installed (Debian)
     apt_repository:
       repo: ppa:ondrej/apache2
@@ -11,7 +12,8 @@
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('20', '==')
 
-- block:
+- name: Ubuntu version 18
+  block:
   - name: apache2 repository installed (Debian)
     apt_repository:
       repo: ppa:ondrej/apache2
@@ -23,7 +25,8 @@
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('18', '==')
 
-- block:
+- name: Ubuntu version 16
+  block:
   - name: apache2 repository installed (Debian)
     apt_repository:
       repo: ppa:ondrej/apache2
@@ -112,7 +115,8 @@
   notify: apache2 restarted
   when: not is_custom_apache2_000_default.stat.exists
 
-- block:
+- name: ssl.conf settings
+  block:
   - name: stat custom default-ssl.conf
     stat:
       path: /vagrant/config/apache2.default-ssl.conf.j2
@@ -135,8 +139,10 @@
     when: not is_custom_apache2_default_ssl.stat.exists
   when: ssl
 
-- block:
-  - block:
+- name: Debian
+  block:
+  - name: enables Apache2 module mpm_prefork
+    block:
     - name: disables Apache2 module mpm_event
       command: sudo a2dismod mpm_event
       notify: apache2 restarted
@@ -146,7 +152,8 @@
       notify: apache2 restarted
     when: apache_mpm == 'prefork'
 
-  - block:
+  - name: enables Apache2 module mpm_event
+    block:
     - name: disables Apache2 module mpm_prefork
       command: sudo a2dismod mpm_prefork
       notify: apache2 restarted
@@ -156,7 +163,8 @@
       notify: apache2 restarted
     when: apache_mpm == 'event'
 
-  - block:
+  - name: module settings
+    block:
     - name: enables Apache2 module rewrite
       command: sudo a2enmod rewrite
       notify: apache2 restarted
@@ -179,8 +187,10 @@
     notify: apache2 restarted
   when: ansible_distribution == 'Debian'
 
-- block:
-  - block:
+- name: Ubuntu
+  block:
+  - name: enables Apache2 module mpm_prefork
+    block:
     - name: disables Apache2 module mpm_event
       apache2_module:
         name: mpm_event
@@ -196,7 +206,8 @@
       notify: apache2 restarted
     when: apache_mpm == 'prefork'
 
-  - block:
+  - name: enables Apache2 module mpm_event
+    block:
     - name: disables Apache2 module mpm_prefork
       apache2_module:
         name: mpm_prefork
@@ -212,7 +223,8 @@
       notify: apache2 restarted
     when: apache_mpm == 'event'
 
-  - block:
+  - name: module settings
+    block:
     - name: enables Apache2 module rewrite
       apache2_module:
         name: rewrite

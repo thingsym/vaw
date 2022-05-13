@@ -1,5 +1,6 @@
 ---
-- block:
+- name: CentOS
+  block:
   - name: MariaDB 10.2 repository added
     yum_repository:
       name: mariadb
@@ -20,7 +21,8 @@
       state: latest
     when: ansible_distribution_major_version is version('7', '<=')
 
-  - block:
+  - name: version 8 later
+    block:
     - name: boost-program-options installed
       dnf:
         name: boost-program-options
@@ -47,7 +49,8 @@
 
   when: ansible_distribution == 'CentOS'
 
-- block:
+- name: Ubuntu
+  block:
   - name: MariaDB apt_key installed (Ubuntu/focal)
     apt_key:
       keyserver: keyserver.ubuntu.com
@@ -88,7 +91,8 @@
       state: latest
   when: ansible_distribution == 'Ubuntu'
 
-- block:
+- name: Debian
+  block:
   - name: MariaDB apt_key installed (Debian/buster)
     apt_key:
       keyserver: hkp://keyserver.ubuntu.com:80
