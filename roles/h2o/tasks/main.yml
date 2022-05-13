@@ -1,5 +1,6 @@
 ---
-- block:
+- name: RedHat
+  block:
   - name: bintray-tatsushid-h2o-rpm.repo repository added (CentOS/RHEL)
     yum_repository:
       name: bintray-tatsushid-h2o-rpm
@@ -13,11 +14,10 @@
       disable_gpg_check: yes
   when: ansible_os_family == 'RedHat'
 
-- block:
-  - name: h2o installed
-    package:
-      name: h2o
-      state: latest
+- name: h2o installed
+  package:
+    name: h2o
+    state: latest
   when: ansible_os_family == 'Debian'
 
 - name: stat /var/run/h2o

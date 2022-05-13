@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.7] - 2022.05.13
+
+* fix memory to 2GB
+* fix space
+* fix lint unnamed-task
+* add database backup using vagrant trigger
+* fix installing libzip for php 8.0
+
 ## [0.8.6] - 2022.04.19
 
 * add .yamllint for ansible-lint

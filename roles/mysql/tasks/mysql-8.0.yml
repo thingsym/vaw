@@ -1,5 +1,6 @@
 ---
-- block:
+- name: RedHat
+  block:
   - name: mysql repository installed (CentOS/RHEL 6)
     yum:
       name: https://dev.mysql.com/get/mysql80-community-release-el6-1.noarch.rpm
@@ -33,7 +34,8 @@
       state: latest
   when: ansible_os_family == 'RedHat'
 
-- block:
+- name: Debian
+  block:
   - name: set mysql-apt-config to mysql version 8.0
     debconf:
       name: mysql-apt-config

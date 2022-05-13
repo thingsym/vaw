@@ -9,6 +9,6 @@ else
 	echo "create /vagrant/backup"
 fi
 
-wp db export /vagrant/backup/backup-`date +%Y%m%d%H%M%S`.sql
+wp db export /vagrant/backup/backup-`date +%Y%m%d%H%M%S`.sql --path=/var/www/html
 
 exit 0

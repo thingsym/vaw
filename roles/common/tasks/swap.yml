@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Ubuntu
+  block:
   - name: create swap space
     command: dd if=/dev/zero of=/swapfile bs=1M count=1024
 

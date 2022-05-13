@@ -61,7 +61,8 @@
     path: "{{ nodenv_dir }}/bin/nodenv"
   register: is_nodenv
 
-- block:
+- name: exists is_nodenv
+  block:
   - name: nodejs installed via nodenv
     command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('14.15.3') }}"
     become: yes

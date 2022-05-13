@@ -1,5 +1,6 @@
 ---
-- block:
+- name: RedHat version 7 early
+  block:
   - name: older git remove
     package:
       name: git

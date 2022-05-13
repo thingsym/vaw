@@ -1,16 +1,16 @@
 ---
-- block:
-  - name: yarn.repo repository added (CentOS/RHEL)
-    yum_repository:
-      name: yarn
-      description: Yarn Repository
-      baseurl: https://dl.yarnpkg.com/rpm/
-      gpgkey: https://dl.yarnpkg.com/rpm/pubkey.gpg
-      enabled: yes
-      gpgcheck: yes
+- name: yarn.repo repository added (CentOS/RHEL)
+  yum_repository:
+    name: yarn
+    description: Yarn Repository
+    baseurl: https://dl.yarnpkg.com/rpm/
+    gpgkey: https://dl.yarnpkg.com/rpm/pubkey.gpg
+    enabled: yes
+    gpgcheck: yes
   when: ansible_os_family == 'RedHat'
 
-- block:
+- name: Debian
+  block:
   - name: GPG key added (Debian)
     apt_key:
       url: https://dl.yarnpkg.com/debian/pubkey.gpg
