@@ -27,6 +27,6 @@
     become_user: vagrant
   when:
     - is_xml_import.stat.exists
-    - is_xml_import.stat.isdir == false
+    - not is_xml_import.stat.isdir
     - import_db_data == ''
-    - theme_unit_test == false
+    - not theme_unit_test
