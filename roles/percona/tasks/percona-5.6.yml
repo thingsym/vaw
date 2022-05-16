@@ -1,5 +1,6 @@
 ---
-- block:
+- name: RedHat
+  block:
   - name: percona repository installed (CentOS/RHEL)
     yum:
       name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
@@ -16,7 +17,8 @@
       state: latest
   when: ansible_os_family == 'RedHat'
 
-- block:
+- name: Debian
+  block:
   - name: percona-release repository installed (Debian)
     apt:
       deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"

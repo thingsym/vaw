@@ -31,7 +31,8 @@
 - include_tasks: wrk.yml
 - include_tasks: mysqltuner.yml
 
-- block:
+- name: sync-dir
+  block:
   - include_tasks: opcache-viewer.yml
   - include_tasks: webgrind.yml
   tags: sync-dir

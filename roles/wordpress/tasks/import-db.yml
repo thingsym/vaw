@@ -4,13 +4,14 @@
     path: "{{ import_db_data }}"
   register: is_db_import
 
-- block:
+- name: import db data
+  block:
   - name: database rest
     command: wp --path={{ WP_PATH }} db reset --yes
     become: yes
     become_user: vagrant
 
-  - name: db data import
+  - name: import db data
     command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
     become: yes
     become_user: vagrant

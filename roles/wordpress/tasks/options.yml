@@ -1,5 +1,6 @@
 ---
-- block:
+- name: permalink structure
+  block:
   - name: set permalink structure
     command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
     become: yes

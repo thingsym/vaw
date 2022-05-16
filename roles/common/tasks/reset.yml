@@ -48,7 +48,8 @@
   ignore_errors: yes
   when: database != 'mysql'
 
-- block:
+- name: mariadb
+  block:
   - name: removed MariaDB
     package:
       name: MariaDB*
@@ -72,7 +73,8 @@
       state: absent
   when: database != 'mariadb'
 
-- block:
+- name: mariadb
+  block:
   - name: removed Percona
     package:
       name: Percona*

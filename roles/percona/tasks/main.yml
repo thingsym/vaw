@@ -67,7 +67,8 @@
     enabled: yes
   when: ansible_os_family == 'Debian'
 
-- block:
+- name: RedHat 5.7
+  block:
   - name: get temporary password from mysqld.log
     shell: cat /var/log/mysql/mysqld.log | grep "temporary password" | awk '{print $11}'
     register: mysql_temp_password

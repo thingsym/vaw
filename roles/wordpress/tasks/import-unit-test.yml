@@ -28,7 +28,8 @@
     path: "/tmp/theme-unit-test-data.xml"
   register: is_unit_test
 
-- block:
+- name: import theme-unit-test-data.xml
+  block:
   - name: plugin install wordpress-importer
     command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
     become: yes
