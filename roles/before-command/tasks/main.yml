@@ -8,7 +8,8 @@
   command: /vagrant/command/before_provision.sh
   when: before_command.stat.exists
 
-- block:
+- name: sync-dir
+  block:
   - name: stat before_provision.sh
     stat:
       path: /vagrant/command/before_provision.sh

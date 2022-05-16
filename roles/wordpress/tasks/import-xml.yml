@@ -4,7 +4,8 @@
     path: "{{ import_xml_data }}"
   register: is_xml_import
 
-- block:
+- name: import xml data
+  block:
   - name: database rest
     command: wp --path={{ WP_PATH }} db reset --yes
     become: yes
