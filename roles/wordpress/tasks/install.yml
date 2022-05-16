@@ -151,7 +151,8 @@
     replace: "// define( 'FORCE_SSL_LOGIN', true );\ndefine( 'FORCE_SSL_ADMIN', true );\n\n/* That"
   when: ssl
 
-- block:
+- name: subdirectory install
+  block:
   - name: change wp option for subdirectory install
     command: wp --path={{ WP_PATH }} option update siteurl 'http://{{ HOSTNAME }}{{ wp_dir }}'
     become: yes

@@ -4,7 +4,8 @@
     path: "{{ import_backwpup.path }}"
   register: is_import_backwpup
 
-- block:
+- name: exists is_import_backwpup
+  block:
   - name: mkdir /tmp/backwpup
     file:
       path: /tmp/backwpup
@@ -21,7 +22,8 @@
       path: "/tmp/backwpup/{{ import_backwpup.db_data_file }}"
     register: is_db_data_file
 
-  - block:
+  - name: exists is_db_data_file
+    block:
     - name: database rest
       command: wp --path={{ WP_PATH }} db reset --yes
       become: yes
@@ -44,7 +46,8 @@
       path: "/tmp/backwpup/{{ import_backwpup.xml_data_file }}"
     register: is_xml_data_file
 
-  - block:
+  - name: exists is_xml_data_file
+    block:
     - name: database rest
       command: wp --path={{ WP_PATH }} db reset --yes
       become: yes
