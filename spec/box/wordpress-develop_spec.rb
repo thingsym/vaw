@@ -60,14 +60,6 @@ if property["develop_tools"] then
    its(:exit_status) { should eq 0 }
   end
 
-  describe file('/usr/local/share/wp-i18n/makepot.php') do
-    it { should be_file }
-  end
-
-  describe file('/home/vagrant/.bashrc_alias') do
-    its(:content) { should match /alias makepot\.php="\/usr\/bin\/php \/usr\/local\/share\/wp\-i18n\/makepot\.php"/ }
-  end
-
   describe command('cachetool -V') do
     let(:disable_sudo) { true }
     its(:exit_status) { should eq 0 }
