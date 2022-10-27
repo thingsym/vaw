@@ -176,6 +176,8 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 	vbguest_auto_update   = true
 	synced_folder_type    = 'virtualbox' # virtualbox|nfs|rsync|smb
 
+	backup_database       = false
+
 	ansible_install_mode  = :default    # :default|:pip
 	ansible_version       = 'latest'    # only :pip required
 
@@ -202,6 +204,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 * `vbguest_auto_update` whether to update VirtualBox Guest Additions (default: `true` / value: `true` | `false`)
 トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` 共有フォルダの種類 (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
+* `backup_database` vagrant destroy or halt の時、自動バックアップ (default: `false` / value: `true` | `false`)
 * `ansible_install_mode` (required) Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
