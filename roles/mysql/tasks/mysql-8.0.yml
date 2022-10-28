@@ -41,7 +41,7 @@
       name: mysql-apt-config
       question: "{{ item.question }}"
       value: "{{ item.value }}"
-      vtype: "{{ item.vtype | default ('select') }}"
+      vtype: "{{ item.vtype | default('select') }}"
     with_items:
       - question: mysql-apt-config/select-server
         value: mysql-8.0
