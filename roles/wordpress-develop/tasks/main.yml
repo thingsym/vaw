@@ -19,8 +19,6 @@
   become: yes
   become_user: vagrant
 
-- include_tasks: wp-i18n.yml
-
 - include_tasks: daemonize.yml
   when:
     - ansible_os_family == 'RedHat'
