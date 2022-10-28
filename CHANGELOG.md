@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.8.8] - 2022.10.28
+
+* bump up php version
+* remove makepot.php
+
 ## [0.8.7] - 2022.05.13
 
 * fix memory to 2GB
