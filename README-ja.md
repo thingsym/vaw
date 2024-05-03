@@ -94,8 +94,7 @@ OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**
 	cd vaw-x.x.x
 	mkcert -install
 	mkdir mkcert
-	cd mkcert
-	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
+	mkcert -cert-file ./mkcert/cert.pem -key-file ./mkcert/privkey.pem <vm_hostname>
 
 ### 5. 仮想環境を立ち上げます
 

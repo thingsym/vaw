@@ -97,8 +97,7 @@ Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/F
 	cd vaw-x.x.x
 	mkcert -install
 	mkdir mkcert
-	cd mkcert
-	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
+	mkcert -cert-file ./mkcert/cert.pem -key-file ./mkcert/privkey.pem <vm_hostname>
 
 ### 5. Launch a virtual environment
 
