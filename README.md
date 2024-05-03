@@ -313,7 +313,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	http_protocol      : https   # http|https
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.4.14
+	php_version        : 7.4.33
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -469,7 +469,7 @@ Disable the setting case
 
 * `ssl` WordPress administration over SSL enabled flag (default: `true` / value: `true` | `false`)
 * `http_protocol` HTTP protocol (default: `https` / value: `http` | `https`)
-* `php_version` version of PHP (default: `7.4.14`)
+* `php_version` version of PHP (default: `7.4.33`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
 
