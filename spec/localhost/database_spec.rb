@@ -97,47 +97,9 @@ elsif property["database"] == 'mariadb' then
     it { should be_running }
   end
 
-elsif property["database"] == 'percona' then
-
-  describe command('mysqld -V') do
-    its(:stdout) { should match /#{Regexp.escape('5.7')}/ }
-  end
-
-  describe yumrepo('percona-release-noarch'), :if => os[:family] == 'redhat' do
-    it { should exist }
-  end
-
-  describe package('Percona-Server-server-57'), :if => os[:family] == 'redhat' do
-    it { should be_installed }
-    it { should be_installed.with_version '5.7' }
-  end
-
-  describe service('mysql'), :if => os[:family] == 'redhat' && os[:release] == '6' do
-    it { should be_enabled }
-    it { should be_running }
-  end
-
-  describe service('mysqld'), :if => os[:family] == 'redhat' && os[:release] == '7' do
-    it { should be_enabled }
-    it { should be_running }
-  end
-
-  describe package('percona-server-server-5.7'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
-    it { should be_installed }
-  end
-
-  describe command('apt-cache policy | grep percona'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
-    its(:stdout) { should match /#{Regexp.escape('percona')}/ }
-  end
-
-  describe service('mysql'), :if => os[:family] == 'debian' || os[:family] == 'ubuntu' do
-    it { should be_enabled }
-    it { should be_running }
-  end
-
 end
 
-if property["database"] == 'mysql' || property["database"] == 'mariadb' || property["database"] == 'percona' then
+if property["database"] == 'mysql' || property["database"] == 'mariadb' then
   describe file('/etc/my.cnf'), :if => os[:family] == 'redhat' do
     it { should be_file }
     it { should contain("skip-character-set-client-handshake") }

@@ -13,7 +13,6 @@
     - { role: mkcert,              tags: [mkcert] }
     - { role: mysql,               tags: [mysql],                when: "database == 'mysql'" }
     - { role: mariadb,             tags: [mariadb],              when: "database == 'mariadb'" }
-    - { role: percona,             tags: [percona],              when: "database == 'percona'" }
     - { role: apache,              tags: [apache],               when: "server == 'apache'" }
     - { role: nginx,               tags: [nginx],                when: "server == 'nginx'" }
     - { role: h2o,                 tags: [h2o],                  when: "server == 'h2o'" }

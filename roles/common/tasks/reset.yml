@@ -72,18 +72,3 @@
       path: /etc/systemd/system/mysqld.service
       state: absent
   when: database != 'mariadb'
-
-- name: mariadb
-  block:
-  - name: removed Percona
-    package:
-      name: Percona*
-      state: absent
-    ignore_errors: yes
-
-  - name: removed Percona
-    package:
-      name: percona*
-      state: absent
-    ignore_errors: yes
-  when: database != 'percona'
