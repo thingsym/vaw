@@ -41,7 +41,7 @@ describe package('python-pip'), :if => os[:family] == 'ubuntu' && os[:release] =
   it { should be_installed }
 end
 
-describe package('python-pip'), :if => os[:family] == 'debian' do
+describe package('python3-pip'), :if => os[:family] == 'debian' do
   it { should be_installed }
 end
 
