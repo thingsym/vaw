@@ -3,12 +3,13 @@
 
 ## Vagrant Settings ##
 
+# Debian Long Term Support -  See https://wiki.debian.org/LTS
 # vm_box                = 'debian/bookworm64'  # Debian 12.0
-# vm_box                = 'debian/bullseye64'  # Debian 11.0
-vm_box                = 'debian/buster64'      # Debian 10.0
-# vm_box                = 'debian/stretch64'   # Debian 9.0 # Note: Ansible version 2.2.x installed, so install via pip instead.
+vm_box                = 'debian/bullseye64'    # Debian 11.0
+# vm_box                = 'debian/buster64'    # Debian 10.0 # Deprecated ended 2024-06-30
+# vm_box                = 'debian/stretch64'   # Debian 9.0 # Deprecated ended 2022-06-30 Note: Ansible version 2.2.x installed, so install via pip instead.
 # vm_box                = 'debian/jessie64'    # Debian 8.0 # Deprecated ended 2020-06-30
-# vm_box                = 'ubuntu/focal64'     # Ubuntu 24.04
+# Ubuntu release cycle - See https://ubuntu.com/about/release-cycle
 # vm_box                = 'ubuntu/jammy64'     # Ubuntu 22.04
 # vm_box                = 'ubuntu/focal64'     # Ubuntu 20.04
 # vm_box                = 'ubuntu/bionic64'    # Ubuntu 18.04
