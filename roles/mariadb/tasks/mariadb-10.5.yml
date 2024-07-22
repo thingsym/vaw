@@ -2,11 +2,11 @@
 - name: CentOS
   when: ansible_distribution == 'CentOS'
   block:
-  - name: MariaDB 5.5 repository added
+  - name: MariaDB 10.5 repository added
     ansible.builtin.yum_repository:
       name: mariadb
-      description: MariaDB 5.5 centos repository
-      baseurl: "http://yum.mariadb.org/5.5/centos{{ ansible_distribution_major_version }}-amd64"
+      description: MariaDB 10.5 centos repository
+      baseurl: "http://yum.mariadb.org/10.5/centos{{ ansible_distribution_major_version }}-amd64"
       gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
       gpgcheck: yes
 
@@ -30,7 +30,11 @@
         name: boost-program-options
         state: latest
 
-    - name: MariaDB 5.5 installed (CentOS/RHEL 8)
+    - name: it not been implemented yet.
+      ansible.builtin.fail:
+        msg: Not enough packages are available.
+
+    - name: MariaDB 10.5 installed (CentOS/RHEL 8)
       ansible.builtin.dnf:
         name:
           - MariaDB-server
@@ -51,14 +55,8 @@
 - name: Ubuntu
   when: ansible_distribution == 'Ubuntu'
   block:
-  - name: MariaDB apt_key installed (Ubuntu/focal)
-    when: ansible_distribution_major_version is version('20', '==')
-    ansible.builtin.apt_key:
-      keyserver: keyserver.ubuntu.com
-      id: "0xF1656F24C74CD1D8"
-
-  - name: MariaDB apt_key installed (Ubuntu/bionic)
-    when: ansible_distribution_major_version is version('18', '==')
+  - name: MariaDB apt_key installed (Ubuntu/xenial or later)
+    when: ansible_distribution_major_version is version('16', '>=')
     ansible.builtin.apt_key:
       keyserver: keyserver.ubuntu.com
       id: "0xF1656F24C74CD1D8"
@@ -69,16 +67,46 @@
       keyserver: keyserver.ubuntu.com
       id: "0xcbcb082a1bb943db"
 
-  - name: MariaDB 5.5 repository installed
+  - name: MariaDB 10.5 repository installed
     ansible.builtin.apt_repository:
       filename: MariaDB
-      repo: 'deb [arch=amd64,i386,ppc64el] https://deb.mariadb.org/5.5/ubuntu {{ ansible_distribution_release }} main'
+      repo: 'deb [arch=amd64,i386,ppc64el] https://deb.mariadb.org/10.5/ubuntu {{ ansible_distribution_release }} main'
 
-  - name: MariaDB 5.5 installed (Ubuntu)
+  - name: MariaDB 10.5 installed (Ubuntu)
     ansible.builtin.package:
       name:
-        - mariadb-server-5.5
-        - mariadb-client-5.5
+        - mariadb-server-10.5
+        - mariadb-client-10.5
+        - mariadb-common
+        - libmariadbd-dev
+        - libmariadbclient18
+      state: latest
+
+- name: Debian
+  when: ansible_distribution == 'Debian'
+  block:
+  - name: MariaDB apt_key installed (Debian/stretch or later)
+    when: ansible_distribution_major_version is version('9', '>=')
+    ansible.builtin.apt_key:
+      keyserver: hkp://keyserver.ubuntu.com:80
+      id: "0xF1656F24C74CD1D8"
+
+  - name: MariaDB apt_key installed (Debian/jessie)
+    when: ansible_distribution_major_version is version('8', '==')
+    ansible.builtin.apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "0xcbcb082a1bb943db"
+
+  - name: MariaDB 10.5 repository installed
+    ansible.builtin.apt_repository:
+      filename: MariaDB
+      repo: 'deb [arch=amd64,i386] https://deb.mariadb.org/10.5/debian {{ ansible_distribution_release }} main'
+
+  - name: MariaDB 10.5 installed (Debian)
+    ansible.builtin.package:
+      name:
+        - mariadb-server-10.5
+        - mariadb-client-10.5
         - mariadb-common
         - libmariadbd-dev
         - libmariadbclient18
@@ -100,8 +128,8 @@
     name: python3-mysqldb
     state: latest
 
-- name: python-mysqldb installed
+- name: python3-mysqldb installed
   when: ansible_distribution == 'Debian'
   ansible.builtin.package:
-    name: python-mysqldb
+    name: python3-mysqldb
     state: latest
