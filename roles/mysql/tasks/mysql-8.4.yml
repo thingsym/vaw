@@ -23,7 +23,7 @@
   - name: yum-config enable mysql80-community
     ansible.builtin.command: yum-config-manager --enable mysql80-community
 
-  - name: mysql 8.0 installed (CentOS/RHEL)
+  - name: mysql 8.4 installed (CentOS/RHEL)
     ansible.builtin.package:
       name:
         - mysql-community-server
@@ -37,7 +37,7 @@
 - name: Debian
   when: ansible_os_family == 'Debian'
   block:
-  - name: set mysql-apt-config to mysql version 8.0
+  - name: set mysql-apt-config to mysql version 8.4
     ansible.builtin.debconf:
       name: mysql-apt-config
       question: "{{ item.question }}"
@@ -45,27 +45,27 @@
       vtype: "{{ item.vtype | default('select') }}"
     with_items:
       - question: mysql-apt-config/select-server
-        value: mysql-8.0
+        value: mysql-8.4
       - question: mysql-apt-config/select-tools
         value: Enabled
 
   - name: get mysql-apt-config deb
     ansible.builtin.get_url:
-      url: https://dev.mysql.com/get/mysql-apt-config_0.8.18-1_all.deb
-      dest: /tmp/mysql-apt-config_0.8.18-1_all.deb
+      url: https://repo.mysql.com/mysql-apt-config_0.8.32-1_all.deb
+      dest: /tmp/mysql-apt-config_0.8.32-1_all.deb
       mode: "0755"
       timeout: 60
       http_agent: 'Wget'
 
   - name: mysql-apt-config installed (Debian)
     ansible.builtin.apt:
-      deb: /tmp/mysql-apt-config_0.8.18-1_all.deb
+      deb: /tmp/mysql-apt-config_0.8.32-1_all.deb
       force: true
 
-  - name: apt-key update
+  - name: add mysql gpg key
     ansible.builtin.command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
 
-  - name: apt-key update
+  - name: add mysql gpg key
     ansible.builtin.command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3A79BD29
 
   - name: apt-get update

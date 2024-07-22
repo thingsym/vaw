@@ -1,32 +1,33 @@
 ---
 - name: RedHat
+  when: ansible_os_family == 'RedHat'
   block:
   - name: mysql repository installed (CentOS/RHEL 6)
-    yum:
+    when: ansible_distribution_major_version is version('6', '==')
+    ansible.builtin.yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el6-9.noarch.rpm
       disable_gpg_check: yes
-    when: ansible_distribution_major_version is version('6', '==')
 
   - name: mysql repository installed (CentOS/RHEL 7)
-    yum:
+    when: ansible_distribution_major_version is version('7', '==')
+    ansible.builtin.yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
       disable_gpg_check: yes
-    when: ansible_distribution_major_version is version('7', '==')
 
   - name: mysql repository installed (CentOS/RHEL 8)
-    yum:
+    when: ansible_distribution_major_version is version('8', '==')
+    ansible.builtin.yum:
       name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
       disable_gpg_check: yes
-    when: ansible_distribution_major_version is version('8', '==')
 
   - name: yum-config disable mysql57-community
-    command: yum-config-manager --disable mysql57-community
+    ansible.builtin.command: yum-config-manager --disable mysql57-community
 
   - name: yum-config enable mysql56-community
-    command: yum-config-manager --enable mysql56-community
+    ansible.builtin.command: yum-config-manager --enable mysql56-community
 
   - name: mysql 5.6 installed (CentOS/RHEL)
-    package:
+    ansible.builtin.package:
       name:
         - mysql-community-server
         - mysql-community-client
@@ -35,12 +36,12 @@
         - mysql-community-libs
         - MySQL-python
       state: latest
-  when: ansible_os_family == 'RedHat'
 
 - name: Debian
+  when: ansible_os_family == 'Debian'
   block:
   - name: set mysql-apt-config to mysql version 5.6
-    debconf:
+    ansible.builtin.debconf:
       name: mysql-apt-config
       question: "{{ item.question }}"
       value: "{{ item.value }}"
@@ -52,7 +53,8 @@
         value: Enabled
 
   - name: set mysql-apt-config to mysql version 5.7 (only focal)
-    debconf:
+    when: ansible_distribution_major_version is version('20', '==')
+    ansible.builtin.debconf:
       name: mysql-apt-config
       question: "{{ item.question }}"
       value: "{{ item.value }}"
@@ -60,10 +62,10 @@
     with_items:
       - question: mysql-apt-config/select-server
         value: mysql-5.7
-    when: ansible_distribution_major_version is version('20', '==')
 
   - name: set mysql-apt-config to mysql version 5.7 (only bionic)
-    debconf:
+    when: ansible_distribution_major_version is version('18', '==')
+    ansible.builtin.debconf:
       name: mysql-apt-config
       question: "{{ item.question }}"
       value: "{{ item.value }}"
@@ -71,10 +73,10 @@
     with_items:
       - question: mysql-apt-config/select-server
         value: mysql-5.7
-    when: ansible_distribution_major_version is version('18', '==')
 
   - name: set mysql-apt-config to mysql version 5.7 (only xenial)
-    debconf:
+    when: ansible_distribution_major_version is version('16', '==')
+    ansible.builtin.debconf:
       name: mysql-apt-config
       question: "{{ item.question }}"
       value: "{{ item.value }}"
@@ -82,46 +84,44 @@
     with_items:
       - question: mysql-apt-config/select-server
         value: mysql-5.7
-    when: ansible_distribution_major_version is version('16', '==')
 
   - name: mysql-apt-config installed (Debian)
-    apt:
-      deb: https://dev.mysql.com/get/mysql-apt-config_0.8.18-1_all.deb
+    ansible.builtin.apt:
+      deb: https://dev.mysql.com/get/mysql-apt-config_0.8.32-1_all.deb
 
   - name: apt-key update
-    command: apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
+    ansible.builtin.command: apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
 
   - name: apt-get update
-    apt:
+    ansible.builtin.apt:
       update_cache: yes
 
   - name: mysql installed (Debian)
-    package:
+    ansible.builtin.package:
       name:
         - mysql-community-server
         - mysql-community-client
         - mysql-common
       state: latest
-  when: ansible_os_family == 'Debian'
 
 - name: python-mysqldb installed
-  package:
-    name: python-mysqldb
-    state: latest
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('18', '<=')
+  ansible.builtin.package:
+    name: python-mysqldb
+    state: latest
 
 - name: python3-mysqldb installed
-  package:
-    name: python3-mysqldb
-    state: latest
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('20', '>=')
+  ansible.builtin.package:
+    name: python3-mysqldb
+    state: latest
 
 - name: python-mysqldb installed
-  package:
+  when: ansible_distribution == 'Debian'
+  ansible.builtin.package:
     name: python-mysqldb
     state: latest
-  when: ansible_distribution == 'Debian'
