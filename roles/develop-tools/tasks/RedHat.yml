@@ -1,11 +1,11 @@
 ---
 - name: Development Tools installed
-  package:
+  ansible.builtin.package:
     name: "@Development Tools"
     state: present
 
 - name: libraries installed
-  package:
+  ansible.builtin.package:
     name:
       - yum-utils
       - libcurl
@@ -15,15 +15,15 @@
     state: latest
 
 - name: libraries installed (CentOS/RHEL 7 or earlier)
-  package:
+  when: ansible_distribution_major_version is version('7', '<=')
+  ansible.builtin.package:
     name:
       - python2-pip
     state: latest
-  when: ansible_distribution_major_version is version('7', '<=')
 
 - name: libraries installed (CentOS/RHEL 8 or later)
-  package:
+  when: ansible_distribution_major_version is version('8', '>=')
+  ansible.builtin.package:
     name:
       - python3-pip
     state: latest
-  when: ansible_distribution_major_version is version('8', '>=')

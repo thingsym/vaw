@@ -1,6 +1,6 @@
 ---
 - name: git checkout nodenv
-  git:
+  ansible.builtin.git:
     repo: https://github.com/nodenv/nodenv.git
     dest: "{{ nodenv_dir }}"
     version: "master"
@@ -9,19 +9,19 @@
   become_user: vagrant
 
 - name: edit PATH nodenv on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.nodenv/bin:$PATH"
-    mode: 0644
+    mode: "0644"
 
 - name: edit nodenv init on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(nodenv init -)\""
-    mode: 0644
+    mode: "0644"
 
 - name: git checkout node-build
-  git:
+  ansible.builtin.git:
     repo: https://github.com/nodenv/node-build.git
     dest: "{{ nodenv_dir }}/plugins/node-build"
     version: "master"
@@ -30,7 +30,7 @@
   become_user: vagrant
 
 - name: git checkout nodenv-default-packages
-  git:
+  ansible.builtin.git:
     repo: https://github.com/nodenv/nodenv-default-packages.git
     dest: "{{ nodenv_dir }}/plugins/nodenv-default-packages"
     version: "master"
@@ -39,32 +39,33 @@
   become_user: vagrant
 
 - name: touch default-packages
-  file:
+  ansible.builtin.file:
     path: "{{ nodenv_dir }}/default-packages"
-    mode: 0644
+    mode: "0644"
     state: touch
 
 - name: stat default_node_packages
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/default-node-packages.j2
   register: is_default_node_packages
 
 - name: nodenv-default-packages changed
-  template:
+  when: is_default_node_packages.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/default-node-packages.j2
     dest: "{{ nodenv_dir }}/default-packages"
-    mode: 0644
-  when: is_default_node_packages.stat.exists
+    mode: "0644"
 
 - name: stat nodenv
-  stat:
+  ansible.builtin.stat:
     path: "{{ nodenv_dir }}/bin/nodenv"
   register: is_nodenv
 
 - name: exists is_nodenv
+  when: is_nodenv.stat.exists
   block:
   - name: nodejs installed via nodenv
-    command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('14.15.3') }}"
+    ansible.builtin.command: "{{ nodenv_dir }}/bin/nodenv install {{ node_version | default('14.15.3') }}"
     become: yes
     become_user: vagrant
     register: nodenv_result
@@ -73,15 +74,14 @@
       - nodenv_result.rc != 1
 
   - name: nodenv global
-    command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('14.15.3') }}"
+    ansible.builtin.command: "{{ nodenv_dir }}/bin/nodenv global {{ node_version | default('14.15.3') }}"
     become: yes
     become_user: vagrant
 
   - name: nodenv rehash
-    command: "{{ nodenv_dir }}/bin/nodenv rehash"
+    ansible.builtin.command: "{{ nodenv_dir }}/bin/nodenv rehash"
     become: yes
     become_user: vagrant
-  when: is_nodenv.stat.exists
 
 - name: include task
-  include_tasks: yarn.yml
+  ansible.builtin.include_tasks: yarn.yml

@@ -1,21 +1,21 @@
 ---
 - name: iptables stoped and disabled
-  service:
+  ansible.builtin.service:
     name: iptables
     state: stopped
     enabled: no
 
 - name: ntp installed
-  package:
+  ansible.builtin.package:
     name: ntp
 
 - name: ntp started and enabled
-  service:
+  ansible.builtin.service:
     name: ntpd
     state: restarted
     enabled: yes
 
 - name: IUS repository installed (CentOS/RHEL 6)
-  yum:
+  ansible.builtin.yum:
     name: https://repo.ius.io/ius-release-el6.rpm
     disable_gpg_check: yes

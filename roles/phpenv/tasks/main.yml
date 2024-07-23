@@ -1,6 +1,6 @@
 ---
 - name: git checkout phpenv
-  git:
+  ansible.builtin.git:
     repo: https://github.com/phpenv/phpenv.git
     dest: "{{ phpenv_dir }}"
     version: "master"
@@ -10,19 +10,19 @@
   become_user: vagrant
 
 - name: edit PATH phpenv on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.phpenv/bin:$PATH"
-    mode: 0644
+    mode: "0644"
 
 - name: edit phpenv init on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(phpenv init -)\""
-    mode: 0644
+    mode: "0644"
 
 - name: git checkout php-build
-  git:
+  ansible.builtin.git:
     repo: https://github.com/php-build/php-build.git
     dest: "{{ phpenv_dir }}/plugins/php-build"
     version: "master"
@@ -31,7 +31,7 @@
   become_user: vagrant
 
 - name: git checkout phpenv-composer
-  git:
+  ansible.builtin.git:
     repo: https://github.com/ngyuki/phpenv-composer.git
     dest: "{{ phpenv_dir }}/plugins/phpenv-composer"
     version: "master"
@@ -40,127 +40,129 @@
   become_user: vagrant
 
 - name: git checkout phpenv-apache-version
-  git:
+  when: server == 'apache'
+  ansible.builtin.git:
     repo: https://github.com/thingsym/phpenv-apache-version.git
     dest: "{{ phpenv_dir }}/plugins/phpenv-apache-version"
     version: "master"
     force: yes
   become: yes
   become_user: vagrant
-  when: server == 'apache'
 
-- include_tasks: build-env.yml
+- name: include build-env
+  ansible.builtin.include_tasks: build-env.yml
 
 - name: stat custom php-build.default_configure_options.j2
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/php-build.default_configure_options.j2
   register: is_custom_default_configure_options
 
 - name: custom default_configure_options changed
-  template:
+  when: is_custom_default_configure_options.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/php-build.default_configure_options.j2
     dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
-    mode: 0644
-  when: is_custom_default_configure_options.stat.exists
+    mode: "0644"
 
 - name: set default_configure_options
-  template:
+  when: not is_custom_default_configure_options.stat.exists
+  ansible.builtin.template:
     src: php-build.default_configure_options.j2
     dest: "{{ phpenv_dir }}/plugins/php-build/share/php-build/default_configure_options"
-    mode: 0644
-  when: not is_custom_default_configure_options.stat.exists
+    mode: "0644"
 
 - name: stat libphp5.so
-  stat:
+  ansible.builtin.stat:
     path: /usr/lib64/httpd/modules/libphp5.so
   register: is_libphp5_path
 
 - name: change owner and group
-  file:
+  when: is_libphp5_path.stat.exists
+  ansible.builtin.file:
     path: /usr/lib64/httpd/modules/libphp5.so
     owner: vagrant
     group: vagrant
-    mode: 0644
-  when: is_libphp5_path.stat.exists
+    mode: "0644"
 
 - name: stat libphp7.so
-  stat:
+  ansible.builtin.stat:
     path: /usr/lib64/httpd/modules/libphp7.so
   register: is_libphp7_path
 
 - name: change owner and group
-  file:
+  when: is_libphp7_path.stat.exists
+  ansible.builtin.file:
     path: /usr/lib64/httpd/modules/libphp7.so
     owner: vagrant
     group: vagrant
-    mode: 0644
-  when: is_libphp7_path.stat.exists
+    mode: "0644"
 
 - name: touch php.log
-  file:
+  ansible.builtin.file:
     path: /var/log/php.log
     state: touch
-    mode: 0666
+    mode: "0666"
 
 - name: mkdir enabled_by_admin for Debian
-  file:
-    path: /var/lib/apache2/module/enabled_by_admin
-    state: directory
-    owner: root
-    mode: 0755
   when:
     - ansible_distribution == 'Debian'
     - server == "apache"
+  ansible.builtin.file:
+    path: /var/lib/apache2/module/enabled_by_admin
+    state: directory
+    owner: root
+    mode: "0755"
 
 - name: php installed via phpenv.sh (mod_php)
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m mod_php
   when:
     - server == "apache"
     - fastcgi == "none"
+  ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m mod_php
 
 - name: apache php-fpm
-  block:
-  - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
-    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm -s tcp
-    when:
-      - ansible_os_family == 'RedHat'
-      - ansible_distribution_major_version is version('6', '==')
-
-  - name: php installed via phpenv.sh (php-fpm / CentOS7 or later and apache only)
-    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
-    when:
-      - ansible_os_family == 'RedHat'
-      - ansible_distribution_major_version is version('7', '>=')
-
-  - name: php installed via phpenv.sh (php-fpm / Debian and apache)
-    command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
-    when: ansible_os_family == 'Debian'
   when:
     - server == "apache"
     - fastcgi == "php-fpm"
+  block:
+  - name: php installed via phpenv.sh (php-fpm tcp connection / CentOS6 and apache only)
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version is version('6', '==')
+    ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm -s tcp
+
+  - name: php installed via phpenv.sh (php-fpm / CentOS7 or later and apache only)
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version is version('7', '>=')
+    ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
+
+  - name: php installed via phpenv.sh (php-fpm / Debian and apache)
+    when: ansible_os_family == 'Debian'
+    ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
 
 - name: php installed via phpenv.sh (php-fpm)
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
   when:
     - server != "apache"
     - fastcgi == "php-fpm"
+  ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }} -m php-fpm
 
 - name: php installed via phpenv.sh
-  command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }}
   when: not ( ( server == "apache" and fastcgi == "none" ) or fastcgi == "php-fpm" )
+  ansible.builtin.command: sudo -u vagrant -i -- /vagrant/command/phpenv.sh -v {{ php_version | default(7.4.33) }}
 
-- include_tasks: php-fpm.yml
+- name: include php-fpm
   when: fastcgi == "php-fpm"
+  ansible.builtin.include_tasks: php-fpm.yml
 
 - name: create symbolic link
-  file:
+  ansible.builtin.file:
     src: "{{ phpenv_dir }}/shims/php"
     dest: /usr/bin/php
     state: link
     force: yes
 
 - name: create symbolic link
-  file:
+  ansible.builtin.file:
     src: "{{ phpenv_dir }}/shims/php-cgi"
     dest: /usr/bin/php-cgi
     state: link

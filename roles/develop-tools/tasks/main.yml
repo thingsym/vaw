@@ -1,10 +1,11 @@
 ---
-- name: include task
-  include_tasks: '{{ ansible_os_family }}.yml'
+- name: include ansible_os_family
+  ansible.builtin.include_tasks: '{{ ansible_os_family }}.yml'
 
-- include_tasks: peco.yml
+- name: include peco
+  ansible.builtin.include_tasks: peco.yml
 
 - name: zstd installed
-  package:
+  ansible.builtin.package:
     name: zstd
     state: latest

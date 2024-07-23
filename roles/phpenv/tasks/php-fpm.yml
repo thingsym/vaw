@@ -1,6 +1,6 @@
 ---
 - name: php-fpm enabled
-  service:
+  ansible.builtin.service:
     name: php-fpm
     enabled: yes
   notify: php-fpm restarted

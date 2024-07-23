@@ -1,22 +1,25 @@
 ---
 - name: Ubuntu
+  when:
+    - ansible_swaptotal_mb < 1
+    - ansible_distribution == 'Ubuntu'
   block:
   - name: create swap space
-    command: dd if=/dev/zero of=/swapfile bs=1M count=1024
+    ansible.builtin.command: dd if=/dev/zero of=/swapfile bs=1M count=1024
 
   - name: make swap
-    command: mkswap /swapfile
+    ansible.builtin.command: mkswap /swapfile
 
   - name: chmod 600
-    file:
+    ansible.builtin.file:
       path: /swapfile
-      mode: 0600
+      mode: "0600"
 
   - name: swapon
-    command: swapon /swapfile
+    ansible.builtin.command: swapon /swapfile
 
   - name: mount swapfile
-    mount:
+    ansible.posix.mount:
       src: /swapfile
       name: swap
       fstype: swap
@@ -24,7 +27,3 @@
       passno: 0
       dump: 0
       state: present
-
-  when:
-    - ansible_swaptotal_mb < 1
-    - ansible_distribution == 'Ubuntu'

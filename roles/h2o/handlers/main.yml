@@ -1,5 +1,5 @@
 ---
 - name: h2o restarted
-  service:
+  ansible.builtin.service:
     name: h2o
     state: restarted

@@ -1,11 +1,11 @@
 ---
 - name: build-essential installed
-  package:
+  ansible.builtin.package:
     name: build-essential
     state: latest
 
 - name: libraries installed
-  package:
+  ansible.builtin.package:
     name:
       - patch
       - pkg-config
@@ -19,23 +19,23 @@
     state: latest
 
 - name: python-pip installed
-  package:
-    name: python-pip
-    state: latest
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('18', '<=')
+  ansible.builtin.package:
+    name: python-pip
+    state: latest
 
 - name: python3-pip installed
-  package:
-    name: python3-pip
-    state: latest
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('20', '>=')
-
-- name: python3-pip installed
-  package:
+  ansible.builtin.package:
     name: python3-pip
     state: latest
+
+- name: python3-pip installed
   when: ansible_distribution == 'Debian'
+  ansible.builtin.package:
+    name: python3-pip
+    state: latest

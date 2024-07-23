@@ -1,15 +1,15 @@
 ---
 - name: libselinux-python installed
-  package:
+  ansible.builtin.package:
     name: libselinux-python
     state: latest
 
 - name: disable selinux
-  selinux:
+  ansible.posix.selinux:
     state: disabled
   register: is_selinux
 
 - name: checking SELinux is turned off
-  fail:
-    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"
   when: is_selinux.state == 'enforcing'
+  ansible.builtin.fail:
+    msg: "SELinux is turned off. please run again, 'vagrant reload --provision'"

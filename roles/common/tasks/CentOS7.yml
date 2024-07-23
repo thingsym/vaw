@@ -1,21 +1,21 @@
 ---
 - name: firewalld stoped and disabled (CentOS/RHEL 7)
-  service:
+  ansible.builtin.service:
     name: firewalld
     state: stopped
     enabled: no
 
 - name: chrony installed
-  package:
+  ansible.builtin.package:
     name: chrony
 
 - name: chrony started and enabled
-  service:
+  ansible.builtin.service:
     name: chronyd
     state: restarted
     enabled: yes
 
 - name: IUS repository installed (CentOS/RHEL 7)
-  yum:
+  ansible.builtin.yum:
     name: https://repo.ius.io/ius-release-el7.rpm
     disable_gpg_check: yes

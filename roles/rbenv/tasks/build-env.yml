@@ -1,27 +1,27 @@
 ---
 - name: build environment
-  package:
+  ansible.builtin.package:
     name:
       - gcc
       - cmake
     state: latest
 
 - name: build environment (CentOS/RHEL)
-  package:
+  when: ansible_os_family == 'RedHat'
+  ansible.builtin.package:
     name:
       - openssl-devel
       - libyaml-devel
       - readline-devel
       - zlib-devel
     state: latest
-  when: ansible_os_family == 'RedHat'
 
 - name: build environment (Debian)
-  package:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name:
       - libssl-dev
       - libyaml-dev
       - libreadline-dev
       - zlib1g-dev
     state: latest
-  when: ansible_os_family == 'Debian'
