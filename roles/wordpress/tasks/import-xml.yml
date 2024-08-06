@@ -1,32 +1,32 @@
 ---
 - name: stat import_xml_data
-  stat:
+  ansible.builtin.stat:
     path: "{{ import_xml_data }}"
   register: is_xml_import
 
 - name: import xml data
-  block:
-  - name: database rest
-    command: wp --path={{ WP_PATH }} db reset --yes
-    become: yes
-    become_user: vagrant
-
-  - name: plugin install wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
-    become: yes
-    become_user: vagrant
-
-  - name: import xml data
-    command: wp --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
-    become: yes
-    become_user: vagrant
-
-  - name: plugin deactivate wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
-    become: yes
-    become_user: vagrant
   when:
     - is_xml_import.stat.exists
     - not is_xml_import.stat.isdir
     - import_db_data == ''
     - not theme_unit_test
+  block:
+  - name: database rest
+    ansible.builtin.command: wp --path={{ WP_PATH }} db reset --yes
+    become: yes
+    become_user: vagrant
+
+  - name: plugin install wordpress-importer
+    ansible.builtin.command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
+
+  - name: import xml data
+    ansible.builtin.command: wp --path={{ WP_PATH }} import {{ import_xml_data }} --authors=create
+    become: yes
+    become_user: vagrant
+
+  - name: plugin deactivate wordpress-importer
+    ansible.builtin.command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant

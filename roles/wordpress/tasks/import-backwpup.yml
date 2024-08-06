@@ -1,90 +1,89 @@
 ---
 - name: stat import_backwpup
-  stat:
+  ansible.builtin.stat:
     path: "{{ import_backwpup.path }}"
   register: is_import_backwpup
 
 - name: exists is_import_backwpup
+  when: is_import_backwpup.stat.exists
   block:
   - name: mkdir /tmp/backwpup
-    file:
+    ansible.builtin.file:
       path: /tmp/backwpup
       state: directory
-      mode: 0755
+      mode: "0755"
 
   - name: unarchive import_backwpup
-    unarchive:
+    ansible.builtin.unarchive:
       src: "{{ import_backwpup.path }}"
       dest: /tmp/backwpup
 
   - name: stat db_data_file
-    stat:
+    ansible.builtin.stat:
       path: "/tmp/backwpup/{{ import_backwpup.db_data_file }}"
     register: is_db_data_file
 
   - name: exists is_db_data_file
+    when: is_db_data_file.stat.exists
     block:
     - name: database rest
-      command: wp --path={{ WP_PATH }} db reset --yes
+      ansible.builtin.command: wp --path={{ WP_PATH }} db reset --yes
       become: yes
       become_user: vagrant
 
     - name: db data import
-      command: wp --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
+      ansible.builtin.command: wp --path={{ WP_PATH }} db import /tmp/backwpup/{{ import_backwpup.db_data_file }}
       become: yes
       become_user: vagrant
 
     - name: add user admin
-      command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+      when: import_admin
+      ansible.builtin.command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
       become: yes
       become_user: vagrant
-      when: import_admin
-    when: is_db_data_file.stat.exists
 
   - name: stat xml_data_file
-    stat:
+    ansible.builtin.stat:
       path: "/tmp/backwpup/{{ import_backwpup.xml_data_file }}"
     register: is_xml_data_file
 
   - name: exists is_xml_data_file
+    when: is_xml_data_file.stat.exists
     block:
     - name: database rest
-      command: wp --path={{ WP_PATH }} db reset --yes
+      ansible.builtin.command: wp --path={{ WP_PATH }} db reset --yes
       become: yes
       become_user: vagrant
 
     - name: plugin install wordpress-importer
-      command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+      ansible.builtin.command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
       become: yes
       become_user: vagrant
 
     - name: import xml data
-      command: wp --path={{ WP_PATH }} import /tmp/backwpup/{{ import_backwpup.xml_data_file }} --authors=create
+      ansible.builtin.command: wp --path={{ WP_PATH }} import /tmp/backwpup/{{ import_backwpup.xml_data_file }} --authors=create
       become: yes
       become_user: vagrant
 
     - name: plugin deactivate wordpress-importer
-      command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+      ansible.builtin.command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
       become: yes
       become_user: vagrant
-    when: is_xml_data_file.stat.exists
 
   - name: stat wp-content
-    stat:
+    ansible.builtin.stat:
       path: /tmp/backwpup/wp-content
     register: is_backwpup_wp_content
 
   - name: rsync wp-content
-    synchronize:
-      src: /tmp/backwpup/wp-content
-      dest: "{{ WP_PATH }}"
     when:
       - is_backwpup_wp_content.stat.exists
       - is_backwpup_wp_content.stat.isdir
+    ansible.posix.synchronize:
+      src: /tmp/backwpup/wp-content
+      dest: "{{ WP_PATH }}"
 
   - name: rmdir /tmp/backwpup
-    file:
+    ansible.builtin.file:
       path: "/tmp/backwpup"
       state: absent
-
-  when: is_import_backwpup.stat.exists

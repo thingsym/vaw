@@ -1,57 +1,56 @@
 ---
 - name: permalink structure
+  when: permalink_structure.structure
   block:
   - name: set permalink structure
-    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
-    become: yes
-    become_user: vagrant
     when:
       - not permalink_structure.category
       - not permalink_structure.tag
-
-  - name: set permalink structure
-    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
+    ansible.builtin.command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --hard
     become: yes
     become_user: vagrant
+
+  - name: set permalink structure
     when:
       - permalink_structure.category
       - not permalink_structure.tag
-
-  - name: set permalink structure
-    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
+    ansible.builtin.command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --hard
     become: yes
     become_user: vagrant
+
+  - name: set permalink structure
     when:
       - not permalink_structure.category
       - permalink_structure.tag
-
-  - name: set permalink structure
-    command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
+    ansible.builtin.command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --tag-base='{{ permalink_structure.tag }}' --hard
     become: yes
     become_user: vagrant
+
+  - name: set permalink structure
     when:
       - permalink_structure.category
       - permalink_structure.tag
+    ansible.builtin.command: wp --path={{ WP_PATH }} rewrite structure {{ permalink_structure.structure }} --category-base='{{ permalink_structure.category }}' --tag-base='{{ permalink_structure.tag }}' --hard
+    become: yes
+    become_user: vagrant
 
   - name: rewrite flush
-    command: wp --path={{ WP_PATH }} rewrite flush --hard
+    ansible.builtin.command: wp --path={{ WP_PATH }} rewrite flush --hard
     become: yes
     become_user: vagrant
 
-  when: permalink_structure.structure
-
 - name: set theme mod
-  command: wp --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
+  when:
+    - theme_mod
+  ansible.builtin.command: wp --path={{ WP_PATH }} theme mod set {{ item.key }} {{ item.value }}
   become: yes
   become_user: vagrant
   with_dict: "{{ theme_mod | default({}) }}"
-  when:
-    - theme_mod
 
 - name: update options
-  command: wp --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
+  when:
+    - options
+  ansible.builtin.command: wp --path={{ WP_PATH }} option update '{{ item.key }}' '{{ item.value }}'
   become: yes
   become_user: vagrant
   with_dict: "{{ options | default({}) }}"
-  when:
-    - options

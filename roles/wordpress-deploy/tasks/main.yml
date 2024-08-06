@@ -1,67 +1,67 @@
 ---
 - name: deploy tools installed (RedHat)
-  package:
+  when: ansible_os_family == 'RedHat'
+  ansible.builtin.package:
     name:
       - sshpass
       - lftp
       - python-devel
       - python-setuptools
     state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: libraries installed (CentOS/RHEL 7 or earlier)
-  package:
+  when: ansible_distribution_major_version is version('7', '<=')
+  ansible.builtin.package:
     name:
       - python2-pip
     state: latest
-  when: ansible_distribution_major_version is version('7', '<=')
 
 - name: libraries installed (CentOS/RHEL 8 or later)
-  package:
+  when: ansible_distribution_major_version is version('8', '>=')
+  ansible.builtin.package:
     name:
       - python3-pip
     state: latest
-  when: ansible_distribution_major_version is version('8', '>=')
 
 - name: deploy tools installed (Debian)
-  package:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name:
       - sshpass
       - lftp
       - python-dev
     state: present
-  when: ansible_os_family == 'Debian'
 
 - name: python-pip installed
-  package:
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version is version('18', '<=')
+  ansible.builtin.package:
     name:
       - python-pip
       - python-setuptools
     state: latest
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version is version('18', '<=')
 
 - name: python3-pip installed
-  package:
-    name:
-      - python3-pip
-      - python3-setuptools
-    state: latest
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version is version('20', '>=')
-
-- name: python3-pip installed
-  package:
+  ansible.builtin.package:
     name:
       - python3-pip
       - python3-setuptools
     state: latest
+
+- name: python3-pip installed
   when: ansible_distribution == 'Debian'
+  ansible.builtin.package:
+    name:
+      - python3-pip
+      - python3-setuptools
+    state: latest
 
 - name: gem libraries globally installed
-  gem:
+  community.general.gem:
     name: "{{ item }}"
     executable: "{{ rbenv_dir }}/shims/gem"
     user_install: false

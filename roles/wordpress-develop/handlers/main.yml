@@ -1,10 +1,10 @@
 ---
 - name: daemon reload
-  service:
+  ansible.builtin.service:
     name: daemon-reload
     state: restarted
 
 - name: mailhog started
-  service:
+  ansible.builtin.service:
     name: mailhog
     state: started

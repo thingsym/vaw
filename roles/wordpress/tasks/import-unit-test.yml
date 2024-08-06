@@ -1,55 +1,57 @@
 ---
 - name: get wordpress unit-test data
-  get_url:
-    url: "{{ unit_test_url }}"
-    dest: "/tmp/theme-unit-test-data.xml"
-    force: yes
-    validate_certs: no
   when:
     - theme_unit_test
     - lang != 'ja'
     - not import_xml_data
     - not import_db_data
-
-- name: get wordpress unit-test-ja data
-  get_url:
-    url: "{{ unit_test_ja_url }}"
+  ansible.builtin.get_url:
+    url: "{{ unit_test_url }}"
     dest: "/tmp/theme-unit-test-data.xml"
+    mode: "0755"
     force: yes
     validate_certs: no
+
+- name: get wordpress unit-test-ja data
   when:
     - theme_unit_test
     - lang == 'ja'
     - not import_xml_data
     - not import_db_data
+  ansible.builtin.get_url:
+    url: "{{ unit_test_ja_url }}"
+    dest: "/tmp/theme-unit-test-data.xml"
+    mode: "0755"
+    force: yes
+    validate_certs: no
 
 - name: stat theme-unit-test-data.xml
-  stat:
+  ansible.builtin.stat:
     path: "/tmp/theme-unit-test-data.xml"
   register: is_unit_test
 
 - name: import theme-unit-test-data.xml
-  block:
-  - name: plugin install wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
-    become: yes
-    become_user: vagrant
-
-  - name: import theme-unit-test-data.xml
-    command: wp --path={{ WP_PATH }} import /tmp/theme-unit-test-data.xml --authors=create
-    become: yes
-    become_user: vagrant
-
-  - name: plugin deactivate wordpress-importer
-    command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
-    become: yes
-    become_user: vagrant
-
-  - name: delete theme-unit-test-data.xml
-    file:
-      path: "/tmp/theme-unit-test-data.xml"
-      state: absent
   when:
     - is_unit_test.stat.exists
     - import_xml_data == ''
     - import_db_data == ''
+  block:
+  - name: plugin install wordpress-importer
+    ansible.builtin.command: wp --path={{ WP_PATH }} plugin install wordpress-importer --activate
+    become: yes
+    become_user: vagrant
+
+  - name: import theme-unit-test-data.xml
+    ansible.builtin.command: wp --path={{ WP_PATH }} import /tmp/theme-unit-test-data.xml --authors=create
+    become: yes
+    become_user: vagrant
+
+  - name: plugin deactivate wordpress-importer
+    ansible.builtin.command: wp --path={{ WP_PATH }} plugin deactivate wordpress-importer
+    become: yes
+    become_user: vagrant
+
+  - name: delete theme-unit-test-data.xml
+    ansible.builtin.file:
+      path: "/tmp/theme-unit-test-data.xml"
+      state: absent
