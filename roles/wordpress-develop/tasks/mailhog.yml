@@ -1,45 +1,45 @@
 ---
 - name: mailhog installed
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
     dest: /usr/local/bin/mailhog
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 - name: mhsendmail installed
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64
     dest: /usr/local/bin/mhsendmail
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 - name: mailhog.unit added
-  template:
+  when: ansible_service_mgr == 'systemd'
+  ansible.builtin.template:
     src: mailhog.unit.j2
     dest: /etc/systemd/system/mailhog.service
+    mode: "0755"
     owner: root
     group: root
-    mode: 0755
   notify:
     - daemon reload
     - mailhog started
-  when: ansible_service_mgr == 'systemd'
 
 - name: mailhog.init added
-  template:
+  when: ansible_service_mgr == 'upstart'
+  ansible.builtin.template:
     src: mailhog.init.j2
     dest: /etc/init.d/mailhog
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   notify:
     - mailhog started
-  when: ansible_service_mgr == 'upstart'
 
 - name: mailhog enabled
-  service:
+  ansible.builtin.service:
     name: mailhog
     enabled: yes
   notify:

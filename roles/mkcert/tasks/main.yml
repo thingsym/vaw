@@ -1,52 +1,52 @@
 ---
 - name: mkdir mkcert
-  file:
+  ansible.builtin.file:
     path: /etc/mkcert
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: stat cert.pem
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/mkcert/cert.pem
   register: is_cert
 
 - name: Not Found cert.pem
-  fail:
-    msg: "Not Found cert.pem"
   when:
     - ssl
     - not is_cert.stat.exists
+  ansible.builtin.fail:
+    msg: "Not Found cert.pem"
 
 - name: copy cert.pem
-  copy:
+  when:
+    - ssl
+    - is_cert.stat.exists
+  ansible.builtin.copy:
     src: /vagrant/mkcert/cert.pem
     dest: /etc/mkcert/cert.pem
     owner: vagrant
     group: vagrant
-    mode: 0644
-  when:
-    - ssl
-    - is_cert.stat.exists
+    mode: "0644"
 
 - name: stat privkey.pem
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/mkcert/privkey.pem
   register: is_privkey
 
 - name: Not Found privkey.pem
-  fail:
-    msg: "Not Found privkey.pem"
   when:
     - ssl
     - not is_privkey.stat.exists
+  ansible.builtin.fail:
+    msg: "Not Found privkey.pem"
 
 - name: copy privkey.pem
-  copy:
+  when:
+    - ssl
+    - is_privkey.stat.exists
+  ansible.builtin.copy:
     src: /vagrant/mkcert/privkey.pem
     dest: /etc/mkcert/privkey.pem
     owner: vagrant
     group: vagrant
-    mode: 0644
-  when:
-    - ssl
-    - is_privkey.stat.exists
+    mode: "0644"

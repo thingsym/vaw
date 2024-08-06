@@ -5,7 +5,7 @@
 server             : apache   # apache|nginx|h2o
 fastcgi            : none     # none|php-fpm
 
-database           : mariadb  # mariadb|mysql|percona
+database           : mariadb  # mariadb|mysql
 db_root_password   : admin
 
 db_host            : 127.0.0.1
@@ -93,7 +93,7 @@ ssl                : true   # true|false
 http_protocol      : https   # http|https
 
 # See Supported Versions http://php.net/supported-versions.php
-php_version        : 7.4.32
+php_version        : 8.2.19
 
 develop_tools      : false   # true|false
 deploy_tools       : false   # true|false

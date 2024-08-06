@@ -1,24 +1,28 @@
 ---
 - name: RedHat 7 and php version 7.4 later
+  when:
+    - ansible_distribution_major_version is version('7', '==')
+    - php_version is version('7.4', '>=')
   block:
   - name: cmake3 installed
-    package:
+    ansible.builtin.package:
       name: cmake3
       state: latest
 
   - name: get libzip
-    get_url:
+    ansible.builtin.get_url:
       url: https://libzip.org/download/libzip-1.8.0.tar.gz
       dest: /tmp/libzip-1.8.0.tar.gz
+      mode: "0755"
       timeout: 60
 
   - name: libzip unarchived
-    unarchive:
+    ansible.builtin.unarchive:
       src: /tmp/libzip-1.8.0.tar.gz
       dest: /tmp
 
   - name: config and make install
-    command: "{{ item }}"
+    ansible.builtin.command: "{{ item }}"
     args:
       chdir: /tmp/libzip-1.8.0
     with_items:
@@ -27,19 +31,15 @@
       - make install
 
   - name: edit PKG_CONFIG_PATH on .bashrc_alias
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: "{{ home_dir }}/.bashrc_alias"
       line: export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/libzip/lib64/pkgconfig"
-      mode: 0644
-
-  when:
-    - ansible_distribution_major_version is version('7', '==')
-    - php_version is version('7.4', '>=')
+      mode: "0644"
 
 - name: libzip-devel installed
-  package:
+  when:
+    - php_version is version('7.4', '<')
+  ansible.builtin.package:
     name:
       - libzip-devel
     state: latest
-  when:
-    - php_version is version('7.4', '<')

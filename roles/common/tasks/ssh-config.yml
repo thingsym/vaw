@@ -1,14 +1,14 @@
 ---
 - name: stat custom /home/vagrant/.ssh/config
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/ssh-config.j2
   register: is_custom_ssh_config
 
 - name: custom /home/vagrant/.ssh/config changed
-  template:
+  when: is_custom_ssh_config.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/ssh-config.j2
     dest: /home/vagrant/.ssh/config
     owner: vagrant
     group: vagrant
-    mode: 0600
-  when: is_custom_ssh_config.stat.exists
+    mode: "0600"

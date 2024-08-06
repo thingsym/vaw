@@ -1,54 +1,60 @@
 ---
+- name: include import-xml
+  ansible.builtin.include_tasks: import-xml.yml
 
-- include_tasks: import-xml.yml
-- include_tasks: import-db.yml
-- include_tasks: import-backwpup.yml
-- include_tasks: import-unit-test.yml
+- name: include import-db
+  ansible.builtin.include_tasks: import-db.yml
+
+- name: include import-backwpup
+  ansible.builtin.include_tasks: import-backwpup.yml
+
+- name: include import-unit-test
+  ansible.builtin.include_tasks: import-unit-test.yml
 
 - name: stat wp-content
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/wp-content
   register: is_wp_content
 
 - name: rsync wp-content dir
-  synchronize:
-    src: /vagrant/wp-content
-    dest: "{{ WP_PATH }}"
   when:
     - is_wp_content.stat.exists
     - is_wp_content.stat.isdir
+  ansible.posix.synchronize:
+    src: /vagrant/wp-content
+    dest: "{{ WP_PATH }}"
 
 
 - name: stat uploads
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/uploads
   register: is_uploads
 
 - name: rsync uploads dir
-  synchronize:
-    src: /vagrant/uploads
-    dest: "{{ WP_PATH }}/wp-content"
   when:
     - is_uploads.stat.exists
     - is_uploads.stat.isdir
+  ansible.posix.synchronize:
+    src: /vagrant/uploads
+    dest: "{{ WP_PATH }}/wp-content"
 
 - name: replace old url
-  command: wp --path={{ WP_PATH }} search-replace '{{ item }}' '{{ WP_URL }}' --precise --all-tables
+  when: replace_old_url
+  ansible.builtin.command: wp --path={{ WP_PATH }} search-replace '{{ item }}' '{{ WP_URL }}' --precise --all-tables
   become: yes
   become_user: vagrant
   with_items:
     - "{{ replace_old_url | default([]) }}"
-  when: replace_old_url
 
 - name: search tables and replace string
-  command: wp --path={{ WP_PATH }} search-replace '{{ item.key }}' '{{ item.value }}' --precise --all-tables
+  when: search_replace_strings
+  ansible.builtin.command: wp --path={{ WP_PATH }} search-replace '{{ item.key }}' '{{ item.value }}' --precise --all-tables
   become: yes
   become_user: vagrant
   with_dict: "{{ search_replace_strings | default({}) }}"
-  when: search_replace_strings
 
 - name: regenerate thumbnails
-  command: wp --path={{ WP_PATH }} media regenerate --yes
+  when: regenerate_thumbnails
+  ansible.builtin.command: wp --path={{ WP_PATH }} media regenerate --yes
   become: yes
   become_user: vagrant
-  when: regenerate_thumbnails

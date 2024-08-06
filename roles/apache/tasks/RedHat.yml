@@ -1,24 +1,24 @@
 ---
 - name: include task (CentOS/RHEL)
-  include_tasks: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
 
 - name: stat ssl.conf
-  stat:
+  when: ssl
+  ansible.builtin.stat:
     path: /etc/httpd/conf.d/ssl.conf
   register: is_ssl_conf
-  when: ssl
 
 - name: delete ssl.conf
-  file:
-    path: /etc/httpd/conf.d/ssl.conf
-    state: absent
-  notify: httpd restarted
   when:
     - ssl
     - is_ssl_conf.stat.exists
+  ansible.builtin.file:
+    path: /etc/httpd/conf.d/ssl.conf
+    state: absent
+  notify: httpd restarted
 
 - name: httpd enabled
-  service:
+  ansible.builtin.service:
     name: httpd
     enabled: yes
   notify: httpd restarted

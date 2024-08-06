@@ -12,7 +12,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ### 1. OS、サーバ、データベース環境の構築
 
-OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**、**nginx**、**H2O** から、データベースは、**MariaDB**、**MySQL**、**Percona MySQL** から構成してサーバとデータベース環境の構築ができます。
+OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**、**nginx**、**H2O** から、データベースは、**MariaDB**、**MySQL** から構成してサーバとデータベース環境の構築ができます。
 
 すべてのウェブサーバで、FastCGI 構成が可能で **PHP-FPM** (FastCGI Process Manager) から、PHP実行環境を構築します。
 
@@ -94,8 +94,7 @@ OS は、**CentOS**、**Debian**、**Ubuntu** から、サーバは、**Apache**
 	cd vaw-x.x.x
 	mkcert -install
 	mkdir mkcert
-	cd mkcert
-	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
+	mkcert -cert-file ./mkcert/cert.pem -key-file ./mkcert/privkey.pem <vm_hostname>
 
 ### 5. 仮想環境を立ち上げます
 
@@ -158,7 +157,8 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 パブリックネットワークを使うと同じ LAN 内の端末から Vagrant 仮想環境にアクセスすることができます。パブリックネットワークを使うには、bridge 接続するための IP アドレスを設定します。その場合、`vm_hostname` に同じIP アドレスを設定することをお薦めします。
 
 	## Vagrant Settings ##
-	vm_box                = 'centos/7'
+
+	vm_box                = 'debian/bullseye64'    # Debian 11.0
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -189,7 +189,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 		'vagrant-serverspec'
 	]
 
-* `vm_box` (required) Vagrant Box 名 (default: `centos/7`)
+* `vm_box` (required) Vagrant Box 名 (default: `debian/bullseye64`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) プライベート IP アドレス (default: `192.168.46.49`)
 * `vm_hostname` (required) ホストネーム (default: `vaw.local`)
@@ -205,6 +205,7 @@ Vagrant で使う Box の指定 や プライベート IP アドレス、ホス�
 トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` 共有フォルダの種類 (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
 * `backup_database` vagrant destroy or halt の時、自動バックアップ (default: `false` / value: `true` | `false`)
+* `ansible_install` (required) install Ansible (default: `:true` / value: `:true` | `:false`)
 * `ansible_install_mode` (required) Ansible のインストール方法 (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` インストールする Ansible のバージョン (default: `latest`)
 * `provision_mode` (required) プロビジョニングモード (default: `all` / value: `all` | `wordpress` | `box`)
@@ -220,7 +221,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	server             : apache   # apache|nginx|h2o
 	fastcgi            : none     # none|php-fpm
 
-	database           : mariadb  # mariadb|mysql|percona
+	database           : mariadb  # mariadb|mysql
 	db_root_password   : admin
 
 	db_host            : localhost
@@ -306,7 +307,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 	http_protocol      : https   # http|https
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.4.14
+	php_version        : 7.4.33
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -321,7 +322,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `server` (required) ウェブサーバ名 (default: `apache` / value: `apache` | `nginx` | `h2o`)
 * `fastcgi` fastCGI 名 (default: `none` / value: `none` | `php-fpm`)
-* `database` (required) データベース名 (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
+* `database` (required) データベース名 (default: `mariadb` / value: `mariadb` | `mysql`)
 * `db_root_password` (required) データベースの root パスワード (default: `admin`)
 * `db_host` (required) データベースホスト名 (default: `localhost`)
 * `db_name` (required) データベース名 (default: `wordpress`)
@@ -464,7 +465,7 @@ YAML 形式でサーバ、データベース、WordPress 環境の設定や Deve
 
 * `ssl` WordPress管理画面 SSL 化の有効化 (default: `true` / value: `true` | `false`)
 * `http_protocol` HTTP プロトコル (default: `https` / value: `http` | `https`)
-* `php_version` PHPバージョン (default: `7.4.14`)
+* `php_version` PHPバージョン (default: `7.4.33`)
 * `develop_tools` Develop ツールを有効化 (default: `false` / value: `true` | `false`)
 * `deploy_tools` Deploy ツールを有効化 (default: `false` / value: `true` | `false`)
 
@@ -527,17 +528,13 @@ VAW は、Vagrant のプロバイダ VirtualBox をサポートしています�
 
 OS とアーキテクチャは、CentOS、Debian、Ubuntu の x86_64 系 Vagrant Box に対応しています。
 
-### CentOS
-
-* CentOS 8 (非推奨 サポート終了日 2021-12-31)
-* CentOS 7
-* CentOS 6 (非推奨 サポート終了日 2020-11-30)
-
 ### Debian
 
-* Debian 10.0
-* Debian 9.0
-* Debian 8.0 (非推奨 サポート終了日 2020-06-30)
+* Debian 12.0
+* Debian 11.0
+* Debian 10.0 (Deprecated ended 2024-06-30)
+* Debian 9.0 (Deprecated ended 2022-06-30)
+* Debian 8.0 (Deprecated ended 2020-06-30)
 
 ### Ubuntu
 
@@ -545,6 +542,12 @@ OS とアーキテクチャは、CentOS、Debian、Ubuntu の x86_64 系 Vagrant
 * Ubuntu 18.04
 * Ubuntu 16.04
 * Ubuntu 14.04
+
+### CentOS
+
+* CentOS 8 (Deprecated ended 2021-12-31)
+* CentOS 7 (Deprecated ended 2024-06-30)
+* CentOS 6 (Deprecated ended 2020-11-30)
 
 Vagrant Box のダウンロードは、[Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox) から検索できます。
 
@@ -661,7 +664,6 @@ Vagrant 設定ファイルの `provision_mode` を `wordpress` に設定。
 
 * [MariaDB](https://mariadb.org)
 * [MySQL](http://www.mysql.com)
-* [Percona MySQL](http://www.percona.com/software/percona-server)
 
 ### Pre-installing
 
@@ -745,7 +747,7 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 
 指定したバージョンの PHP 実行環境を整えます。指定バージョンの PHP がインストールできます。PHPバージョン切り替えを行います。Apache や PHP-FPM のサーバ設定環境を切り替えて再起動します。
 
-	/vagrant/command/phpenv.sh -v 7.2.1 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 8.2.19 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -767,7 +769,6 @@ VAW には、便利なスクリプトを用意しています。ターミナル�
 * nginx.multisite.conf.j2
 * nginx.wordpress.conf.j2
 * nginx.wordpress.multisite.conf.j2
-* percona.my.cnf.j2
 * php-build.default_configure_options.j2
 * php-fpm.conf (for phpenv.sh)
 * php-fpm.www.conf (for phpenv.sh)

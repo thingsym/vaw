@@ -1,6 +1,6 @@
 ---
 - name: git checkout rbenv
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rbenv/rbenv.git
     dest: "{{ rbenv_dir }}"
     version: "master"
@@ -9,19 +9,19 @@
   become_user: vagrant
 
 - name: edit PATH rbenv on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=$HOME/.rbenv/bin:$PATH"
-    mode: 0644
+    mode: "0644"
 
 - name: edit rbenv init on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "eval \"$(rbenv init -)\""
-    mode: 0644
+    mode: "0644"
 
 - name: git checkout ruby-build
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rbenv/ruby-build.git
     dest: "{{ rbenv_dir }}/plugins/ruby-build"
     version: "master"
@@ -30,7 +30,7 @@
   become_user: vagrant
 
 - name: git checkout rbenv-update
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rkh/rbenv-update.git
     dest: "{{ rbenv_dir }}/plugins/rbenv-update"
     version: "master"
@@ -39,7 +39,7 @@
   become_user: vagrant
 
 - name: git checkout rbenv-default-gems
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rbenv/rbenv-default-gems.git
     dest: "{{ rbenv_dir }}/plugins/rbenv-default-gems"
     version: "master"
@@ -48,28 +48,30 @@
   become_user: vagrant
 
 - name: stat rbenv_default_gems
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/default-ruby-gems.j2
   register: is_rbenv_default_gems
 
 - name: default-gems changed
-  template:
+  when: is_rbenv_default_gems.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/default-ruby-gems.j2
     dest: "{{ rbenv_dir }}/default-gems"
-    mode: 0644
-  when: is_rbenv_default_gems.stat.exists
+    mode: "0644"
 
-- include_tasks: build-env.yml
+- name: include build-env
+  ansible.builtin.include_tasks: build-env.yml
 
 - name: stat rbenv
-  stat:
+  ansible.builtin.stat:
     path: "{{ rbenv_dir }}/bin/rbenv"
   register: is_rbenv
 
 - name: exists is_rbenv
+  when: is_rbenv.stat.exists
   block:
   - name: ruby installed via rbenv
-    command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.2) }}"
+    ansible.builtin.command: "{{ rbenv_dir }}/bin/rbenv install {{ ruby_version | default(2.7.2) }}"
     become: yes
     become_user: vagrant
     register: rbenv_result
@@ -78,12 +80,11 @@
       - rbenv_result.rc != 1
 
   - name: rbenv global
-    command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.2) }}"
+    ansible.builtin.command: "{{ rbenv_dir }}/bin/rbenv global {{ ruby_version | default(2.7.2) }}"
     become: yes
     become_user: vagrant
 
   - name: rbenv rehash
-    command: "{{ rbenv_dir }}/bin/rbenv rehash"
+    ansible.builtin.command: "{{ rbenv_dir }}/bin/rbenv rehash"
     become: yes
     become_user: vagrant
-  when: is_rbenv.stat.exists

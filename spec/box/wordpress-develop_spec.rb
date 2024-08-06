@@ -57,7 +57,7 @@ if property["develop_tools"] then
 
   describe command('npm-check-updates --version') do
     let(:sudo_options) { '-u vagrant -i' }
-   its(:exit_status) { should eq 0 }
+    its(:exit_status) { should eq 0 }
   end
 
   describe command('cachetool -V') do

@@ -1,4 +1,10 @@
 ---
-- include_tasks: install.yml
-- include_tasks: import.yml
-- include_tasks: options.yml
+
+- name: include install
+  ansible.builtin.include_tasks: install.yml
+
+- name: include import
+  ansible.builtin.include_tasks: import.yml
+
+- name: include options
+  ansible.builtin.include_tasks: options.yml

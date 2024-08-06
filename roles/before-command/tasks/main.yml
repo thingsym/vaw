@@ -1,21 +1,21 @@
 ---
 - name: stat before_provision.sh
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/command/before_provision.sh
   register: before_command
 
 - name: before provision command
-  command: /vagrant/command/before_provision.sh
   when: before_command.stat.exists
+  ansible.builtin.command: /vagrant/command/before_provision.sh
 
 - name: sync-dir
+  tags: sync-dir
   block:
   - name: stat before_provision.sh
-    stat:
+    ansible.builtin.stat:
       path: /vagrant/command/before_provision.sh
     register: before_command
 
   - name: before provision command
-    command: /vagrant/command/before_provision.sh
     when: before_command.stat.exists
-  tags: sync-dir
+    ansible.builtin.command: /vagrant/command/before_provision.sh

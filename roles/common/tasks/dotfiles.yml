@@ -1,29 +1,29 @@
 ---
 - name: edit PATH on .bashrc_alias
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc_alias"
     line: "export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
     create: yes
-    mode: 0644
+    mode: "0644"
   become: yes
   become_user: vagrant
 
 - name: edit PATH on .bashrc
-  lineinfile:
+  when: ansible_os_family == 'RedHat'
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.bashrc"
     line: "if [ -f ~/.bashrc_alias ]; then\n        . ~/.bashrc_alias\nfi"
     create: yes
-    mode: 0644
+    mode: "0644"
   become: yes
   become_user: vagrant
-  when: ansible_os_family == 'RedHat'
 
 - name: edit PATH on .profile
-  lineinfile:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.lineinfile:
     dest: "{{ home_dir }}/.profile"
     line: "if [ -f ~/.bashrc_alias ]; then\n        . ~/.bashrc_alias\nfi"
     create: yes
-    mode: 0644
+    mode: "0644"
   become: yes
   become_user: vagrant
-  when: ansible_os_family == 'Debian'

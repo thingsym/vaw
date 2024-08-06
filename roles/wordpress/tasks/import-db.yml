@@ -1,28 +1,28 @@
 ---
 - name: stat import_db_data
-  stat:
+  ansible.builtin.stat:
     path: "{{ import_db_data }}"
   register: is_db_import
 
 - name: import db data
-  block:
-  - name: database rest
-    command: wp --path={{ WP_PATH }} db reset --yes
-    become: yes
-    become_user: vagrant
-
-  - name: import db data
-    command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
-    become: yes
-    become_user: vagrant
-
-  - name: add user admin
-    command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
-    become: yes
-    become_user: vagrant
-    when: import_admin
   when:
     - is_db_import.stat.exists
     - not is_db_import.stat.isdir
     - not import_xml_data
     - not theme_unit_test
+  block:
+  - name: database rest
+    ansible.builtin.command: wp --path={{ WP_PATH }} db reset --yes
+    become: yes
+    become_user: vagrant
+
+  - name: import db data
+    ansible.builtin.command: wp --path={{ WP_PATH }} db import {{ import_db_data }}
+    become: yes
+    become_user: vagrant
+
+  - name: add user admin
+    when: import_admin
+    ansible.builtin.command: wp --path={{ WP_PATH }} user create {{ admin_user }} {{ admin_email }} --user_pass={{ admin_password }} --role=administrator
+    become: yes
+    become_user: vagrant

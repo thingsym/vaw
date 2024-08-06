@@ -2,9 +2,6 @@ skip_list:
   - command-instead-of-module  # Using command rather than module
   - no-changed-when  # Commands should not change things if nothing needs doing
   - package-latest  # Package installs should not use latest
-  - experimental  # all rules tagged as experimental
-  - yaml  # Violations reported by yamllint
-  - fqcn-builtins
-  - fqcn[action]
   - name[casing]
-  - name[missing]
+  - var-naming[no-role-prefix]
+  - risky-shell-pipe

@@ -1,13 +1,15 @@
 ---
 - name: develop tools installed
-  package:
+  ansible.builtin.package:
     name:
       - subversion
       - gettext
+      - zip
+      - unzip
     state: latest
 
 - name: node.js package globally installed
-  npm:
+  community.general.npm:
     name: "{{ item }}"
     global: yes
     executable: "{{ nodenv_dir }}/shims/npm"
@@ -19,18 +21,29 @@
   become: yes
   become_user: vagrant
 
-- include_tasks: daemonize.yml
+- name: include daemonize
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version is version('6', '==')
+  ansible.builtin.include_tasks: daemonize.yml
 
-- include_tasks: mailhog.yml
-- include_tasks: cachetool.yml
-- include_tasks: wrk.yml
-- include_tasks: mysqltuner.yml
+- name: include mailhog
+  ansible.builtin.include_tasks: mailhog.yml
+
+- name: include cachetool
+  ansible.builtin.include_tasks: cachetool.yml
+
+- name: include wrk
+  ansible.builtin.include_tasks: wrk.yml
+
+- name: include mysqltuner
+  ansible.builtin.include_tasks: mysqltuner.yml
 
 - name: sync-dir
-  block:
-  - include_tasks: opcache-viewer.yml
-  - include_tasks: webgrind.yml
   tags: sync-dir
+  block:
+  - name: include opcache-viewer
+    ansible.builtin.include_tasks: opcache-viewer.yml
+
+  - name: include webgrind
+    ansible.builtin.include_tasks: webgrind.yml

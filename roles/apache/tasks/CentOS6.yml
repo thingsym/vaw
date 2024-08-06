@@ -1,38 +1,38 @@
 ---
 - name: httpd installed
-  package:
+  ansible.builtin.package:
     name:
       - httpd24u
       - httpd24u-devel
     state: latest
 
 - name: mod_ssl installed
-  package:
+  when: ssl
+  ansible.builtin.package:
     name: httpd24u-mod_ssl
     state: latest
-  when: ssl
 
 - name: mod_proxy_fcgi installed
-  package:
+  ansible.builtin.package:
     name: mod_proxy_fcgi
 
 - name: stat custom httpd.conf.centos6.j2
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/httpd.conf.centos6.j2
   register: is_custom_httpd_conf_centos6
 
 - name: custom httpd.conf changed
-  template:
+  when: is_custom_httpd_conf_centos6.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: is_custom_httpd_conf_centos6.stat.exists
 
 - name: httpd.conf changed
-  template:
+  when: not is_custom_httpd_conf_centos6.stat.exists
+  ansible.builtin.template:
     src: httpd.conf.centos6.j2
     dest: /etc/httpd/conf/httpd.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: not is_custom_httpd_conf_centos6.stat.exists

@@ -1,6 +1,8 @@
 ---
 - name: purged package
-  package:
+  when:
+    - ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name:
       - apport
       - apport-symptoms
@@ -10,5 +12,3 @@
       - unattended-upgrades
       - update-manager-core
     state: absent
-  when:
-    - ansible_os_family == 'Debian'

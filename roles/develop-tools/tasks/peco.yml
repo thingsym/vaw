@@ -1,18 +1,19 @@
 ---
 - name: get peco
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/peco/peco/releases/download/v0.5.3/peco_linux_amd64.tar.gz
     dest: /tmp/peco_linux_amd64.tar.gz
+    mode: "0755"
 
 - name: peco_linux_amd64 unarchived
-  unarchive:
+  ansible.builtin.unarchive:
     src: /tmp/peco_linux_amd64.tar.gz
     dest: /tmp
 
 - name: copy peco to /usr/local/bin
-  copy:
+  ansible.builtin.copy:
     src: /tmp/peco_linux_amd64/peco
     dest: /usr/local/bin/peco
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root

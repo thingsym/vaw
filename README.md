@@ -12,7 +12,7 @@ VAW (Vagrant Ansible WordPress) documentation: [https://thingsym.github.io/vaw/]
 
 ### 1. Build OS, Server and Database environment
 
-The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or **nginx** or **H2O**, and build database from **MariaDB** or **MySQL** or **Percona MySQL**.
+The **VAW** will build OS from **CentOS** or **Debian** or **Ubuntu**, server from **Apache** or **nginx** or **H2O**, and build database from **MariaDB** or **MySQL**.
 
 On all web servers, FastCGI configuration is possible. Build PHP execution environment from **PHP-FPM** (FastCGI Process Manager).
 
@@ -97,8 +97,7 @@ Install mkcert. See [https://github.com/FiloSottile/mkcert](https://github.com/F
 	cd vaw-x.x.x
 	mkcert -install
 	mkdir mkcert
-	cd mkcert
-	mkcert -cert-file cert.pem -key-file privkey.pem <vm_hostname>
+	mkcert -cert-file ./mkcert/cert.pem -key-file ./mkcert/privkey.pem <vm_hostname>
 
 ### 5. Launch a virtual environment
 
@@ -164,7 +163,8 @@ If you launch multiple environments, change the name of the directory. Should re
 You can accesse from a terminal in the same LAN to use the public network to Vagrant virtual environment. To use public networks, set IP address for bridged connection to `public_ip`. In that case, recommended that configure the same IP address to `vm_hostname`.
 
 	## Vagrant Settings ##
-	vm_box                = 'centos/7'
+
+	vm_box                = 'debian/bullseye64'    # Debian 11.0
 	vm_box_version        = '>= 0'
 	vm_ip                 = '192.168.46.49'
 	vm_hostname           = 'vaw.local'
@@ -184,8 +184,10 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 
 	backup_database       = false
 
+	ansible_install       = true
 	ansible_install_mode  = :default    # :default|:pip
-	ansible_version       = 'latest'    # only :pip required
+	ansible_version       = 'latest'    # requires :pip in ansible_install_mode
+
 
 	provision_mode        = 'all'       # all|wordpress|box
 
@@ -195,7 +197,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 		'vagrant-serverspec'
 	]
 
-* `vm_box` (required) name of Vagrant Box (default: `centos/7`)
+* `vm_box` (required) name of Vagrant Box (default: `debian/bullseye64`)
 * `vm_box_version` (required) version of Vagrant Box (default: `>= 0`)
 * `vm_ip` (required) private IP address (default: `192.168.46.49`)
 * `vm_hostname` (required) hostname (default: `vaw.local`)
@@ -211,6 +213,7 @@ You can accesse from a terminal in the same LAN to use the public network to Vag
 トします (default: `true` / value: `true` | `false`)
 * `synced_folder_type` the type of synced folder (default: `virtualbox` / value: `virtualbox` | `nfs` | `rsync` | `smb`)
 * `backup_database` enable auto database backup when vagrant destroy or halt (default: `false` / value: `true` | `false`)
+* `ansible_install` (required) install Ansible (default: `:true` / value: `:true` | `:false`)
 * `ansible_install_mode` (required) the way to install Ansible (default: `:default` / value: `:default` | `:pip`)
 * `ansible_version` version of Ansible to install (default: `latest`)
 * `provision_mode` (required) Provisioning mode (default: `all` / value: `all` | `wordpress` | `box`)
@@ -227,7 +230,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	server             : apache   # apache|nginx|h2o
 	fastcgi            : none     # none|php-fpm
 
-	database           : mariadb  # mariadb|mysql|percona
+	database           : mariadb  # mariadb|mysql
 	db_root_password   : admin
 
 	db_host            : localhost
@@ -313,7 +316,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 	http_protocol      : https   # http|https
 
 	# See Supported Versions http://php.net/supported-versions.php
-	php_version        : 7.4.14
+	php_version        : 7.4.33
 
 	develop_tools      : false   # true|false
 	deploy_tools       : false   # true|false
@@ -328,7 +331,7 @@ In YAML format, you can set server, database and WordPress environment. And can 
 
 * `server` (required) name of web server (default: `apache` / value: `apache` | `nginx` | `h2o`)
 * `fastcgi` name of fastCGI (default: `none` / value: `none` | `php-fpm`)
-* `database` (required) name of databese (default: `mariadb` / value: `mariadb` | `mysql` | `percona`)
+* `database` (required) name of databese (default: `mariadb` / value: `mariadb` | `mysql`)
 * `db_root_password` (required) database root password (default: `admin`)
 * `db_host` (required) database host (default: `localhost`)
 * `db_name` (required) name of database (default: `wordpress`)
@@ -469,7 +472,7 @@ Disable the setting case
 
 * `ssl` WordPress administration over SSL enabled flag (default: `true` / value: `true` | `false`)
 * `http_protocol` HTTP protocol (default: `https` / value: `http` | `https`)
-* `php_version` version of PHP (default: `7.4.14`)
+* `php_version` version of PHP (default: `7.4.33`)
 * `develop_tools` activate develop tools (default: `false` / value: `true` | `false`)
 * `deploy_tools` activate deploy tools (default: `false` / value: `true` | `false`)
 
@@ -533,16 +536,12 @@ The VAW will be built in the directory structure of the following minimum unit.
 
 The VAW supports VirtualBox for providers of Vagrant. Operating system supported CentOS, Debian and Ubuntu Boxes. OS architecture supported x86_64. Details are as follows:
 
-### CentOS
-
-* CentOS 8 (Deprecated ended 2021-12-31)
-* CentOS 7
-* CentOS 6 (Deprecated ended 2020-11-30)
-
 ### Debian
 
-* Debian 10.0
-* Debian 9.0
+* Debian 12.0
+* Debian 11.0
+* Debian 10.0 (Deprecated ended 2024-06-30)
+* Debian 9.0 (Deprecated ended 2022-06-30)
 * Debian 8.0 (Deprecated ended 2020-06-30)
 
 ### Ubuntu
@@ -551,6 +550,12 @@ The VAW supports VirtualBox for providers of Vagrant. Operating system supported
 * Ubuntu 18.04
 * Ubuntu 16.04
 * Ubuntu 14.04
+
+### CentOS
+
+* CentOS 8 (Deprecated ended 2021-12-31)
+* CentOS 7 (Deprecated ended 2024-06-30)
+* CentOS 6 (Deprecated ended 2020-11-30)
 
 To download Vagrant Box, you can search from [Discover Vagrant Boxes](https://app.vagrantup.com/boxes/search?provider=virtualbox).
 
@@ -668,7 +673,6 @@ After provisioning, you can launch a WordPress development environment.
 
 * [MariaDB](https://mariadb.org)
 * [MySQL](http://www.mysql.com)
-* [Percona MySQL](http://www.percona.com/software/percona-server)
 
 ### Pre-installing
 
@@ -752,7 +756,7 @@ The **VAW** offers a useful scripts. Just run the script on a terminal. Database
 
 `phpenv.sh` will prepare the specified version of PHP execution environment. You can install the specified version of PHP. Switching the PHP version. And then restart Apache or PHP-FPM by switching the server configuration environment.
 
-	/vagrant/command/phpenv.sh -v 7.2.1 -m php-fpm -s unix
+	/vagrant/command/phpenv.sh -v 8.2.19 -m php-fpm -s unix
 
 	# help
 	/vagrant/command/phpenv.sh -h
@@ -774,7 +778,6 @@ As follows editable configuration files.
 * nginx.multisite.conf.j2
 * nginx.wordpress.conf.j2
 * nginx.wordpress.multisite.conf.j2
-* percona.my.cnf.j2
 * php-build.default_configure_options.j2
 * php-fpm.conf (for phpenv.sh)
 * php-fpm.www.conf (for phpenv.sh)

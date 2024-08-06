@@ -1,60 +1,60 @@
 ---
 - name: RedHat
+  when: ansible_os_family == 'RedHat'
   block:
   - name: bintray-tatsushid-h2o-rpm.repo repository added (CentOS/RHEL)
-    yum_repository:
+    ansible.builtin.yum_repository:
       name: bintray-tatsushid-h2o-rpm
       description: bintray-tatsushid-h2o-rpm - packages by tatsushid from Bintray
       baseurl: https://dl.bintray.com/tatsushid/h2o-rpm/centos/$releasever/$basearch/
 
   - name: h2o installed
-    package:
+    ansible.builtin.package:
       name: h2o
       state: latest
       disable_gpg_check: yes
-  when: ansible_os_family == 'RedHat'
 
 - name: h2o installed
-  package:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name: h2o
     state: latest
-  when: ansible_os_family == 'Debian'
 
 - name: stat /var/run/h2o
-  stat:
+  ansible.builtin.stat:
     path: /var/run/h2o
   register: is_h2o_dir
 
 - name: mkdir /var/run/h2o
-  file:
+  when: not is_h2o_dir.stat.exists
+  ansible.builtin.file:
     path: /var/run/h2o
     state: directory
-    mode: 0755
-  when: not is_h2o_dir.stat.exists
+    mode: "0755"
 
 - name: stat custom h2o.j2
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/h2o.conf.j2
   register: is_custom_h2o_conf
 
 - name: custom h2o.conf changed
-  template:
+  when: is_custom_h2o_conf.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/h2o.conf.j2
     dest: /etc/h2o/h2o.conf
-    mode: 0644
+    mode: "0644"
   notify: h2o restarted
-  when: is_custom_h2o_conf.stat.exists
 
 - name: h2o.conf changed
-  template:
+  when: not is_custom_h2o_conf.stat.exists
+  ansible.builtin.template:
     src: h2o.conf.j2
     dest: /etc/h2o/h2o.conf
-    mode: 0644
+    mode: "0644"
   notify: h2o restarted
-  when: not is_custom_h2o_conf.stat.exists
 
 - name: h2o enabled
-  service:
+  ansible.builtin.service:
     name: h2o
     enabled: yes
   notify: h2o restarted

@@ -1,6 +1,6 @@
 ---
 - name: modify kernel parameters
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     state: present

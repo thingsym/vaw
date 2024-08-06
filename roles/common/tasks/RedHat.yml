@@ -1,11 +1,11 @@
 ---
 - name: include task (CentOS/RHEL)
-  include_tasks: selinux.yml
+  ansible.builtin.include_tasks: selinux.yml
 
 - name: all packages updated
-  yum:
+  ansible.builtin.yum:
     name: '*'
     state: latest
 
 - name: include task (CentOS/RHEL)
-  include_tasks: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"

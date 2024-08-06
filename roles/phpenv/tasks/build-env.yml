@@ -1,6 +1,7 @@
 ---
 - name: build environment (CentOS/RHEL)
-  package:
+  when: ansible_os_family == 'RedHat'
+  ansible.builtin.package:
     name:
       - libxml2-devel
       - bison-devel
@@ -15,14 +16,15 @@
       - sqlite-devel
       - oniguruma-devel
     state: latest
-  when: ansible_os_family == 'RedHat'
 
-- include_tasks: libzip.yml
+- name: include libzip
   when:
     - ansible_os_family == 'RedHat'
+  ansible.builtin.include_tasks: libzip.yml
 
 - name: build environment (Debian)
-  package:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name:
       - libxml2-dev
       - libbison-dev
@@ -45,13 +47,12 @@
       - libgssapi-krb5-2
       - libonig-dev
     state: latest
-  when: ansible_os_family == 'Debian'
 
 - name: build environment (Debian)
-  package:
-    name:
-      - libtool-bin
-    state: latest
   when:
     - ansible_os_family == 'Debian'
     - ansible_distribution_major_version is version('16', '>=')
+  ansible.builtin.package:
+    name:
+      - libtool-bin
+    state: latest

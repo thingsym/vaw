@@ -1,8 +1,8 @@
 ---
 - name: cachetool installed
-  get_url:
+  ansible.builtin.get_url:
     url: http://gordalina.github.io/cachetool/downloads/cachetool.phar
     dest: /usr/local/bin/cachetool
+    mode: "0755"
     validate_certs: no
-    mode: 0755
     force: yes

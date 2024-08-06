@@ -1,96 +1,96 @@
 ---
 - name: httpd installed
-  package:
+  ansible.builtin.package:
     name:
       - httpd
       - httpd-devel
     state: latest
 
 - name: mod_ssl installed
-  package:
+  when: ssl
+  ansible.builtin.package:
     name: mod_ssl
     state: latest
-  when: ssl
 
 - name: stat custom httpd.conf.centos8.j2
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/httpd.conf.centos8.j2
   register: is_custom_httpd_conf_centos8
 
 - name: custom httpd.conf changed
-  template:
+  when: is_custom_httpd_conf_centos8.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/httpd.conf.centos8.j2
     dest: /etc/httpd/conf/httpd.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: is_custom_httpd_conf_centos8.stat.exists
 
 - name: httpd.conf changed
-  template:
+  when: not is_custom_httpd_conf_centos8.stat.exists
+  ansible.builtin.template:
     src: httpd.conf.centos8.j2
     dest: /etc/httpd/conf/httpd.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: not is_custom_httpd_conf_centos8.stat.exists
 
 - name: stat custom httpd.www.conf.centos8.j2
-  stat:
+  ansible.builtin.stat:
     path: /vagrant/config/httpd.www.conf.centos8.j2
   register: is_custom_www_conf_centos8
 
 - name: custom www.conf changed
-  template:
+  when: is_custom_www_conf_centos8.stat.exists
+  ansible.builtin.template:
     src: /vagrant/config/httpd.www.conf.centos8.j2
     dest: /etc/httpd/conf.d/www.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: is_custom_www_conf_centos8.stat.exists
 
 - name: www.conf changed
-  template:
+  when: not is_custom_www_conf_centos8.stat.exists
+  ansible.builtin.template:
     src: httpd.www.conf.centos8.j2
     dest: /etc/httpd/conf.d/www.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
-  when: not is_custom_www_conf_centos8.stat.exists
 
 - name: http2.conf changed
-  template:
+  ansible.builtin.template:
     src: httpd.00-http2.conf.j2
     dest: /etc/httpd/conf.modules.d/00-http2.conf
-    mode: 0644
+    mode: "0644"
   notify: httpd restarted
 
 - name: enables httpd module mpm_prefork
+  when: apache_mpm == 'prefork'
   block:
   - name: disables httpd module mpm_event
-    replace:
+    ansible.builtin.replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
       regexp: "^LoadModule mpm_event_module modules/mod_mpm_event.so\n"
       replace: "#LoadModule mpm_event_module modules/mod_mpm_event.so\n"
     notify: httpd restarted
 
   - name: enables httpd module mpm_prefork
-    replace:
+    ansible.builtin.replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
       regexp: "^#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
       replace: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
     notify: httpd restarted
-  when: apache_mpm == 'prefork'
 
 - name: enables httpd module mpm_event
+  when: apache_mpm == 'event'
   block:
   - name: disables httpd module mpm_prefork
-    replace:
+    ansible.builtin.replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
       regexp: "^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
       replace: "#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so\n"
     notify: httpd restarted
 
   - name: enables httpd module mpm_event
-    replace:
+    ansible.builtin.replace:
       dest: /etc/httpd/conf.modules.d/00-mpm.conf
       regexp: "^#LoadModule mpm_event_module modules/mod_mpm_event.so\n"
       replace: "LoadModule mpm_event_module modules/mod_mpm_event.so\n"
     notify: httpd restarted
-  when: apache_mpm == 'event'

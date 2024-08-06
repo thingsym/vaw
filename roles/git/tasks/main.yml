@@ -1,21 +1,21 @@
 ---
 - name: RedHat version 7 early
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version is version('7', '<=')
   block:
   - name: older git remove
-    package:
+    ansible.builtin.package:
       name: git
       state: absent
 
   - name: git v2 or later installed
-    package:
-      name: git222
+    ansible.builtin.package:
+      name: git236
       state: latest
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version is version('7', '<=')
 
 - name: git installed
-  package:
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.package:
     name: git
     state: latest
-  when: ansible_os_family == 'Debian'
