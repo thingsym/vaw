@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.9] - 2024.08.06
+
+* improve tasks with ansible-lint
+* fix .ansible-lint config
+* fix workflow
+* fix vm box
+* bump up php version to 8.2.19
+* fix reset role
+* fix develop-tool
+* improve mariadb and mysql role
+* remove percona
+* bump up git package to git236
+* add and update vm box
+
 ## [0.8.8] - 2022.10.28
 
 * bump up php version
