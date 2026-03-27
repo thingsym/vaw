@@ -727,7 +727,7 @@ We recommend that you use package.json or composer.json to migrate to your proje
 #### Migrate to composer.json
 
 * [PHPUnit](https://phpunit.de)
-* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
+* [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) & [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 * [PHPStan](https://github.com/phpstan/phpstan) (Only PHP7)
 * [PHPMD](https://phpmd.org/)
 * [PHPUnit Selenium](https://github.com/giorgiosironi/phpunit-selenium)
